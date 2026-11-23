@@ -1,0 +1,11 @@
+.hood-warning-shake{animation:hood-warning-shake .22s ease-in-out 2}
+@keyframes hood-warning-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.noise-hood-warning{width:min(600px,calc(100vw - 30px));border:2px solid #b78b4b;background:#fff9ec;padding:30px}
+.noise-hood-warning::backdrop{background:#2d261ca8}.noise-hood-warning h3{font-size:27px;margin:12px 0 20px;color:#805222}.noise-hood-warning>p{font-size:18px;line-height:1.8}.noise-hood-warning .eyebrow{font-size:13px}.noise-hood-warning .reminder{margin-top:20px}.noise-hood-warning .primary{margin-top:24px;width:100%}
+.noise-leave-action{display:flex;flex-direction:column;align-items:center;flex-shrink:0}.noise-ready-guide{background:#fff2ca;border:1px solid #d6b974;color:#675124;padding:9px 18px;max-width:300px;text-align:center;font-size:15px;line-height:1.6;margin-bottom:10px;box-shadow:0 4px 12px #725e1920}.noise-ready-guide b{display:block;font-size:32px;line-height:1.2;animation:noise-down-cue .9s ease-in-out infinite}.noise-ready-guide.offscreen-guide{position:fixed;right:20px;bottom:18px;z-index:60;max-width:230px;margin:0}
+@keyframes noise-down-cue{50%{transform:translateY(5px)}}
+@media(max-width:650px){.noise-hood-warning{padding:22px}.noise-hood-warning h3{font-size:23px}.noise-leave-action{width:100%}.noise-ready-guide.offscreen-guide{right:12px;bottom:12px;font-size:13px;max-width:200px}}
+@media(prefers-reduced-motion:reduce){.hood-warning-shake,.noise-ready-guide b{animation:none}}
+
+/* ISS-027:浮動提示泡泡不攔截點擊,避免遮住「移到安靜處」鈕 */
+.noise-ready-guide.offscreen-guide{pointer-events:none}

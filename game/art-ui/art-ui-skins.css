@@ -1,0 +1,593 @@
+/* art-ui-skins.css — official night UI skin for the room pages (1–3) and the shell (imported by art-ui.css).
+   Only chrome (page background, HUD, dialogs, buttons) is re-skinned; mini-game logic/markup is untouched.
+   Inner light-blue panels of rooms 2/3 are mapped to the parchment palette through their own CSS variables. */
+
+/* ============ rooms 1–3: shared page chrome ============ */
+html.au-on body[data-au-room]{
+  background:radial-gradient(circle at 20% 8%,#1d3a66 0,transparent 36rem),linear-gradient(160deg,#0d1b34,#070d1a 70%)!important;
+  color:#ffe9b0;
+}
+html.au-on:has(body[data-au-room]){background:#070d1a!important}
+html.au-on body[data-au-room] :is(.view,.room-view,#roomView,#activityView,#missionView,#app){background:none!important}
+html.au-on body[data-au-room] :is(.game-hud,.hud){
+  position:relative;z-index:5;width:100%!important;max-width:none!important;margin:0!important;box-sizing:border-box;
+  padding:calc(var(--au-h)*4px) max(12px,calc((100% - 1260px)/2))!important;gap:calc(var(--au-h)*8px)!important;
+  background:linear-gradient(#14294a,#0e1c35)!important;border-bottom:calc(var(--au-h)*3px) solid var(--au-gold);box-shadow:0 calc(var(--au-h)*3px) 0 var(--au-navy-d);
+  color:#ffe9b0!important;align-items:center!important;flex-wrap:wrap;justify-content:space-between!important;
+}
+@media (min-width:1000px){html.au-on body[data-au-room] :is(.game-hud,.hud){flex-wrap:nowrap}}
+html.au-on body[data-au-room] :is(.game-hud,.hud) .heading,
+html.au-on body[data-au-room] :is(.game-hud,.hud)>div:not([class*=actions]):not(.heading):not(.au-hud-tools){
+  flex:1 1 0!important;min-width:0!important;margin:0!important;box-sizing:border-box;text-align:center;
+  min-height:calc(65px*var(--au-h));border-style:solid;border-color:transparent;
+  border-width:calc(14px*var(--au-h)) calc(30px*var(--au-h)) calc(14px*var(--au-h)) calc(60px*var(--au-h));
+  border-image:url("../assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill/calc(14px*var(--au-h)) calc(30px*var(--au-h)) calc(14px*var(--au-h)) calc(60px*var(--au-h)) stretch;
+  image-rendering:pixelated;display:flex;flex-direction:column;justify-content:center;
+}
+html.au-on body[data-au-room] :is(.game-hud,.hud) .eyebrow{display:block!important;margin:0!important;color:#6b4a1e!important;font-size:calc(var(--au-h)*3px + 13px)!important;letter-spacing:.06em!important;font-weight:800!important;text-transform:none!important}
+html.au-on body[data-au-room] :is(.game-hud,.hud) :is(h1,h2){margin:0!important;color:#3a2a14!important;font-size:calc(var(--au-h)*4px + 19px)!important;line-height:1.15!important}
+/* back buttons → navy plate */
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,.back,.back-room,#returnToMainMap,#returnMap,#exitRoom,#returnRoom){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;
+  min-height:max(44px,calc(33px*var(--au-h)));border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:#ffe9b0!important;font:900 calc(var(--au-h)*2px + 16px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,.back,.back-room):is(:hover,:focus-visible){filter:brightness(1.18);outline:none}
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,.back,.back-room):focus-visible{outline:3px solid #ffd76a;outline-offset:2px}
+/* actions area */
+html.au-on body[data-au-room] :is(.hud-actions,.room1-hud-actions){display:flex!important;align-items:center!important;gap:calc(var(--au-h)*4px)!important;flex-wrap:nowrap!important;flex:none!important;justify-content:flex-end}
+/* timer chip → navy plate; progress chip → star progress plate */
+html.au-on body[data-au-room] :is(#timer,#roomTimer,#room1Timer){
+  all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;min-height:calc(33px*var(--au-h));min-width:calc(var(--au-h)*60px + 20px);
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:#ffe9b0;font:900 calc(var(--au-h)*2px + 16px)/1 "Noto Sans TC",system-ui,sans-serif;font-variant-numeric:tabular-nums;
+}
+html.au-on body[data-au-room] :is(.hud .chip:not(#timer):not(#roomTimer),.game-hud .progress-chip:not(#room1Timer)){
+  all:unset;box-sizing:border-box;display:inline-flex;align-items:center;white-space:nowrap;min-height:calc(56px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(18px*var(--au-h)) calc(14px*var(--au-h)) calc(52px*var(--au-h));
+  border-image:url("../assets/art-final/ui/task-progress-bar.png") 14 18 14 52 fill/calc(14px*var(--au-h)) calc(18px*var(--au-h)) calc(14px*var(--au-h)) calc(52px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:var(--au-text);font:900 calc(var(--au-h)*2px + 16px)/1 "Noto Sans TC",system-ui,sans-serif;
+}
+/* code button + primary buttons → parchment plate */
+html.au-on body[data-au-room] :is(#openCode,#openRoom1Code,.primary,.primary-button){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.4em;white-space:nowrap;
+  min-height:calc(44px*var(--au-h));border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(24px*var(--au-h));
+  border-image:url("../assets/art-final/ui/pin-display.png") 16 24 fill/calc(14px*var(--au-h)) calc(24px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:var(--au-ink);font:900 calc(var(--au-h)*2px + 17px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+html.au-on body[data-au-room] :is(#openCode,#openRoom1Code,.primary,.primary-button):is(:hover,:focus-visible){filter:brightness(1.1)}
+html.au-on body[data-au-room] :is(#openCode,#openRoom1Code,.primary,.primary-button):focus-visible{outline:3px solid #ffd76a;outline-offset:2px}
+html.au-on body[data-au-room] :is(.primary,.primary-button):disabled{filter:grayscale(.7) brightness(.8);cursor:not-allowed}
+html.au-on body[data-au-room] :is(.secondary,.secondary-button){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+  min-height:calc(33px*var(--au-h));border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:#ffe9b0;font:900 calc(var(--au-h)*2px + 16px)/1.1 "Noto Sans TC",system-ui,sans-serif;
+}
+html.au-on body[data-au-room] :is(.secondary,.secondary-button):is(:hover,:focus-visible){filter:brightness(1.15)}
+/* room canvas: official art, no rounded frame, never stretched */
+html.au-on body[data-au-room] .room-canvas{border-radius:0!important;border:calc(var(--au-h)*3px) solid var(--au-gold)!important;box-shadow:0 0 0 calc(var(--au-h)*2px) var(--au-navy-d),0 18px 40px rgba(0,0,0,.6)!important;aspect-ratio:1672/941!important}
+html.au-on body[data-au-room] .room-canvas::after{display:none!important}
+html.au-on body[data-au-room] .room-canvas>img{object-fit:fill!important;image-rendering:pixelated}
+html.au-on body[data-au-room] :is(.hint,.room-hint){color:#ffe9b0!important;text-shadow:0 1px 2px #000;font-weight:800}
+/* fit the whole room into the viewport (no cropping, no scrolling of the hotspot canvas) */
+html.au-on body[data-au-room] .room-shell{padding:calc(var(--au-h)*8px) 12px calc(var(--au-h)*6px)!important;display:grid!important;place-items:center!important}
+html.au-on body[data-au-room] .room-canvas{
+  width:min(100%,calc((100vh - var(--au-hud,96px) - 60px)*1.7769))!important;max-width:none!important;margin:0 auto!important;
+}
+/* overlays + modals (code dialog etc.) → parchment card */
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay){background:rgba(6,12,26,.78)!important;z-index:9500!important}
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card){
+  box-sizing:border-box;background:none!important;border-radius:0!important;box-shadow:none!important;border-style:solid!important;border-color:transparent!important;
+  border-width:calc(16px*var(--au-h)) calc(16px*var(--au-h))!important;border-image:url("../assets/art-final/ui/clue-card-blank.png") 16 fill/calc(16px*var(--au-h)) stretch!important;image-rendering:pixelated;
+  color:var(--au-text)!important;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6));padding:calc(var(--au-h)*8px) calc(var(--au-h)*12px)!important;
+}
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card) :is(h2,.eyebrow){color:#3a2a14!important;margin-top:0}
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card) :is(p,label,.clue-summary,li){color:var(--au-text)!important;font-weight:700}
+html.au-on body[data-au-room] .au-keypad{margin-top:calc(var(--au-h)*4px)}
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) .actions,
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) .task-actions{display:flex;gap:calc(var(--au-h)*8px);justify-content:center;flex-wrap:wrap;margin-top:calc(var(--au-h)*6px)}
+/* original feedback line under the keypad: keep, but on parchment */
+html.au-on body[data-au-room] :is(#codeFeedback,#room1CodeFeedback){color:#5a3a0c!important;background:#f1d9a0!important;border:2px solid #c99a3c!important;border-radius:0!important;font-weight:800;padding:4px 8px;margin:6px 0 0}
+html.au-on body[data-au-room] #room1CodeFeedback:empty{display:none}
+
+/* ============ rooms 2 & 3: map their light-blue variables to the night / parchment palette ============ */
+html.au-on:has(body[data-au-room="2"]),html.au-on:has(body[data-au-room="3"]){
+  --bg:#0b1426;--bg-soft:#14294a;--panel:#f6dfae;--panel-soft:#fbeccb;--line:#c99a3c;--ink:#2a2230;--muted:#6b5a45;
+  --primary:#c98b1f;--primary-dark:#8a5a0f;--primary-soft:#f3dca0;--accent:#f0a91c;--good:#2f8f4e;--good-soft:#d9f0d6;--bad:#c8362c;--bad-soft:#f7d4cf;--paper:#fbeccb;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  --r3-bg:#0b1426;--r3-soft:#14294a;--r3-panel:#f6dfae;--r3-line:#c99a3c;--r3-ink:#2a2230;--r3-muted:#6b5a45;--r3-primary:#c98b1f;--r3-primary-dark:#8a5a0f;--r3-accent:#f0a91c;--r3-good:#2f8f4e;--r3-shadow:0 10px 30px rgba(0,0,0,.45);
+  --cream:#fbeccb;--paper:#fbeccb;--yellow:#f0a91c;--green:#2f8f4e;--teal:#1c6a5e;--blue:#14294a;--red:#c8362c;
+}
+html.au-on body[data-au-room] :is(.mission-bar){
+  position:relative;width:100%!important;max-width:none!important;margin:0!important;box-sizing:border-box;padding:calc(var(--au-h)*4px) max(12px,calc((100% - 1260px)/2))!important;
+  background:linear-gradient(#14294a,#0e1c35)!important;border-bottom:calc(var(--au-h)*3px) solid var(--au-gold);color:#ffe9b0!important;
+}
+html.au-on body[data-au-room] .mission-bar :is(h1,h2,.eyebrow){color:#ffe9b0!important}
+html.au-on body[data-au-room] .mission-bar .heading,html.au-on body[data-au-room] .mission-bar .mission-heading{color:#ffe9b0}
+html.au-on body[data-au-room] .mission-bar :is(.chip,.progress-chip){color:var(--au-text)}
+
+html.au-on body[data-au-room] .au-hud-tools{display:flex;align-items:center;gap:calc(var(--au-h)*4px);flex:none}
+@media (max-width:1499px){html.au-on body[data-au-room] .au-chip-name{display:none}}
+html.au-on body[data-au-room] .room-canvas>.au-hud-tools{position:absolute;left:calc(var(--au-h)*8px);top:calc(var(--au-h)*8px);z-index:30;pointer-events:auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
+
+.au-submit-proxy{display:none!important}
+
+/* rooms 2/3 mini-game containers: parchment cards with a square gold frame (content/logic untouched) */
+html.au-on body:is([data-au-room="2"],[data-au-room="3"]) :is(.intro-card,.task-card,.result-panel,.lesson-copy,.panel,.story-card,.activity-card,.resource-panel,.rule-card,.visual-card,.unit-card2,.route-side){
+  background:linear-gradient(#fbeccb,#f6dfae)!important;border:3px solid #c99a3c!important;border-radius:0!important;color:var(--au-text)!important;box-shadow:0 4px 0 rgba(10,18,36,.55)!important;
+}
+html.au-on body:is([data-au-room="2"],[data-au-room="3"]) .mission-bar :is(.chip,.progress-chip){
+  all:unset;box-sizing:border-box;display:inline-flex;align-items:center;white-space:nowrap;min-height:calc(56px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(18px*var(--au-h)) calc(14px*var(--au-h)) calc(52px*var(--au-h));
+  border-image:url("../assets/art-final/ui/task-progress-bar.png") 14 18 14 52 fill/calc(14px*var(--au-h)) calc(18px*var(--au-h)) calc(14px*var(--au-h)) calc(52px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:var(--au-text);font:900 calc(var(--au-h)*2px + 16px)/1 "Noto Sans TC",system-ui,sans-serif;
+}
+/* ==========================================================================
+   SHELL (game/index.html): map, room 6, rooms 4/5 frame, room 7
+   ========================================================================== */
+html.au-on body.au-shell{background:#070d1a}
+body.au-shell :is(#mapScreen,#roomScreen,#endingScreen,.room45-screen){background:radial-gradient(circle at 20% 8%,#1d3a66 0,transparent 36rem),linear-gradient(160deg,#0d1b34,#070d1a 70%)!important}
+body.au-shell .topbar{
+  background:linear-gradient(#14294a,#0e1c35)!important;border-bottom:calc(var(--au-h)*3px) solid var(--au-gold)!important;box-shadow:0 calc(var(--au-h)*3px) 0 var(--au-navy-d);color:#ffe9b0!important;
+  padding:calc(var(--au-h)*3px) 12px!important;gap:calc(var(--au-h)*8px)!important;
+}
+body.au-shell .brand{color:#ffe9b0!important;font-size:calc(var(--au-h)*3px + 20px)!important;text-shadow:0 2px 0 #000}
+body.au-shell .progress{color:#ffe9b0!important}
+body.au-shell .dot{width:calc(var(--au-h)*8px + 24px)!important;height:calc(var(--au-h)*8px + 24px)!important;border-radius:0!important;background:#2a3f66!important;border:2px solid #5b6f94!important;color:#a9b6d6!important;font-size:16px!important}
+body.au-shell .dot.done{background:var(--au-teal)!important;border-color:var(--au-gold)!important;color:#fff!important}
+body.au-shell .status-note{border-radius:0!important;background:var(--au-navy)!important;border:2px solid var(--au-gold)!important;color:#ffe9b0!important;font-size:16px!important;padding:4px 10px!important}
+body.au-shell :is(.badge,.player-badge,.room-title-chip){
+  all:unset;box-sizing:border-box;display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap;min-height:calc(33px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:#ffe9b0!important;font:900 calc(var(--au-h)*2px + 15px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif!important;font-variant-numeric:tabular-nums;
+}
+body.au-shell .room-title-chip{position:absolute;left:12px;top:10px;z-index:25;pointer-events:none}
+body.au-shell :is(.secondary,.music-btn){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-height:calc(33px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:#ffe9b0;font:900 calc(var(--au-h)*2px + 15px)/1.1 "Noto Sans TC",system-ui,sans-serif;
+}
+body.au-shell :is(.secondary,.music-btn):is(:hover,:focus-visible){filter:brightness(1.18)}
+body.au-shell :is(.secondary,.music-btn,.primary,.lock-button):focus-visible{outline:3px solid #ffd76a;outline-offset:2px}
+body.au-shell :is(.primary,.lock-button){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.4em;white-space:nowrap;min-height:calc(44px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(24px*var(--au-h));
+  border-image:url("../assets/art-final/ui/pin-display.png") 16 24 fill/calc(14px*var(--au-h)) calc(24px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:var(--au-ink);font:900 calc(var(--au-h)*2px + 16px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+body.au-shell :is(.primary,.lock-button):is(:hover,:focus-visible){filter:brightness(1.1)}
+body.au-shell .primary:disabled{filter:grayscale(.7) brightness(.8);cursor:not-allowed}
+body.au-shell #roomScreen .lock-button{position:absolute;right:12px;bottom:12px;z-index:30}
+body.au-shell .music-control{border-radius:0!important;border:2px solid var(--au-gold)!important;background:var(--au-navy-d)!important;padding:2px 6px!important}
+body.au-shell .music-control input[type=range]{accent-color:var(--au-gold)}
+body.au-shell .music-btn{min-width:0;border-width:calc(8px*var(--au-h)) calc(14px*var(--au-h));border-image-width:calc(8px*var(--au-h)) calc(14px*var(--au-h))}
+body.au-shell .top-actions{align-items:center}
+/* stage frames: pixel art, never stretched, square gold frame */
+body.au-shell .stage{border-radius:0!important;border:calc(var(--au-h)*3px) solid var(--au-gold)!important;box-shadow:0 0 0 calc(var(--au-h)*2px) var(--au-navy-d),0 18px 40px rgba(0,0,0,.6)!important}
+body.au-shell .stage img,body.au-shell #roomImage{image-rendering:pixelated;object-fit:fill!important}
+body.au-shell .hotspot{border-radius:4px}
+body.au-shell .stage-wrap{padding:calc(var(--au-h)*2px) 4px!important}
+body.au-shell .map-tip{border-radius:0!important;background:var(--au-navy)!important;border:3px solid var(--au-gold);color:#ffe9b0!important;box-shadow:0 0 0 2px var(--au-navy-d)}
+/* character dock (room 6): full-body character + official speech bubble */
+body.au-shell #roomScreen .character-dialog{
+  --b:var(--au-h);background:none!important;border-radius:0!important;box-shadow:none!important;border-style:solid!important;border-color:transparent!important;
+  border-width:calc(12px*var(--b)) calc(12px*var(--b)) calc(20px*var(--b)) calc(56px*var(--b))!important;
+  border-image:url("../assets/art-final/ui/dialog-bubble.png") 12 12 20 56 fill/calc(12px*var(--b)) calc(12px*var(--b)) calc(20px*var(--b)) calc(56px*var(--b)) stretch!important;image-rendering:pixelated;
+  padding:0!important;color:var(--au-text)!important;filter:drop-shadow(0 4px 6px rgba(0,0,0,.55));min-width:calc(var(--au-h)*120px);
+}
+body.au-shell #roomScreen .character-name{color:#8a5a0f!important;font-weight:900!important;font-size:calc(var(--au-h)*2px + 15px)!important}
+body.au-shell #roomScreen .character-dialog span:not(.character-name){font-weight:700;color:var(--au-text)}
+/* generic shell modal (openModal): parchment card */
+body.au-shell .overlay{background:rgba(6,12,26,.78)!important}
+body.au-shell .overlay .modal{
+  box-sizing:border-box;background:none!important;border-radius:0!important;box-shadow:none!important;border-style:solid!important;border-color:transparent!important;
+  border-width:calc(16px*var(--au-h))!important;border-image:url("../assets/art-final/ui/clue-card-blank.png") 16 fill/calc(16px*var(--au-h)) stretch!important;image-rendering:pixelated;
+  color:var(--au-text)!important;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6));padding:calc(var(--au-h)*8px) calc(var(--au-h)*12px)!important;max-height:calc(100vh - 40px);overflow:auto;
+}
+body.au-shell .overlay .modal h2{color:#3a2a14!important}
+body.au-shell .overlay .modal :is(.info,.notice,.result-box){border-radius:0!important}
+body.au-shell .modal-actions{display:flex;gap:calc(var(--au-h)*8px);justify-content:center;flex-wrap:wrap;margin-top:calc(var(--au-h)*6px)}
+/* keypad dialog */
+.au-codemodal{--b:var(--au-h);max-width:min(calc(100vw - 24px),calc(var(--au-s)*330px))}
+.au-codebox{text-align:center;padding:calc(var(--au-h)*2px) calc(var(--au-h)*6px)}
+.au-codebox h2{margin:0 0 .3em;font-size:calc(var(--au-h)*3px + 21px);color:#3a2a14}
+.au-codebox p{margin:.3em 0;font-size:calc(var(--au-h)*2px + 17px);line-height:1.5;font-weight:700;color:var(--au-text)}
+.au-codebox .au-codetip{font-size:16px;color:#6b5a45}
+.au-fragment .au-img{margin:0 auto;zoom:var(--au-s)}
+.au-seal-final{display:flex;justify-content:center;margin:0 0 8px}
+.au-seal-final .au-img{zoom:var(--au-s);animation:auGlow 2s infinite}
+/* rooms 4 / 5 frame (HUD + room fitted to the viewport) */
+body.au-shell .room45-page{background:none!important;padding:0!important}
+body.au-shell .room45-header{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap;gap:calc(var(--au-h)*8px)!important;width:100%!important;max-width:none!important;margin:0!important;box-sizing:border-box;
+  padding:calc(var(--au-h)*4px) max(12px,calc((100% - 1260px)/2))!important;background:linear-gradient(#14294a,#0e1c35)!important;
+  border-bottom:calc(var(--au-h)*3px) solid var(--au-gold);box-shadow:0 calc(var(--au-h)*3px) 0 var(--au-navy-d);color:#ffe9b0;
+}
+body.au-shell .room45-back{
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;min-height:calc(33px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;color:#ffe9b0;font:900 calc(var(--au-h)*2px + 16px)/1.1 "Noto Sans TC",system-ui,sans-serif;
+}
+body.au-shell .room45-back:is(:hover,:focus-visible){filter:brightness(1.18);text-decoration:none}
+body.au-shell .room45-heading{
+  flex:1 1 0!important;min-width:0!important;box-sizing:border-box;text-align:center;min-height:calc(65px*var(--au-h));display:flex;flex-direction:column;justify-content:center;
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(30px*var(--au-h)) calc(14px*var(--au-h)) calc(60px*var(--au-h));
+  border-image:url("../assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill/calc(14px*var(--au-h)) calc(30px*var(--au-h)) calc(14px*var(--au-h)) calc(60px*var(--au-h)) stretch;image-rendering:pixelated;
+}
+body.au-shell .room45-kicker{margin:0!important;color:#6b4a1e!important;font-size:calc(var(--au-h)*3px + 13px)!important;letter-spacing:.06em!important;font-weight:800!important}
+body.au-shell .room45-heading h1{margin:0!important;color:#3a2a14!important;font-size:calc(var(--au-h)*4px + 19px)!important;line-height:1.15!important;white-space:nowrap!important}
+body.au-shell .room45-status{display:flex!important;align-items:center!important;gap:calc(var(--au-h)*4px)!important;flex:none!important;flex-wrap:nowrap!important}
+body.au-shell .room45-time{
+  all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;min-height:calc(33px*var(--au-h));min-width:calc(var(--au-h)*60px + 20px);
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;color:#ffe9b0;font:900 calc(var(--au-h)*2px + 16px)/1 "Noto Sans TC",system-ui,sans-serif;
+}
+body.au-shell .room45-pill:not(.room45-time){
+  all:unset;box-sizing:border-box;display:inline-flex;align-items:center;white-space:nowrap;min-height:calc(56px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(18px*var(--au-h)) calc(14px*var(--au-h)) calc(52px*var(--au-h));
+  border-image:url("../assets/art-final/ui/task-progress-bar.png") 14 18 14 52 fill/calc(14px*var(--au-h)) calc(18px*var(--au-h)) calc(14px*var(--au-h)) calc(52px*var(--au-h)) stretch;image-rendering:pixelated;
+  color:var(--au-text);font:900 calc(var(--au-h)*2px + 16px)/1 "Noto Sans TC",system-ui,sans-serif;
+}
+body.au-shell .room45-pill b{font:inherit!important}
+body.au-shell .room45-code{
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-height:calc(44px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--au-h)) calc(24px*var(--au-h));
+  border-image:url("../assets/art-final/ui/pin-display.png") 16 24 fill/calc(14px*var(--au-h)) calc(24px*var(--au-h)) stretch;image-rendering:pixelated;color:var(--au-ink);font:900 calc(var(--au-h)*2px + 17px)/1.1 "Noto Sans TC",system-ui,sans-serif;
+}
+body.au-shell .room45-code:is(:hover,:focus-visible){filter:brightness(1.1)}
+body.au-shell .room45-screen:not(.activity-mode) .room45-frame{
+  width:min(calc(100% - 1rem),calc((100vh - var(--au-hud,96px) - 56px)*1.7769))!important;aspect-ratio:1672/941!important;border-radius:0!important;
+  border:calc(var(--au-h)*3px) solid var(--au-gold);box-shadow:0 0 0 calc(var(--au-h)*2px) var(--au-navy-d),0 18px 40px rgba(0,0,0,.6);background:#0b1426!important;
+}
+body.au-shell .room45-hint{color:#ffe9b0!important;text-shadow:0 1px 2px #000;margin:calc(var(--au-h)*4px) auto 0!important;padding:0!important;font-weight:800!important}
+body.au-shell .room45-screen{overflow:hidden}
+/* room 7 */
+body.au-shell .room7-screen{background:radial-gradient(circle at 20% 8%,#1d3a66 0,transparent 36rem),linear-gradient(160deg,#0d1b34,#070d1a 70%)!important}
+body.au-shell :is(.exit-animation){
+  background:linear-gradient(#fbeccb,#f6dfae)!important;border:4px solid var(--au-gold)!important;border-radius:0!important;box-shadow:0 0 0 3px var(--au-navy-d),0 12px 28px rgba(0,0,0,.6)!important;color:var(--au-text)!important;
+}
+body.au-shell .room7-review-tools{background:var(--au-navy)!important;border:3px solid var(--au-gold)!important;border-radius:0!important;color:#ffe9b0!important}
+body.au-shell .room7-review-tools #room7ReviewCount{color:#ffe9b0}
+body.au-shell .memory-hotspot{border-radius:50%}
+/* shell header compaction (one row at 1280–1920) */
+body.au-shell .topbar{flex-wrap:nowrap!important}
+body.au-shell .topbar>div:first-child{min-width:0;flex:1 1 auto}
+body.au-shell .top-actions{flex-wrap:nowrap!important;gap:calc(var(--au-h)*3px)!important;flex:none}
+body.au-shell :is(#mapScreen,#roomScreen,#endingScreen) .player-badge,body.au-shell #mapScreen .status-note{display:none!important}
+body.au-shell .brand{white-space:nowrap}
+body.au-shell .music-control input[type=range]{width:calc(var(--au-h)*30px + 24px)!important}
+body.au-shell .progress{flex-wrap:nowrap!important}
+body.au-shell .room45-frame{position:relative}
+body.au-shell .room45-frame>.au-hud-tools{position:absolute;left:calc(var(--au-h)*8px);top:calc(var(--au-h)*8px);z-index:30;display:flex;align-items:center;gap:calc(var(--au-h)*4px);filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
+body.au-shell .room45-screen.activity-mode .au-hud-tools{display:none}
+
+/* ============ rooms 4 & 5 (inner pages): parchment page + official bar / buttons (content untouched) ============ */
+html.au-on body[data-au-skin="inner"]{background:linear-gradient(#fbeccb,#f1d9a0)!important}
+html.au-on body[data-au-skin="inner"] .mission-bar{
+  background:linear-gradient(#14294a,#0e1c35)!important;border-bottom:calc(var(--au-h)*3px) solid var(--au-gold)!important;box-shadow:0 calc(var(--au-h)*3px) 0 var(--au-navy-d);color:#ffe9b0!important;
+}
+html.au-on body[data-au-skin="inner"] .mission-bar :is(.eyebrow,h1,h2,span){color:#ffe9b0!important}
+html.au-on body[data-au-skin="inner"] :is(.back,.mission-bar button){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;min-height:calc(33px*var(--au-h));
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch;image-rendering:pixelated;color:#ffe9b0;font:900 calc(var(--au-h)*2px + 16px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+html.au-on body[data-au-skin="inner"] :is(.back,.mission-bar button):is(:hover,:focus-visible){filter:brightness(1.18)}
+/* shell: room 6 no longer shows the old elder + speech bubble (the intro uses the official dialog box) */
+body.au-shell #roomScreen .character-dock{display:none!important}
+/* plates: hover grows a little, press sinks */
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,#returnToMainMap,#returnMap,#exitRoom,#returnRoom,#openCode,#openRoom1Code,.primary,.primary-button,.secondary,.secondary-button),
+html.au-on body.au-shell :is(.secondary,.music-btn,.primary,.lock-button,.room45-back,.room45-code){transition:transform .12s cubic-bezier(.2,.9,.3,1.3),filter .12s}
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,#returnToMainMap,#returnMap,#exitRoom,#returnRoom,#openCode,#openRoom1Code,.primary,.primary-button,.secondary,.secondary-button):hover:not(:disabled),
+html.au-on body.au-shell :is(.secondary,.music-btn,.primary,.lock-button,.room45-back,.room45-code):hover:not(:disabled){transform:scale(1.045)}
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,#returnToMainMap,#returnMap,#exitRoom,#returnRoom,#openCode,#openRoom1Code,.primary,.primary-button,.secondary,.secondary-button):active:not(:disabled),
+html.au-on body.au-shell :is(.secondary,.music-btn,.primary,.lock-button,.room45-back,.room45-code):active:not(:disabled){transform:scale(.96) translateY(1px)}
+/* ================= round 7: readable sizes, nothing laid over the pictures ================= */
+html.au-on body[data-au-room] :is(.game-hud,.hud) :is(h1,h2){font-size:calc(var(--au-h)*5px + 22px)!important}
+html.au-on body[data-au-room] :is(.game-hud,.hud) .eyebrow{font-size:calc(var(--au-h)*3px + 15px)!important}
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,#returnToMainMap,#returnMap,#exitRoom,#returnRoom,.secondary,.secondary-button),
+html.au-on body[data-au-room] :is(#timer,#roomTimer,#room1Timer){font-size:calc(var(--au-h)*3px + 19px)!important}
+html.au-on body[data-au-room] :is(#openCode,#openRoom1Code,.primary,.primary-button){font-size:calc(var(--au-h)*3px + 20px)!important}
+html.au-on body[data-au-room] :is(.hud .chip:not(#timer):not(#roomTimer),.game-hud .progress-chip:not(#room1Timer)){font-size:calc(var(--au-h)*3px + 19px)!important}
+html.au-on body[data-au-room] .au-hudbtn,.au-hudbtn{font-size:calc(var(--au-h)*3px + 19px)}
+html.au-on body[data-au-room] :is(.hint,.room-hint){font-size:calc(var(--au-h)*3px + 17px)!important}
+body.au-shell .brand{font-size:calc(var(--au-h)*5px + 24px)!important}
+body.au-shell :is(.badge,.player-badge),body.au-shell :is(.secondary,.music-btn),body.au-shell :is(.primary,.lock-button),body.au-shell .room45-back,body.au-shell .room45-code,body.au-shell .room45-time{font-size:calc(var(--au-h)*3px + 19px)!important}
+body.au-shell .room45-pill:not(.room45-time){font-size:calc(var(--au-h)*3px + 19px)!important}
+body.au-shell .room45-heading h1{font-size:calc(var(--au-h)*5px + 21px)!important}
+body.au-shell .room45-kicker{font-size:calc(var(--au-h)*3px + 15px)!important}
+body.au-shell #mapScreen .progress,body.au-shell #roomScreen .progress{display:none!important}   /* the 完成 n/6 badge already says it */
+body.au-shell .topbar>div:first-child{overflow:visible}
+body.au-shell .brand{overflow:visible;text-overflow:clip}
+body.au-shell .room-title-chip{display:none!important}                 /* the room name is in the header; nothing on top of the room picture */
+body.au-shell #roomScreen .lock-button{position:static!important}
+/* rooms 4 / 5 pages: their own title / footer text used to sit on top of the picture */
+.room-frame>.room-heading,.room-frame>.room-footer,.room-frame>.room-shade,.room-frame>header.room-heading{display:none!important}
+
+/* ---------- mission panel: a large, centred sheet over a dimmed screen (nothing peeks out beside it) ---------- */
+.au-mission{
+  --au-h:var(--au-s);position:fixed;left:50%;top:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:min(820px,94vw);max-height:92vh;overflow:auto;z-index:99000;
+  gap:calc(var(--au-s)*3px);box-shadow:0 0 0 200vmax rgba(5,10,22,.72);animation:auPopIn .22s cubic-bezier(.2,.9,.3,1.2);padding:2px;
+}
+@keyframes auPopIn{from{opacity:0;transform:translate(-50%,-47%) scale(.96)}}
+.au-m-title small{font-size:calc(var(--au-s)*3px + 14px)}
+.au-m-name{font-size:calc(var(--au-s)*6px + 20px)}
+.au-m-progress{font-size:calc(var(--au-s)*4px + 14px);gap:12px}
+.au-m-bar{height:calc(var(--au-s)*8px)}
+.au-m-list{font-size:calc(var(--au-s)*4px + 14px);gap:calc(var(--au-s)*3px);padding:4px 10px}
+.au-chk{width:calc(var(--au-s)*8px + 14px);height:calc(var(--au-s)*8px + 14px);font-size:calc(var(--au-s)*4px + 10px)}
+.au-m-hint{font-size:calc(var(--au-s)*3px + 14px);line-height:1.45}
+.au-m-hintbtn{width:auto}
+.au-m-hintbtn .au-img{zoom:var(--au-s)}
+.au-m-status{font-size:calc(var(--au-s)*3px + 14px);padding:10px 14px}
+.au-m-clues{gap:calc(var(--au-s)*3px)}
+.au-m-clue .au-img{zoom:var(--au-s)}
+.au-m-clue em{font-size:calc(var(--au-s)*2px + 9px);bottom:calc(var(--au-s)*5px)}
+.au-m-close{font-size:calc(var(--au-s)*3px + 15px);align-self:center}
+@media (max-width:760px){.au-mission{--au-h:1}}
+
+/* ---------- dialogs, cards, keypad text ---------- */
+.au-dlg-text{font-size:calc(var(--au-s)*7px + 13px)}
+.au-dlg-name{font-size:calc(var(--au-s)*3px + 16px)}
+.au-dlg-listen b{font-size:calc(var(--au-s)*3px + 12px)}
+.au-cc-text h3{font-size:calc(var(--cs)*4px + 11px)}
+.au-cc-text p{font-size:calc(var(--cs)*3.2px + 10px)}
+.au-cc-actions .au-btn{font-size:calc(var(--au-s)*3px + 15px)}
+.au-btn{font-size:calc(var(--au-s)*3px + 15px)}
+.au-col-legend{font-size:calc(var(--au-s)*3px + 15px)}
+.au-col-note{font-size:calc(var(--au-s)*3px + 15px)}
+.au-col-title{font-size:calc(var(--au-s)*5px + 18px)}
+.au-pin-msg{font-size:calc(var(--au-s)*4px + 10px)}
+.au-keypad input.au-input{font-size:calc(var(--k)*13px)!important}
+.au-codebox h2{font-size:calc(var(--au-s)*5px + 18px)}
+.au-codebox p{font-size:calc(var(--au-s)*3px + 17px)}
+.au-fx-label{font-size:clamp(19px,1.6vw,30px)}
+body.au-shell .overlay .modal h2{font-size:calc(var(--au-s)*5px + 18px)!important}
+body.au-shell .overlay .modal :is(p,div,li,.info,.notice){font-size:calc(var(--au-s)*3px + 15px)!important;line-height:1.6!important}
+/* HUD of rooms 1-3: wraps instead of squeezing the title */
+html.au-on body[data-au-room] :is(.game-hud,.hud){flex-wrap:wrap!important;row-gap:calc(var(--au-h)*4px)}
+html.au-on body[data-au-room] :is(.game-hud,.hud) .heading,html.au-on body[data-au-room] :is(.game-hud,.hud)>div:not([class*=actions]):not(.heading):not(.au-hud-tools){flex:1 1 300px!important;min-width:300px!important}
+html.au-on body[data-au-room] :is(.hud-actions,.room1-hud-actions){flex:0 1 auto!important;flex-wrap:wrap!important;margin-left:auto}
+html.au-on body[data-au-room] .au-chip-name{display:none}
+html.au-on body[data-au-room] .au-hud-tools{flex-wrap:nowrap}
+/* mission panel, final layout: 2 columns, real dim backdrop, readable list on plain parchment */
+.au-m-backdrop{position:fixed;inset:0;background:rgba(5,10,22,.74);z-index:98999;animation:auFade .2s}
+@keyframes auFade{from{opacity:0}}
+.au-mission{box-shadow:none!important;width:min(1080px,95vw)!important;display:grid!important;grid-template-columns:1fr 1fr;align-items:start;column-gap:calc(var(--au-s)*4px)}
+.au-mission[hidden]{display:none!important}
+.au-mission>.au-m-title,.au-mission>.au-m-progress,.au-mission>.au-m-close{grid-column:1/-1}
+.au-mission>.au-m-list{grid-column:1;grid-row:3/6;border-image-source:url("../assets/art-final/ui/task-checklist-scroll.png");border-image-slice:20 16;border-image-repeat:stretch;background:linear-gradient(#fbeccb,#f3d9a0) padding-box;min-height:calc(var(--au-s)*80px)}
+.au-mission>.au-m-hintrow{grid-column:2;grid-row:3}
+.au-mission>.au-m-status{grid-column:2;grid-row:4}
+.au-mission>.au-m-clues{grid-column:2;grid-row:5}
+.au-m-list{border-image-width:calc(20px*var(--au-s)) calc(16px*var(--au-s))!important;border-width:calc(20px*var(--au-s)) calc(16px*var(--au-s))!important;padding:6px 14px!important}
+.au-m-list li{padding:2px 0}
+@media (max-width:820px){.au-mission{grid-template-columns:1fr}.au-mission>*{grid-column:1!important;grid-row:auto!important}}.au-m-clue .au-img{zoom:1!important}
+.au-m-ptext{padding-left:calc(var(--au-s)*4px)}
+.au-mission{max-height:96vh!important}
+@media (min-height:900px){.au-m-clue .au-img{zoom:var(--au-s)!important}}
+/* rooms 4 / 5 header (shell): wraps, never overflows */
+body.au-shell .room45-header{flex-wrap:wrap!important;row-gap:calc(var(--au-h)*4px)}
+body.au-shell .room45-heading{flex:1 1 300px!important;min-width:300px!important}
+body.au-shell .room45-status{flex:0 1 auto!important;flex-wrap:wrap!important;margin-left:auto;justify-content:flex-end}
+body.au-shell .room45-status .au-hud-tools{flex-wrap:nowrap}
+body.au-shell .room45-status .au-chip-name{display:none}
+body.au-shell .room45-screen:not(.activity-mode) .room45-frame{width:min(calc(100% - 1rem),calc((100vh - var(--au-hud,120px) - 56px)*1.7769))!important}
+/* shell top bar (map / room 6 / room 7): wraps so the title is never covered */
+body.au-shell .topbar{flex-wrap:wrap!important;row-gap:calc(var(--au-h)*3px)}
+body.au-shell .topbar>div:first-child{flex:1 1 360px!important;min-width:min(360px,100%)!important}
+body.au-shell .top-actions{flex:0 1 auto!important;flex-wrap:wrap!important;margin-left:auto;justify-content:flex-end}
+body.au-shell .top-actions .au-chip-name{display:none}
+body.au-shell .brand{white-space:normal!important}
+/* =====================================================================================================
+   ROUND 8 — layout system (replaces the ad-hoc wrapping rules above).
+   Room page  : [ ← back ][      title plate      ][ timer ][ progress ][ 🔐 code ]     <- one 64px row
+                [               room picture (fitted, never covered)                 ]
+                [ avatar  任務  收集        ✦ hint line                               ]     <- dock, as wide as the picture
+   Shell page : same idea; the dock sits under the picture, header stays one row.
+   Overlays (dialog / mission / cards) never use a bigger sprite scale than 2, so they stay compact at 1920.
+   ===================================================================================================== */
+html.au-on body[data-au-room] :is(.game-hud,.hud),
+body.au-shell .room45-header{
+  display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;align-items:center!important;column-gap:calc(var(--au-h)*10px)!important;row-gap:calc(var(--au-h)*4px)!important;
+  flex-wrap:nowrap!important;padding:calc(var(--au-h)*4px) clamp(10px,1.6vw,28px)!important;min-height:calc(var(--au-h)*72px);
+}
+html.au-on body[data-au-room] :is(.game-hud,.hud)>:first-child,body.au-shell .room45-header>:first-child{grid-column:1;justify-self:start}
+html.au-on body[data-au-room] :is(.game-hud,.hud) .heading,
+html.au-on body[data-au-room] :is(.game-hud,.hud)>div:not([class*=actions]):not(.heading):not(.au-hud-tools),
+body.au-shell .room45-heading{grid-column:2!important;flex:none!important;min-width:0!important;width:100%;justify-self:stretch;margin:0!important}
+html.au-on body[data-au-room] :is(.hud-actions,.room1-hud-actions),body.au-shell .room45-status{
+  grid-column:3!important;flex:none!important;flex-wrap:nowrap!important;margin:0!important;justify-self:end;gap:calc(var(--au-h)*5px)!important;
+}
+/* title plate: eyebrow + title, never taller than the bar */
+html.au-on body[data-au-room] :is(.game-hud,.hud) .heading,body.au-shell .room45-heading{min-height:calc(var(--au-h)*62px)!important;padding-top:0;padding-bottom:0}
+html.au-on body[data-au-room] :is(.game-hud,.hud) .eyebrow,body.au-shell .room45-kicker{font-size:calc(var(--au-h)*2px + 13px)!important;line-height:1.1!important}
+html.au-on body[data-au-room] :is(.game-hud,.hud) :is(h1,h2),body.au-shell .room45-heading h1{font-size:calc(var(--au-h)*2px + 22px)!important;line-height:1.1!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* HUD plates: slightly smaller type so a whole row fits at 1280 */
+html.au-on body[data-au-room] :is(.ghost,.ghost-button,.integration-back,.room-back,#returnToMainMap,#returnMap,#exitRoom,#returnRoom),
+body.au-shell .room45-back{font-size:calc(var(--au-h)*2px + 18px)!important}
+html.au-on body[data-au-room] :is(#timer,#roomTimer,#room1Timer),body.au-shell .room45-time{font-size:calc(var(--au-h)*2px + 18px)!important;min-width:calc(var(--au-h)*40px + 40px)!important}
+html.au-on body[data-au-room] :is(#openCode,#openRoom1Code),body.au-shell .room45-code{font-size:calc(var(--au-h)*2px + 19px)!important}
+html.au-on body[data-au-room] :is(.hud .chip:not(#timer):not(#roomTimer),.game-hud .progress-chip:not(#room1Timer)),body.au-shell .room45-pill:not(.room45-time){font-size:calc(var(--au-h)*2px + 18px)!important}
+@media (max-width:1180px){
+  html.au-on body[data-au-room] :is(.game-hud,.hud),body.au-shell .room45-header{grid-template-columns:auto 1fr!important}
+  html.au-on body[data-au-room] :is(.game-hud,.hud) .heading,body.au-shell .room45-heading{grid-column:1/-1!important;grid-row:2}
+  html.au-on body[data-au-room] :is(.hud-actions,.room1-hud-actions),body.au-shell .room45-status{grid-column:2!important;grid-row:1}
+}
+
+/* the dock under every room picture */
+.au-dock{display:flex;align-items:center;gap:calc(var(--au-h)*8px);margin:calc(var(--au-h)*6px) auto 0;box-sizing:border-box;max-width:100%;min-height:calc(var(--au-h)*40px)}
+.au-dock .au-hud-tools{position:static!important;flex:none;display:flex;align-items:center;gap:calc(var(--au-h)*5px);filter:none}
+.au-dock-hint,.au-dock .room45-hint{flex:1 1 auto;margin:0!important;padding:0!important;text-align:right!important;font-size:calc(var(--au-h)*2px + 17px)!important;line-height:1.3!important;color:#ffe9b0!important;text-shadow:0 1px 2px #000;white-space:normal!important;float:none!important;position:static!important;max-width:none!important;width:auto!important}
+html.au-on body[data-au-room] .room-shell{display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start}
+body.au-shell .room45-stage-wrap{flex-direction:column!important}
+html.au-on body[data-au-room] .au-chip-name,body.au-shell .au-dock .au-chip-name{display:inline-flex}
+.au-dock .au-chip-name{font-size:calc(var(--au-h)*2px + 16px)}
+/* picture budget = viewport − header − dock (so nothing is ever covered or cropped) */
+html.au-on body[data-au-room] .room-canvas{width:min(100%,calc((100vh - var(--au-hud,76px) - 86px)*1.7769))!important}
+body.au-shell .room45-screen:not(.activity-mode) .room45-frame{width:min(calc(100% - 1rem),calc((100vh - var(--au-hud,76px) - 84px)*1.7769))!important}
+
+/* overlays keep a compact scale on big screens */
+.au-dialog,.au-mission,.au-modal,.au-codemodal,.au-cluemodal,.au-colmodal,
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card){--au-s:var(--au-o,2)}
+/* room code dialog: panel always wide enough for the keypad, so keys and background scale together */
+html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card):has(.au-keypad){width:min(calc(100vw - 24px),calc(var(--au-s)*300px + 80px))}
+@media (min-width:1280px){
+  body.au-shell .topbar{flex-wrap:nowrap!important}
+  body.au-shell .topbar>div:first-child{flex:1 1 0!important;min-width:0!important}
+  body.au-shell .topbar .brand{font-size:calc(var(--au-h)*2px + 22px)!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
+  body.au-shell .top-actions{flex-wrap:nowrap!important}
+  body.au-shell .top-actions .music-control input[type=range]{width:60px!important}
+}@media (min-width:1280px) and (max-width:1699px){ body.au-shell .top-actions .music-control input[type=range]{display:none!important} }@media (min-width:1280px) and (max-width:1699px){ body.au-shell #timerBadge{font-size:17px!important;padding:0 !important} body.au-shell .top-actions{gap:2px!important} body.au-shell .topbar .brand{font-size:calc(var(--au-h)*2px + 20px)!important} body.au-shell .top-actions .au-chip-player{display:none} }@media (min-width:1280px){ body.au-shell .topbar .brand{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.15!important} body.au-shell .topbar>div:first-child{flex:1 1 220px!important} }
+/* 第二修改計劃 B2-1:小遊戲上方的顏色進度條不放星星圖樣(過關星星飛入特效保留) */
+html.au-on body[data-au-room] .mission-bar .progress-chip.color-progress.color-progress,
+html.au-on body .mission-bar .color-progress.color-progress,
+html.au-on .color-progress.color-progress{
+  all:unset;box-sizing:border-box;display:inline-flex!important;align-items:center;gap:6px;white-space:nowrap;
+  padding:6px 8px;background:#0e1c35;border:3px solid var(--au-gold,#c99a3c);border-radius:4px;box-shadow:0 2px 0 rgba(0,0,0,.45);
+}
+html.au-on .color-progress.color-progress>i{flex:none}
+html.au-on .color-progress.color-progress[hidden],html.au-on .color-progress.color-progress:empty{display:none!important}
+
+/* 第二修改計劃 B3:任務面板 v2(標題 + 物品清單 + 完成狀態 + 收合),地圖與六房共用 */
+.au-mission.au-mission-v2{width:min(640px,92vw);gap:calc(var(--au-s)*4px + 4px)}
+.au-mission-v2 .au-m-title{padding:calc(var(--au-s)*4px + 6px) 18px}
+.au-mission-v2 .au-m-name{font-size:calc(var(--au-s)*5px + 20px);letter-spacing:.02em}
+.au-mission-v2 .au-m-list{gap:calc(var(--au-s)*2px + 4px);padding:calc(var(--au-s)*4px + 6px) 14px}
+.au-mission-v2 .au-m-list li{display:block}
+.au-m-item{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px;border:2px solid transparent;border-radius:4px;
+  color:#3a2a14;font:900 calc(var(--au-s)*4px + 16px)/1.25 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;transition:transform .12s cubic-bezier(.2,.9,.3,1.3),background .12s}
+.au-m-item:hover,.au-m-item:focus-visible{background:rgba(255,215,106,.45);border-color:#c99a3c}
+.au-m-item:active{transform:translateY(2px) scale(.98)}
+.au-m-item>span{flex:1;min-width:0}
+.au-m-state{flex:none;font:900 calc(var(--au-s)*2px + 13px)/1 "Noto Sans TC",system-ui,sans-serif;font-style:normal;padding:5px 10px;border-radius:3px;background:#6b4a1e;color:#fff4d2}
+.au-mission-v2 li.done .au-m-state{background:#1c7a45}
+.au-mission-v2 .au-m-list li.done span{text-decoration:none;color:#3a2a14}
+.au-mission-v2 .au-m-close{font-size:calc(var(--au-s)*3px + 15px)}
+
+/* 共用顏色格(外殼頁沒有載入 story-kit.css,在此補上;第 6 格為藍綠) */
+.color-progress>i{display:block;width:44px;height:18px;border:2px solid #0b1426;border-radius:3px;background:#3b4560;box-shadow:inset 0 0 0 1px #5d6988;transition:background .4s,box-shadow .4s}
+.color-progress>i.is-filled:nth-child(6n+1){background:#e0675a;box-shadow:inset 0 0 0 1px #ffb3a8,0 0 10px #e0675a}
+.color-progress>i.is-filled:nth-child(6n+2){background:#f0b73f;box-shadow:inset 0 0 0 1px #ffe39a,0 0 10px #f0b73f}
+.color-progress>i.is-filled:nth-child(6n+3){background:#55b87a;box-shadow:inset 0 0 0 1px #a8efc2,0 0 10px #55b87a}
+.color-progress>i.is-filled:nth-child(6n+4){background:#4aa3d8;box-shadow:inset 0 0 0 1px #a9dcf5,0 0 10px #4aa3d8}
+.color-progress>i.is-filled:nth-child(6n+5){background:#9a7bd6;box-shadow:inset 0 0 0 1px #d3c1f5,0 0 10px #9a7bd6}
+.color-progress>i.is-filled:nth-child(6n+6){background:#3fbfb0;box-shadow:inset 0 0 0 1px #a8f0e6,0 0 10px #3fbfb0}
+
+/* 第二修改計劃 A3:地圖上方列 = [標題牌] [記憶修復 6 格進度條] [任務・音量・返回首頁],三區分開不擁擠 */
+body.au-shell #mapScreen .topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:calc(var(--au-h)*8px + 8px)!important}
+body.au-shell #mapScreen .topbar>div:first-child{min-width:0!important;justify-self:start}
+body.au-shell #mapScreen .map-brand{display:inline-flex!important;flex-direction:row;align-items:center;color:#3a2a14!important;text-shadow:none!important;white-space:nowrap;
+  font:900 calc(var(--au-h)*3px + 18px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif!important;padding:0}
+body.au-shell #mapScreen .subbrand,body.au-shell #mapScreen #mapProgress{display:none!important}
+body.au-shell .map-progress-wrap{display:flex;align-items:center;gap:10px;justify-self:center;padding:calc(var(--au-h)*3px + 2px) 14px;background:#0e1c35;border:3px solid var(--au-gold,#c99a3c);box-shadow:0 2px 0 rgba(0,0,0,.45)}
+body.au-shell .map-progress-label{color:#ffe9b0;font:900 calc(var(--au-h)*2px + 16px)/1 "Noto Sans TC",system-ui,sans-serif;white-space:nowrap}
+body.au-shell #mapScreen .map-progress.color-progress{all:unset;display:inline-flex!important;gap:5px;align-items:center}
+body.au-shell #mapScreen .map-progress>i{width:calc(var(--au-h)*6px + 26px);height:calc(var(--au-h)*3px + 14px)}
+body.au-shell #mapScreen .top-actions{justify-self:end;margin-left:0!important}
+@media (max-width:1100px){body.au-shell #mapScreen .map-progress-label{display:none}body.au-shell #mapScreen .map-progress>i{width:24px}}
+/* 任務面板 v2:單欄(標題 → 清單 → 收合),覆寫舊的兩欄版面 */
+.au-mission.au-mission-v2{width:min(640px,92vw)!important;grid-template-columns:1fr!important}
+.au-mission.au-mission-v2>.au-m-title{grid-column:1;grid-row:1}
+.au-mission.au-mission-v2>.au-m-list{grid-column:1;grid-row:2;min-height:0}
+.au-mission.au-mission-v2>.au-m-close{grid-column:1;grid-row:3;justify-self:center}
+/* 第二修改計劃 C4 / C5-0:房間 4、5 主畫面不需上下捲動(原本多出 18px) */
+body.au-shell .room45-screen:not(.activity-mode) .room45-page{height:100vh;max-height:100vh;overflow:hidden}
+body.au-shell .room45-screen:not(.activity-mode) .room45-stage-wrap{padding-bottom:0!important}
+/* ===== 第二修改計劃追加 A1–A5:地圖頂列 ===== */
+body.au-shell #mapScreen .topbar{grid-template-columns:auto minmax(0,1fr)!important}
+body.au-shell #mapScreen .top-actions{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:12px!important;justify-self:end}
+body.au-shell #mapScreen .top-actions>*{margin:0!important;align-self:center}
+body.au-shell #mapScreen .au-hud-tools{display:flex!important;align-items:center;gap:12px}
+body.au-shell #mapScreen .map-progress-wrap{justify-self:auto;height:52px;box-sizing:border-box;padding:0 14px}
+/* 頭貼:不用美術框圖,改用與對話框頭像、房間一頁首同款的 CSS 深藍金框 */
+body.au-shell #mapScreen .top-actions .au-chip-player{display:inline-flex!important}
+body.au-shell #mapScreen .au-chip-player .au-chip-name{display:none!important}
+body.au-shell #mapScreen .au-chip-player .au-portrait-frame{display:none!important}
+body.au-shell #mapScreen .au-chip-player .au-portrait-sm{width:52px!important;height:52px!important;box-sizing:border-box;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 30%,#2b4676,#14294a 70%);border:3px solid var(--au-gold,#c99a3c);box-shadow:0 0 0 2px #0b1426,0 3px 0 #0b1426,inset 0 0 0 2px #ffe9b066}
+body.au-shell #mapScreen .au-chip-player .au-portrait-inner{position:absolute!important;inset:0!important;width:auto!important;height:auto!important;background:none!important}
+/* 任務鈕放大 */
+body.au-shell #mapScreen .au-hudbtn{height:52px;min-width:150px;box-sizing:border-box;font-size:24px!important;justify-content:center}
+body.au-shell #mapScreen .au-hudbtn .au-ico{width:34px!important;height:34px!important}
+/* 音量鈕縮小 */
+body.au-shell #mapScreen .music-control{padding:0!important;border:0!important;background:none!important;box-shadow:none!important}
+body.au-shell #mapScreen .music-btn{min-width:0!important;width:44px!important;height:44px!important;padding:0!important;font-size:18px!important;box-sizing:border-box}
+body.au-shell #mapScreen #logoutBtn{height:52px;box-sizing:border-box}
+body.au-shell #mapScreen .au-chip-player .au-av-doll-wrap{position:absolute!important;inset:0!important;width:auto!important;height:auto!important;transform:none!important;margin:0!important}
+body.au-shell #mapScreen .au-chip-player .au-av-doll{position:absolute!important;left:50%!important;top:4%!important;width:150%!important;height:auto!important;max-width:none!important;transform:translateX(-50%)!important;image-rendering:pixelated}
+/* 第二修改計劃追加 A1:任務面板標題放大(名稱不變) */
+.au-mission.au-mission-v2>.au-m-title, .au-mission.au-mission-v2 .au-m-title{font-size:calc(var(--au-h)*4px + 30px)!important;line-height:1.2!important}
+/* 矮視窗:任務面板整個放得下(含「收合面板」),項目間距隨視窗高度縮,不縮字 */
+@media (max-height:760px){
+  .au-mission.au-mission-v2{max-height:calc(100vh - 12px)!important;grid-template-rows:auto minmax(0,1fr) auto!important}
+  .au-mission.au-mission-v2 .au-m-close{min-height:0!important;padding-top:4px!important;padding-bottom:4px!important}
+  .au-mission.au-mission-v2 .au-m-title{padding-top:6px!important;padding-bottom:6px!important;font-size:30px!important}
+  .au-mission.au-mission-v2 .au-m-item{padding-top:calc(1.1vh)!important;padding-bottom:calc(1.1vh)!important;min-height:0!important}
+}
+
+/* ===== 第二修改計劃 E8:房間二~六頁首按鈕比照房間一實測值(返回 216×44、輸入密碼 約 197×83) ===== */
+html.au-on :is(#returnToMainMap,#returnMap,#exitRoom,#room4BackBtn,#room5BackBtn,#returnToMap):is(button){padding:0!important;height:44px!important;min-height:0!important;line-height:22px!important;font-size:20px!important;margin:0!important}
+html.au-on :is(#openRoom1Code,#openCode,#room4CodeBtn,#room5CodeBtn,#openRoom6Code):is(button){padding:12px 16px!important;height:auto!important;min-height:0!important;line-height:31.5px!important;font-size:21px!important}
+/* E8:房間四、五密碼框比照房間一(小標「房間 N|通關密碼」+ 標題 + 說明,靠左) */
+.au-codebox.au-codebox-r1{text-align:left}
+.au-codebox.au-codebox-r1 .au-code-eyebrow{margin:0 0 2px;font-size:14px;font-weight:800;color:#6b4a1e}
+.au-codebox.au-codebox-r1 .au-codetitle{text-align:left;margin-top:0}
+.au-codebox.au-codebox-r1 [data-au-close]{display:block;margin:10px auto 0}
+/* E8:房間六密碼框(<dialog>)用與房間一相同的羊皮紙卡與置中位置 */
+html.au-on body[data-au-room="6"] dialog#room6CodeDialog{border:0!important;padding:0!important;background:none!important;max-width:none!important;max-height:none!important;width:100vw;height:100vh;margin:0;inset:0;display:none;place-items:center}
+html.au-on body[data-au-room="6"] dialog#room6CodeDialog[open]{display:grid}
+html.au-on body[data-au-room="6"] dialog#room6CodeDialog::backdrop{background:rgba(6,12,26,.78)}
+html.au-on body[data-au-room="6"] #room6CodeDialog .actions{display:flex;gap:10px;justify-content:center;margin-top:8px}
+html.au-on body[data-au-room="6"] #room6CodeFeedback:not(:empty){color:#5a3a0c!important;background:#f1d9a0!important;border:2px solid #c99a3c!important;font-weight:800;padding:4px 8px}
+/* E8:房間二、三提示框(放在鍵盤下方)與房間一的提示列同款 */
+html.au-on body[data-au-room] .overlay .modal #clueSummary:not(:empty){color:#5a3a0c!important;background:#f1d9a0!important;border:2px solid #c99a3c!important;border-radius:0!important;font-weight:800;padding:4px 8px;margin-top:8px}
+.au-codebox.au-codebox-r1 .au-code-eyebrow{font-size:12.5px;font-weight:700}
+.au-codebox.au-codebox-r1 > p:not(.au-code-eyebrow):not(.au-codetip),.au-codebox.au-codebox-r1 .au-pin-msg{font-size:16px!important}
+html.au-on body[data-au-room="6"] #room6CodeDialog h2{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif!important;font-size:28px!important}
+/* E8:出現結果訊息(錯誤/成功)時,下方的提示框收起,避免密碼框超出畫面 */
+html.au-on body[data-au-room] .overlay .modal #codeFeedback:not([hidden]) ~ #clueSummary{display:none!important}
+/* E8:較矮的視窗,房內密碼框(房間 1/2/3/6)的鍵盤等比縮小,整個密碼框留在畫面內 */
+@media (max-height:820px){html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card){--au-s:1.6}}
+@media (max-height:700px){html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card){--au-s:1.3}
+  html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card) :is(h2){font-size:24px!important;margin-bottom:4px!important}
+  html.au-on body[data-au-room] :is(.overlay,.dialog-overlay) :is(.modal,.dialog-card) p{margin:4px 0!important}}
+@media (max-height:700px){html.au-on body[data-au-room] .overlay .modal:has(#codeFeedback:not([hidden]) button){--au-s:1.1}}
+@media (max-height:700px){html.au-on body[data-au-room] .overlay .modal #codeFeedback:not([hidden]){padding:4px 8px!important;margin:4px 0!important}
+  html.au-on body[data-au-room] .overlay .modal #codeFeedback button{margin:4px auto 0!important;padding-top:2px!important;padding-bottom:2px!important;min-height:0!important}}
+@media (max-height:700px){html.au-on body[data-au-room] .overlay .modal:has(#codeFeedback:not([hidden]) button) > p:not(.eyebrow){display:none!important}}
+
+/* 第三修改計劃 B5 / F4-2 / G5-1:所有「💡 操作提示」按鈕統一成房間一的樣式(深藍像素名牌,無細邊框) */
+html.au-on body :is(.hint-btn,.grid-hint-button){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap;
+  min-height:calc(33px*var(--au-h));border-style:solid!important;border-color:transparent!important;border-width:calc(8px*var(--au-h)) calc(26px*var(--au-h))!important;border-radius:0!important;
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--au-h)) calc(26px*var(--au-h)) stretch!important;image-rendering:pixelated;
+  background:none!important;box-shadow:none!important;padding:0!important;
+  color:#ffe9b0!important;font:900 calc(var(--au-h)*2px + 16px)/1.1 "Noto Sans TC",system-ui,sans-serif!important;
+}
+html.au-on body :is(.hint-btn,.grid-hint-button):hover{filter:brightness(1.15)}
+html.au-on body :is(.hint-btn,.grid-hint-button):active{transform:translateY(2px);filter:brightness(.95)}
+/* 第三修改計劃 B3:房間完成結果視窗自動消失(無「關閉」按鈕),下方細條顯示剩餘時間 */
+#modalOverlay.au-result-toast #modalActions{display:none!important}
+#modalOverlay.au-result-toast .modal{cursor:pointer;position:relative;overflow:hidden}
+#modalOverlay.au-result-toast .modal::after{content:"";position:absolute;left:0;bottom:0;height:6px;width:100%;background:#ffd76a;transform-origin:left;animation:auToastBar 3s linear forwards}
+@keyframes auToastBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.au-toast-note{font-size:.85em;opacity:.75;text-align:center;margin:8px 0 0}
+
+/* 第三修改計劃 B2:任務面板下方「💡 再聽一次說明」+「收合面板」並排 */
+.au-mission>.au-m-actions{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:calc(var(--au-s)*6px + 10px);flex-wrap:wrap}
+.au-m-help{font-size:calc(var(--au-s)*3px + 15px)}
+
+/* F11(2026-11-18)小遊戲「← 返回房間」統一:同樣的像素名牌框、至少 44px 高(觸控)、字級 18px 以上;位置沿用各房原本的版面 */
+html.au-on body:is([data-au-room],[data-au-page],[data-au-skin]) :is(.back,.back-room,.room-return,.pp-back,.medicine-back,#returnRoom,#backToRoom,#journalBack,#ppBack){
+  min-height:44px!important;min-width:140px!important;justify-content:center!important;
+}
+html.au-on body:is([data-au-room],[data-au-page],[data-au-skin]) .wallet-module :is(#returnRoom,.back){
+  background:none!important;box-shadow:none!important;border-style:solid!important;border-color:transparent!important;border-width:8px 26px!important;
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/8px 26px stretch!important;image-rendering:pixelated;color:#ffe9b0!important;
+}

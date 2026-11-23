@@ -1,0 +1,135 @@
+/* room6-unify.css — 第三修改計劃 H 段(房間六)的呈現統一。只改外觀與互動,不改題目、答案、流程。 */
+
+/* H6-0 主畫面:房間圖大小與位置比照房間一～五(同 art-ui-skins 的 .room-canvas 規則:可用高度 × 1672/941) */
+html.au-on body[data-au-room="6"] #roomView .room-shell .room-frame {
+  width: min(100%, calc((100vh - var(--au-hud, 76px) - 86px) * 1.7769)) !important; max-width: none !important; aspect-ratio: 1672 / 941 !important;
+}
+html.au-on body[data-au-room="6"] #roomView .room-shell .room-frame > .room-bg { object-fit: fill; }
+html.au-on body[data-au-room="6"] #roomView .room-shell { max-width: none !important; width: 100% !important; padding-top: 8px !important; box-sizing: border-box; }
+/* 頁首與房間一～五相同:滿版寬、左右 28px、標題牌撐滿中間 */
+html.au-on body[data-au-room="6"] #roomView > .game-hud.game-hud { max-width: none !important; width: 100% !important; margin: 0 !important; padding-left: 28px !important; padding-right: 28px !important; box-sizing: border-box; }
+html.au-on body[data-au-room="6"] #roomView > .game-hud > .heading { flex: 1 1 auto !important; max-width: none !important; }
+
+/* ================= H6-1 家庭相簿 ================= */
+/* 填滿一屏:內容區改直向排列,主要區塊撐滿剩餘高度(原本在 1366 只佔上半部) */
+html.r6-fit #missionView.factors-active #missionContent { display: flex; flex-direction: column; }
+html.r6-fit #missionView .factors-module { flex: 1 1 auto; display: flex; flex-direction: column; width: 100%; max-width: none; padding: 0 24px 14px; box-sizing: border-box; }
+html.r6-fit #missionView .factors-module > .f-heading { flex: none; margin: 4px 0 12px; }
+html.r6-fit #missionView .factors-module .f-heading h3 { font-size: 30px; margin: 4px 0; }
+html.r6-fit #missionView .factors-module .f-heading p, html.r6-fit #missionView .factors-module .f-heading .eyebrow { color: #d6e2f5 !important; font-size: 16px; font-weight: 700; }
+html.r6-fit #missionView .factors-module > :is(.f-album, .f-sort-grid, .f-diagram, .f-learning-columns, .f-poster-frame) { flex: 1 1 auto; }
+html.r6-fit #missionView .factors-module .f-next-row { flex: none; margin-top: 12px; display: flex; justify-content: center; }
+html.r6-fit #missionView .factors-module .f-next-row .primary-button { font-size: 22px; padding: 10px 34px; }
+
+/* 文字對比:深藍底上的字一律改淺金/白;羊皮紙上的字一律深咖啡 */
+html.r6-fit #missionView .f-key-message, html.r6-fit #missionView .f-final-copy p, html.r6-fit #missionView .f-final-copy strong { color: #ffe9b0 !important; text-shadow: 0 2px 0 #0b1426; font-family: inherit; font-weight: 800; }
+html.r6-fit #missionView .f-final-copy strong { color: #fff !important; }
+html.r6-fit #missionView .f-key-message { font-size: 30px; margin: 18px 0 6px; }
+html.r6-fit #missionView .f-completed-note { color: #9fe0b0 !important; font-weight: 900; font-size: 18px; text-align: center; }
+html.r6-fit #missionView .f-learning-columns p { color: #6a4a1a !important; font-size: 17px; font-weight: 700; }
+html.r6-fit #missionView .f-learning-columns :is(h4, li) { color: #3a2a14 !important; }
+html.r6-fit #missionView .f-learning-columns h4 { font-size: 28px; }
+html.r6-fit #missionView .f-learning-columns li { font-size: 21px; font-weight: 700; padding: 10px 0; }
+html.r6-fit #missionView .f-event-placed { background: #fff3d2 !important; border: 3px solid #c98c1c !important; }
+html.r6-fit #missionView .f-event-placed > span { color: #1f7a4a !important; font-size: 15px; font-weight: 900; }
+html.r6-fit #missionView .f-event-placed strong { color: #3a2a14 !important; font-size: 22px; font-weight: 800; }
+html.r6-fit #missionView .f-assessment-feedback { background: #fff3d2 !important; border: 3px solid #c98c1c !important; border-left-width: 8px !important; color: #3a2a14 !important; font-size: 19px !important; font-weight: 700; }
+html.r6-fit #missionView .f-assessment-feedback > span { color: #8a4f0c !important; font-size: 15px; }
+html.r6-fit #missionView .f-assessment-count, html.r6-fit #missionView .f-assessment-count * { color: #ffe9b0 !important; }
+html.r6-fit #missionView .f-assessment-count b { font-size: 40px; }
+html.r6-fit #missionView .f-bin small { color: #6a4a1a !important; }
+html.r6-fit #missionView .f-bin-heading, html.r6-fit #missionView .f-bin-heading span { color: #3a2a14 !important; font-size: 21px; font-weight: 900; }
+html.r6-fit #missionView .f-message { color: #ffe9b0 !important; font-size: 18px; font-weight: 800; text-align: center; min-height: 1.4em; }
+html.r6-fit #missionView .f-factor-tag { color: #3a2a14 !important; background: #fff7e0 !important; border: 2px solid #c9a35a !important; font-size: 18px; font-weight: 800; }
+html.r6-fit #missionView .f-factor-side h4 { color: #3a2a14 !important; font-size: 24px; }
+html.r6-fit #missionView .f-person > span { color: #3a2a14 !important; font-weight: 900; }
+html.r6-fit #missionView .f-toward { color: #ffd36a !important; font-size: 44px; }
+
+/* 體驗頁:相片放大、文字減少(事實改由長者心裡話的對話框呈現) */
+html.r6-fit #missionView .f-album { display: grid; grid-template-columns: 1.1fr 1fr; gap: 0; min-height: 0; }
+html.r6-fit #missionView .f-photo-page { display: flex; align-items: center; justify-content: center; padding: 26px; }
+html.r6-fit #missionView .f-photo-placeholder { width: 100%; min-height: 300px; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; transition: transform .25s ease, box-shadow .25s ease; }
+html.r6-fit #missionView .f-photo-placeholder > span:not(.f-photo-icon) { color: #3a2a14 !important; font-size: 26px; font-weight: 900; }
+html.r6-fit #missionView .f-photo-icon { font-size: 96px; line-height: 1; filter: drop-shadow(0 4px 0 #0002); }
+html.r6-fit #missionView .f-photo-placeholder:hover { transform: rotate(-1.5deg) scale(1.03); box-shadow: 0 10px 24px #0005; }
+html.r6-fit #missionView .f-photo-placeholder.f-remember { animation: r6Remember 1.6s ease-in-out infinite; }
+@keyframes r6Remember { 0%, 100% { box-shadow: 0 0 0 0 #ffd36a00; } 50% { box-shadow: 0 0 0 6px #ffd36a88, 0 0 30px #ffd36a; } }
+html.r6-fit #missionView .f-photo-placeholder.f-remember .f-photo-icon { animation: r6Float 1.6s ease-in-out infinite; }
+@keyframes r6Float { 50% { transform: translateY(-8px); } }
+html.r6-fit #missionView .f-story-page { display: flex; flex-direction: column; justify-content: center; gap: 18px; padding: 30px 36px !important; }
+html.r6-fit #missionView .f-story-page .f-page-number { color: #8a4f0c !important; font-size: 16px; font-weight: 900; letter-spacing: .1em; }
+html.r6-fit #missionView .f-story-page h4 { color: #3a2a14 !important; font-size: 34px; margin: 0; }
+html.r6-fit #missionView .f-thought-btn {
+  align-self: flex-start; padding: 10px 22px; font-size: 20px; font-weight: 900; cursor: pointer; border-radius: 999px;
+  background: #fff7e0; color: #3a2a14; border: 3px solid #c98c1c; box-shadow: 0 4px 0 #9a6208; transition: transform .12s, box-shadow .12s, filter .12s;
+}
+html.r6-fit #missionView .f-thought-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #9a6208, 0 0 16px #ffd36a; }
+html.r6-fit #missionView .f-thought-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #9a6208; }
+html.r6-fit #missionView .f-page-turn { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+html.r6-fit #missionView .f-page-turn > span { color: #3a2a14 !important; font-size: 18px; font-weight: 900; }
+html.r6-fit #missionView .f-story-page.f-turning { animation: r6PageTurn .45s ease; transform-origin: left center; }
+@keyframes r6PageTurn { from { transform: perspective(900px) rotateY(-70deg); opacity: .2; } to { transform: none; opacity: 1; } }
+html.r6-fit #missionView .f-album-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 16px; font-weight: 800; }
+html.r6-fit #missionView .f-page-tabs button { width: 46px; height: 40px; font-size: 18px; font-weight: 900; transition: transform .12s, filter .12s; }
+html.r6-fit #missionView .f-page-tabs button:hover { transform: translateY(-3px); filter: brightness(1.15); }
+html.r6-fit #missionView .f-page-tabs button:active { transform: translateY(2px); }
+
+/* 分類/天平:卡片按鈕特效、放置區光暈(不用虛線) */
+html.r6-fit #missionView .f-card { transition: transform .14s, box-shadow .14s, filter .14s; }
+html.r6-fit #missionView .f-card b { color: #3a2a14; font-size: 19px; }
+html.r6-fit #missionView .f-card:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 6px 0 #7a4f1055, 0 0 16px #ffd36a; }
+html.r6-fit #missionView .f-card:active:not(:disabled) { transform: translateY(2px) scale(.98); }
+html.r6-fit #missionView .f-card.is-selected { box-shadow: 0 0 0 3px #f0a91c, 0 0 22px #ffd36a !important; transform: translateY(-3px); }
+html.r6-fit #missionView .f-card > i { color: #9a6208; }
+html.r6-fit #missionView .factors-module:has(.f-card.is-selected) .f-bin, html.r6-fit #missionView .f-bin.is-over { animation: r6BinGlow 1.2s ease-in-out infinite; }
+@keyframes r6BinGlow { 50% { filter: drop-shadow(0 0 14px #ffd36a) drop-shadow(0 4px 0 #0b142680); } }
+html.r6-fit #missionView .f-diagram .f-factor-tag { animation: r6TagIn .4s ease backwards; }
+html.r6-fit #missionView .f-diagram .f-factor-tag:nth-of-type(2) { animation-delay: .12s; }
+html.r6-fit #missionView .f-diagram .f-factor-tag:nth-of-type(3) { animation-delay: .24s; }
+html.r6-fit #missionView .f-diagram .f-factor-tag:nth-of-type(4) { animation-delay: .36s; }
+@keyframes r6TagIn { from { transform: translateY(10px) scale(.9); opacity: 0; } }
+html.r6-fit #missionView .f-toward-left { animation: r6Nudge 1.4s ease-in-out infinite; }
+html.r6-fit #missionView .f-toward:not(.f-toward-left) { animation: r6NudgeL 1.4s ease-in-out infinite; }
+@keyframes r6Nudge { 50% { transform: translateX(6px); } }
+@keyframes r6NudgeL { 50% { transform: translateX(-6px); } }
+/* H6-1 修正:相片圖示放大(原規則 span 一律 20px !important)、相片名稱加大 */
+html.r6-fit #missionView .f-album .f-photo-placeholder span.f-photo-icon { font-size: 110px !important; line-height: 1; }
+html.r6-fit #missionView .f-album .f-photo-placeholder span:not(.f-photo-icon) { font-size: 28px !important; }
+/* 正式學習頁下方「這些因素可能同時存在…」在淺綠底上:改深色 */
+html.r6-fit #missionView .factors-module[data-stage="learning"] .f-key-message,
+html.r6-fit #missionView .factors-module[data-stage="learning"] .f-learning-columns ~ :not(.f-next-row),
+html.r6-fit #missionView .factors-module[data-stage="learning"] .f-learning-columns ~ :not(.f-next-row) * { color: #24452f !important; text-shadow: none !important; font-size: 24px; font-weight: 900; }
+/* 原因天平:不套直向撐滿(天平的左右盤需要原本的區塊排版) */
+html.r6-fit #missionView .factors-module[data-stage="assessment"] { display: block; }
+/* 天平事件卡內的情境說明:原本淡灰小字,加深加大 */
+html.r6-fit #missionView .f-current-event .f-card small { color: #3a2a14 !important; font-size: 18px !important; font-weight: 700; }
+html.r6-fit #missionView .f-current-event .f-card b { font-size: 21px; }
+html.r6-fit #missionView .f-learning-columns :is(h4, li) { font-weight: 900; }
+
+/* ================= H6-2 醫藥盒:「找到符合條件的單位」高對比(I 節:房六版面等朋友決定,本次只改文字對比) ================= */
+html.r6-fit #missionView #puzzleResult h3 { color: #3a2a14 !important; font-size: 30px !important; font-weight: 900; }
+html.r6-fit #missionView #resultCard { border: 3px solid #c98c1c; box-shadow: inset 0 0 0 2px #0b1426, 0 5px 0 #0b1426; }
+html.r6-fit #missionView #resultCard h4 { color: #fff !important; font-size: 30px !important; font-weight: 900; margin: 8px 0 12px !important; }
+html.r6-fit #missionView #resultCard dt { color: #ffd36a !important; font-size: 19px; font-weight: 900; }
+html.r6-fit #missionView #resultCard dd { color: #fff !important; font-size: 19px; }
+html.r6-fit #missionView #resultCard .unit-badge { background: #ffd36a !important; color: #3a2a14 !important; font-weight: 900; }
+html.r6-fit #missionView #resultCard p, html.r6-fit #missionView #puzzleResult > p { color: #3a2a14 !important; font-weight: 700; }
+
+/* ===== 與朋友版 w10_1114 整合:延伸閱讀「四幕衛教故事」改成本專案風格(羊皮紙卡、金框、深藍字幕條、大字)。只改外觀 ===== */
+html.r6-fit #missionView .f-story-lesson { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) !important; gap: 18px !important; margin-top: 8px !important; align-items: stretch !important; }
+html.r6-fit #missionView .f-story-left { display: flex !important; flex-direction: column; gap: 8px !important; padding: 10px; border: 3px solid #c98c1c; border-radius: 6px; background: #fbeccb; box-shadow: inset 0 0 0 2px #fff3cf, 0 5px 0 #0b1426, 0 12px 24px rgba(0,0,0,.4); }
+html.r6-fit #missionView .f-story-copy { order: -1; padding: 10px 16px !important; background: #14294a !important; border: 3px solid #c98c1c !important; border-radius: 0 !important; box-shadow: inset 0 0 0 2px #0b1426 !important; }
+html.r6-fit #missionView .f-story-kicker { background: #f0a91c !important; color: #3a2a14 !important; border-radius: 0 !important; font-size: 14px !important; font-weight: 900; padding: 3px 10px !important; margin-bottom: 4px !important; }
+html.r6-fit #missionView .f-story-copy p { color: #ffe9b0 !important; font-size: 18px !important; font-weight: 800; line-height: 1.55 !important; margin: 4px 0 0 !important; }
+html.r6-fit #missionView .f-story-figure { padding: 0 !important; background: #0b1426 !important; border: 3px solid #9a6208 !important; border-radius: 4px !important; box-shadow: none !important; }
+html.r6-fit #missionView .f-story-figure img { border: 0 !important; border-radius: 0 !important; max-height: 46vh; object-fit: contain; background: #0b1426 !important; }
+html.r6-fit #missionView .f-lesson-card { position: static !important; height: 100%; box-sizing: border-box; justify-content: center; border: 3px solid #c98c1c !important; border-radius: 6px !important; background: #fbeccb !important; box-shadow: inset 0 0 0 2px #fff3cf, 0 5px 0 #0b1426, 0 12px 24px rgba(0,0,0,.4) !important; padding: 20px 24px !important; }
+html.r6-fit #missionView .f-lesson-kicker { color: #8a4f0c !important; font-size: 15px !important; font-weight: 900; }
+html.r6-fit #missionView .f-lesson-card h4 { color: #3a2a14 !important; font: 900 28px/1.3 inherit !important; font-family: inherit !important; }
+html.r6-fit #missionView .f-lesson-card p { color: #3a2a14 !important; font-size: 24px !important; font-weight: 800; line-height: 1.6 !important; padding: 14px 18px; background: #fff7e0; border: 2px solid #b98a3c; border-left: 8px solid #f0a91c; border-radius: 4px; }
+html.r6-fit #missionView .f-voice-button.is-speaking { background: #f0a91c !important; color: #3a2a14 !important; }
+html.r6-fit #missionView .f-story-controls { margin: 12px 0 0 !important; }
+html.r6-fit #missionView .f-story-count { color: #ffe9b0 !important; font-weight: 900; font-size: 16px !important; }
+html.r6-fit #missionView .f-story-figure img { animation: r6StoryIn .45s ease; }
+@keyframes r6StoryIn { from { opacity: .2; transform: scale(.985); } to { opacity: 1; transform: none; } }
+html.r6-fit #missionView .f-lesson-card .f-voice-button { align-self: flex-start; width: auto !important; }

@@ -1,0 +1,121 @@
+/* room5-fit.css — 房間 5 活動頁:一屏看完 + 與其他房間一致的藍金羊皮紙風格。
+   搭配 room5-fit.js(固定 1280px 寬排版、再依視窗等比縮放)。只動版面與外觀,不動內容與流程。 */
+html.r5-fit, html.r5-fit body { overflow: hidden; }
+html.r5-fit body[data-au-skin="inner"] {
+  background: linear-gradient(rgba(10,18,36,.9), rgba(8,14,28,.97)), url("../assets/art-final/rooms/room5-cognition-hallway.png") center/cover fixed !important;
+}
+html.r5-fit #app > section:not(.room) {
+  --r5-gold: #f0a91c; --r5-gold-d: #9a6208; --r5-gold-l: #ffe9b0; --r5-navy: #14294a; --r5-navy-d: #0b1426; --r5-ink: #3a2a14;
+  margin: 0 auto; box-sizing: border-box; max-width: none; padding: 6px 28px 8px; color: var(--r5-gold-l);
+}
+html.r5-fit .module-view .mission-bar { padding-bottom: 6px; }
+html.r5-fit .module-view > h1 {
+  margin: 6px 0 4px; padding: 0; border: 0; background: none; text-align: center; font-size: 28px; line-height: 1.25; color: var(--r5-gold-l); text-shadow: 0 2px 0 var(--r5-navy-d), 0 0 14px #f0a91c55;
+}
+html.r5-fit .module-view > h1:focus { outline: none; }
+html.r5-fit .k-progress, html.r5-fit .p-progress { margin: 0 0 4px; color: #9fb6d9; font-size: 14px; font-weight: 800; letter-spacing: .08em; }
+
+/* ---- 共用:對話框、提示卡 → 羊皮紙 ---- */
+html.r5-fit .k-dialogue, html.r5-fit .p-line {
+  margin: 8px auto 0; padding: 8px 20px; min-height: 0; max-width: 1000px; color: var(--r5-ink); font-size: 19px; line-height: 1.5; font-weight: 700;
+  border: 3px solid #b98a3c; border-left: 8px solid var(--r5-gold-d); border-radius: 3px; background: #fff3d2; box-shadow: 0 4px 0 #7a4f1088, 0 0 0 2px var(--r5-navy-d);
+}
+html.r5-fit .k-dialogue strong, html.r5-fit .p-line strong { color: #8a4f0c; font-size: 16px; }
+html.r5-fit .k-note { max-width: 1000px; margin: 6px auto 0; padding: 7px 18px; font-size: 16px; line-height: 1.45; color: #cfe0ff; background: rgba(20,41,74,.85); border: 2px solid #2b4a7c; border-left: 6px solid #5d8fd6; border-radius: 3px; }
+html.r5-fit .k-person > span, html.r5-fit .p-speaker > span { color: var(--r5-gold-l); font-size: 14px; font-weight: 800; }
+html.r5-fit .k-bottom, html.r5-fit .p-footer { margin-top: 8px; padding-top: 6px; border-top: 2px solid #c98c1c55; color: #9fb6d9; font-size: 14px; }
+
+/* ---- 共用:按鈕(主要=金,次要=藍金) ---- */
+html.r5-fit .cog-kitchen button:not(.back):not(.k-target):not(.k-dialog-x),
+html.r5-fit .cog-photo button:not(.back):not(.p-target):not(.p-dialog-x),
+html.r5-fit .phone-module button:not(.back):not(.answer) {
+  border: 3px solid #c98c1c; border-radius: 4px; background: linear-gradient(#27487c, var(--r5-navy)); color: var(--r5-gold-l); font-weight: 900; font-size: 16px; padding: 5px 16px; min-height: 0;
+  box-shadow: 0 4px 0 var(--r5-navy-d), 0 0 0 2px var(--r5-navy-d); transition: transform .12s, filter .12s, box-shadow .12s;
+}
+html.r5-fit :is(.k-primary, .p-primary, .phone-module .primary, .phone-module .next) {
+  display: block; margin: 8px auto 0 !important; font-size: 19px !important; padding: 7px 26px !important; color: var(--r5-ink) !important;
+  background: linear-gradient(#ffd466, var(--r5-gold)) !important; border: 3px solid var(--r5-gold-d) !important; box-shadow: 0 4px 0 #6b4306, 0 0 0 2px var(--r5-navy-d) !important;
+}
+html.r5-fit .module-view button:hover:not(:disabled):not(.back) { transform: translateY(-2px); filter: brightness(1.1) drop-shadow(0 0 8px #ffd36a99); }
+html.r5-fit .module-view button:active:not(:disabled):not(.back) { transform: translateY(3px); }
+html.r5-fit .module-view button:disabled { filter: grayscale(.7) brightness(.75); opacity: .75; }
+
+/* ---- 廚房 ---- */
+html.r5-fit .k-stage { grid-template-columns: 150px 560px 150px; justify-content: center; gap: 14px; }
+html.r5-fit .k-person > div { height: 250px; }
+html.r5-fit .k-person > .k-character, html.r5-fit .k-person > .k-grandson { height: 250px; width: 150px; }
+html.r5-fit .k-scene { border: 3px solid var(--r5-gold); border-radius: 4px; box-shadow: 0 0 0 2px var(--r5-navy-d), 0 5px 0 var(--r5-navy-d); }
+html.r5-fit .k-background { border-radius: 0; }
+
+/* ---- 照片 / 鏡子 ---- */
+html.r5-fit .p-scene { max-width: 560px; border: 3px solid var(--r5-gold); border-radius: 4px; box-shadow: 0 0 0 2px var(--r5-navy-d), 0 5px 0 var(--r5-navy-d); }
+html.r5-fit .p-background { border-radius: 0; }
+html.r5-fit .p-speakers { grid-template-columns: 110px minmax(0, 1fr) 110px; gap: 14px; margin: 8px auto 0; }
+html.r5-fit .p-speaker > div { height: 140px; }
+
+/* ---- 人物淡出不要太黑 / 問答卡、學習頁、跳出視窗 ---- */
+html.r5-fit :is(.k-person, .p-speaker, .story-actor).dim { filter: brightness(.62) saturate(.7); opacity: 1; }
+html.r5-fit :is(.p-paper, .k-paper, .p-learning, .p-note, .k-step-card, .w-learning-page, .w-response-card) {
+  box-sizing: border-box; color: var(--r5-ink); border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch; image-rendering: pixelated; border-radius: 0; background: none;
+  filter: drop-shadow(0 4px 0 #0b142680);
+}
+html.r5-fit :is(.p-paper, .k-paper) { max-width: 880px; margin: 8px auto 0; padding: 4px 14px; }
+html.r5-fit :is(.p-paper, .k-paper) > * { image-rendering: auto; }
+html.r5-fit :is(.p-paper, .k-paper) h2 { font-size: 22px; margin: 4px 0; color: var(--r5-ink); }
+html.r5-fit :is(.p-paper, .k-paper) p { font-size: 17px; line-height: 1.5; margin: 4px 0; }
+html.r5-fit :is(.p-paper, .k-paper) button:not(.p-primary):not(.k-primary) {
+  display: block; width: 100%; margin: 6px 0; padding: 7px 14px; text-align: left; font-size: 17px; color: var(--r5-ink);
+  background: #fff7e0; border: 2px solid #b98a3c; border-left: 6px solid var(--r5-gold); border-radius: 3px; box-shadow: 0 3px 0 #7a4f1066;
+}
+html.r5-fit :is(.p-paper, .k-paper) button:not(.p-primary):not(.k-primary):hover:not(:disabled) { transform: translateX(5px); filter: none; box-shadow: 0 3px 0 #7a4f1066, 0 0 14px #ffd36a; background: #fff1c4; color: #2b1b0a; }
+html.r5-fit dialog.k-dialog, html.r5-fit dialog.p-dialog { color: var(--r5-ink); border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch; image-rendering: pixelated; background: none; border-radius: 0; box-shadow: none; }
+html.r5-fit dialog.k-dialog::backdrop, html.r5-fit dialog.p-dialog::backdrop { background: rgba(5,10,22,.7); }
+html.r5-fit .k-person > .k-character, html.r5-fit .k-person > .k-grandson { transition: transform .25s; }
+html.r5-fit .k-person:not(.dim) > div, html.r5-fit .p-speaker:not(.dim) > div { animation: r5Talk 1.1s ease-in-out infinite; transform-origin: bottom; }
+@keyframes r5Talk { 50% { transform: scaleY(1.025) translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { html.r5-fit * { animation: none !important; transition: none !important; } }
+
+/* ---- 衛教海報放大視窗:整張放進視窗,不用捲動(海報圖本身不動) ---- */
+html.r5-fit .poster-viewer { width: auto; max-width: 98vw; max-height: 98vh; padding: 10px; overflow: hidden; border: 4px solid #f0a91c; border-radius: 4px; background: #0b1426; box-shadow: 0 0 0 3px #0b1426, 0 0 40px #000c; }
+html.r5-fit .poster-viewer[open] { display: flex; align-items: center; justify-content: center; }
+html.r5-fit .poster-viewer > img { width: auto; max-width: calc(98vw - 28px); max-height: calc(98vh - 28px); height: auto; object-fit: contain; }
+html.r5-fit .poster-viewer > button { top: 14px; right: 14px; min-height: 0; padding: 4px 16px; font-size: 18px; font-weight: 900; color: #ffe9b0; background: linear-gradient(#27487c, #14294a); border: 3px solid #c98c1c; border-radius: 4px; box-shadow: 0 3px 0 #0b1426; }
+html.r5-fit .poster-viewer::backdrop { background: rgba(5,10,22,.82); }
+
+/* ---- 皮夾遊戲(臥室) ---- */
+html.r5-fit .wallet-module .w-top { background: linear-gradient(#14294a, #0e1c35); border-bottom: 3px solid #f0a91c; box-shadow: 0 3px 0 #0b1426, 0 8px 18px #0007; }
+html.r5-fit .wallet-module .w-top #returnRoom {
+  border: 3px solid #c98c1c; border-radius: 4px; background: linear-gradient(#27487c, #14294a); color: #ffe9b0; font-weight: 900; font-size: 17px; box-shadow: 0 3px 0 #0b1426; padding: 4px 14px; cursor: pointer;
+}
+html.r5-fit .wallet-module .w-segments span { color: #9fb6d9; background: #1b335a; border: 2px solid #2b4a7c; font-weight: 900; }
+html.r5-fit .wallet-module .w-segments span.is-current { color: #14294a; background: linear-gradient(#ffd466, #f0a91c); border-color: #9a6208; box-shadow: 0 0 14px #ffd36a; }
+html.r5-fit .wallet-module progress { accent-color: #f0a91c; }
+html.r5-fit .w-response-card { border: 10px solid transparent !important; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch !important; image-rendering: pixelated; background: none !important; border-radius: 0 !important; box-shadow: none !important; padding: 10px 18px !important; color: #3a2a14; }
+html.r5-fit .w-response-card > * { image-rendering: auto; }
+html.r5-fit .w-choices button { border: 2px solid #b98a3c; border-left: 6px solid #f0a91c; border-radius: 3px; background: #fff7e0; color: #3a2a14; font-weight: 800; box-shadow: 0 3px 0 #7a4f1066; transition: transform .12s, box-shadow .12s; }
+html.r5-fit .w-choices button:hover:not(:disabled) { transform: translateX(5px); background: #fff1c4; box-shadow: 0 3px 0 #7a4f1066, 0 0 14px #ffd36a; color: #2b1b0a; }
+
+/* 皮夾遊戲的學習頁:藍底、羊皮紙文字卡,與其他房間的學習頁一致 */
+html.r5-fit .w-learning-page { min-height: 0; height: 100svh; overflow: hidden; background: linear-gradient(rgba(10,18,36,.9), rgba(8,14,28,.97)), url("../assets/art-final/rooms/room5-cognition-hallway.png") center/cover; color: #ffe9b0; }
+html.r5-fit .w-learning { gap: 28px; padding: 90px 40px 20px; max-width: 1200px; align-items: center; }
+html.r5-fit .w-learning h1 { margin: 4px 0 10px; font-size: 30px; color: #ffe9b0; text-shadow: 0 2px 0 #0b1426; }
+html.r5-fit .w-learning h2 { margin-top: 10px; font-size: 22px; color: #ffe9b0; }
+html.r5-fit .w-learning article p { line-height: 1.6; color: #e9f0ff; }
+html.r5-fit .w-learning small { color: #9fb6d9; }
+html.r5-fit .w-learning figure, html.r5-fit .w-learning .education-poster { border: 3px solid #f0a91c; border-radius: 3px; box-shadow: 0 0 0 2px #0b1426, 0 5px 0 #0b1426; }
+html.r5-fit .w-learning article button:not(.primary) { border: 3px solid #c98c1c; border-radius: 4px; background: linear-gradient(#27487c, #14294a); color: #ffe9b0; font-weight: 900; }
+html.r5-fit .w-learning article .primary, html.r5-fit .w-learning article button[id*="claim"], html.r5-fit .w-learning article button[id*="Claim"] { background: linear-gradient(#ffd466, #f0a91c); color: #3a2a14; border: 3px solid #9a6208; font-weight: 900; font-size: 19px; box-shadow: 0 4px 0 #6b4306; border-radius: 4px; }
+html.r5-fit .module-view .edu-line, html.r5-fit .w-learning .edu-line { min-height: 0; padding: 12px 18px; font-size: 20px; line-height: 1.55; font-weight: 800; color: #3a2a14; border: 3px solid #b98a3c; border-left: 8px solid #9a6208; border-radius: 3px; background: #fff3d2; box-shadow: 0 4px 0 #7a4f1088, 0 0 0 2px #0b1426; }
+html.r5-fit .w-learning .edu-controls, html.r5-fit .module-view .edu-controls { gap: 12px; }
+html.r5-fit .w-learning .edu-progress, html.r5-fit .module-view .edu-progress { color: #ffe9b0; font-weight: 900; }
+
+/* ---- 電話:紙卡(問答、故事、回想)改羊皮紙,深色字 ---- */
+html.r5-fit .phone-module .paper, html.r5-fit .phone-module .story, html.r5-fit .phone-module .recall, html.r5-fit .phone-module .route-warning {
+  box-sizing: border-box; color: var(--r5-ink); border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch; image-rendering: pixelated; background: none; border-radius: 0; max-width: 900px; margin: 8px auto 0; padding: 4px 16px;
+  filter: drop-shadow(0 4px 0 #0b142680);
+}
+html.r5-fit .phone-module .paper > *, html.r5-fit .phone-module .story > * { image-rendering: auto; }
+html.r5-fit .phone-module .paper p, html.r5-fit .phone-module .paper small, html.r5-fit .phone-module .story p, html.r5-fit .phone-module .recall p { color: var(--r5-ink); font-size: 17px; line-height: 1.5; }
+html.r5-fit .phone-module .paper .eyebrow { color: #8a4f0c; }
+html.r5-fit .phone-module .choice { display: block; width: 100%; margin: 6px 0; padding: 7px 14px; text-align: left; font-size: 17px; }
+html.r5-fit .phone-module .story-visual { border: 3px solid var(--r5-gold); box-shadow: 0 0 0 2px var(--r5-navy-d); border-radius: 0; }

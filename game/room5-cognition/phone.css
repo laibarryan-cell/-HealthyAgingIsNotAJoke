@@ -1,0 +1,92 @@
+.phone-module{max-width:1440px;margin:auto;padding:20px 30px 40px}.phone-module h1{text-align:center;font-size:clamp(24px,3vw,36px);margin:25px 0}.phone-module button,.upload{cursor:pointer;font:inherit;border:1px solid #859388;border-radius:10px;padding:12px 18px;background:#f9f7ef;color:#263e35}.phone-module button:focus-visible,.upload:focus-within{outline:4px solid #d2a347;outline-offset:3px}.phone-module button:disabled{cursor:default}.phone-module .primary{display:block;margin:22px auto 0;background:#294f42;color:white;min-height:48px}.phone-module [hidden]{display:none!important}.paper{background:#fffdf6;border:1px solid #d7d1c3;box-shadow:0 8px 30px #263e350a;border-radius:18px;padding:28px;line-height:1.8}.center{text-align:center}.handset{position:relative;background:linear-gradient(145deg,#263e47,#0b171d);color:#fff;border:9px solid #202328;border-radius:42px;box-shadow:0 20px 45px #13201e40,inset 0 0 0 2px #71767b;padding:45px 24px 24px}.phone-notch{position:absolute;top:10px;left:37%;width:26%;height:19px;border-radius:20px;background:#060a0c}.incoming{width:min(330px,100%);min-height:550px;margin:25px auto;text-align:center;display:flex;align-items:center;flex-direction:column;box-sizing:border-box}.caller{font-size:38px;margin:45px 0 0}.incoming .answer{background:#29945d;color:#fff;border:3px solid #7cddaa;border-radius:50%;width:90px;height:90px;margin:auto 0 22px;box-shadow:0 0 0 12px #2e9e5918}.call-layout{display:grid;grid-template-columns:1fr minmax(310px,450px) 1fr;align-items:center;gap:15px}.speaker{width:100%;height:540px;object-fit:contain;transition:filter .5s}.speaker.dark{filter:brightness(.15)}#grandson.speaker{background:url('assets/phone/grandson.png') center bottom / contain no-repeat;aspect-ratio:3/4;height:auto}.conversation{min-height:590px}.call-status{text-align:center;color:#b7cdd4}.message{padding:13px 16px;line-height:1.6;border-radius:16px;margin:14px 0;color:#233e35;animation:message-in .4s ease}.message small{display:block;font-weight:bold;margin-bottom:5px}.message.grandson{background:#d7e8d7;margin-left:15px}.message.elder{background:#d6e8f3;margin-right:15px}.story{max-width:940px;margin:auto;background:#fffdf6;border-radius:20px;overflow:hidden;border:1px solid #d7d1c3}.story img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.story figcaption{padding:22px;font-size:20px;line-height:1.6}.route-map{position:relative;max-width:1000px;margin:auto;border:8px solid #f8f3e8;border-radius:22px;overflow:hidden}.route-map svg{display:block;width:100%}.route-map text{font:24px sans-serif;fill:#233e35}.lost-person{position:absolute;width:7%;height:25%;left:8%;top:60%;animation:lost-walk 5s linear forwards}.lost-person img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(2px 3px 2px #3338)}.lost-person span{position:absolute;white-space:nowrap;left:50%;transform:translateX(-50%);top:-22px;background:#fff;padding:3px 8px;border-radius:5px;font-size:14px}.question{max-width:800px;margin:auto}.choice{display:block;width:100%;margin:12px 0;text-align:left}.choice:hover{background:#e5eee2}.learn-layout{display:grid;grid-template-columns:1fr 1fr;gap:25px}.photo-space{min-height:400px;border:2px dashed #a8b3a5;border-radius:18px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;background:#e6ebe1}.photo-space img{width:100%;height:330px;object-fit:contain}.upload{display:block;background:#fff;margin:18px 0}.upload input{display:block;margin:10px auto;max-width:100%}.appointment{max-width:920px;margin:auto;display:flex;align-items:center;gap:30px}.appointment img{width:24%;max-height:400px;object-fit:contain}.puzzle-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:25px;align-items:start}.puzzle-layout aside{padding:20px;font-size:16px}.puzzle-elder{display:block;height:170px;width:100%;object-fit:contain}.puzzle-layout h2{font-size:20px}.recall{background:#e7eedc;border-left:4px solid #59834f;padding:12px;margin-top:12px}.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;background:#c8c5b7;padding:10px;border:7px solid #817b68;border-radius:16px}.phone-module .tile{position:relative;aspect-ratio:1/1.08;border:1px solid #b6aa91;border-radius:8px;background:#faf2dd;padding:0;overflow:hidden;min-width:0}.phone-module .wall{background:#bdc8b4;border-color:#b1bca8;background-image:linear-gradient(35deg,transparent 45%,#a9b49e33 45%,#a9b49e33 55%,transparent 55%)}.pipe{position:absolute;inset:0}.arm,.hub{position:absolute;background:#6f8580;display:block}.hub{width:18%;height:18%;left:41%;top:41%;border-radius:50%}.arm.d0{left:43%;top:0;width:14%;height:50%}.arm.d1{left:50%;top:43%;width:50%;height:14%}.arm.d2{left:43%;top:50%;width:14%;height:50%}.arm.d3{left:0;top:43%;width:50%;height:14%}.tile-label{position:absolute;bottom:3%;left:2%;right:2%;background:#fff9e9e8;border-radius:4px;font-size:clamp(11px,1.3vw,17px);font-weight:bold;line-height:1.35;padding:3px 0}.tile.start .tile-label,.tile.end .tile-label{background:#294f42;color:white}.tile.connected{box-shadow:inset 0 0 0 4px #6c9b57}.tile.connected .arm,.tile.connected .hub{background:#3c8b57}.turned{animation:select-flash .35s ease}.phone-module a{color:#365a45}.phone-module #feedback,.phone-module #routeFeedback{min-height:50px}.phone-module #recall:disabled{opacity:.65}@keyframes message-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes select-flash{50%{background:#ffe091;box-shadow:inset 0 0 0 4px #bd9340}}@keyframes lost-walk{0%{left:8%;top:60%}20%{left:22%;top:60%}35%{left:22%;top:25%}50%{left:44%;top:25%}65%{left:44%;top:60%}80%{left:22%;top:60%}90%{left:22%;top:25%}100%{left:36%;top:25%}}@media(max-width:800px){.phone-module{padding:12px}.call-layout{grid-template-columns:70px minmax(210px,1fr) 70px;gap:3px}.speaker{height:300px}.handset{padding:38px 12px 15px;border-width:6px}.conversation{min-height:550px}.learn-layout{grid-template-columns:1fr}.puzzle-layout{grid-template-columns:1fr}.puzzle-elder{height:110px;float:left;width:75px;margin-right:15px}.board{padding:5px;gap:3px}.appointment{gap:10px;padding:16px}.appointment h2{font-size:21px}.paper{padding:20px}}@media(max-width:420px){.call-layout{grid-template-columns:45px minmax(190px,1fr) 45px}.message{font-size:14px;padding:10px}.board{border-width:3px}.tile-label{font-size:10px}}@media(prefers-reduced-motion:reduce){.message,.turned{animation:none}.lost-person{animation:none;left:30%;top:25%}.speaker{transition:none}}
+
+/* Room 1/2-style sentence-by-sentence education */
+.edu-stepper{display:grid;gap:18px;align-content:start}.edu-line{min-height:120px;display:flex;align-items:center;font-size:clamp(22px,2.1vw,30px);line-height:1.65;font-weight:700;padding:20px 22px;border-radius:18px;background:rgba(255,255,255,.82);border:2px solid rgba(83,103,91,.16)}.edu-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.edu-controls button{min-height:52px;font-size:18px}.edu-progress{font-weight:800;opacity:.7}.edu-speak::before{content:'🔊 ';}
+
+.speaker>.mm-character-canvas,.appointment-actor>.mm-character-canvas,.puzzle-elder>.mm-character-canvas,.lost-person-actor>.mm-character-canvas,.story-actor>.mm-character-canvas{width:100%;height:100%;display:block}.story{position:relative}.story-actor{position:absolute;z-index:2;filter:drop-shadow(2px 5px 5px #3a3a3a55)}.story-actor-1{left:5%;bottom:26%;width:17%;height:58%}.story-actor-2{left:7%;bottom:13%;width:18%;height:68%}.story-actor-3{left:35%;bottom:16%;width:17%;height:66%}.lost-person-actor{width:100%;height:100%}.appointment-actor{width:24%;max-height:400px;align-self:stretch}.puzzle-elder{display:block;height:170px;width:100%}
+@media(max-width:800px){.appointment-actor{width:28%;min-width:72px}.story-actor-1{width:21%;height:60%}.story-actor-2{width:22%;height:70%}.story-actor-3{width:21%;height:68%}}
+/* Unified character asset: transparent grandson, user-selected elder on canvas. */
+.k-grandson,.p-grandson{background-image:url("assets/phone/grandson.png")!important;background-size:contain!important;background-repeat:no-repeat!important;background-position:center bottom!important;}
+
+/* Dedicated fixed sprite; no baked two-character sheet */
+.k-grandson,.p-grandson{background-image:url("assets/phone/grandson.png")!important;background-size:contain!important;background-repeat:no-repeat!important;background-position:center bottom!important}
+
+/* Message class is not a portrait. Keep text readable. */
+.phone-module .message.grandson{background-image:none!important;background-color:#d7e8d7!important;background-size:auto!important;aspect-ratio:auto!important;height:auto!important;}
+
+/* Avatar aspect: never stretch the intrinsic 364:362 front or 256:256 back canvas. */
+[data-mm-character]>.mm-character-canvas{object-fit:contain!important;image-rendering:pixelated!important;}
+
+
+
+/* Single physical baseline: both PNG and Canvas now render into 260x520 with visible shoes at y=520. */
+.call-layout{display:grid;grid-template-columns:minmax(210px,270px) minmax(320px,470px) minmax(210px,270px);align-items:end;gap:22px;justify-content:center}
+#elder.speaker,#grandson.speaker{width:260px;max-width:100%;height:520px;aspect-ratio:auto;align-self:end;background:none!important;display:flex;align-items:end;justify-content:center}
+#elder.speaker>.mm-character-canvas,#grandson.speaker>.mm-character-canvas{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;transform:none!important}
+@media(max-width:800px){.call-layout{grid-template-columns:minmax(85px,145px) minmax(210px,1fr) minmax(85px,145px);gap:6px}#elder.speaker,#grandson.speaker{width:145px;height:auto;aspect-ratio:1/2} }
+
+
+/* Three story scenes: exactly 3x the original on-screen sprite, from its shoe baseline. */
+.story-actor{display:flex;align-items:flex-end;justify-content:center}
+.story-actor>.mm-character-canvas{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;transform:scale(1.6)!important;transform-origin:center bottom}
+.story-actor-1{left:18%;bottom:10%;width:17%;height:58%}
+.story-actor-2{left:20%;bottom:8%;width:18%;height:68%}
+.story-actor-3{left:35%;bottom:8%;width:17%;height:66%}
+@media(max-width:800px){.story-actor-1{width:17%;height:58%}.story-actor-2{width:18%;height:68%}.story-actor-3{width:17%;height:66%}}
+
+/* v8: question mark stays inside the photo, never in the caption. */
+.story-visual{position:relative;aspect-ratio:16/9;overflow:hidden}
+.story-visual>img{display:block;width:100%;height:100%;object-fit:cover}
+.story-question{position:absolute;z-index:5;top:5%;right:6%;font-size:clamp(42px,6vw,86px);line-height:1;font-weight:900;color:#fff7ca;text-shadow:0 3px 0 #705030,0 0 8px #46311f,0 5px 14px #0008;pointer-events:none}
+/* One grandson portrait only: the foot-aligned canvas, never the legacy CSS background. */
+#grandson.speaker{background:none!important;background-image:none!important}
+#grandson.speaker.mm-feet-aligned>.mm-character-canvas{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+
+/* v9: telephone grandson has one and only one visual source: the PNG drawn once on canvas. */
+#grandson.speaker,#grandson.speaker.mm-feet-aligned{background:none!important;background-image:none!important;box-shadow:none}
+#grandson.speaker::before,#grandson.speaker::after{content:none!important;display:none!important}
+#grandson.speaker>.mm-character-canvas{display:block!important;position:relative;width:100%;height:100%;object-fit:contain}
+/* v9: same exact visual dimensions across all three story backgrounds. */
+.story-visual .story-actor{width:17%;height:64%;bottom:10%;display:flex;align-items:flex-end;justify-content:center}
+.story-visual .story-actor-1{left:41.5%}
+.story-visual .story-actor-2{left:18%}
+.story-visual .story-actor-3{left:34%}
+.story-visual .story-actor>.mm-character-canvas{width:100%;height:100%;object-fit:contain;transform:scale(1.6)!important;transform-origin:center bottom}
+/* Red question mark just above and to the right of the character's head. */
+.story-visual .story-question{left:57%;right:auto;top:7%;color:#d92b28;text-shadow:0 2px 0 #fff2df,0 3px 8px #25110ca8;font-size:clamp(42px,6vw,78px)}
+
+
+/* v10: telephone grandson uses one literal IMG only, never a canvas/background fallback. */
+#grandson.static-grandson{background:none!important;background-image:none!important;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+#grandson.static-grandson::before,#grandson.static-grandson::after{content:none!important;display:none!important}
+#grandson.static-grandson canvas,#grandson.static-grandson .mm-character-canvas{display:none!important}
+#grandson.static-grandson>.grandson-single{display:block!important;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;filter:none;transform:none}
+
+/* v10: enforce identical story sprite size across scenes and center scene 1 clearly. */
+.story-visual .story-actor{width:17%!important;height:64%!important;bottom:10%!important;display:flex;align-items:flex-end;justify-content:center}
+.story-visual .story-actor>.mm-character-canvas{width:100%!important;height:100%!important;object-fit:contain!important;image-rendering:pixelated!important;transform:scale(1.6)!important;transform-origin:center bottom!important}
+.story-visual .story-actor-1{left:41.5%!important}
+.story-visual .story-actor-2{left:18%!important}
+.story-visual .story-actor-3{left:34%!important}
+.story-visual .story-question{left:53%!important;top:10%!important;right:auto!important;color:#d92b28!important;text-shadow:0 2px 0 #fff2df,0 3px 8px #25110ca8!important;font-size:clamp(42px,6vw,78px)!important}
+
+
+/* v11: grandson portrait is isolated from the old speaker system. Exactly one image only. */
+.grandson-portrait{width:260px;max-width:100%;height:520px;align-self:end;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;background:none!important;background-image:none!important;box-shadow:none;transition:filter .5s}
+.grandson-portrait.dark{filter:brightness(.15)}
+.grandson-portrait::before,.grandson-portrait::after{content:none!important;display:none!important}
+.grandson-portrait canvas,.grandson-portrait .mm-character-canvas{display:none!important}
+.grandson-portrait>.grandson-single{display:block!important;width:auto!important;height:100%!important;max-width:100%!important;object-fit:contain!important;image-rendering:pixelated!important;filter:none!important;transform:none!important}
+@media(max-width:800px){.grandson-portrait{width:145px;height:290px}}
+
+
+/* v12: make the single grandson portrait visually comparable to elder and share the same floor line. */
+.grandson-portrait{width:290px!important;max-width:100%!important;height:520px!important;align-self:end!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;overflow:hidden!important;background:none!important;background-image:none!important;box-shadow:none!important}
+.grandson-portrait>.grandson-single{display:block!important;width:auto!important;height:100%!important;max-width:none!important;object-fit:contain!important;object-position:center bottom!important;image-rendering:pixelated!important;transform:scale(1.22)!important;transform-origin:center bottom!important;filter:none!important}
+@media(max-width:800px){.grandson-portrait{width:160px!important;height:300px!important}.grandson-portrait>.grandson-single{transform:scale(1.2)!important}}
+
+/* v13 telephone-only: measured visible-alpha height, shared foot baseline, no transform scaling. */
+.phone-module .call-layout{align-items:end}
+.phone-module .grandson-portrait{width:260px!important;max-width:100%!important;height:520px!important;position:relative!important;align-self:end!important;overflow:visible!important;display:block!important;background:none!important}
+.phone-module .grandson-portrait>.grandson-single{position:absolute!important;left:50%!important;bottom:var(--grandson-img-bottom,0px)!important;display:block!important;width:auto!important;height:var(--grandson-img-height,auto)!important;max-width:none!important;max-height:none!important;object-fit:contain!important;transform:translateX(-50%)!important;transform-origin:center bottom!important;image-rendering:pixelated!important}
+@media(max-width:800px){.phone-module .grandson-portrait{width:145px!important;height:290px!important}}

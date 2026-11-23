@@ -1,0 +1,287 @@
+/* room3-layout.css — 房間 3 共通版面層(載入順序最後)
+   G1 遊玩區放大且一屏看完、G2 版面與整體 UI 一致。只動版面與樣式,不動教育內容與遊戲流程。
+   以 room3-layout.js 依視窗等比算出 --r3-z,整個畫面縮放到「一屏剛好放下」,不需下捲。 */
+html.r3-fit, html.r3-fit body { overflow: hidden; height: 100%; }
+html.r3-fit .view:not(.room-view) {
+  zoom: var(--r3-z, 1);
+  height: calc(100dvh / var(--r3-z, 1));
+  min-height: 0; overflow: hidden; padding-bottom: 0;
+  display: flex; flex-direction: column;
+}
+html.r3-fit .view:not(.room-view)[hidden] { display: none !important; }
+
+/* ---------- 標題列:與房間 HUD 同一套木框/暖金樣式(同房間 1) ---------- */
+html.au-on body[data-au-room="3"] .mission-bar {
+  position: relative; z-index: 5; flex: none;
+  width: 100% !important; max-width: none !important; margin: 0 !important; box-sizing: border-box;
+  padding: calc(var(--au-h) * 4px) max(12px, calc((100% - 1260px) / 2)) !important;
+  gap: calc(var(--au-h) * 8px) !important;
+  background: linear-gradient(#14294a, #0e1c35) !important;
+  border-bottom: calc(var(--au-h) * 3px) solid var(--au-gold);
+  box-shadow: 0 calc(var(--au-h) * 3px) 0 var(--au-navy-d);
+  color: #ffe9b0 !important; align-items: center !important; flex-wrap: nowrap; justify-content: space-between !important;
+}
+html.au-on body[data-au-room="3"] .mission-bar .mission-heading {
+  flex: 1 1 0 !important; min-width: 0 !important; margin: 0 !important; box-sizing: border-box; text-align: center;
+  min-height: calc(65px * var(--au-h)); border-style: solid; border-color: transparent;
+  border-width: calc(14px * var(--au-h)) calc(30px * var(--au-h)) calc(14px * var(--au-h)) calc(60px * var(--au-h));
+  border-image: url("../assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill / calc(14px * var(--au-h)) calc(30px * var(--au-h)) calc(14px * var(--au-h)) calc(60px * var(--au-h)) stretch;
+  image-rendering: pixelated; display: flex; flex-direction: column; justify-content: center;
+}
+html.au-on body[data-au-room="3"] .mission-bar .eyebrow {
+  display: block !important; margin: 0 !important; color: #6b4a1e !important;
+  font-size: calc(var(--au-h) * 3px + 13px) !important; letter-spacing: .06em !important; font-weight: 800 !important; text-transform: none !important;
+}
+html.au-on body[data-au-room="3"] .mission-bar :is(h1, h2, .eyebrow) { color: #3a2a14 !important; }
+html.au-on body[data-au-room="3"] .mission-bar h2 {
+  margin: 0 !important; color: #3a2a14 !important; font-size: calc(var(--au-h) * 4px + 19px) !important; line-height: 1.15 !important;
+}
+html.au-on body[data-au-room="3"] .mission-bar .progress-chip {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; white-space: nowrap; min-height: calc(56px * var(--au-h));
+  border-style: solid; border-color: transparent;
+  border-width: calc(14px * var(--au-h)) calc(18px * var(--au-h)) calc(14px * var(--au-h)) calc(52px * var(--au-h));
+  border-image: url("../assets/art-final/ui/task-progress-bar.png") 14 18 14 52 fill / calc(14px * var(--au-h)) calc(18px * var(--au-h)) calc(14px * var(--au-h)) calc(52px * var(--au-h)) stretch;
+  image-rendering: pixelated; color: var(--au-text);
+  font: 900 calc(var(--au-h) * 2px + 16px) / 1 "Noto Sans TC", system-ui, sans-serif;
+}
+
+/* ---------- 內容區與面板:一屏、暖金框 ---------- */
+html.r3-fit .mission-content {
+  flex: 1 1 0; min-height: 0; width: min(1240px, calc(100% - 3rem)); margin: .6rem auto .8rem;
+  display: flex; flex-direction: column;
+}
+html.r3-fit .mission-content > :is(.panel, .phone-shell, .resource-shell) { flex: 1 1 0; min-height: 0; overflow: hidden; }
+html.r3-fit .panel {
+  border: 3px solid #c98c1c; border-radius: 6px; background: #fbeccb;
+  box-shadow: inset 0 0 0 2px #fff3cf, 0 5px 0 #0b1426, 0 12px 24px rgba(0, 0, 0, .4);
+  padding: 1rem 1.5rem;
+}
+html.r3-fit .panel h3 { font-size: 1.9rem; margin: .1rem 0 .5rem; }
+html.r3-fit .eyebrow { font-size: .95rem; }
+html.r3-fit :is(.primary-button, .secondary-button, .small-button) { min-height: 0; padding: .6rem 1.2rem; font-size: 1.15rem; border-radius: 4px; }
+html.r3-fit .actions { margin-top: .6rem; }
+html.r3-fit .feedback-panel { margin: .6rem 0 0; padding: .7rem 1rem; border-radius: 4px; line-height: 1.5; font-size: 1.1rem; }
+
+/* ---------- 體重計:左文右圖 ---------- */
+html.r3-fit .scale-scene {
+  display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: minmax(0, 1fr) auto auto auto;
+  column-gap: 1.6rem; align-items: center; min-height: 0;
+}
+html.r3-fit .scale-scene .scene-copy { grid-column: 1; grid-row: 1; align-self: center; }
+html.r3-fit .scale-scene .scene-copy h3 { font-size: 2.2rem; line-height: 1.3; }
+html.r3-fit .scale-scene .scene-copy p { font-size: 1.3rem; }
+html.r3-fit .scale-scene .timeline {
+  grid-column: 2; grid-row: 1 / span 4; width: 100%; height: 100%; margin: 0; min-height: 0;
+  grid-template-columns: 170px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 1rem; align-items: center;
+}
+html.r3-fit .scale-scene .calendar-card { border-width: 3px; border-radius: 6px; box-shadow: 0 5px 0 #0b1426; }
+html.r3-fit .scale-scene .calendar-card strong { padding: .6rem .3rem .1rem; font-size: 2.6rem; }
+html.r3-fit .scale-scene .calendar-card span { padding: 0 .4rem .7rem; font-size: .95rem; }
+/* 體重計圖左右各烘了一條深藍邊,用 object-view-box 裁掉(只裁圖,不改檔) */
+html.r3-fit .scale-scene .scale-device { height: 100%; width: auto; max-width: 100%; aspect-ratio: 1; justify-self: center; border-radius: 6px; box-shadow: 0 6px 0 #0b1426; }
+html.r3-fit .scale-scene .scale-device > img { object-fit: cover; object-view-box: inset(3.4% 0.4% 3.4% 0.4%); }
+html.r3-fit .scale-scene .weight-history { grid-column: 1; grid-row: 2; margin: .5rem 0 0; gap: .5rem; }
+html.r3-fit .scale-scene .weight-history span { padding: .4rem .5rem; font-size: .95rem; }
+html.r3-fit .scale-scene .actions { grid-column: 1; grid-row: 3; justify-content: flex-start; }
+html.r3-fit .scale-scene .live-note { grid-column: 1; grid-row: 4; min-height: 0; margin: .3rem 0 0; font-size: 1.05rem; }
+
+/* ---------- 玩家判斷:左題幹、右選項(同房間 1) ---------- */
+html.r3-fit .task-card {
+  width: 100%; margin: 0; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: minmax(0, 1fr) auto auto;
+  column-gap: 2rem; row-gap: .5rem; align-items: stretch;
+}
+html.r3-fit .task-card .task-intro { grid-column: 1; grid-row: 1 / span 3; align-self: center; }
+html.r3-fit .task-card .task-intro h3 { font-size: 2rem; line-height: 1.35; }
+html.r3-fit .task-card .task-intro p { font-size: 1.2rem; line-height: 1.6; }
+html.r3-fit .task-card .choice-list { grid-column: 2; grid-row: 1; margin: 0; align-content: center; gap: .55rem; min-height: 0; }
+html.r3-fit .task-card .choice-option { min-height: 0; grid-template-columns: 2.6rem 1fr; border-width: 2px; border-radius: 4px; }
+html.r3-fit .task-card .choice-option span:last-child { padding: .55rem .9rem; font-size: 1.18rem; line-height: 1.4; }
+html.r3-fit .task-card .feedback-panel:not([hidden]) { grid-column: 2; grid-row: 2; margin: 0; }
+html.r3-fit .task-card .actions { grid-column: 2; grid-row: 3; margin: 0; justify-content: flex-end; }
+
+/* ---------- 學習重點:左圖右文 ---------- */
+html.r3-fit .education-card { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 1.4rem; align-items: stretch; }
+html.r3-fit .education-visual { min-height: 0; height: 100%; border-width: 2px; border-radius: 4px; }
+html.r3-fit .education-copy { min-height: 0; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+html.r3-fit .education-copy :is(p, li) { font-size: 1.12rem; line-height: 1.55; }
+html.r3-fit .education-copy h3 { font-size: 1.9rem; }
+html.r3-fit .education-copy .primary-button { align-self: flex-end; margin-top: .8rem; }
+
+/* ---------- 進食情境:12 件餐點排成 6×2,一屏看完 ---------- */
+html.r3-fit .meal-panel { display: flex; flex-direction: column; min-height: 0; }
+html.r3-fit .meal-panel .scene-copy { flex: none; }
+html.r3-fit .meal-panel .scene-copy h3 { font-size: 1.8rem; margin-bottom: .2rem; }
+html.r3-fit .meal-panel .scene-copy p:last-child { font-size: 1.1rem; margin: 0; }
+html.r3-fit .meal-stage { flex: 1 1 0; min-height: 0; margin: .6rem 0; padding: 14px; gap: 10px; border-width: 5px; border-radius: 6px; grid-template-columns: repeat(6, minmax(0, 1fr)); align-content: center; }
+html.r3-fit .meal-stage .meal-object { aspect-ratio: 384 / 342; border-radius: 4px; }
+html.r3-fit .meal-stage .meal-object span { font-size: .9rem; padding: .15rem 0; }
+html.r3-fit .meal-panel .meal-controls { flex: none; margin: 0; }
+html.r3-fit .meal-panel .actions { flex: none; margin-top: .4rem; }
+
+/* ---------- 營養食物:桌面底圖左右烘進的深藍邊,放大 8% 把它推出框外(不改檔) ---------- */
+html.r3-fit :is(.fl-table, .fl-board) { background-size: 108% 108%; background-position: center; }
+
+/* ---------- LINE 對話評量:寬版兩欄(左訊息、右計算與回覆),不再是直立手機 ---------- */
+html.r3-fit .phone-shell {
+  width: min(1080px, 100%); min-height: 0; margin: 0 auto; display: flex; flex-direction: column;
+  border: 3px solid #c98c1c; border-radius: 6px; box-shadow: inset 0 0 0 2px #0b1426, 0 5px 0 #0b1426, 0 12px 24px rgba(0, 0, 0, .4);
+}
+html.r3-fit .phone-status { flex: none; height: 34px; }
+html.r3-fit .line-inbox { flex: 1 1 0; min-height: 0; overflow: auto; }
+html.r3-fit .line-title { padding: .7rem 1rem; }
+html.r3-fit .contact { padding: .7rem 1rem; }
+html.r3-fit .chat-room { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto auto; }
+html.r3-fit .chat-room[hidden] { display: none; }
+html.r3-fit .chat-header { grid-column: 1 / -1; height: 46px; }
+html.r3-fit .messages { grid-column: 1; grid-row: 2 / span 3; min-height: 0; overflow: auto; }
+html.r3-fit .calculation-scaffold { grid-column: 2; grid-row: 2; min-height: 0; overflow: auto; border-top: 0; border-left: 3px solid #c98c1c; }
+html.r3-fit .reply-choices { grid-column: 2; grid-row: 3; border-left: 3px solid #c98c1c; }
+html.r3-fit .chat-feedback { grid-column: 2; grid-row: 4; margin: 0; padding: .5rem .8rem; border-left: 3px solid #c98c1c; background: #fff; min-height: 0; }
+html.r3-fit .chat-feedback:empty { display: none; }
+html.r3-fit .messages { height: 100%; }
+
+/* ---------- 醫藥盒:旋轉路徑任務,棋盤依可用高度縮小 ---------- */
+html.r3-fit .resource-shell { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+html.r3-fit .resource-shell > .resource-panel:not([hidden]) { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+html.r3-fit .resource-panel .section-head { flex: none; }
+html.r3-fit #puzzleStep .section-head h3 { margin-bottom: 0; }
+html.r3-fit .puzzle-layout { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); gap: 1.2rem; margin-top: .5rem; }
+html.r3-fit .puzzle-layout .mission-paper { min-height: 0; overflow: auto; padding: .55rem .9rem; }
+html.r3-fit .puzzle-layout .mission-paper :is(p, strong, li, span) { font-size: .95rem; line-height: 1.4; }
+html.r3-fit .puzzle-layout .mission-paper h4 { margin: .1rem 0 .3rem; font-size: 1.35rem; }
+html.r3-fit .puzzle-layout .board-wrap { min-height: 0; display: flex; flex-direction: column; align-items: center; padding: .6rem .8rem; }
+html.r3-fit .puzzle-layout .board-head { flex: none; width: 100%; }
+html.r3-fit .puzzle-layout .route-board { flex: 1 1 0; min-height: 0; aspect-ratio: 1; width: auto; max-width: 100%; }
+html.r3-fit .puzzle-layout .puzzle-hint { flex: none; margin: .3rem 0 0; min-height: 0; font-size: .95rem; }
+html.r3-fit #puzzleResult, html.r3-fit #resourceFinal { justify-content: center; align-items: center; text-align: center; }
+html.r3-fit .puzzle-layout .mission-paper .condition-list { gap: .3rem; }
+html.r3-fit .puzzle-layout .mission-paper .condition-list > * { padding: .3rem .7rem; min-height: 0; font-size: .95rem; }
+html.r3-fit .puzzle-layout .mission-paper .route-status { margin-top: .5rem; padding: .5rem .8rem; }
+html.r3-fit .puzzle-layout .mission-paper .route-status > div > * { padding: .1rem 0; font-size: .92rem; }
+html.r3-fit .puzzle-layout .mission-paper .mission-help { display: none; }
+
+/* 食物圖集依實際內容範圍切 4×4(圖集四周的深藍邊不參與) */
+html.r3-fit .fl-sprite {
+  background-size: calc(400% / var(--fl-w, 1)) calc(400% / var(--fl-h, 1));
+  background-position:
+    calc((var(--fl-x0, 0) + var(--c, 0) * var(--fl-w, 1) / 4) / (1 - var(--fl-w, 1) / 4) * 100%)
+    calc((var(--fl-y0, 0) + var(--r, 0) * var(--fl-h, 1) / 4) / (1 - var(--fl-h, 1) / 4) * 100%);
+}
+
+/* ---------- 五日照護:照護對象改用玩家角色,心情低落時降低飽和度 ---------- */
+.care-elder .mm-character-canvas { image-rendering: pixelated; }
+.care-elder.is-sad .mm-character-canvas { filter: saturate(.45) brightness(.88) drop-shadow(0 8px 6px #2b211655); transform: translateY(2%); }
+
+/* 五日照護的餐點圖(food-atlas.png,4×3)依實際內容範圍切格 */
+html.r3-fit .care-food {
+  background-size: calc(400% / var(--at-w, 1)) 300%;
+  background-position: calc((var(--at-x0, 0) + var(--c, 0) * var(--at-w, 1) / 4) / (1 - var(--at-w, 1) / 4) * 100%) calc(var(--r, 0) * 50%);
+}
+
+/* 方格表模式:操作提示按鈕列、進度條(story-kit) */
+.act-toolbar { flex: none; width: min(1240px, calc(100% - 3rem)); margin: .4rem auto 0; }
+.mission-view.care-rpg-active .act-toolbar { display: none; }
+html.au-on body[data-au-room="3"] .mission-bar .progress-chip.color-progress { padding-inline: .4rem; }
+
+/* ===== 第三修改計劃 E3-1/E3-3:五日照護 ===== */
+/* 對話框不可遮到阿福伯:改放在阿福伯臉的右側,尾巴指向臉頰(依場景高度計算,各種視窗比例都跟著角色走) */
+.care-scene{container-type:size}
+.care-scene .care-speech{left:calc(1cqw + 61cqh)!important;bottom:calc(52cqh)!important;max-width:calc(100cqw - 61cqh - 4cqw)!important;padding:2px 6px 8px 0!important}
+.care-sum-talk{container-type:size}
+.care-sum-talk .care-speech.care-speech-sum{left:calc(-4cqw + 58cqh)!important;top:4%!important;max-width:calc(100cqw - 58cqh + 2cqw)!important;padding:2px 6px 8px 0!important}
+
+/* 開心:跳兩下+愛心音符;難過:往下垂、輕微顫抖、變灰+兩滴汗 */
+.care-scene .care-elder.mood-happy .mm-character-canvas,.care-sum-talk .care-elder.mood-happy .mm-character-canvas{animation:careHappy .9s cubic-bezier(.3,.7,.4,1.4) 2}
+@keyframes careHappy{0%,100%{transform:translateY(0) scale(1)}20%{transform:translateY(1%) scale(1.03,.96)}45%{transform:translateY(-7%) scale(.98,1.04)}70%{transform:translateY(0) scale(1.02,.98)}}
+.care-scene .care-elder.mood-sad .mm-character-canvas,.care-sum-talk .care-elder.mood-sad .mm-character-canvas{filter:saturate(.35) brightness(.82)!important;animation:careSad 1.6s ease-out forwards}
+@keyframes careSad{0%{transform:translateY(0) rotate(0)}15%{transform:translateY(2%) translateX(-.6%)}22%{transform:translateY(2.5%) translateX(.6%)}29%{transform:translateY(3%) translateX(-.6%)}36%{transform:translateY(3%) translateX(.5%)}43%{transform:translateY(3%) translateX(0)}100%{transform:translateY(3%) rotate(-1.5deg)}}
+.care-mood{position:absolute;z-index:4;pointer-events:none;aspect-ratio:1}
+.care-scene .care-mood{left:1%;bottom:-6%;height:90%}
+.care-sum-talk .care-mood{left:-4%;bottom:-8%;height:86%}
+.care-mood b{position:absolute;font-style:normal;font-weight:900;opacity:0}
+.care-mood-happy b{top:20%;font-size:clamp(22px,4.5cqh,54px);color:#ff5d7a;text-shadow:0 2px 0 #fff,0 0 8px #fff8;animation:careFloat 1.6s ease-out forwards}
+.care-mood-happy b:nth-child(1){left:33%}.care-mood-happy b:nth-child(2){left:52%;color:#f0a91c;animation-delay:.18s}.care-mood-happy b:nth-child(3){left:68%;animation-delay:.36s}
+@keyframes careFloat{0%{opacity:0;transform:translateY(20%) scale(.5)}20%{opacity:1;transform:translateY(0) scale(1.15)}100%{opacity:0;transform:translateY(-140%) scale(1)}}
+.care-mood-sad b{top:30%;width:clamp(10px,1.6cqh,20px);aspect-ratio:.7;background:#7fc4ff;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;box-shadow:inset -2px -2px 0 #4a8fd0,0 0 0 2px #fff;animation:careDrop 1.5s ease-in forwards}
+.care-mood-sad b:nth-child(1){left:62%}.care-mood-sad b:nth-child(2){left:66%;animation-delay:.45s}
+@keyframes careDrop{0%{opacity:0;transform:translateY(-30%)}20%{opacity:1}100%{opacity:0;transform:translateY(160%)}}
+@media (prefers-reduced-motion:reduce){.care-elder[class*="mood-"] .mm-character-canvas{animation:none!important}.care-mood b{animation-duration:.01s}}
+
+/* 阿福伯行動用完的提醒:用同一個對話框,但不另外畫半身圖(畫面上已經有阿福伯),對話框往右放,不擋到阿福伯 */
+.sd-overlay.care-rest .sd-portrait{display:none!important}
+.sd-overlay.care-rest .sd-stage{grid-template-columns:minmax(0,1.25fr) minmax(0,1.9fr) minmax(0,.35fr)}
+.sd-overlay.care-rest .sd-box{grid-column:2 / span 2!important;margin-bottom:2vh}
+
+/* ===== 第三修改計劃 E3-2:醫藥盒(旋轉水管) ===== */
+/* 1 需求/目標:起終點是 disabled 按鈕,瀏覽器會把字變灰 → 改成高對比的綠底白字徽章 */
+html.r3-fit .route-tile.fixed{color:#fff;opacity:1}
+html.r3-fit .route-tile.start .tile-label,html.r3-fit .route-tile.end .tile-label{background:#16624a!important;color:#fff!important;border:2px solid #fff;box-shadow:0 2px 0 #0b3b2c;letter-spacing:.08em}
+html.r3-fit .route-tile.start,html.r3-fit .route-tile.end{border-color:#1f8a66!important;border-width:3px;box-shadow:inset 0 0 0 2px #bfe8d6}
+/* 2 水管格放大:標題列「回資源首頁」與起點/終點不另佔一列,棋盤可用高度變大 */
+html.r3-fit #puzzleStep{position:relative}
+html.r3-fit #puzzleStep>.section-head{position:absolute;right:var(--r3-pad-r,1.6rem);top:var(--r3-pad-t,1.6rem);margin:.7rem .9rem 0 0;z-index:3;pointer-events:none}
+html.r3-fit #puzzleStep>.section-head>div{display:none}
+html.r3-fit #puzzleStep>.section-head .resource-home-button{pointer-events:auto}
+html.r3-fit #puzzleStep .puzzle-layout{margin-top:0}
+html.r3-fit #puzzleStep .board-wrap{position:relative;margin-top:0}
+html.r3-fit #puzzleStep .puzzle-layout .mission-paper{margin-top:0}
+html.r3-fit .puzzle-layout .board-head{position:absolute;inset:.7rem 1rem 2.6rem;width:auto!important;margin:0;pointer-events:none;font-size:1.25rem}
+html.r3-fit .puzzle-layout .board-head>span{position:absolute}
+html.r3-fit .puzzle-layout .board-head>span:first-child{left:0;top:50%;transform:translateY(-50%)}
+html.r3-fit .puzzle-layout .board-head>span:last-child{right:0;bottom:0}
+html.r3-fit .puzzle-layout .board-head>span:first-child,html.r3-fit .puzzle-layout .board-head>span:last-child{background:#16624a;color:#fff;padding:.15rem .7rem;border:2px solid #bfe8d6}
+html.r3-fit .puzzle-layout .route-board{gap:5px}
+/* 3 條件文字:跟著格子大小縮放,太長就換兩行,不再被切掉 */
+html.r3-fit .route-tile{container-type:size}
+html.r3-fit .route-tile .tile-label{font-size:clamp(13px,15.5cqw,22px)!important;line-height:1.15;white-space:normal!important;word-break:keep-all;overflow-wrap:anywhere;text-align:center;
+  max-width:92%!important;width:max-content;bottom:5%!important;padding:2px 5px!important;background:#fff8e6!important;color:#2a1c08!important;border:2px solid #a76a1b;box-shadow:0 2px 0 #5c3a0e}
+html.r3-fit .route-tile.condition{border-width:3px;border-color:#c98a1e!important}
+/* 按下回饋(與房一一致):微縮、變亮;不加框線 */
+html.r3-fit .route-tile:not(:disabled){transition:transform .1s ease,filter .1s ease}
+html.r3-fit .route-tile:not(:disabled):hover{filter:brightness(1.06)}
+html.r3-fit .route-tile:not(:disabled):active{transform:scale(.94);filter:brightness(1.12)}
+
+/* ===== 第三修改計劃 I 節:水管遊戲統一結果區(與房一、四、五相同) ===== */
+#puzzleResult h3 { color: #3a2a14 !important; font-weight: 900; }
+#puzzleResult .eyebrow { color: #8a4f0c !important; font-weight: 900; }
+#puzzleResult #resultCard { border: 3px solid #c98c1c; box-shadow: inset 0 0 0 2px #0b1426, 0 5px 0 #0b1426; }
+#puzzleResult #resultCard h4 { color: #fff !important; font-size: 28px !important; }
+#puzzleResult #resultCard dt { color: #ffd36a !important; font-weight: 900; }
+#puzzleResult #resultCard dd { color: #fff !important; }
+#puzzleResult #resultCard dl div { font-size: 19px; }
+#puzzleResult > p:not(.eyebrow) { color: #3a2a14 !important; font-size: 17px; font-weight: 700; }
+#puzzleResult #nextPuzzle {
+  min-height: 0 !important; padding: 12px 40px !important; border-radius: 4px !important; font-size: 24px !important; font-weight: 900 !important; border-image: none !important;
+  background: linear-gradient(#ffd466, #f0a91c) !important; color: #3a2a14 !important; border: 3px solid #9a6208 !important; box-shadow: 0 5px 0 #6b4306, 0 0 0 2px #0b1426 !important; transition: transform .12s, filter .12s;
+}
+#puzzleResult #nextPuzzle:hover { transform: translateY(-2px); filter: brightness(1.08); }
+#puzzleResult #nextPuzzle:active { transform: translateY(4px); box-shadow: 0 1px 0 #6b4306 !important; }
+
+/* ===== 與朋友版 w10_1114 整合:秤重/調味/筆記的劇情衛教(與其他房一致:字幕條在上、圖片填滿深藍底、右側羊皮紙重點) ===== */
+html.r3-fit .education-card:has(.education-story-caption:not([hidden])) { grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); }
+html.r3-fit .education-card:has(.education-story-caption:not([hidden])) .education-visual { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: #0b1426 !important; border: 3px solid #c98c1c !important; }
+html.r3-fit .education-card:has(.education-story-caption:not([hidden])) .education-visual img { position: static !important; inset: auto !important; flex: 1 1 0; min-height: 0; width: 100% !important; height: 100% !important; max-height: none !important; object-fit: contain !important; background: #0b1426; }
+html.r3-fit .education-story-caption:not([hidden]) { order: -1; flex: none; display: flex; align-items: center; min-height: 3.1em; padding: 10px 16px; font-size: 1.15rem; }
+html.r3-fit .education-card:has(.education-story-caption:not([hidden])) .edu-line { font-size: 1.7rem !important; line-height: 1.6 !important; min-height: 4.8em; display: flex; align-items: center; padding: 14px 20px; }
+html.r3-fit .education-story-caption:not([hidden]) { align-self: stretch; }
+/* 食物質地(food-learning)的四幕劇情衛教:同上的本專案風格 */
+html.r3-fit .fl-story-layout { grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr) !important; gap: 18px; background: none !important; border: 0 !important; border-radius: 0 !important; overflow: visible !important; min-height: 0; height: 100%; }
+html.r3-fit .fl-story-media { display: flex !important; flex-direction: column; gap: 8px; padding: 10px; min-height: 0; background: #0b1426 !important; border: 3px solid #c98c1c; border-radius: 6px; box-shadow: 0 5px 0 #0b1426, 0 12px 24px rgba(0,0,0,.4); }
+html.r3-fit .fl-story-media > img { flex: 1 1 0; min-height: 0; width: 100%; height: 100%; max-height: none !important; object-fit: contain; }
+html.r3-fit .fl-story-caption { order: -1; flex: none; display: flex; align-items: center; min-height: 3.1em; padding: 10px 16px !important; font-size: 1.15rem !important; }
+html.r3-fit .fl-story-missing { color: #ffe9b0 !important; }
+html.r3-fit .fl-story-copy { padding: 18px 22px !important; color: #3a2a14 !important; background: #fbeccb; border: 3px solid #c98c1c; border-radius: 6px; box-shadow: inset 0 0 0 2px #fff3cf, 0 5px 0 #0b1426, 0 12px 24px rgba(0,0,0,.4); }
+html.r3-fit .fl-story-copy .edu-stepper { background: none !important; border: 0 !important; padding: 0 !important; }
+html.r3-fit .fl-story-eyebrow { color: #8a4f0c !important; font-weight: 900 !important; letter-spacing: .1em; }
+html.r3-fit .fl-story-copy .edu-line { color: #3a2a14 !important; background: #fff7e0; border: 2px solid #b98a3c; border-left: 8px solid #f0a91c; border-radius: 4px; padding: 14px 20px; font-size: 1.7rem !important; min-height: 4.8em; display: flex; align-items: center; }
+
+/* ===== 第三修改計劃新增 D1:餐桌照護體驗｜劇情衛教 圖片太小 → 比照房間一衛教版面:整張卡填滿畫面、圖片撐滿左欄 ===== */
+html.r3-fit #missionContent:has(.fl-story-layout) { display: flex; flex-direction: column; min-height: 0; }
+html.r3-fit .fl:has(.fl-story-layout) { flex: 1 1 0; min-height: 0; height: 100%; display: flex !important; flex-direction: column; zoom: 1 !important; box-sizing: border-box; }
+html.r3-fit .fl:has(.fl-story-layout) > .fl-stage { flex: 1 1 0; min-height: 0; display: flex; padding: 0 !important; }
+html.r3-fit .fl:has(.fl-story-layout) .fl-story-layout { flex: 1 1 0; height: auto; min-height: 0; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important; }
+html.r3-fit .fl:has(.fl-story-layout) .fl-story-media { height: 100%; box-sizing: border-box; }
+html.r3-fit .fl:has(.fl-story-layout) .fl-story-media > img { flex: 1 1 0; min-height: 0; height: 100% !important; width: 100% !important; object-fit: contain; }
+html.r3-fit .fl:has(.fl-story-layout) .fl-story-copy { display: flex; flex-direction: column; justify-content: center; }
+html.r3-fit .fl:has(.fl-story-layout) .edu-progress { color: #3a2a14 !important; font-weight: 900; }
+html.r3-fit .fl:has(.fl-story-layout) > .fl-actions { flex: none; display: flex; justify-content: flex-end; }

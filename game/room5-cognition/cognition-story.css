@@ -1,0 +1,48 @@
+
+/* 房間5共用四幕衛教短劇；不影響醫藥盒與原有遊戲場景 */
+.cog-story{--cs-ink:#203d37;--cs-muted:#667b75;--cs-paper:#fffdf8;--cs-accent:#244f40;box-sizing:border-box;min-height:100vh;background:#f5f1e5;color:var(--cs-ink);padding:28px clamp(16px,5vw,88px) 55px;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.cog-story *, .cog-story *::before,.cog-story *::after{box-sizing:border-box}
+.cog-story button{font:inherit;cursor:pointer}
+.cog-story button:focus-visible{outline:3px solid #d49b3f;outline-offset:3px}
+.cog-story .cs-header{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #dcd8cb;padding-bottom:20px;font-size:15px;font-weight:700;letter-spacing:.08em;color:#687e74}
+.cog-story .cs-back{border:0;background:none;color:var(--cs-ink);font-weight:700;padding:9px 0;white-space:nowrap}
+.cog-story .cs-bars{display:flex;gap:6px;min-width:125px;justify-content:flex-end}
+.cog-story .cs-bars span{display:block;width:29px;height:5px;background:#d6d9cf}
+.cog-story .cs-bars span.active{background:#2b5646}
+.cog-story .cs-heading{max-width:1380px;margin:25px auto 24px}
+.cog-story .cs-heading>p:first-child{margin:0 0 8px;font-size:15px;font-weight:800;letter-spacing:.14em;color:#72857b}
+.cog-story h1{font-size:clamp(26px,2.5vw,37px);line-height:1.3;margin:0 0 7px;color:#173c39}
+.cog-story .cs-subtitle{font-size:18px;color:#71837b;margin:0}
+.cog-story .cs-layout{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-radius:23px;overflow:hidden;box-shadow:0 16px 34px rgba(29,50,43,.1);background:white;border:1px solid #dce6e9}
+.cog-story .cs-visual{background:#fff0d6;min-width:0;display:flex;flex-direction:column}
+.cog-story .cs-image-button{position:relative;border:0;padding:0;display:block;width:100%;background:#e7ddc8;text-align:left;overflow:hidden}
+.cog-story .cs-image-button img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain}
+.cog-story .cs-image-button.cs-missing img{visibility:hidden}
+.cog-story .cs-zoom-label{position:absolute;right:12px;bottom:12px;background:#1b3f35dd;color:white;border-radius:8px;padding:5px 9px;font-size:12px}
+.cog-story .cs-caption{margin:0;padding:17px 22px 21px;font-size:clamp(17px,1.5vw,21px);line-height:1.75;font-weight:700;color:#4a3425;flex:1}
+.cog-story .cs-copy{padding:clamp(22px,3vw,46px);display:flex;flex-direction:column;gap:20px;min-width:0}
+.cog-story .cs-eyebrow{margin:0;font-size:18px;font-weight:800;color:#2874a0}
+.cog-story .cs-line{margin:0;padding:20px 22px;border:1px solid #d8e5ed;border-radius:17px;min-height:180px;font-size:clamp(22px,2.1vw,31px);font-weight:750;line-height:1.85;color:#183c4a;overflow-wrap:anywhere}
+.cog-story .cs-actions{display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+.cog-story .cs-count{font-size:20px;color:#5d717b;font-weight:800;font-variant-numeric:tabular-nums}
+.cog-story .cs-nav{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;margin-top:auto}
+.cog-story .cs-primary,.cog-story .cs-secondary{padding:13px 21px;border-radius:9px;font-size:17px;font-weight:800}
+.cog-story .cs-primary{background:#255446;color:white;border:1px solid #194337;box-shadow:0 3px 0 #163e32}
+.cog-story .cs-secondary{background:#eaece2;color:#28483f;border:1px solid #cbd4c8}
+.cog-story .cs-secondary:disabled{opacity:.4;cursor:not-allowed}
+.cog-story .cs-note{font-size:14px;line-height:1.7;color:#6b7e78;margin:0}
+.cog-story .cs-dialog{max-width:min(95vw,1400px);max-height:94vh;padding:16px;border:0;border-radius:12px;background:#fffdf8}
+.cog-story .cs-dialog::backdrop{background:rgba(0,0,0,.78)}
+.cog-story .cs-dialog img{max-width:100%;max-height:80vh;display:block;margin:auto;object-fit:contain}
+.cog-story .cs-dialog-close{display:block;margin:0 0 12px auto;border:0;border-radius:7px;padding:8px 15px;background:#244f40;color:white}
+@media(max-width:850px){
+ .cog-story{padding:16px 14px 35px}
+ .cog-story .cs-header{flex-wrap:wrap;gap:8px}
+ .cog-story .cs-header>span{order:3;flex-basis:100%;text-align:center}
+ .cog-story .cs-layout{grid-template-columns:minmax(0,1fr)}
+ .cog-story .cs-copy{gap:14px;padding:22px}
+ .cog-story .cs-line{min-height:0}
+ .cog-story .cs-caption{font-size:17px}
+ .cog-story .cs-primary,.cog-story .cs-secondary{padding:12px 16px;font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.cog-story *{scroll-behavior:auto!important}}

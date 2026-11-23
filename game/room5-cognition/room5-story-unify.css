@@ -1,0 +1,77 @@
+/* 與朋友版 w10_1114 整合:房五四個物件的「四幕衛教短劇」(cognition-story.js,內容與流程照朋友版)。
+   外觀改成本專案風格:深藍底、羊皮紙卡、金框、深藍字幕條、金色主按鈕(與房四劇情衛教頁一致)。只改外觀。 */
+#app > .cog-story { box-sizing: border-box; min-height: 100%; padding: 0 28px 18px !important; background: radial-gradient(circle at 20% 8%, #1d3a66 0, transparent 36rem), linear-gradient(160deg, #0d1b34, #070d1a 70%) !important; color: #ffe9b0; font-family: inherit; display: flex; flex-direction: column; }
+.cog-story .cs-header { display: flex; align-items: center; gap: 16px; margin: 0 -28px 10px !important; padding: 10px 28px !important; background: #0b1426 !important; border: 0 !important; border-bottom: 3px solid #c98c1c !important; }
+.cog-story .cs-header > span { color: #ffe9b0 !important; font-weight: 900; letter-spacing: .08em; flex: 1; text-align: center; }
+.cog-story .cs-back { padding: 6px 16px !important; border-radius: 4px !important; background: #14294a !important; color: #ffe9b0 !important; border: 3px solid #c98c1c !important; font: 900 16px/1.2 inherit !important; font-family: inherit !important; cursor: pointer; transition: transform .12s, filter .12s; }
+.cog-story .cs-back:hover { filter: brightness(1.2); transform: translateY(-1px); }
+.cog-story .cs-back:active { transform: translateY(2px) scale(.97); }
+.cog-story .cs-bars { display: flex; gap: 6px; }
+.cog-story .cs-bars span { width: 40px; height: 12px; border-radius: 2px !important; background: #2b3a55 !important; border: 2px solid #0b1426; }
+.cog-story .cs-bars span.active { background: linear-gradient(#ffd466, #f0a91c) !important; }
+.cog-story .cs-heading { margin: 0 0 10px !important; padding: 0 !important; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.cog-story .cs-heading #csKicker { order: 2; margin: 0; padding: 3px 12px; background: #14294a; border: 2px solid #c98c1c; color: #ffd36a !important; font-weight: 900; font-size: 15px; }
+.cog-story .cs-heading h1 { order: 1; margin: 0 !important; color: #fff !important; font-size: 34px !important; font-weight: 900; text-shadow: 0 3px 0 #0b1426; }
+.cog-story .cs-heading .cs-subtitle { order: 3; margin: 0; color: #c9d6ea !important; font-size: 15px; }
+.cog-story .cs-layout { flex: 1 1 0; min-height: 0; display: grid !important; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr) !important; gap: 18px !important; background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; }
+.cog-story :is(.cs-visual, .cs-copy) { box-sizing: border-box; min-height: 0; border: 3px solid #c98c1c !important; border-radius: 6px !important; background: #fbeccb !important; color: #3a2a14 !important; box-shadow: inset 0 0 0 2px #fff3cf, 0 5px 0 #0b1426, 0 12px 24px rgba(0,0,0,.4) !important; }
+.cog-story .cs-visual { display: flex !important; flex-direction: column; gap: 8px; padding: 10px !important; }
+.cog-story .cs-caption { order: -1; flex: none; margin: 0 !important; padding: 10px 16px !important; background: #14294a !important; color: #ffe9b0 !important; border: 3px solid #c98c1c !important; box-shadow: inset 0 0 0 2px #0b1426; font-size: 18px !important; font-weight: 800; line-height: 1.55; border-radius: 0 !important; }
+.cog-story .cs-image-button { flex: 1 1 0; min-height: 0; position: relative; display: flex; align-items: center; justify-content: center; padding: 0 !important; background: #0b1426 !important; border: 3px solid #9a6208 !important; border-radius: 4px !important; overflow: hidden; cursor: zoom-in; transition: filter .15s; }
+.cog-story .cs-image-button:hover { filter: brightness(1.06); }
+.cog-story .cs-image-button:active img { transform: scale(.985); }
+.cog-story .cs-image-button img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .12s; }
+.cog-story .cs-zoom-label { background: #14294a !important; color: #ffe9b0 !important; border: 2px solid #c98c1c; border-radius: 0 !important; font-weight: 900; }
+.cog-story .cs-copy { display: flex !important; flex-direction: column; justify-content: center; gap: 16px; padding: 18px 22px !important; }
+.cog-story .cs-eyebrow { margin: 0; color: #8a4f0c !important; font-weight: 900; font-size: 15px; letter-spacing: .1em; }
+.cog-story .cs-line { margin: 0; min-height: 200px; display: flex; align-items: center; padding: 16px 20px !important; font-size: 26px !important; line-height: 1.6 !important; font-weight: 800; color: #3a2a14 !important; background: #fff7e0 !important; border: 2px solid #b98a3c !important; border-left: 8px solid #f0a91c !important; border-radius: 4px !important; box-shadow: none !important; }
+.cog-story .cs-actions, .cog-story .cs-nav { display: flex; align-items: center; gap: 12px; margin: 0 !important; }
+.cog-story .cs-nav { justify-content: flex-end; }
+.cog-story .cs-count { color: #3a2a14 !important; font-weight: 900; font-size: 18px; }
+.cog-story :is(.cs-secondary, .cs-primary) { min-height: 0 !important; padding: 9px 20px !important; border-radius: 4px !important; font: 900 18px/1.2 inherit !important; font-family: inherit !important; cursor: pointer; transition: transform .12s, filter .12s; }
+.cog-story .cs-secondary { background: #14294a !important; color: #ffe9b0 !important; border: 3px solid #c98c1c !important; box-shadow: 0 4px 0 #0b1426 !important; }
+.cog-story .cs-primary { background: linear-gradient(#ffd466, #f0a91c) !important; color: #3a2a14 !important; border: 3px solid #9a6208 !important; box-shadow: 0 5px 0 #6b4306 !important; padding: 10px 28px !important; font-size: 20px !important; }
+.cog-story :is(.cs-secondary, .cs-primary):hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); }
+.cog-story :is(.cs-secondary, .cs-primary):active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #0b1426 !important; }
+.cog-story :is(.cs-secondary, .cs-primary):disabled { opacity: .45; cursor: default; }
+.cog-story .cs-note { margin: 0; color: #6b5330 !important; font-size: 14px; }
+.cog-story .cs-dialog { border: 4px solid #c98c1c !important; background: #0b1426 !important; border-radius: 0 !important; padding: 12px !important; }
+.cog-story .cs-dialog::backdrop { background: rgba(5, 10, 22, .86); }
+.cog-story .cs-dialog-close { background: linear-gradient(#ffd466, #f0a91c) !important; color: #3a2a14 !important; border: 3px solid #9a6208 !important; border-radius: 4px !important; font-weight: 900; }
+.cog-story #csImage { animation: r5StoryIn .45s ease; }
+@keyframes r5StoryIn { from { opacity: .2; transform: scale(.985); } to { opacity: 1; transform: none; } }
+/* 第三修改計劃新增 A2:放大圖視窗移到 body 最上層(不受頁面縮放),關閉鈕永遠在畫面內 */
+dialog.cs-zoom-floating { box-sizing: border-box; max-width: 94vw; max-height: 94vh; padding: 12px; border: 4px solid #c98c1c; border-radius: 0; background: #0b1426; overflow: hidden; }
+dialog.cs-zoom-floating::backdrop { background: rgba(5, 10, 22, .86); }
+dialog.cs-zoom-floating img { display: block; max-width: calc(94vw - 32px); max-height: calc(94vh - 90px); margin: auto; object-fit: contain; }
+dialog.cs-zoom-floating .cs-dialog-close { display: block; margin: 0 0 10px auto; padding: 8px 18px; background: linear-gradient(#ffd466, #f0a91c); color: #3a2a14; border: 3px solid #9a6208; border-radius: 4px; font: 900 18px/1.2 inherit; font-family: inherit; cursor: pointer; box-shadow: 0 4px 0 #6b4306; }
+dialog.cs-zoom-floating .cs-dialog-close:hover { filter: brightness(1.08); transform: translateY(-1px); }
+dialog.cs-zoom-floating .cs-dialog-close:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b4306; }
+
+/* ===== 第三修改計劃新增 F1:找錢包的可點物品,比照各房間進場時點物品的效果 ===== */
+.wallet-module .w-hotspot { overflow: visible !important; cursor: pointer; }
+.wallet-module .w-hotspot:hover:not(:disabled), .wallet-module .w-hotspot:focus-visible, .wallet-module .w-hotspot:active:not(:disabled) { background: transparent !important; }
+.wallet-module .w-hotspot .w-hot-img { position: absolute; inset: 0; background-repeat: no-repeat; opacity: 0; transform: scale(1); transition: transform .2s cubic-bezier(.2,.9,.3,1.35), opacity .14s, filter .18s; pointer-events: none; image-rendering: auto; }
+.wallet-module .w-hotspot:not(:disabled) .w-hot-img { animation: wHint 8s ease-out infinite; animation-delay: var(--w-hint-delay, 0s); }
+@keyframes wHint { 0% { opacity: 0; } 4% { opacity: .8; filter: brightness(1.3) saturate(1.1); } 14%, 100% { opacity: 0; } }
+.wallet-module .w-hotspot:is(:hover, :focus-visible):not(:disabled) { z-index: 5; filter: drop-shadow(0 0 5px rgba(255,218,120,.95)) drop-shadow(0 0 14px rgba(255,185,60,.55)); }
+.wallet-module .w-hotspot:is(:hover, :focus-visible):not(:disabled) .w-hot-img { animation: none; opacity: 1; transform: scale(1.05); filter: brightness(1.24) saturate(1.14) contrast(1.04); }
+.wallet-module .w-hotspot.w-press:not(:disabled) .w-hot-img { transform: scale(1.02); filter: brightness(1.4); }
+.wallet-module .w-hotspot.w-bounce { animation: wBounce .38s ease-out; }
+@keyframes wBounce { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+/* 名稱牌:深藍底、金框(與房間物品相同) */
+.wallet-module .w-hotspot span { top: 0 !important; bottom: auto !important; transform: translate(-50%, -90%) !important; padding: 2px 10px !important; background: #14294a !important; color: #ffe9b0 !important; border: 3px solid #c98c1c !important; border-radius: 0 !important; box-shadow: 0 0 0 2px #0b1426; font-size: clamp(15px, 1.15vw, 22px) !important; font-weight: 900 !important; line-height: 1.2 !important; opacity: 0; transition: opacity .15s, transform .15s; z-index: 2; }
+.wallet-module .w-hotspot:is(:hover, :focus-visible):not(:disabled) span { opacity: 1 !important; transform: translate(-50%, -125%) !important; }
+/* 已查看:不再提示,左上打勾 */
+.wallet-module .w-hotspot.searched::after { content: "✓"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 34px; height: 34px; display: grid; place-items: center; background: #14294a; color: #8fe08a; border: 3px solid #c98c1c; border-radius: 50%; font-weight: 900; font-size: 18px; opacity: .92; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .wallet-module .w-hotspot .w-hot-img, .wallet-module .w-hotspot.w-bounce { animation: none !important; } }
+/* 貼近頁首的物品(由 wallet.js 標 .w-label-in 並設定 top):名牌放進物品內側、頁首下方,不被蓋住 */
+.wallet-module .w-hotspot span.w-label-in { transform: translate(-50%, 0) !important; }
+.wallet-module .w-hotspot:is(:hover, :focus-visible):not(:disabled) span.w-label-in { transform: translate(-50%, 6px) !important; }
+
+/* 第三修改計劃新增內容2 #11:找錢包(房間門)場景改為「整張圖放進場景框」。
+   原本 .w-canvas 以整個視窗(100vw)計算大小,但房五外殼把頁面固定成 1280 寬,
+   在遊戲外殼裡圖被裁掉,沙發、枕頭、桌面、鞋櫃跑到畫面外點不到 → 找不到錢包、無法破關。 */
+.wallet-module .w-scene { container-type: size; overflow: hidden !important; top: var(--w-top-h, 84px) !important; background: #0e1c35; }
+.wallet-module .w-canvas { left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important;
+  width: min(100cqw, 177.7778cqh) !important; height: min(100cqh, 56.25cqw) !important; }

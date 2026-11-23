@@ -1,0 +1,11 @@
+{
+  "voice": "Microsoft Hanhan Desktop, zh-TW, locally rendered test voice",
+  "transcripts": {
+    "family-dialogue": "今天下午天氣很好，我們一起到公園走走，好嗎？到了樹蔭下，再坐下來慢慢聊天。我會面對你，一句一句說清楚。",
+    "password-42": "第一個數字，四。第二個數字，二。",
+    "background-tv": "歡迎收看今天的節目，接下來為您介紹生活中的大小事。現在讓我們一起看看。",
+    "background-plaza": "我們到前面集合吧。大家都到了嗎？今天的人真多，一起去那邊看看。",
+    "background-playground": "換我玩了！我們一起到溜滑梯。等一下，我也要一起玩。"
+  },
+  "backgrounds": "Independent speech and synthesized ambient WAV tracks; no network or runtime speechSynthesis."
+}

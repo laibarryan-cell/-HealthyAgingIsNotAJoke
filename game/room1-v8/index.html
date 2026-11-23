@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><script src="../art-ui/art-ui-guard.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="透過密室探索，體驗黃斑部病變與老花眼可能造成的視覺變化。">
+  <title>視界密室｜居家線索探索</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121c2a'/%3E%3Cpath d='M8 32s9-14 24-14 24 14 24 14-9 14-24 14S8 32 8 32Z' fill='%23f6c76e'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23121c2a'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css?v=w10">
+  <link rel="stylesheet" href="../art-ui/art-ui.css?v=r15">
+  <link rel="stylesheet" href="room1-layout.css?v=18">
+  <link rel="stylesheet" href="../shared/story-dialog.css?v=20261118-2">
+  <link rel="stylesheet" href="story-grid.css">
+  <script src="room1-layout.js?v=1"></script>
+</head>
+<body data-au-room="1">
+  <main id="app">
+    <section id="roomView" class="view room-view is-active" aria-labelledby="gameTitle">
+      <header class="game-hud">
+        <button id="returnToMainMap" class="ghost-button integration-back" type="button">← 返回房間配置圖</button>
+        <div>
+          <h1 id="gameTitle">房間1•視界休息角</h1>
+        </div>
+        <div class="room1-hud-actions">
+          <div id="room1Timer" class="progress-chip room1-timer" aria-live="polite">🕰️ 00:00</div>
+          <span id="foundCount" hidden>0</span>
+          <button id="openRoom1Code" class="primary-button room1-code-button" type="button">🔐 輸入密碼</button>
+        </div>
+      </header>
+
+      <div class="room-shell">
+        <div id="roomCanvas" class="room-canvas" aria-label="一間有許多生活用品的房間。找找看正在閃爍的物品。">
+          <img src="../assets/art-final/rooms/room1-vision-rest.png" alt="像素插畫風的溫暖臥室兼起居空間，房內有桌椅、床、書櫃與生活用品。">
+
+          <button class="hotspot hotspot-grid" data-item="grid" aria-label="方格表：進入視力體驗">
+            <span class="hotspot-ring"></span><span class="hotspot-label">方格表</span>
+          </button>
+          <button class="hotspot hotspot-glasses" data-item="glasses" aria-label="老花眼鏡">
+            <span class="hotspot-ring"></span><span class="hotspot-label">老花眼鏡</span>
+          </button>
+          <button class="hotspot hotspot-drops" data-item="drops" aria-label="眼藥水：白內障體驗">
+            <span class="hotspot-ring"></span><span class="hotspot-label">眼藥水</span>
+          </button>
+          <button class="hotspot hotspot-cane" data-item="cane" aria-label="拐杖">
+            <span class="hotspot-ring"></span><span class="hotspot-label">拐杖</span>
+          </button>
+          <button class="hotspot hotspot-pills" data-item="pills" aria-label="藥盒：進入 ICOPE 醫療資源任務">
+            <span class="hotspot-ring"></span><span class="hotspot-label">藥盒</span>
+          </button>
+        </div>
+
+        <p class="room-hint"><span aria-hidden="true">✦</span> 留意每兩秒亮起一次的物品，點擊即可調查。</p>
+      </div>
+    </section>
+
+    <section id="visionView" class="view vision-view" aria-labelledby="visionTitle" hidden>
+      <header class="mission-bar">
+        <button id="backToRoom" class="ghost-button" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">方格表線索</p>
+          <h2 id="visionTitle" class="sr-only">方格表線索</h2>
+        </div>
+        <div id="sceneProgress" class="progress-chip color-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="觀察進度"><i></i><i></i><i></i></div>
+      </header>
+
+      <div class="vision-layout">
+        <div class="experiment-card">
+          <div class="instruction-row">
+            <span id="holdStatus" class="hold-status" aria-live="polite">找找中央的物體</span>
+          </div>
+
+          <div id="visionStage" class="vision-stage" tabindex="0" aria-label="視力模擬照片">
+            <img id="sceneImage" class="scene-image" src="assets/scene-dining.png" alt="餐桌中央有茶壺、橘子與花瓶。">
+            <div id="distortionPatch" class="distortion-patch" aria-hidden="true"></div>
+            <div id="centralShadow" class="central-shadow" aria-hidden="true"></div>
+            <div id="targetGuide" class="target-guide" aria-hidden="true"></div>
+            <button id="gazeDot" class="gaze-dot" type="button" aria-label="視線圓點"></button>
+          </div>
+
+        </div>
+
+        <aside class="clue-panel" aria-label="任務提示">
+          <p class="panel-number" id="panelNumber">01</p>
+          <h3 id="panelTitle">餐桌上的茶壺</h3>
+          <button id="gridHintButton" class="secondary-button grid-hint-button" type="button">💡 操作提示</button>
+          <button id="resetGaze" class="secondary-button grid-hint-button" type="button">↺ 重設視線</button>
+          <div class="mini-grid" aria-hidden="true"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="judgmentView" class="view learning-view" aria-labelledby="judgmentTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">玩家判斷</p>
+          <h2 id="judgmentTitle">剛才的視野發生了什麼？</h2>
+        </div>
+        <div class="progress-chip">步驟 2／5</div>
+      </header>
+
+      <div class="task-card">
+        <div class="task-intro">
+          <p class="eyebrow">根據你的觀察</p>
+          <h3>三張照片中，最明顯的共同變化是什麼？</h3>
+          <p>選出你剛才看到的變化。</p>
+        </div>
+
+        <fieldset id="judgmentOptions" class="choice-list">
+          <legend class="sr-only">選擇視野發生的共同變化</legend>
+          <label class="choice-option">
+            <input type="radio" name="judgment" value="whole-blur">
+            <span class="choice-letter">A</span>
+            <span>整張照片都變得模糊不清</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="judgment" value="central-curve">
+            <span class="choice-letter">B</span>
+            <span>中央物體的線條彎曲、變形</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="judgment" value="edge-dark">
+            <span class="choice-letter">C</span>
+            <span>只有畫面周圍變暗</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="judgment" value="no-color">
+            <span class="choice-letter">D</span>
+            <span>畫面中的顏色全部消失</span>
+          </label>
+        </fieldset>
+
+        <div id="judgmentFeedback" class="feedback-panel" hidden aria-live="polite">
+          <strong id="judgmentFeedbackTitle"></strong>
+          <p id="judgmentFeedbackText"></p>
+        </div>
+
+        <div class="task-actions">
+          <button id="submitJudgment" class="primary-button" type="button" disabled>確認判斷</button>
+          <button id="judgmentNext" class="secondary-button" type="button" hidden></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="educationView" class="view education-view" aria-labelledby="educationTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">線索解讀</p>
+          <h2 id="educationTitle">認識黃斑部病變</h2>
+        </div>
+        <div class="progress-chip">步驟 4／5</div>
+      </header>
+
+      <div class="education-card">
+        <div class="education-visual">
+          <img id="macularImage" alt="黃斑部病變介紹圖">
+          <div id="imageFallback" class="image-fallback">
+            <span aria-hidden="true">◎</span>
+            <strong>黃斑部病變</strong>
+            <small>將「黃斑部病變.png」放在 index.html 同一層或 assets 資料夾，即會顯示你的本地圖片。</small>
+          </div>
+          <div id="macularStoryCaption" class="macular-story-caption" aria-live="polite"></div>
+        </div>
+        <div class="education-copy">
+          <div class="learning-stepper" data-learning-topic="macular">
+            <p class="eyebrow">一次看一個重點</p>
+            <p class="learning-line" aria-live="polite"></p>
+            <div class="learning-actions">
+              <button class="secondary-button speak-learning" type="button">🔊 聽這一句</button>
+              <button class="primary-button next-learning" type="button">下一句 ▶</button>
+            </div>
+          </div>
+          <p class="source-note">衛教內容參考眼科衛教資料；遊戲體驗不能代替醫師診斷。</p>
+          <button id="startAssessment" class="primary-button" type="button">開始辨識評量</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="assessmentView" class="view learning-view" aria-labelledby="assessmentTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">學習評量</p>
+          <h2 id="assessmentTitle">找出黃斑部病變的視野</h2>
+        </div>
+        <div class="progress-chip">步驟 5／5</div>
+      </header>
+
+      <div class="assessment-shell">
+        <div class="assessment-intro">
+          <p>點選你認為可能是黃斑部病變視野的照片。</p>
+          <span id="selectionCount" class="selection-count" aria-live="polite">目前選取 0 張</span>
+        </div>
+
+        <div id="gridChoices" class="grid-choices">
+          <button class="grid-choice" type="button" data-grid="image1" aria-pressed="false">
+            <div class="assessment-media">
+              <img class="assessment-image" data-local-image="amsler-a" alt="評量圖片一">
+              <div class="local-image-fallback">影像載入失敗</div>
+            </div>
+            <span><strong>A</strong><small>點擊選取</small></span>
+          </button>
+          <button class="grid-choice" type="button" data-grid="image2" aria-pressed="false">
+            <div class="assessment-media">
+              <img class="assessment-image" data-local-image="amsler-b" alt="評量圖片二">
+              <div class="local-image-fallback">影像載入失敗</div>
+            </div>
+            <span><strong>B</strong><small>點擊選取</small></span>
+          </button>
+          <button class="grid-choice" type="button" data-grid="image3" aria-pressed="false">
+            <div class="assessment-media">
+              <img class="assessment-image" data-local-image="amsler-c" alt="評量圖片三">
+              <div class="local-image-fallback">影像載入失敗</div>
+            </div>
+            <span><strong>C</strong><small>點擊選取</small></span>
+          </button>
+        </div>
+
+        <div id="assessmentFeedback" class="feedback-panel" hidden aria-live="polite">
+          <strong id="assessmentFeedbackTitle"></strong>
+          <p id="assessmentFeedbackText"></p>
+        </div>
+
+        <div class="task-actions assessment-actions">
+          <button id="submitAssessment" class="primary-button" type="button" disabled>確認答案</button>
+          <button id="assessmentRetry" class="secondary-button" type="button" hidden>再觀察一次</button>
+          <button id="revealClue" class="primary-button" type="button" hidden>完成學習</button>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section id="presbyopiaView" class="view vision-view presbyopia-view" aria-labelledby="presbyopiaTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow sr-only">老花眼鏡線索</p>
+          <h2 id="presbyopiaTitle">閱讀距離觀察</h2>
+        </div>
+        <div id="presbyopiaProgress" class="progress-chip color-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="觀察進度"><i></i><i></i><i></i></div>
+      </header>
+
+      <div class="vision-layout">
+        <div class="experiment-card">
+          <div class="instruction-row">
+            <span id="presbyopiaHoldStatus" class="hold-status" aria-live="polite">目前靠得太近</span>
+          </div>
+
+          <div id="presbyopiaStage" class="presbyopia-stage" tabindex="0" aria-label="老花眼視覺模擬照片">
+            <img id="presbyopiaSceneImage" class="presbyopia-scene-image" src="assets/scene-dining.png" alt="餐桌中央有茶壺、橘子與花瓶。" draggable="false">
+            <div class="distance-badge" aria-hidden="true"><span>觀看距離</span><strong id="distanceBadgeValue">近</strong></div>
+          </div>
+        </div>
+
+        <aside class="clue-panel presbyopia-panel" aria-label="任務提示">
+          <p class="panel-number" id="presbyopiaPanelNumber">01</p>
+          <h3 id="presbyopiaPanelTitle">餐桌上的茶壺</h3>
+          <button id="presbyopiaHintButton" class="secondary-button grid-hint-button" type="button">💡 操作提示</button>
+          <div class="distance-lines" aria-hidden="true"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="presbyopiaJudgmentView" class="view learning-view" aria-labelledby="presbyopiaJudgmentTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">玩家判斷</p>
+          <h2 id="presbyopiaJudgmentTitle">剛才的清晰度發生了什麼變化？</h2>
+        </div>
+        <div class="progress-chip">步驟 2／5</div>
+      </header>
+
+      <div class="task-card">
+        <div class="task-intro">
+          <p class="eyebrow">根據你的觀察</p>
+          <h3>三張照片中，最明顯的共同變化是什麼？</h3>
+        </div>
+
+        <fieldset id="presbyopiaJudgmentOptions" class="choice-list">
+          <legend class="sr-only">選擇距離改變時的共同視覺變化</legend>
+          <label class="choice-option">
+            <input type="radio" name="presbyopiaJudgment" value="near-clear">
+            <span class="choice-letter">A</span>
+            <span>近距離比較清楚，拉遠後反而模糊</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="presbyopiaJudgment" value="far-clear">
+            <span class="choice-letter">B</span>
+            <span>近距離看不清楚，把物品拉遠後比較清楚</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="presbyopiaJudgment" value="central-curve">
+            <span class="choice-letter">C</span>
+            <span>只有中央線條彎曲，距離不影響清晰度</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="presbyopiaJudgment" value="no-color">
+            <span class="choice-letter">D</span>
+            <span>拉遠後照片中的顏色全部消失</span>
+          </label>
+        </fieldset>
+
+        <div id="presbyopiaJudgmentFeedback" class="feedback-panel" hidden aria-live="polite">
+          <strong id="presbyopiaJudgmentFeedbackTitle"></strong>
+          <p id="presbyopiaJudgmentFeedbackText"></p>
+        </div>
+
+        <div class="task-actions">
+          <button id="submitPresbyopiaJudgment" class="primary-button" type="button" disabled>確認判斷</button>
+          <button id="presbyopiaJudgmentNext" class="secondary-button" type="button" hidden></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="presbyopiaEducationView" class="view education-view" aria-labelledby="presbyopiaEducationTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">學習重點</p>
+          <h2 id="presbyopiaEducationTitle">認識老花眼</h2>
+        </div>
+        <div class="progress-chip">步驟 4／5</div>
+      </header>
+
+      <div class="education-card">
+        <div class="education-visual">
+          <img id="presbyopiaImage" alt="老花眼衛教劇情，第 1 幕">
+          <div class="image-fallback">
+            <span aria-hidden="true">Aa</span>
+            <strong>老花眼</strong>
+            <small>將「老花眼.png」放在 index.html 同一層或 assets 資料夾，即會顯示你的本地海報。</small>
+          </div>
+          <div id="presbyopiaStoryCaption" class="macular-story-caption" aria-live="polite"></div>
+        </div>
+        <div class="education-copy">
+          <div class="learning-stepper" data-learning-topic="presbyopia">
+            <p class="eyebrow">一次看一個重點</p>
+            <p class="learning-line" aria-live="polite"></p>
+            <div class="learning-actions">
+              <button class="secondary-button speak-learning" type="button">🔊 聽這一句</button>
+              <button class="primary-button next-learning" type="button">下一句 ▶</button>
+            </div>
+          </div>
+          <p class="source-note">需要配鏡時，可請眼科醫師或驗光人員評估。</p>
+          <button id="startPresbyopiaAssessment" class="primary-button" type="button">開始閱讀距離評量</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="presbyopiaAssessmentView" class="view reading-assessment-view" aria-labelledby="readingAssessmentTitle" hidden>
+      <h2 id="readingAssessmentTitle" class="sr-only">老花眼閱讀距離評量</h2>
+      <div id="readingStage" class="reading-stage">
+        <button id="readingHintButton" class="secondary-button reading-hint-button" type="button">💡 操作提示</button>
+        <article id="readingBook" class="open-book" tabindex="0" role="application" aria-label="一本可以上下拖曳的書；往下代表拿近，往上代表拿遠。">
+          <div class="book-page book-page-left" aria-hidden="true"></div>
+          <div class="book-spine" aria-hidden="true"></div>
+          <div class="book-page book-page-right">
+            <p id="readingBookText" class="reading-book-text">調整閱讀距離，讓文字清楚又舒服</p>
+            <p id="presbyopiaClueText" class="book-clue-text" hidden>提示：記住這句話</p>
+          </div>
+        </article>
+        <p id="readingAssessmentStatus" class="sr-only" aria-live="polite">書本距離太近，文字模糊。</p>
+        <button id="returnFromPresbyopiaClue" class="primary-button reading-room-return" type="button" hidden>完成學習</button>
+      </div>
+    </section>
+
+
+    <section id="cataractView" class="view vision-view cataract-view" aria-labelledby="cataractTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow sr-only">眼藥水線索</p>
+          <h2 id="cataractTitle">擦不掉的霧</h2>
+        </div>
+        <div id="cataractProgress" class="progress-chip color-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="擦拭進度"><i></i><i></i><i></i></div>
+      </header>
+
+      <div class="vision-layout">
+        <div class="experiment-card">
+          <div class="instruction-row">
+            <span id="cataractStatus" class="hold-status" aria-live="polite">試著把玻璃擦乾淨</span>
+          </div>
+
+          <div id="cataractStage" class="cataract-stage scene-fog" tabindex="0" aria-label="白內障視覺模擬照片">
+            <img id="cataractSceneImage" class="cataract-scene-image" src="assets/scene-dining.png" alt="餐桌中央有茶壺、橘子與花瓶。" draggable="false">
+            <div class="cataract-glare" aria-hidden="true"></div>
+            <canvas id="cataractWipeCanvas" class="cataract-wipe-canvas" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <aside class="clue-panel cataract-panel" aria-label="任務提示">
+          <p class="panel-number" id="cataractPanelNumber">01</p>
+          <h3 id="cataractPanelTitle">餐桌前的霧</h3>
+          <button id="cataractHintButton" class="secondary-button grid-hint-button" type="button">💡 操作提示</button>
+          <button id="resetCataractWipe" class="secondary-button grid-hint-button" type="button">↺ 重新擦拭</button>
+          <div class="fog-lines" aria-hidden="true"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="cataractJudgmentView" class="view learning-view" aria-labelledby="cataractJudgmentTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">玩家判斷</p>
+          <h2 id="cataractJudgmentTitle">剛才三張照片有什麼共同變化？</h2>
+        </div>
+        <div class="progress-chip">步驟 2／4</div>
+      </header>
+
+      <div class="task-card">
+        <div class="task-intro">
+          <p class="eyebrow">根據你的觀察</p>
+          <h3>三張照片中，最明顯的共同變化是什麼？</h3>
+        </div>
+
+        <fieldset id="cataractJudgmentOptions" class="choice-list">
+          <legend class="sr-only">選擇白內障情境中最明顯的共同視覺變化</legend>
+          <label class="choice-option">
+            <input type="radio" name="cataractJudgment" value="foggy">
+            <span class="choice-letter">A</span>
+            <span>整體像隔著一層霧，畫面不如原本清楚</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="cataractJudgment" value="central-curve">
+            <span class="choice-letter">B</span>
+            <span>只有中央的線條彎曲、變形</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="cataractJudgment" value="far-clear">
+            <span class="choice-letter">C</span>
+            <span>只有靠近看時模糊，拿遠就會變清楚</span>
+          </label>
+          <label class="choice-option">
+            <input type="radio" name="cataractJudgment" value="edge-dark">
+            <span class="choice-letter">D</span>
+            <span>只有畫面四周變黑，中間仍然正常</span>
+          </label>
+        </fieldset>
+
+        <div id="cataractJudgmentFeedback" class="feedback-panel" hidden aria-live="polite">
+          <strong id="cataractJudgmentFeedbackTitle"></strong>
+          <p id="cataractJudgmentFeedbackText"></p>
+        </div>
+
+        <div class="task-actions">
+          <button id="submitCataractJudgment" class="primary-button" type="button" disabled>確認判斷</button>
+          <button id="cataractJudgmentNext" class="secondary-button" type="button" hidden></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cataractEducationView" class="view education-view" aria-labelledby="cataractEducationTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">學習重點</p>
+          <h2 id="cataractEducationTitle">認識白內障</h2>
+        </div>
+        <div class="progress-chip">步驟 4／5</div>
+      </header>
+
+      <div class="education-card">
+        <div class="education-visual">
+          <img id="cataractImage" alt="白內障衛教劇情，第 1 幕">
+          <div id="cataractStoryCaption" class="macular-story-caption" aria-live="polite"></div>
+          <div class="image-fallback">
+            <span aria-hidden="true">◉</span>
+            <strong>白內障</strong>
+            <small>將「白內障.png」放在 index.html 同一層或 assets 資料夾，即會顯示你的本地圖片。</small>
+          </div>
+        </div>
+        <div class="education-copy">
+          <div class="learning-stepper" data-learning-topic="cataract">
+            <p class="eyebrow">一次看一個重點</p>
+            <p class="learning-line" aria-live="polite"></p>
+            <div class="learning-actions">
+              <button class="secondary-button speak-learning" type="button">🔊 聽這一句</button>
+              <button class="primary-button next-learning" type="button">下一句 ▶</button>
+            </div>
+          </div>
+          <p class="source-note">如果視力變化已影響日常生活，建議就醫檢查。</p>
+          <button id="startCataractAssessment" class="primary-button" type="button">開始生活情境評量</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cataractAssessmentView" class="view cataract-assessment-view" aria-labelledby="cataractAssessmentTitle" hidden>
+      <header class="mission-bar">
+        <button class="ghost-button room-return" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p class="eyebrow">學習評量</p>
+          <h2 id="cataractAssessmentTitle">白內障生活情境任務</h2>
+        </div>
+        <div id="cataractAssessmentProgress" class="progress-chip color-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="情境進度"><i></i><i></i><i></i></div>
+      </header>
+
+      <div class="cataract-assessment-shell">
+        <div id="cataractAssessmentStage" class="cataract-assessment-stage" tabindex="0" aria-label="白內障生活情境評量">
+          <img id="cataractAssessmentImage" class="cataract-assessment-image" src="assets/cataract-assessment-home.png" alt="第一視角坐在霧感客廳，準備出門。" draggable="false">
+
+          <button id="cataractKeyHotspot" class="assessment-hotspot key-hotspot" type="button" aria-label="桌上的鑰匙" hidden></button>
+          <button class="assessment-hotspot hazard-hotspot hazard-pedestrian" type="button" data-hazard="pedestrian" aria-label="候選位置：行人" aria-pressed="false" hidden></button>
+          <button class="assessment-hotspot hazard-hotspot hazard-sign" type="button" data-hazard="sign" aria-label="候選位置：路標" aria-pressed="false" hidden></button>
+          <button class="assessment-hotspot hazard-hotspot hazard-crosswalk" type="button" data-hazard="crosswalk" aria-label="候選位置：斑馬線與道路標線" aria-pressed="false" hidden></button>
+        </div>
+
+        <aside class="cataract-assessment-panel" aria-label="情境提示與操作">
+          <div class="assessment-copy-card">
+            <button id="cataractAssessmentHint" class="secondary-button grid-hint-button" type="button">💡 操作提示</button>
+            <div id="cataractAssessmentMessage" class="assessment-message" aria-live="polite">準備出門</div>
+          </div>
+          <div class="assessment-panel-actions">
+            <button id="cataractAssessmentNext" class="primary-button assessment-next-button" type="button" hidden>前往玄關</button>
+          </div>
+        </aside>
+
+        <div id="cataractAssessmentSummary" class="cataract-assessment-summary" hidden aria-live="polite">
+          <div id="cataractCompletionCard" class="result-step-card">
+            <p class="eyebrow">評量完成</p>
+            <h3>你完成了白內障生活情境任務</h3>
+            <p>你已經觀察過霧感、眩光，以及日常生活中較容易忽略的細節。</p>
+            <button id="revealCataractClue" class="primary-button" type="button">完成學習</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+<section id="impactRunnerView" class="view impact-runner-view" hidden aria-labelledby="impactRunnerTitle">
+  <header id="impactMissionBar" class="mission-bar">
+    <button class="ghost-button room-return" type="button">← 返回房間</button>
+    <div class="mission-heading">
+      <p class="eyebrow sr-only">視力生活挑戰</p>
+      <h2 id="impactRunnerTitle">居家安全探索</h2>
+    </div>
+    <div id="exploreProgress" class="progress-chip color-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="處理進度"><i></i><i></i><i></i></div>
+  </header>
+
+  <div class="explore-shell">
+    <div id="impactGameWrap" class="impact-game-wrap">
+      <div class="impact-toolbar"><button id="exploreHintButton" class="secondary-button grid-hint-button" type="button">💡 操作提示</button></div>
+      <div id="exploreStage" class="explore-stage is-dim" tabindex="0" aria-label="可自由探索的房間">
+        <div class="explore-room" aria-hidden="true">
+          <img class="explore-room-art" src="assets/cane-room-topdown-clean.png" alt="" decoding="async">
+          <div class="room-wall wall-top"></div>
+          <div class="room-wall wall-left"></div>
+          <div class="room-wall wall-right"></div>
+          <div class="room-wall wall-bottom"></div>
+          <div class="floor-planks"></div>
+
+          <div class="furniture bed"><span class="bed-pillow"></span><span class="furniture-label">床</span></div>
+          <div class="furniture table"><span class="table-top"></span><span class="table-leg leg-a"></span><span class="table-leg leg-b"></span></div>
+          <div class="furniture cabinet"><span class="cabinet-door"></span><span class="cabinet-door second"></span></div>
+          <div class="furniture sofa"><span class="sofa-seat"></span><span class="sofa-arm arm-left"></span><span class="sofa-arm arm-right"></span></div>
+          <div id="exploreLamp" class="ceiling-lamp"><span class="lamp-glow"></span><span class="lamp-core"></span></div>
+
+          <div id="exploreSwitch" class="explore-object light-switch" aria-label="牆上的電燈開關">
+            <span class="switch-plate"><span class="switch-toggle"></span></span>
+          </div>
+          <div id="exploreWater" class="explore-object water-puddle" aria-label="地面水漬"><img src="assets/cane-water-spill.png" alt=""></div>
+          <div id="exploreRug" class="explore-object loose-rug" aria-label="翹起的地墊"><img id="exploreRugImage" src="assets/cane-rug-curled-clean.png" alt=""></div>
+          <div class="explore-object clue-note" aria-label="藏在房間裡的安全提示紙條">
+            <span class="note-title">安全</span>
+            <span class="note-number">!</span>
+          </div>
+        </div>
+
+        <div id="exploreMop" class="explore-mop" aria-label="角落的長柄拖把"><img src="assets/cane-long-mop.svg" alt="長柄拖把"><i class="explore-mop-glint" aria-hidden="true"></i></div>
+        <div id="exploreMopEffect" class="explore-mop-effect" hidden aria-hidden="true"><div class="explore-mop-sweep"><i></i><i></i><i></i><img src="assets/cane-long-mop.svg" alt=""></div></div>
+        <p id="exploreMopStatus" class="explore-mop-status" role="status" hidden></p>
+        <div id="explorePlayer" class="explore-player facing-up" aria-label="正在探索房間的長者角色">
+          <div id="explorePlayerCharacter" class="explore-player-character" data-mm-character="player" data-mm-view="back" aria-label="正在探索的玩家自選老人背面"></div>
+          <span id="explorePlayerAccessory" class="explore-player-accessory" hidden></span>
+        </div>
+
+        <div id="exploreDimmer" class="explore-dimmer" aria-hidden="true"></div>
+
+      </div>
+    </div>
+
+    <div id="exploreResult" class="explore-result-card impact-post-learning" hidden aria-live="polite">
+      <div id="safetyStory" class="safety-story-layout">
+        <div class="safety-story-media"><img id="safetyStoryImage" src="assets/safety-story-01.png" alt="行走安全故事第1幕"><div id="safetyStoryCaption" class="macular-story-caption" aria-live="polite"></div></div>
+      <div class="learning-stepper compact-stepper" data-learning-topic="safety">
+        <p class="learning-line" aria-live="polite"></p>
+        <div class="learning-actions">
+          <button class="secondary-button speak-learning" type="button">🔊 聽這一句</button>
+          <button class="primary-button next-learning" type="button">下一句 ▶</button>
+        </div>
+      </div>
+      </div><!-- /safety-story-layout -->
+      <div id="impactClueRevealArea" class="result-clue-reveal">
+        <button id="revealImpactClue" class="primary-button" type="button" hidden>完成學習</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="resourceView" class="view resource-view" hidden aria-labelledby="resourceTitle">
+  <header class="mission-bar resource-mission-bar">
+    <button class="ghost-button room-return" type="button">← 返回房間</button>
+    <div class="mission-heading">
+      <p class="eyebrow sr-only">藥盒｜醫療資源任務</p>
+      <h2 id="resourceTitle">臺南醫療資源服務站</h2>
+    </div>
+    <div id="resourceStepChip" class="progress-chip color-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="任務進度"><i></i><i></i><i></i></div>
+  </header>
+
+  <div class="resource-shell">
+
+    <section id="resourceQueryStep" class="resource-panel" hidden>
+      <div class="resource-step-head">
+        <div>
+          <p class="eyebrow">資源查詢</p>
+          <h3>先選擇區域</h3>
+          <button id="resourceQueryHint" class="secondary-button grid-hint-button" type="button">💡 操作提示</button>
+        </div>
+      </div>
+      <div id="districtChoices" class="district-grid" aria-label="可選擇的臺南區域"></div>
+      <div id="queryUnitArea" class="query-unit-area" hidden>
+        <div class="resource-step-head compact">
+          <div>
+            <p class="eyebrow">區域搜尋</p>
+            <h3><span id="selectedDistrictName"></span>的單位</h3>
+          </div>
+          <button id="changeDistrict" class="resource-secondary" type="button">換一個區域</button>
+        </div>
+        <div id="unitCards" class="unit-card-grid"></div>
+      </div>
+      <div class="resource-query-finish">
+        <button id="resourceQueryComplete" class="primary-button" type="button">完成學習</button>
+      </div>
+    </section>
+
+    <section id="resourceMissionStep" class="resource-panel resource-mission-panel" hidden>
+      <div class="resource-puzzle-topbar">
+        <div>
+          <p class="eyebrow">緊急任務</p>
+          <h3 id="missionPuzzleTitle">任務 1／3</h3>
+        </div>
+        <button id="resourceHintButton" class="secondary-button grid-hint-button" type="button">💡 操作提示</button>
+      </div>
+
+      <div class="resource-puzzle-layout">
+        <aside class="mission-paper" aria-labelledby="missionPersonName">
+          <div class="mission-paper-tape" aria-hidden="true"></div>
+          <p class="mission-kicker">緊急任務</p>
+          <h4 id="missionPersonName"></h4>
+          <p id="missionStory" class="mission-story"></p>
+          <div class="mission-condition-title">指定條件</div>
+          <div id="missionConditions" class="mission-condition-list"></div>
+          <div class="mission-route-status">
+            <strong>目前接通</strong>
+            <div id="missionConditionStatus"></div>
+          </div>
+        </aside>
+
+        <div class="puzzle-board-wrap">
+          <div class="puzzle-board-head">
+            <span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span>
+            <span id="missionProgressText"></span>
+            <span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span>
+          </div>
+          <div id="routePuzzleBoard" class="route-puzzle-board" role="grid" aria-label="五乘五旋轉路徑拼圖"></div>
+          <p class="puzzle-live-hint" id="puzzleLiveHint" aria-live="polite">讓路徑經過指定條件，再連到「目標」。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="resourceMissionResult" class="resource-panel mission-result-panel" hidden aria-live="polite">
+      <p class="eyebrow">路徑接通</p>
+      <h3>找到符合條件的單位！</h3>
+      <div class="mission-result-card">
+        <span id="missionResultType" class="unit-type-badge"></span>
+        <h4 id="missionResultName"></h4>
+        <dl>
+          <div><dt>區域</dt><dd id="missionResultDistrict"></dd></div>
+          <div><dt>地址</dt><dd id="missionResultAddress"></dd></div>
+          <div><dt>電話</dt><dd id="missionResultPhone"></dd></div>
+        </dl>
+      </div>
+      <p class="resource-detail-note">這裡呈現的是你提供的 ICOPE 評估單位資料。若要處理特定眼疾，仍需向院所確認科別、服務與看診時間。</p>
+      <button id="nextEmergencyMission" class="primary-button" type="button">下一個緊急任務</button>
+    </section>
+
+    <section id="resourceFinalStep" class="resource-panel resource-final-panel" hidden aria-live="polite">
+      <p class="eyebrow">三個任務全部完成</p>
+      <h3>謝謝你幫助這三位長者找到醫療資源！</h3>
+      <p>接著看看實際有哪些醫療資源，以及可以查到哪些資訊。</p>
+      <button id="continueResourceQuery" class="primary-button" type="button">繼續了解醫療資源</button>
+    </section>
+
+    
+  </div>
+
+  <div id="unitDetailDialog" class="resource-detail-backdrop" hidden>
+    <div class="resource-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="unitDetailName">
+      <button id="closeUnitDetail" class="resource-close" type="button" aria-label="關閉">×</button>
+      <span id="unitDetailType" class="unit-type-badge"></span>
+      <h3 id="unitDetailName"></h3>
+      <dl>
+        <div><dt>區域</dt><dd id="unitDetailDistrict"></dd></div>
+        <div><dt>地址</dt><dd id="unitDetailAddress"></dd></div>
+        <div><dt>電話</dt><dd id="unitDetailPhone"></dd></div>
+      </dl>
+      <p class="resource-detail-note">這是 ICOPE 評估單位資料。若要處理特定眼疾，仍需向院所確認科別與服務。</p>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+  
+
+  
+
+  <div id="dialogOverlay" class="dialog-overlay" hidden>
+    <div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="dialogSpeaker" aria-describedby="dialogText">
+      <p id="dialogSpeaker" class="dialog-speaker">房間的主人</p>
+      <p id="dialogText" class="dialog-text"></p>
+      <button id="dialogNext" class="primary-button" type="button">繼續</button>
+    </div>
+  </div>
+
+
+
+
+  <div id="itemOverlay" class="dialog-overlay" hidden>
+    <div class="item-card" role="dialog" aria-modal="true" aria-labelledby="itemTitle">
+      <div id="itemIcon" class="item-icon" aria-hidden="true"></div>
+      <p class="eyebrow">發現新線索</p>
+      <h2 id="itemTitle"></h2>
+      <p id="itemDescription"></p>
+      <div id="itemFocus" class="item-focus"></div>
+      <p class="coming-note">互動位置已完成；此關卡可在你提供後續故事時接著擴充。</p>
+      <button id="closeItem" class="primary-button" type="button">繼續探索</button>
+    </div>
+  </div>
+
+  <div id="room1CodeOverlay" class="dialog-overlay" hidden>
+    <div class="dialog-card room1-code-card" role="dialog" aria-modal="true" aria-labelledby="room1CodeTitle">
+      <p class="eyebrow">房間 1｜通關密碼</p>
+      <h2 id="room1CodeTitle">輸入本房密碼</h2>
+      <p>在收集系統完成閱讀盒互動後，輸入你發現的密碼。</p>
+      <input id="room1CodeInput" class="room1-code-input" inputmode="numeric" autocomplete="off" placeholder="輸入數字密碼" aria-label="房間 1 通關密碼">
+      <p id="room1CodeFeedback" class="room1-code-feedback" aria-live="polite"></p>
+      <div class="task-actions">
+        <button id="closeRoom1Code" class="secondary-button" type="button">返回房間</button>
+        <button id="submitRoom1Code" class="primary-button" type="button">確認密碼</button>
+      </div>
+    </div>
+  </div>
+
+  <svg class="filter-defs" width="0" height="0" aria-hidden="true">
+    <filter id="macularDistortion">
+      <feTurbulence type="fractalNoise" baseFrequency="0.014 0.022" numOctaves="2" seed="9" result="noise"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="28" xChannelSelector="R" yChannelSelector="B"></feDisplacementMap>
+      <feGaussianBlur stdDeviation="1.1"></feGaussianBlur>
+    </filter>
+  </svg>
+
+  <script src="../achievement-system/achievement-data.js"></script>
+<script src="../achievement-system/puzzles/vision.js"></script>
+<script src="../achievement-system/achievement-objects.js"></script>
+<script src="../achievement-system/achievement.js?v=20261123-learning"></script>
+<script src="../shared/memory-maze-character.js"></script>
+<script src="../shared/story-copy.js?v=20261118-3"></script>
+<script src="../shared/story-art-config.js"></script>
+<script src="../shared/story-dialog.js?v=20261118-2"></script>
+<script src="room1-retry-video.js"></script>
+<script src="script.js?v=learning1"></script>
+<script src="room1-press.js"></script>
+
+<!-- Shared achievement UI; no room-specific implementation. -->
+
+
+
+<script src="../art-ui/objects.js"></script><script src="../art-ui/art-ui.js?v=r25" data-room="1"></script>
+<script>AchievementSystem.initRoom("vision", { roomSelector: "#roomView", activitySelector: "dialog[open], .dialog-overlay:not([hidden]), .overlay:not([hidden])" });</script>
+
+</body>
+</html>

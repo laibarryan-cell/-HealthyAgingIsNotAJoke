@@ -1,0 +1,245 @@
+/* 五日照護任務(房間 3)——用遊戲 UI 套件(game/assets/art-final/ui/)重做的版面。
+   設計基準 1280×720,room3-layout.js 以 zoom 等比縮放,所以這裡用固定 px,不寫 media query。
+   配色:深藍底 + 暖金框 + 羊皮紙面板(同房間 HUD / 對話框)。 */
+:root{--care-ink:#3a2a14;--care-ink2:#6b4a1e;--care-gold:#c98c1c;--care-gold-l:#ffe9b0;--care-navy:#14294a;--care-navy-d:#0b1426;--care-green:#2f7153;--care-paper:#fbeccb}
+.care-card,.care-panel{box-sizing:border-box;border:12px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/12px stretch;image-rendering:pixelated;background:none;color:var(--care-ink);filter:drop-shadow(0 4px 0 #0b142680)}
+.care-card>*,.care-panel>*{image-rendering:auto}
+
+/* ---------- 全屏:標題列隱藏(HUD 自帶返回),內容吃滿視窗 ---------- */
+.mission-view.care-rpg-active .mission-bar{display:none}
+html.r3-fit .mission-view.care-rpg-active .mission-content{width:min(1260px,calc(100% - 16px));margin:8px auto;padding:0}
+html.r3-fit .mission-view.care-rpg-active .mission-content>section{flex:1 1 0;min-height:0}
+.mission-view.care-rpg-active{padding:0}
+
+.care-intro,.care-game,.care-summary,.care-final,.care-journal{position:relative;box-sizing:border-box;color:var(--care-ink);border:3px solid var(--care-gold);border-radius:6px;background:radial-gradient(circle at 50% 0,#1d3a66,var(--care-navy) 55%,var(--care-navy-d));box-shadow:inset 0 0 0 2px #0b1426,0 5px 0 #0b1426,0 12px 24px #0006;overflow:hidden}
+
+/* ---------- 開場 ---------- */
+.care-intro{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;padding:18px;align-items:stretch}
+.care-cover{position:relative;overflow:hidden;border:3px solid var(--care-gold);box-shadow:0 0 0 2px #0b1426;min-height:0}
+.care-cover img{image-rendering:pixelated}
+.care-cover .care-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.care-cover .care-elder{position:absolute;left:2%;bottom:-6%;height:96%;aspect-ratio:1;width:auto;filter:drop-shadow(0 8px 6px #2b211677);pointer-events:none}
+.care-cover-badge{position:absolute;left:14px;bottom:14px;padding:6px 14px;border:2px solid var(--care-gold);background:var(--care-navy);color:var(--care-gold-l);font-weight:950;letter-spacing:.1em}
+.care-intro-copy{align-self:center;padding:10px 14px}
+.care-intro-copy h3{margin:4px 0 8px;font-size:34px;color:var(--care-ink)}
+.care-intro-copy>p{line-height:1.7;font-size:16px}
+.care-intro-copy .eyebrow{color:var(--care-ink2);font-weight:900;letter-spacing:.06em}
+.care-rules{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.care-rules span{display:flex;align-items:center;gap:8px;padding:7px 9px;border:2px solid #b98a3c;background:#fff3d2;font-weight:800;font-size:15px}
+.care-rules b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--care-navy);color:var(--care-gold-l);font-size:13px}
+.care-note{color:#6f5a35;font-size:13px;line-height:1.55}
+.care-start{margin-top:6px;min-width:210px}
+
+/* ---------- 主畫面 ---------- */
+.care-game{display:grid;grid-template-rows:64px minmax(0,1fr) 78px;gap:8px;height:100%;padding:8px}
+
+/* HUD */
+.care-hud{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;min-height:0}
+.care-room-back{min-height:48px;padding:0 18px;border:3px solid var(--care-gold);background:linear-gradient(#27457a,#16294d);color:var(--care-gold-l);font:900 17px/1 inherit;font-family:inherit;box-shadow:0 3px 0 #0b1426,inset 0 0 0 2px #0b1426;cursor:pointer}
+.care-room-back:hover{filter:brightness(1.15)}
+.care-titleplate{box-sizing:border-box;height:64px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;border:solid transparent;border-width:14px 30px 14px 60px;border-image:url("../../assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill/14px 30px 14px 60px stretch;image-rendering:pixelated;padding:0 4px 0 0}
+.care-titleplate>*{image-rendering:auto}
+.care-day-title{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.care-day-title span{font:950 26px/1 system-ui;color:#8a4f0c}
+.care-day-title strong{font-size:14px;color:var(--care-ink2)}
+.care-day-track{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:center}
+.care-day-node{position:relative;display:grid;place-items:center;color:#8a6a35;font-size:9px;font-weight:900;line-height:1}
+.care-day-node span{display:none}
+.care-day-node:not(:last-child)::after{content:"";position:absolute;top:50%;left:58%;width:84%;height:4px;margin-top:-2px;background:#cfae6a;z-index:0}
+.care-day-node i{position:relative;z-index:1;display:grid;place-items:center;width:24px;height:24px;border:3px solid #b98a3c;border-radius:50%;background:#fbeccb;font-style:normal;font-size:12px}
+.care-day-node.done i,.care-day-node.now i{border-color:#0b1426;background:var(--care-navy);color:var(--care-gold-l)}
+.care-day-node.now i{box-shadow:0 0 0 3px #ffd36a,0 0 10px #ffd36a}
+.care-day-node.done:not(:last-child)::after{background:var(--care-navy)}
+.care-hud-tools{display:flex;align-items:center;gap:10px}
+.care-ap{box-sizing:border-box;display:flex;align-items:center;gap:8px;height:52px;border:solid transparent;border-width:14px 18px 14px 52px;padding:0 0 0 4px;border-image:url("../../assets/art-final/ui/task-progress-bar.png") 14 18 14 52 fill/14px 18px 14px 52px stretch;image-rendering:pixelated;min-width:170px}
+.care-ap>*{image-rendering:auto}
+.care-ap small{font-weight:900;color:var(--care-ink);font-size:13px}
+.care-token-row{display:flex;gap:4px}
+.care-token{font-size:20px;line-height:1;color:#d29b32;text-shadow:0 2px 0 #7a4f10}
+.care-token.off{color:#a79a80;text-shadow:none;filter:grayscale(1)}
+.care-journal-button{position:relative;display:flex;align-items:center;gap:6px;height:48px;padding:0 14px;border:3px solid var(--care-gold);background:linear-gradient(#27457a,#16294d);color:var(--care-gold-l);cursor:pointer;font:inherit;box-shadow:0 3px 0 #0b1426,inset 0 0 0 2px #0b1426}
+.care-journal-button span{font-size:19px}.care-journal-button b{font-size:15px}
+.care-journal-button:hover{filter:brightness(1.15)}
+.care-journal-button em{position:absolute;right:-5px;top:-5px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border-radius:11px;background:#ffd36a;color:#3a2a14;font-style:normal;font-weight:950;border:2px solid #0b1426}
+
+.care-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:8px;min-height:0}
+.care-stage-col{min-width:0;min-height:0}
+
+/* 場景 */
+.care-scene{position:relative;height:100%;min-height:0;overflow:hidden;border:3px solid var(--care-gold);background:#33271d;box-shadow:0 0 0 2px #0b1426}
+.care-scene>img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.care-scene .care-background{position:absolute;inset:0}
+.care-scene::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent 60%,#1b0f0555),radial-gradient(ellipse at 50% 40%,transparent 55%,#1b0f0533)}
+/* 玩家角色(裝扮台):放大並貼底站在地板上;畫布本身是方形、人物約佔 75% 高 */
+.care-scene .care-elder{position:absolute;z-index:3;left:1%;bottom:-6%;height:90%;aspect-ratio:1;width:auto;filter:drop-shadow(0 8px 6px #2b211677);pointer-events:none;transform-origin:50% 100%}
+.care-scene.is-acted .care-elder{animation:care-nod .5s ease-out}
+.care-name{position:absolute;z-index:6;top:10px;left:10px;box-sizing:border-box;padding:0;color:var(--care-gold-l);font-weight:900;font-size:16px;border:solid transparent;border-width:8px 26px;border-image:url("../../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/8px 26px stretch;image-rendering:pixelated;white-space:nowrap;line-height:1.1}
+
+/* 漫畫對話框:尾巴在左下,指向角色嘴邊(位置由 --mx/--my 控制,單位為場景百分比) */
+.care-scene{--mx:28%;--my:52%}
+.care-speech{position:absolute;z-index:8;left:calc(var(--mx) - 6px);bottom:calc(100% - var(--my) + 20px);box-sizing:border-box;width:max-content;max-width:38%;min-width:150px;padding:0;display:grid;border:solid transparent;border-width:12px 16px 20px 44px;border-image:url("../../assets/art-final/ui/dialog-bubble.png") 12 12 20 56 fill/12px 16px 20px 44px stretch;image-rendering:pixelated;color:var(--care-ink);font-weight:800;font-size:19px;line-height:1.45;cursor:pointer;filter:drop-shadow(0 5px 6px #0007);animation:care-pop .28s ease-out;transform-origin:20px 100%}
+.care-speech>span{grid-area:1/1;image-rendering:auto;padding:0 0 0 0}
+.care-speech-ghost{visibility:hidden}
+.care-speech-type{pointer-events:none}
+.care-event-tag{position:absolute;z-index:6;top:10px;right:10px;display:grid;gap:2px;width:27%;box-sizing:border-box;padding:8px 12px;border:3px solid var(--care-gold);background:#10203ef0;color:#fff;box-shadow:0 0 0 2px #0b1426,0 4px 10px #0006}
+.care-event-tag small{color:var(--care-gold-l);font-weight:900;letter-spacing:.08em;font-size:11px}
+.care-event-tag strong{font-size:16px;color:#fff3cf}
+.care-event-tag span{font-size:12px;line-height:1.45;color:#dfe8f5}
+
+/* 今日餐點:墊布 + 光暈 + 熱氣,名牌放在餐點圖下方、不蓋住圖 */
+.care-meal{position:absolute;z-index:5;right:10px;bottom:10px;width:30%;display:grid;gap:6px;justify-items:center}
+.care-placemat{position:relative;width:100%;padding:16px 14px 12px;display:grid;place-items:center;border:3px solid #7a4f10;border-radius:50% / 42%;background:
+  radial-gradient(ellipse at 50% 45%,#ffe9b066,transparent 62%),
+  repeating-conic-gradient(#f3d9a6 0 25%,#e9bf7a 0 50%) 0 0/22px 22px;box-shadow:0 0 0 2px #0b1426,0 8px 14px #0006,inset 0 0 18px #7a4f1055}
+.care-plate{position:relative;width:78%;border-radius:50%;overflow:hidden;border:4px solid #fff7e3;box-shadow:0 0 0 3px #b98a3c,0 0 22px #ffd36ab0,0 6px 8px #0006;background:#e8e1d0}
+.care-food{aspect-ratio:384/342;background-image:url("../assets/food-atlas.png");background-size:400% 300%;image-rendering:pixelated}
+.care-steam{position:absolute;z-index:2;top:2%;width:14px;height:34px;border-radius:50%;background:radial-gradient(ellipse,#ffffffaa,transparent 70%);filter:blur(2px);opacity:0;animation:care-steam 3s ease-in infinite}
+.care-steam.s1{left:34%}.care-steam.s2{left:50%;animation-delay:1s}.care-steam.s3{left:64%;animation-delay:2s}
+.care-meal-chip{box-sizing:border-box;width:100%;display:grid;gap:1px;padding:0;text-align:center;color:#fff3cf;border:solid transparent;border-width:8px 26px;border-image:url("../../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/8px 26px stretch;image-rendering:pixelated;line-height:1.2}
+.care-meal-chip>*{image-rendering:auto}
+.care-meal-chip small{font-weight:900;color:#ffd36a;font-size:11px}
+.care-meal-chip strong{font-size:16px;color:#fff3cf}
+.care-meal-chip span{font-size:11px;color:#c9d6ea}
+
+/* 右欄 */
+.care-aside{display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:6px;min-height:0}
+.care-panel{min-height:0;padding:2px 4px;overflow:hidden}
+.care-panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-weight:950;font-size:16px}
+.care-panel-title small{padding:1px 8px;border:2px solid #b98a3c;background:#fff3d2;color:var(--care-ink2);font-size:11px}
+.care-stats{display:grid;gap:6px}
+.care-stat-head{display:flex;align-items:center;gap:6px;font-size:13px}
+.care-stat-head span{display:flex;align-items:center;gap:5px;font-weight:850}
+.care-stat-head span b{font-size:15px}
+.care-stat-head strong{margin-left:auto}
+.care-stat-head small{min-width:44px;font-weight:950;text-align:right}
+.care-stat progress{display:block;width:100%;height:10px;margin-top:3px;appearance:none;border:2px solid #7a4f10;background:#e3cf9f;overflow:hidden}
+.care-stat progress::-webkit-progress-bar{background:#e3cf9f}
+.care-stat progress::-webkit-progress-value{background:linear-gradient(#58b07e,#2f7153)}
+.care-stat progress::-moz-progress-bar{background:#2f7153}
+.care-stat .up{color:#1f7a4d}.care-stat .down{color:#a3321f}
+.care-active{display:flex;flex-wrap:wrap;gap:5px}
+.care-active span{padding:4px 7px;border:2px solid #4f8862;background:#e4efdc;color:#2f5a40;font-size:12px;font-weight:800}
+.care-active .muted{border-color:#c4ae7d;background:#f3e3bd;color:#7a6a45}
+.care-turn-panel{display:flex;flex-direction:column}
+.care-turn-panel>p{margin:0 0 6px;line-height:1.4;font-size:13px}
+.care-end-turn{margin-top:auto;min-height:42px;border:3px solid #0b1426;background:linear-gradient(#3f9168,#2a6a4b);color:#fff;font:950 16px/1 inherit;font-family:inherit;cursor:pointer;box-shadow:0 4px 0 #17432f}
+.care-end-turn:not(:disabled):hover{filter:brightness(1.1)}
+.care-end-turn:disabled{background:#c9b88e;color:#7a6a45;box-shadow:none;cursor:not-allowed}
+.care-end-turn:not(:disabled){animation:care-pulse 1.2s ease-in-out infinite}
+.care-status-text{margin:6px 0 0!important;font-size:11px!important;color:#6f5a35}
+
+/* 技能列 */
+.care-actions{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;min-height:0}
+.care-actions button{position:relative;box-sizing:border-box;display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:8px;min-width:0;height:100%;padding:0 6px;border:12px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/12px stretch;image-rendering:pixelated;background:none;color:var(--care-ink);text-align:left;cursor:pointer;font:inherit;filter:drop-shadow(0 4px 0 #0b142680);transition:transform .12s}
+.care-actions button>*{image-rendering:auto}
+.care-actions button:hover:not(:disabled){transform:translateY(-3px);filter:drop-shadow(0 4px 0 #0b142680) brightness(1.06)}
+.care-actions button:active:not(:disabled){transform:translateY(1px)}
+.care-actions button:disabled{opacity:.5;cursor:not-allowed;filter:grayscale(.8)}
+.care-action-icon{display:grid;place-items:center;width:42px;height:42px;border:2px solid #b98a3c;background:#f3dba5;font-size:23px}
+.care-action-copy{display:grid;min-width:0}
+.care-action-copy strong{font-size:17px}
+.care-action-copy small{overflow:hidden;color:#6b5a38;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.care-actions button>b{padding:3px 6px;border:2px solid #7a4f10;background:#ffe3a0;color:#6a420a;font-size:11px;white-space:nowrap}
+
+/* 行動抽屜 */
+.care-choice{position:absolute;z-index:30;right:8px;top:80px;max-height:calc(100% - 172px);width:600px;box-sizing:border-box;padding:6px 12px;border:16px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/16px stretch;image-rendering:pixelated;background:none;color:var(--care-ink);filter:drop-shadow(0 12px 24px #000a);overflow:auto;animation:care-pop .2s ease-out}
+.care-choice[hidden]{display:none}
+.care-choice>*{image-rendering:auto}
+.care-choice-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.care-choice-head h4{font-size:22px;margin:2px 0 6px}
+.care-choice-head small{font-weight:900;color:#8a4f0c}
+.care-choice>p{margin:0 0 8px;line-height:1.45;font-size:13px}
+.care-x{display:grid;place-items:center;width:36px;height:36px;border:3px solid var(--care-gold);background:var(--care-navy);color:var(--care-gold-l);font-size:22px;line-height:1;cursor:pointer}
+.care-x:hover{filter:brightness(1.2)}
+.care-meals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.care-meals article{display:flex;flex-direction:column;min-width:0;padding:8px;border:2px solid #b98a3c;background:#f7e2b2}
+.care-meals h5{margin:6px 0 2px;font-size:14px}
+.care-meals p{flex:1;margin:0 0 4px;font-size:11px;line-height:1.4}
+.care-meals .care-food{width:100%}
+.care-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;font-size:10px;font-weight:800}
+.care-meals button,.care-options button{font:inherit;cursor:pointer}
+.care-meals button{margin-top:6px;min-height:32px;border:2px solid #0b1426;background:linear-gradient(#3f9168,#2a6a4b);color:#fff;font-size:11px;font-weight:900}
+.care-meals button:hover,.care-options button:not(:disabled):hover{filter:brightness(1.08)}
+.care-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.care-options button{display:grid;gap:4px;align-content:start;min-height:96px;padding:9px;border:2px solid #b98a3c;background:#fff3d2;color:var(--care-ink);text-align:left}
+.care-options button:disabled{opacity:.5;cursor:not-allowed}
+.care-options strong{font-size:14px}.care-options span{font-size:12px;line-height:1.4}.care-options small{color:#8a4f0c;font-size:11px;font-weight:900}
+
+/* ---------- 日誌 ---------- */
+.care-journal{height:100%;min-height:0;padding:12px}
+.care-journal>header{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 6px}
+.care-journal>header h3{margin:0;color:var(--care-gold-l);font-size:28px}
+.care-journal>header .eyebrow{color:#9fb6d9}
+.journal-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:10px;height:calc(100% - 66px);min-height:0}
+.journal-book{box-sizing:border-box;min-height:0;padding:2px 6px;border:16px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/16px stretch;image-rendering:pixelated;background:none;overflow:auto;color:var(--care-ink)}
+.journal-book>*{image-rendering:auto}
+.journal-title{display:flex;align-items:center;gap:10px;padding:0 0 6px;border-bottom:2px dashed #b98a3c}
+.journal-title>span{font-size:26px}.journal-title div{display:grid}.journal-title strong{font-size:18px}.journal-title small{color:#6b5a38}
+.journal-groups{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 0 0}
+.journal-group{padding:8px;border:2px solid #cfae6a;background:#fff3d2}
+.journal-group h4{margin:0 0 6px;color:#8a4f0c}
+.journal-clue{display:grid;grid-template-columns:26px 1fr;gap:6px;align-items:start;margin:5px 0}
+.journal-clue>span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--care-navy);color:var(--care-gold-l);font-weight:950;font-size:12px}
+.journal-clue.locked>span{background:#c9b88e;color:#7a6a45}
+.journal-clue p{margin:0;font-size:12px;line-height:1.45}.journal-clue.locked p{color:#9a8a68}
+.journal-days{display:grid;gap:6px;padding:8px 0 0}
+.journal-day{display:grid;grid-template-columns:62px 1fr;gap:8px;padding:7px;border:2px solid #cfae6a;background:#fff3d2}
+.journal-day>b{color:#8a4f0c}.journal-day div{display:grid;gap:2px}.journal-day span{font-size:12px;color:#6b5a38}
+.journal-empty{padding:12px;color:#7d6c48}
+.journal-strategies{margin:10px 0 0;padding:10px;border-left:5px solid var(--care-navy);background:#ecdcb0}
+.journal-strategies p{margin:4px 0 0}
+
+/* ---------- 每日結算 / 最終結算:一屏放下,不捲動 ---------- */
+.care-summary,.care-final{display:grid;gap:8px;padding:10px 16px 12px}
+.care-sum-title{display:grid;justify-items:center;gap:2px;padding:6px 0 2px}
+.care-sum-title span{color:#9fb6d9;font-weight:900;letter-spacing:.14em;font-size:13px}
+.care-sum-title strong{color:var(--care-gold-l);font-size:30px;line-height:1.15;text-shadow:0 3px 0 #0b1426}
+.care-summary{grid-template-rows:auto minmax(0,1fr) auto auto auto}
+.care-sum-main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 300px;gap:10px;min-height:0}
+.care-sum-talk{position:relative;min-height:0;overflow:hidden;border:3px solid var(--care-gold);box-shadow:0 0 0 2px #0b1426;background:url("../assets/nutrition-rpg-background.png") 30% 60%/cover;image-rendering:pixelated}
+.care-sum-talk .care-elder{position:absolute;left:-4%;bottom:-8%;height:86%;aspect-ratio:1;width:auto;pointer-events:none;filter:drop-shadow(0 8px 6px #2b211677)}
+.care-speech.care-speech-sum{left:26%;bottom:auto;top:8%;max-width:68%;font-size:18px}
+.care-sum-plate{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.care-leftovers{position:relative;width:190px;border:6px solid #fff7e3;border-radius:50%;overflow:hidden;background:#e8e1d0;box-shadow:0 0 0 3px #b98a3c,0 6px 10px #0005}
+.care-cover-food{position:absolute;inset:0 auto 0 0;width:0;background:#e8e1d0f0;transition:width 1.8s ease}
+.care-sum-rate strong{display:block;font-size:64px;line-height:1;color:#2a6a4b;text-shadow:0 3px 0 #fff3cf}
+.care-sum-rate p{margin:2px 0 0;font-weight:900}.care-sum-rate small{color:#6b5a38}
+.care-sum-stats{display:flex;flex-direction:column;justify-content:center;padding:2px 6px}
+.care-sum-stats .care-stats{gap:12px}
+.care-summary-line,.care-summary-clue{margin:0;padding:0 8px;font-size:14px;line-height:1.45;text-align:center}
+.care-summary-clue{text-align:left}
+.care-summary>.primary-button{justify-self:center;min-width:320px}
+.care-summary-line.care-card,.care-summary-clue.care-card{border-width:10px;border-image-width:10px}
+
+.care-final{grid-template-rows:auto minmax(0,1fr) auto auto}
+.care-final-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;min-height:0}
+.care-final-left{display:flex;flex-direction:column;gap:6px;min-height:0;padding:2px 8px;overflow:hidden}
+.care-final-left .care-stats{grid-template-columns:1fr 1fr;gap:6px 16px}
+.care-final-left h4{margin:6px 0 0;font-size:19px;color:#8a4f0c}
+.care-final-left p{margin:0;font-size:16px;line-height:1.6}
+.care-final-right{display:grid;grid-template-rows:1fr 1fr;gap:8px;min-height:0}
+.care-final-right figure{margin:0;min-height:0;display:flex;flex-direction:column;padding:0 4px}
+.care-final-right figcaption{font-weight:900;font-size:14px}
+.care-final-right svg{flex:1;min-height:0;width:100%;font:11px system-ui;fill:#5a4524}
+.care-line{stroke-dasharray:1;stroke-dashoffset:1;animation:care-draw 1.4s ease-out .2s forwards}
+.care-final-bar{display:flex;align-items:center;justify-content:center;gap:16px}
+.care-final-bar h4{margin:0;color:var(--care-gold-l);font-size:22px;text-shadow:0 2px 0 #0b1426}
+.care-final-bar .actions{margin:0;display:flex;gap:10px}
+.care-final .care-note{margin:0;text-align:center;color:#9fb6d9}
+.care-log-pop{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:#060c1ac8}
+.care-log-pop[hidden]{display:none}
+.care-log-card{width:min(760px,92%);max-height:88%;display:flex;flex-direction:column;padding:4px 8px}
+.care-log-card header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:18px}
+.care-log{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:auto}
+.care-log article{padding:8px;border:2px solid #cfae6a;background:#fff3d2}
+.care-log h5{margin:0 0 3px;font-size:14px}.care-log p{margin:0;font-size:12px;line-height:1.4}
+
+.calc-display{display:block;width:100%;min-height:50px;padding:12px;background:#243e35;color:#fff;font:24px monospace;text-align:right;overflow-wrap:anywhere;border-radius:8px}.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px}.calc-keys button{min-height:42px;border:1px solid #b7b5a4;border-radius:7px;background:#fff;font-size:18px;cursor:pointer}.calc-keys button:hover{background:#ccead9}.calc-keys button[data-key="="]{background:#307354;color:white}
+
+@keyframes care-pop{from{opacity:0;transform:translateY(6px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes care-float{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes care-nod{0%{transform:translateY(0)}30%{transform:translateY(-3%)}60%{transform:translateY(0)}80%{transform:translateY(-1%)}100%{transform:translateY(0)}}
+@keyframes care-steam{0%{opacity:0;transform:translateY(8px) scaleY(.6)}30%{opacity:.8}100%{opacity:0;transform:translateY(-46px) scaleY(1.5)}}
+@keyframes care-pulse{50%{box-shadow:0 4px 0 #17432f,0 0 14px #7be0a8}}
+@keyframes care-draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.care-steam,.care-line,.care-end-turn,.care-scene.is-acted .care-elder{animation:none}.care-line{stroke-dashoffset:0}}

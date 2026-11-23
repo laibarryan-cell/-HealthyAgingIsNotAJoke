@@ -1,0 +1,456 @@
+/* room1-layout.css — 房間 1 共通版面層(載入順序最後)
+   G1 遊玩區放大且一屏看完、G2 版面與整體 UI 一致、G3 提示/完成一律在原畫面以對話框跳出。
+   只動版面與樣式,不動教育內容與遊戲流程。 */
+
+/* ---------- R1-06 居家安全探索:互動提示改用與房間對話框一致的樣式 ---------- */
+.explore-interaction-dialog.au-dialog {
+  position: absolute; left: 0; right: 0; bottom: calc(var(--au-s) * 6px);
+  width: auto; transform: none; padding: 0 8px;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+  z-index: 70;
+}
+.explore-interaction-dialog.au-dialog[hidden] { display: none; }
+.explore-interaction-dialog .au-dlg-row { align-items: flex-end; }
+.explore-interaction-dialog .au-dlg-name.explore-interaction-title {
+  margin: 0; color: #ffe9b0; font-weight: 900; text-shadow: none;
+}
+.explore-interaction-dialog .au-dlg-text.explore-interaction-text {
+  margin: 0; color: var(--au-text); line-height: 1.38;
+}
+.explore-interaction-dialog .au-dlg-wrap { display: flex; flex-direction: column; align-items: stretch; }
+.explore-interaction-dialog .au-dlg-wrap .au-dlg-name { align-self: flex-start; }
+.explore-interaction-dialog .au-btn.explore-dialog-button {
+  --b: var(--au-h);
+  align-self: flex-end; width: auto; margin-top: calc(var(--au-s) * 2px);
+  min-height: calc(44px * var(--b)); padding: 0 4px; box-shadow: none; border-radius: 0;
+  border-width: calc(14px * var(--b)) calc(24px * var(--b));
+  border-image: url("../assets/art-final/ui/pin-display.png") 16 24 fill / calc(14px * var(--b)) calc(24px * var(--b)) stretch;
+  color: var(--au-ink); font-size: calc(var(--au-s) * 3px + 15px);
+}
+
+/* =====================================================================
+   G1 共通版面:非房間畫面(各小遊戲、玩家判斷、衛教、評量、探索、醫療資源)
+   以 room1-layout.js 依視窗等比算出 --r1-z,整個畫面縮放到「一屏剛好放下」,不需下捲。
+   設計基準為 1280x720 以上;縮放後的版面可用高度固定為 100dvh / --r1-z。
+   ===================================================================== */
+html.r1-fit, html.r1-fit body { overflow: hidden; height: 100%; }
+html.r1-fit .view:not(.room-view) {
+  zoom: var(--r1-z, 1);
+  height: calc(100dvh / var(--r1-z, 1));
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+html.r1-fit .view:not(.room-view)[hidden] { display: none !important; }
+
+/* ---------- G2 標題列:與房間 HUD 同一套木框/暖金樣式 ---------- */
+html.au-on body[data-au-room] .mission-bar {
+  position: relative; z-index: 5; flex: none;
+  width: 100% !important; max-width: none !important; margin: 0 !important; box-sizing: border-box;
+  padding: calc(var(--au-h) * 4px) max(12px, calc((100% - 1260px) / 2)) !important;
+  gap: calc(var(--au-h) * 8px) !important;
+  background: linear-gradient(#14294a, #0e1c35) !important;
+  border-bottom: calc(var(--au-h) * 3px) solid var(--au-gold);
+  box-shadow: 0 calc(var(--au-h) * 3px) 0 var(--au-navy-d);
+  color: #ffe9b0 !important; align-items: center !important; flex-wrap: nowrap; justify-content: space-between !important;
+}
+html.au-on body[data-au-room] .mission-bar .mission-heading {
+  flex: 1 1 0 !important; min-width: 0 !important; margin: 0 !important; box-sizing: border-box; text-align: center;
+  min-height: calc(65px * var(--au-h)); border-style: solid; border-color: transparent;
+  border-width: calc(14px * var(--au-h)) calc(30px * var(--au-h)) calc(14px * var(--au-h)) calc(60px * var(--au-h));
+  border-image: url("../assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill / calc(14px * var(--au-h)) calc(30px * var(--au-h)) calc(14px * var(--au-h)) calc(60px * var(--au-h)) stretch;
+  image-rendering: pixelated; display: flex; flex-direction: column; justify-content: center;
+}
+html.au-on body[data-au-room] .mission-bar .eyebrow {
+  display: block !important; margin: 0 !important; color: #6b4a1e !important;
+  font-size: calc(var(--au-h) * 3px + 13px) !important; letter-spacing: .06em !important; font-weight: 800 !important; text-transform: none !important;
+}
+html.au-on body[data-au-room] .mission-bar :is(h1, h2, .eyebrow) {
+  color: #3a2a14 !important;
+}
+html.au-on body[data-au-room] .mission-bar h2 {
+  margin: 0 !important; color: #3a2a14 !important; font-size: calc(var(--au-h) * 4px + 19px) !important; line-height: 1.15 !important;
+}
+html.au-on body[data-au-room] .mission-bar .progress-chip {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; white-space: nowrap; min-height: calc(56px * var(--au-h));
+  border-style: solid; border-color: transparent;
+  border-width: calc(14px * var(--au-h)) calc(18px * var(--au-h)) calc(14px * var(--au-h)) calc(52px * var(--au-h));
+  border-image: url("../assets/art-final/ui/task-progress-bar.png") 14 18 14 52 fill / calc(14px * var(--au-h)) calc(18px * var(--au-h)) calc(14px * var(--au-h)) calc(52px * var(--au-h)) stretch;
+  image-rendering: pixelated; color: var(--au-text);
+  font: 900 calc(var(--au-h) * 2px + 16px) / 1 "Noto Sans TC", system-ui, sans-serif;
+}
+/* 標題列右側沒有進度膠囊的畫面,留出同寬空位讓標題置中 */
+.mission-bar:not(:has(.progress-chip))::after { content: ""; flex: 0 0 calc(var(--au-h) * 120px); }
+
+/* ---------- 方格表 / 老花眼鏡 / 眼藥水 觀察頁:照片放大填滿一屏 ---------- */
+html.r1-fit .vision-layout {
+  flex: 1 1 0; min-height: 0;
+  width: min(1440px, calc(100% - 7rem));
+  margin: .45rem auto .55rem;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1rem;
+}
+html.r1-fit .vision-layout .experiment-card {
+  display: flex; flex-direction: column; min-height: 0; padding: .6rem 1rem .5rem;
+}
+html.r1-fit .vision-layout .instruction-row { flex: none; margin-bottom: .4rem; }
+html.r1-fit .vision-layout .instruction-row p { font-size: 1.2rem; font-weight: 600; }
+html.r1-fit .vision-layout .hold-status { font-size: 1rem; padding: .4rem .8rem; }
+html.r1-fit .vision-layout :is(.vision-stage, .presbyopia-stage, .cataract-stage) {
+  flex: 1 1 0; min-height: 0; width: auto; max-width: 100%; align-self: center; aspect-ratio: 16 / 9;
+}
+html.r1-fit .vision-layout .stage-footer { flex: none; margin-top: .35rem; font-size: 1rem; }
+html.r1-fit .vision-layout .clue-panel { padding: 1.4rem 1.4rem; }
+html.r1-fit .vision-layout .panel-number { font-size: 5.4rem; }
+html.r1-fit .vision-layout .clue-panel h3 { font-size: 1.6rem; margin: .5rem 0 .8rem; }
+html.r1-fit .vision-layout .clue-panel > p:not(.panel-number) { font-size: 1.2rem; }
+
+/* ---------- G2 面板外框:與標題列同一套「深藍底 + 暖金框」 ---------- */
+html.r1-fit :is(.experiment-card, .clue-panel, .education-card, .task-card, .assessment-shell, .cataract-assessment-panel, .cataract-assessment-stage-wrap) {
+  border: 3px solid #c98c1c; border-radius: 6px;
+  background: linear-gradient(160deg, #172b4e, #0e1c35);
+  box-shadow: inset 0 0 0 2px #0b1426, 0 6px 0 #0b1426, 0 12px 24px rgba(0, 0, 0, .35);
+}
+
+/* ---------- 玩家判斷(三關各一頁):左題幹、右選項 ---------- */
+html.r1-fit .learning-view { padding-bottom: 0; }
+html.r1-fit .learning-view > .task-card {
+  flex: 1 1 0; min-height: 0; width: min(1360px, calc(100% - 7rem)); margin: .7rem auto .9rem; padding: 1.4rem 1.8rem;
+  display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: minmax(0, 1fr) auto;
+  column-gap: 2rem; row-gap: .6rem; align-items: stretch;
+}
+html.r1-fit .learning-view > .task-card .task-intro { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+html.r1-fit .learning-view > .task-card .task-intro h3 { font-size: 2.1rem; line-height: 1.35; margin: .4rem 0 .8rem; }
+html.r1-fit .learning-view > .task-card .task-intro > p { font-size: 1.25rem; }
+html.r1-fit .learning-view > .task-card .task-intro .eyebrow { font-size: 1rem; }
+html.r1-fit .learning-view > .task-card .choice-list { grid-column: 2; grid-row: 1; margin: 0; align-content: center; gap: .6rem; min-height: 0; }
+html.r1-fit .learning-view > .task-card .choice-option { min-height: 0; padding: .7rem 1rem; font-size: 1.28rem; line-height: 1.4; border-width: 2px; }
+html.r1-fit .learning-view > .task-card .choice-letter { width: 2.5rem; height: 2.5rem; font-size: 1.2rem; }
+html.r1-fit .learning-view > .task-card .choice-option { grid-template-columns: 2.5rem 1fr; }
+/* G3:回饋以原畫面中的對話框呈現,浮在題目下方,不增加頁面高度 */
+html.r1-fit .learning-view > .task-card .feedback-panel:not([hidden]) {
+  grid-column: 2; grid-row: 2; margin: 0; padding: .8rem 1.1rem;
+  border: 3px solid #c98c1c; border-radius: 4px; background: #f6dfae; color: #2a2230;
+  box-shadow: inset 0 0 0 2px #fff3cf;
+}
+html.r1-fit .learning-view > .task-card .feedback-panel strong { font-size: 1.25rem; color: #5a3a0c; }
+html.r1-fit .learning-view > .task-card .feedback-panel p { font-size: 1.12rem; color: #2a2230; line-height: 1.5; }
+html.r1-fit .learning-view > .task-card .feedback-panel[hidden] { display: none; }
+html.r1-fit .learning-view > .task-card .task-actions { grid-column: 2; grid-row: 3; margin: 0; }
+
+/* ---------- 衛教(認識黃斑部病變 / 老花眼 / 白內障) ---------- */
+html.r1-fit .education-view { padding-bottom: 0; }
+html.r1-fit .education-view > .education-card {
+  flex: 1 1 0; min-height: 0; width: min(1360px, calc(100% - 7rem)); margin: .7rem auto .9rem;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+}
+html.r1-fit .education-visual { min-height: 0; border-right: 3px solid #c98c1c; }
+html.r1-fit .education-copy { display: flex; flex-direction: column; justify-content: center; gap: .9rem; padding: 1.4rem 2.2rem; min-height: 0; }
+html.r1-fit .education-copy .learning-stepper { padding: 1.3rem 1.6rem; }
+html.r1-fit .education-copy .learning-stepper .learning-line { font-size: 2rem; min-height: 5.2em; margin: .6rem 0 1.1rem; line-height: 1.6; }
+html.r1-fit .education-copy .learning-actions button { min-height: 56px; font-size: 1.15rem; }
+html.r1-fit .education-copy .source-note { font-size: 1rem; margin: 0; }
+html.r1-fit .education-copy .eyebrow { font-size: 1rem; }
+html.r1-fit .education-copy > .primary-button { align-self: flex-start; font-size: 1.25rem; }
+
+/* ---------- 黃斑部學習評量(三張照片選取) ---------- */
+html.r1-fit .learning-view > .assessment-shell {
+  flex: 1 1 0; min-height: 0; width: min(1360px, calc(100% - 7rem)); margin: .7rem auto .9rem; padding: 1.1rem 1.6rem;
+  display: flex; flex-direction: column; gap: .7rem;
+}
+html.r1-fit .assessment-shell .assessment-intro { margin: 0; flex: none; }
+html.r1-fit .assessment-shell .assessment-intro p { font-size: 1.3rem; }
+html.r1-fit .assessment-shell .selection-count { font-size: 1.05rem; }
+html.r1-fit .assessment-shell .grid-choices { flex: 1 1 0; min-height: 0; }
+html.r1-fit .assessment-shell .grid-choice { display: flex; flex-direction: column; min-height: 0; }
+html.r1-fit .assessment-shell .assessment-media { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+html.r1-fit .assessment-shell .grid-choice > span { flex: none; padding: .5rem .9rem; }
+html.r1-fit .assessment-shell .grid-choice strong { font-size: 1.4rem; }
+html.r1-fit .assessment-shell .grid-choice small { font-size: 1rem; }
+html.r1-fit .assessment-shell .feedback-panel:not([hidden]) {
+  flex: none; margin: 0; padding: .6rem 1rem; border: 3px solid #c98c1c; border-radius: 4px; background: #f6dfae; color: #2a2230;
+  box-shadow: inset 0 0 0 2px #fff3cf;
+}
+html.r1-fit .assessment-shell .feedback-panel strong { font-size: 1.2rem; color: #5a3a0c; display: inline; margin-right: .6rem; }
+html.r1-fit .assessment-shell .feedback-panel p { display: inline; font-size: 1.1rem; color: #2a2230; }
+html.r1-fit .assessment-shell .task-actions { flex: none; margin: 0; }
+
+/* skin 的 all:unset 會蓋掉 [hidden],把隱藏中的按鈕補回來 */
+html.au-on body[data-au-room] :is(.primary-button, .secondary-button, .ghost-button, .text-button)[hidden] { display: none !important; }
+html.au-on body[data-au-room] .education-copy > .primary-button { align-self: flex-start; font-size: 1.25rem; }
+
+/* ---------- 老花眼鏡:閱讀距離評量(書本) ---------- */
+html.r1-fit .reading-assessment-view { min-height: 0; }
+html.r1-fit .reading-assessment-view .reading-stage { min-height: 0; flex: 1 1 0; height: 100%; }
+/* R1-04:書本改用像素風圖片(兩頁空白),文字疊在右頁中央區(約 x56~93%、y20~80%) */
+html.r1-fit .reading-assessment-view .open-book {
+  display: block; width: min(980px, 72%); aspect-ratio: 1600 / 900; container-type: inline-size;
+  background: url("assets/reading-book-open.png") center / 100% 100% no-repeat; image-rendering: pixelated;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .5));
+}
+html.r1-fit .reading-assessment-view .book-page-left,
+html.r1-fit .reading-assessment-view .book-spine { display: none; }
+html.r1-fit .reading-assessment-view .book-page-right {
+  position: absolute; left: 58%; top: 20%; width: 34%; height: 60%; padding: 0; border: 0; border-radius: 0;
+  background: none; box-shadow: none; display: flex; flex-direction: column; justify-content: center; gap: 2.2cqw;
+}
+html.r1-fit .reading-assessment-view .reading-book-text { flex: none; font-size: 3.1cqw; line-height: 1.7; color: #3a2a14; text-wrap: balance; }
+html.r1-fit .reading-assessment-view .book-clue-text { font-size: 2.8cqw; color: #5a3a0c; border-top-color: rgba(90, 58, 12, .35); }
+html.r1-fit .reading-assessment-view .reading-room-return { bottom: 1.6rem; }
+
+/* ---------- 眼藥水:白內障生活情境任務(左圖右提示) ---------- */
+html.r1-fit .cataract-assessment-view { padding-bottom: 0; }
+html.r1-fit .cataract-assessment-shell {
+  position: relative; flex: 1 1 0; min-height: 0;
+  width: min(1360px, calc(100% - 4rem)); margin: .6rem auto .8rem;
+  display: flex; flex-direction: row; gap: 1.1rem; align-items: center;
+  container-type: size;
+}
+/* 情境圖為 1672x941 橫幅:寬度取「剩餘寬度扣掉提示欄」與「依高度算出的 16:9 寬」的較小值,圖不裁切,點擊範圍用百分比對位 */
+html.r1-fit .cataract-assessment-stage { flex: none; position: relative; width: min(calc(100cqw - 17rem - 1.1rem), calc(100cqh * 1672 / 941)); height: auto; aspect-ratio: 1672 / 941; margin: 0; border: 3px solid #c98c1c; border-radius: 6px; }
+html.r1-fit .cataract-assessment-image { width: 100%; height: 100%; object-fit: fill; display: block; }
+html.r1-fit .cataract-assessment-panel { flex: 1 1 0; min-width: 0; align-self: stretch; min-height: 0; padding: 1.2rem 1.2rem; gap: 1rem; justify-content: flex-start; }
+html.r1-fit .assessment-copy-card { padding: 1rem 1.1rem; border-radius: 4px; background: rgba(0, 0, 0, .22); border: 2px solid rgba(201, 140, 28, .55); }
+html.r1-fit .assessment-copy-card .eyebrow { font-size: 1.05rem; }
+html.r1-fit .assessment-message { font-size: 1.4rem; line-height: 1.6; text-align: left; }
+html.r1-fit .assessment-panel-actions { margin-top: auto; display: flex; justify-content: flex-end; }
+html.r1-fit .assessment-next-button { font-size: 1.2rem; }
+/* 新情境圖(1672x941)的點擊範圍,數值為圖寬高的百分比 */
+html.r1-fit .key-hotspot { left: 44%; top: 63%; width: 20%; height: 20%; }
+html.r1-fit .hazard-pedestrian { left: 11.5%; top: 51%; width: 12%; height: 44%; }
+html.r1-fit .hazard-sign { left: 77.5%; top: 38%; width: 15%; height: 11%; }
+html.r1-fit .hazard-crosswalk {
+  left: 42%; top: 77.5%; width: 58%; height: 19.5%; border-radius: 0;
+  clip-path: polygon(1.2% 15.9%, 100% 4.6%, 100% 96%, 4.6% 96%);
+}
+html.r1-fit .hazard-crosswalk.is-selected::after,
+html.r1-fit .hazard-crosswalk.is-found::after { top: 38%; right: 42%; }
+/* G3:「評量完成」在原畫面以提示介面跳出 */
+html.r1-fit .cataract-assessment-summary:not([hidden]) {
+  position: absolute; inset: 0; z-index: 20; width: auto; margin: 0;
+  display: grid; place-items: center; background: rgba(5, 10, 20, .72);
+}
+html.r1-fit .cataract-assessment-summary[hidden] { display: none; }
+html.r1-fit .cataract-assessment-summary .result-step-card {
+  width: min(760px, 86%); padding: 2.2rem 2.6rem 2.4rem; text-align: center;
+  border: 4px solid #c98c1c; border-radius: 6px; background: #f6dfae; color: #2a2230;
+  box-shadow: inset 0 0 0 3px #fff3cf, 0 0 0 4px #0b1426, 0 18px 40px rgba(0, 0, 0, .55);
+  animation: r1-pop .22s ease-out;
+}
+html.r1-fit .cataract-assessment-summary .result-step-card .eyebrow { color: #7a4f10; font-size: 1.15rem; }
+html.r1-fit .cataract-assessment-summary .result-step-card h3 { margin: .4rem 0 .8rem; font-size: 2.3rem; color: #3a2a14; }
+html.r1-fit .cataract-assessment-summary .result-step-card p { font-size: 1.3rem; line-height: 1.6; color: #2a2230; }
+html.r1-fit .cataract-assessment-summary .result-step-card .primary-button { margin-top: 1.2rem; font-size: 1.3rem; }
+@keyframes r1-pop { from { opacity: 0; transform: translateY(10px) scale(.97); } }
+
+/* ---------- 拐杖:居家安全探索 ---------- */
+html.r1-fit .impact-runner-view .explore-shell {
+  flex: 1 1 0; min-height: 0; width: min(1360px, calc(100% - 7rem)); margin: .5rem auto .6rem;
+  display: flex; flex-direction: column;
+}
+html.r1-fit .impact-runner-view .impact-game-wrap { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+html.r1-fit .impact-runner-view .impact-game-wrap[hidden] { display: none; }
+html.r1-fit .impact-runner-view .impact-live-instruction { flex: none; width: 100%; margin: 0 0 .5rem; padding: .5rem 1rem; font-size: 1.1rem; border: 2px solid #c98c1c; border-radius: 4px; background: #0e1c35; }
+html.r1-fit .impact-runner-view .impact-live-instruction strong { font-size: 1.2rem; }
+html.r1-fit .impact-runner-view .explore-stage {
+  flex: 1 1 0; min-height: 0; max-height: none; width: auto; align-self: center; aspect-ratio: 3 / 2;
+  border: 3px solid #c98c1c; border-radius: 6px;
+}
+/* R1-07 探索完成:放大並與整體 UI 一致 */
+html.r1-fit .impact-runner-view .explore-result-card:not([hidden]) {
+  flex: 1 1 0; min-height: 0; width: 100%; margin: 0; padding: 1.6rem 2.4rem;
+  display: flex; flex-direction: column; justify-content: center; gap: .5rem;
+  border: 3px solid #c98c1c; border-radius: 6px; background: linear-gradient(160deg, #172b4e, #0e1c35); color: var(--ink);
+  box-shadow: inset 0 0 0 2px #0b1426, 0 6px 0 #0b1426, 0 12px 24px rgba(0, 0, 0, .35);
+}
+html.r1-fit .impact-runner-view .explore-result-card .eyebrow { font-size: 1.1rem; }
+html.r1-fit .impact-runner-view .explore-result-card h3 { margin: .2rem 0 .3rem; font-size: 2.3rem; color: var(--ink); }
+html.r1-fit .impact-runner-view .explore-result-card > p { font-size: 1.3rem; color: var(--muted); }
+html.r1-fit .impact-runner-view .explore-result-card .learning-stepper .learning-line { font-size: 1.9rem; min-height: 3.6em; }
+html.r1-fit .impact-runner-view .explore-result-card .learning-actions button { min-height: 54px; font-size: 1.15rem; }
+
+/* ---------- 藥盒:臺南醫療資源服務站 ---------- */
+html.r1-fit .resource-view .resource-shell {
+  flex: 1 1 0; min-height: 0; width: min(1360px, calc(100% - 7rem)); margin: .6rem auto .8rem;
+  display: flex; flex-direction: column;
+}
+html.r1-fit .resource-view .resource-panel:not([hidden]) {
+  flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+  border: 4px solid #c98c1c; box-shadow: inset 0 0 0 3px #0b1426, 0 6px 0 #0b1426, 0 12px 24px rgba(0, 0, 0, .35);
+  padding: .9rem 1.2rem;
+}
+html.r1-fit .resource-view .resource-mission-panel:not([hidden]) {
+  display: grid; grid-template-columns: minmax(300px, 420px) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr);
+  column-gap: 1rem; row-gap: .3rem;
+}
+html.r1-fit .resource-mission-panel .resource-puzzle-topbar { grid-column: 1; grid-row: 1; }
+html.r1-fit .resource-mission-panel .resource-puzzle-topbar h3 { margin: 0; font-size: 1.5rem; }
+html.r1-fit .resource-mission-panel .resource-puzzle-layout { display: contents; }
+html.r1-fit .resource-mission-panel .puzzle-board-wrap { grid-column: 2; grid-row: 1 / span 2; }
+html.r1-fit .resource-mission-panel .mission-paper { grid-column: 1; grid-row: 2; }
+html.r1-fit .resource-mission-panel .mission-paper { min-height: 0; padding: 1.5rem 1.1rem .8rem; overflow: hidden; display: flex; flex-direction: column; }
+html.r1-fit .resource-mission-panel .mission-paper h4 { margin: .2rem 0 .2rem; font-size: 1.5rem; }
+html.r1-fit .resource-mission-panel .mission-story { margin: 0 0 .5rem !important; font-size: 1rem; line-height: 1.5; }
+html.r1-fit .resource-mission-panel .mission-condition-title { margin-top: .4rem; padding-top: .4rem; }
+html.r1-fit .resource-mission-panel .mission-condition-list { margin: .4rem 0 .6rem; gap: .35rem; }
+html.r1-fit .resource-mission-panel .mission-condition-chip { padding: .4rem .7rem; font-size: 1.05rem; }
+html.r1-fit .resource-mission-panel .mission-route-status { margin-top: 0; padding: .6rem .8rem; }
+html.r1-fit .resource-mission-panel .mission-help { margin: auto 0 0 !important; padding: .5rem .7rem; font-size: .92rem; }
+html.r1-fit .resource-mission-panel .puzzle-board-wrap { display: flex; flex-direction: column; min-height: 0; padding: .6rem; }
+html.r1-fit .resource-mission-panel .puzzle-board-head { flex: none; margin-bottom: .4rem; padding: .4rem .7rem; font-size: 1rem; }
+html.r1-fit .resource-mission-panel .route-puzzle-board { flex: 1 1 0; min-height: 0; width: auto; align-self: center; aspect-ratio: 1; gap: 5px; }
+html.r1-fit .resource-mission-panel .puzzle-live-hint { flex: none; margin: .4rem 0 0 !important; padding: .4rem .7rem; font-size: 1rem; }
+/* 路徑接通 / 三題完成:放大置中 */
+html.r1-fit .resource-view :is(.mission-result-panel, .resource-final-panel):not([hidden]) {
+  width: min(1000px, 100%); margin: 0 auto; justify-content: center; text-align: center; gap: .4rem;
+}
+html.r1-fit .resource-view .mission-result-panel h3, html.r1-fit .resource-view .resource-final-panel h3 { font-size: 2.1rem; }
+html.r1-fit .resource-view .mission-result-card { width: 100%; max-width: 860px; padding: 1.2rem 1.6rem; }
+html.r1-fit .resource-view .mission-result-card h4 { font-size: 2rem; margin: .5rem 0 .8rem; }
+html.r1-fit .resource-view .mission-result-card dl div { grid-template-columns: 90px 1fr; font-size: 1.25rem; }
+html.r1-fit .resource-view .resource-detail-note, html.r1-fit .resource-view .resource-final-panel p { font-size: 1.15rem; }
+/* 資源查詢:清單在面板內自己捲,整頁不捲 */
+html.r1-fit .resource-view #resourceQueryStep { overflow: hidden; }
+html.r1-fit .resource-view #resourceQueryStep .district-grid { flex: none; }
+html.r1-fit .resource-view #resourceQueryStep .query-unit-area:not([hidden]) { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+html.r1-fit .resource-view #resourceQueryStep .unit-card-grid { flex: 1 1 0; min-height: 0; overflow-y: auto; }
+
+/* 資源頁結果/完成面板:精簡尺寸確保按鈕留在同一屏 */
+html.r1-fit .resource-view :is(.mission-result-panel, .resource-final-panel):not([hidden]) { padding: 1rem 1.6rem; gap: .25rem; }
+html.r1-fit .resource-view .mission-result-panel h3, html.r1-fit .resource-view .resource-final-panel h3 { margin: 0 0 .2rem; font-size: 1.9rem; }
+html.r1-fit .resource-view .mission-result-card { margin: .4rem auto; padding: .7rem 1.3rem; }
+html.r1-fit .resource-view .mission-result-card h4 { font-size: 1.7rem; margin: .3rem 0 .5rem; }
+html.r1-fit .resource-view .mission-result-card dl { gap: .4rem; }
+html.r1-fit .resource-view .mission-result-card dl div { grid-template-columns: 90px 1fr; padding: .4rem .7rem; font-size: 1.15rem; }
+html.r1-fit .resource-view .resource-detail-note, html.r1-fit .resource-view .resource-final-panel p { font-size: 1.05rem; margin: .3rem 0; }
+html.au-on body[data-au-room] .resource-view :is(.mission-result-panel, .resource-final-panel) > .primary-button { align-self: center; font-size: 1.25rem; }
+html.au-on body[data-au-room] .resource-view .resource-query-finish { margin-top: auto; text-align: center; }
+
+/* 修正:原本給深色對話框用的備註字色,在米色面板上看不見 */
+html.r1-fit .resource-view .resource-panel .resource-detail-note { color: #43505d !important; }
+/* skin 的 #openCode 選擇器權重含 id,按鈕對齊要用 id 才蓋得過 */
+#resourceView :is(.mission-result-panel, .resource-final-panel) > .primary-button { align-self: center; }
+:is(#educationView, #presbyopiaEducationView, #cataractEducationView) .education-copy > .primary-button { align-self: flex-start; }
+/* 資源查詢:區域做成一排精簡選項,單位清單吃剩下的高度 */
+html.r1-fit .resource-view #resourceQueryStep .resource-step-head { flex: none; }
+html.r1-fit .resource-view #resourceQueryStep .resource-step-head h3 { font-size: 1.6rem; margin: .1rem 0; }
+html.r1-fit .resource-view #resourceQueryStep .district-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .6rem; margin-top: .5rem; }
+html.r1-fit .resource-view #resourceQueryStep .district-choice { min-height: 0; padding: .55rem .8rem; grid-template-columns: auto 1fr; align-items: center; column-gap: .5rem; }
+html.r1-fit .resource-view #resourceQueryStep .district-choice .district-pin { grid-row: 1 / span 2; }
+html.r1-fit .resource-view #resourceQueryStep .district-choice strong { font-size: 1.25rem; }
+html.r1-fit .resource-view #resourceQueryStep .query-unit-area:not([hidden]) { margin-top: .6rem; }
+html.r1-fit .resource-view #resourceQueryStep .resource-step-head.compact { margin-top: .4rem; padding-top: .5rem; }
+html.r1-fit .resource-view #resourceQueryStep .unit-card-grid { margin-top: .5rem; gap: .6rem; align-content: start; }
+html.r1-fit .resource-view #resourceQueryStep .unit-card { min-height: 0; padding: .7rem .9rem; }
+html.r1-fit .resource-view #resourceQueryStep .unit-card strong { font-size: 1.2rem; }
+html.r1-fit .resource-view #resourceQueryStep .resource-query-finish { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: .6rem; }
+html.r1-fit .resource-view #resourceQueryStep .resource-query-finish p { margin: 0; font-size: 1.05rem; }
+html.au-on body[data-au-room] #resourceView :is(.mission-result-panel, .resource-final-panel) > .primary-button { align-self: center; }
+html.au-on body[data-au-room] :is(#educationView, #presbyopiaEducationView, #cataractEducationView) .education-copy > .primary-button { align-self: flex-start; }
+/* 已選區域後,收起「先選擇區域」大標,把高度讓給單位清單 */
+html.r1-fit .resource-view #resourceQueryStep:has(.query-unit-area:not([hidden])) > .resource-step-head { display: none; }
+html.r1-fit .resource-view #resourceQueryStep .unit-card-grid { grid-auto-rows: max-content; }
+
+/* 探索畫面較窄時(小視窗),互動提示依畫面寬度縮小,確保整個對話框都在畫面內 */
+.explore-stage { container-type: inline-size; }
+.explore-interaction-dialog .au-dlg-wrap { width: calc(361px * var(--au-s)); }
+@container (max-width: 920px) { .explore-interaction-dialog.au-dialog { --au-s: 1.5; } }
+@container (max-width: 760px) { .explore-interaction-dialog.au-dialog { --au-s: 1; } }
+
+/* R1-05:拐杖探索改用裝扮台的四向走路幀,左右不再用 CSS 鏡像 */
+html.r1-fit .explore-player.facing-left .explore-player-character,
+html.r1-fit .explore-player.facing-right .explore-player-character,
+html.r1-fit .explore-player.facing-left .explore-player-accessory,
+html.r1-fit .explore-player.facing-right .explore-player-accessory { transform: translateX(-50%); }
+
+/* ===== 第三修改計劃 D1-2:房一輸入密碼視窗與其他房間同一位置(畫面正中央),背景處理一致 ===== */
+.dialog-overlay:has(.room1-code-card){place-items:center!important;align-items:center!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+
+/* ===== 第三修改計劃 D1-1:白內障情境的鑰匙與「走在路上」三個點擊範圍 ===== */
+/* 依新情境圖(1672×941)重新對位,數值為圖寬高的百分比,範圍略大於物件,長者較好點 */
+html.r1-fit .hazard-pedestrian{left:30%;top:54%;width:11%;height:32%}
+html.r1-fit .hazard-sign{left:53.5%;top:32.5%;width:12%;height:13%}
+/* 點擊範圍不畫細線框:滑過時柔光、按下時下壓+閃光(與其他按鈕一致的按下回饋) */
+.cataract-assessment-stage .assessment-hotspot{border-color:transparent!important;outline:none!important;
+  transition:transform .12s cubic-bezier(.2,.9,.3,1.3),background .15s,box-shadow .15s,filter .12s}
+.cataract-assessment-stage .assessment-hotspot:is(:hover,:focus-visible){border-color:transparent!important;
+  background:radial-gradient(ellipse at center,rgba(255,226,150,.30),rgba(255,214,120,.10) 60%,rgba(255,214,120,0) 80%)!important;
+  box-shadow:0 0 18px 6px rgba(255,214,120,.35)!important;transform:scale(1.04)}
+.cataract-assessment-stage .assessment-hotspot:active{transform:scale(.94)!important;filter:brightness(1.35);
+  background:radial-gradient(ellipse at center,rgba(255,240,190,.55),rgba(255,214,120,.2) 65%,rgba(255,214,120,0) 85%)!important}
+.cataract-assessment-stage .assessment-hotspot.is-selected,.cataract-assessment-stage .assessment-hotspot.is-found{border-color:transparent!important;
+  background:radial-gradient(ellipse at center,rgba(255,214,120,.26),rgba(255,214,120,.08) 65%,rgba(255,214,120,0) 85%)!important;
+  box-shadow:0 0 0 3px rgba(255,214,120,.0),0 0 22px 8px rgba(255,200,90,.45)!important}
+.cataract-assessment-stage .assessment-hotspot.r1-press{animation:r1Press .38s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes r1Press{0%{transform:scale(.9);filter:brightness(1.6)}55%{transform:scale(1.08);filter:brightness(1.25)}100%{transform:scale(1);filter:none}}
+.r1-ripple{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;pointer-events:none;z-index:8;
+  background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,226,150,.6) 45%,rgba(255,214,120,0) 70%);animation:r1Ripple .5s ease-out forwards}
+@keyframes r1Ripple{to{transform:scale(6);opacity:0}}
+
+/* ===== 第三修改計劃 I 節:水管遊戲統一(與房三～五相同的需求/目標標示與結果區) ===== */
+/* 需求/目標:綠底白字徽章;格子淺綠底(原本深藍小標) */
+#resourceView .route-tile.role-start, #resourceView .route-tile.role-end { background: #dff3e6 !important; border-color: #1f8a66 !important; opacity: 1 !important; box-shadow: inset 0 0 0 2px #bfe8d6; }
+#resourceView .route-tile:is(.role-start, .role-end).is-connected { background: #c9efcf !important; }
+#resourceView .role-start .route-tile-label, #resourceView .role-end .route-tile-label { background: #16624a !important; color: #fff !important; border: 2px solid #fff !important; box-shadow: 0 2px 0 #0b3b2c; letter-spacing: .08em; font-weight: 900; }
+#resourceView .puzzle-board-head > span:not(.sr-only):not(#missionProgressText) { background: #16624a !important; color: #fff !important; border: 2px solid #bfe8d6; padding: 2px 12px !important; font-weight: 900; }
+/* 找到符合條件的單位:說明文字加深加大、按鈕改金色大按鈕 */
+#resourceView .mission-result-panel h3 { color: #3a2a14 !important; font-weight: 900; }
+#resourceView .mission-result-panel .resource-detail-note { color: #3a2a14 !important; font-size: 17px !important; font-weight: 700; line-height: 1.55; }
+#resourceView .mission-result-panel #nextEmergencyMission {
+  min-height: 0 !important; padding: 12px 40px !important; border-radius: 4px !important; font-size: 24px !important; font-weight: 900 !important; border-image: none !important;
+  background: linear-gradient(#ffd466, #f0a91c) !important; color: #3a2a14 !important; border: 3px solid #9a6208 !important; box-shadow: 0 5px 0 #6b4306, 0 0 0 2px #0b1426 !important; transition: transform .12s, filter .12s;
+}
+#resourceView .mission-result-panel #nextEmergencyMission:hover { transform: translateY(-2px); filter: brightness(1.08); }
+#resourceView .mission-result-panel #nextEmergencyMission:active { transform: translateY(4px); box-shadow: 0 1px 0 #6b4306 !important; }
+
+/* ===== 與朋友版 w10_1114 整合:黃斑部/老花眼/白內障的劇情衛教圖文(與房二～六一致:字幕條在上、圖片填滿) ===== */
+html.r1-fit .education-visual:has(.macular-story-caption) { display: flex !important; flex-direction: column; gap: 8px; padding: 10px; background: #0b1426 !important; }
+html.r1-fit .education-visual:has(.macular-story-caption) > .macular-story-caption { order: -1; flex: none; font-size: 1.15rem !important; padding: 10px 16px !important; min-height: 3.1em; display: flex; align-items: center; }
+html.r1-fit .education-visual:has(.macular-story-caption) > img { flex: 1 1 0 !important; min-height: 0 !important; width: 100% !important; height: 100% !important; max-height: none !important; object-fit: contain !important; background: #0b1426 !important; position: static !important; }
+html.r1-fit .education-view > .education-card:has(.macular-story-caption) { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important; }
+
+/* ===== 第三修改計劃新增 B1-3:拐杖三處互動後的衛教故事頁,改成與黃斑部/老花/白內障衛教相同的本專案版面 ===== */
+html.r1-fit #impactRunnerView #exploreResult.impact-post-learning {
+  box-sizing: border-box; width: min(1360px, calc(100% - 7rem)) !important; margin: .7rem auto .9rem !important; padding: 0 !important;
+  border: 3px solid #c98c1c !important; border-radius: 6px !important; background: linear-gradient(160deg, #172b4e, #0e1c35) !important;
+  box-shadow: inset 0 0 0 2px #0b1426, 0 6px 0 #0b1426, 0 12px 24px rgba(0,0,0,.35) !important; color: #ffe9b0 !important;
+  display: flex !important; flex-direction: column; min-height: 0; flex: 1 1 0; overflow: hidden !important;
+}
+html.r1-fit #impactRunnerView #exploreResult[hidden] { display: none !important; }
+html.r1-fit #impactRunnerView #exploreResult .safety-story-layout {
+  flex: 1 1 0; min-height: 0; display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important; gap: 0 !important; margin: 0 !important; align-items: stretch !important;
+}
+html.r1-fit #impactRunnerView #exploreResult .safety-story-media {
+  display: flex !important; flex-direction: column; gap: 8px; padding: 10px; min-height: 0; background: #0b1426 !important; border: 0 !important; border-right: 3px solid #c98c1c !important; border-radius: 0 !important; overflow: hidden;
+}
+html.r1-fit #impactRunnerView #exploreResult .safety-story-media > .macular-story-caption { order: -1; flex: none; font-size: 1.15rem !important; padding: 10px 16px !important; min-height: 3.1em; display: flex; align-items: center; }
+html.r1-fit #impactRunnerView #exploreResult .safety-story-media > img { flex: 1 1 0 !important; min-height: 0 !important; width: 100% !important; height: 100% !important; max-height: none !important; object-fit: contain !important; background: #0b1426 !important; border: 0 !important; border-radius: 0 !important; }
+html.r1-fit #impactRunnerView #exploreResult .learning-stepper {
+  align-self: center; margin: 1.4rem 2rem !important; padding: 1.3rem 1.6rem !important; background: rgba(255,255,255,.06) !important; border: 1px solid rgba(255,233,176,.25) !important; border-radius: 14px !important; box-shadow: none !important;
+}
+html.r1-fit #impactRunnerView #exploreResult .learning-stepper .learning-line { color: #ffe9b0 !important; font-size: 1.9rem !important; line-height: 1.6 !important; min-height: 4.8em; margin: .4rem 0 1rem !important; }
+html.r1-fit #impactRunnerView #exploreResult .result-clue-reveal { flex: none; display: flex; justify-content: center; padding: .7rem 1rem .9rem; border-top: 3px solid #c98c1c; background: #0e1c35; margin: 0 !important; }
+html.r1-fit #impactRunnerView #exploreResult .result-clue-reveal:not(:has(button:not([hidden]))) { display: none !important; }
+html.r1-fit #impactRunnerView #exploreResult .safety-story-media > img { animation: r1StoryIn .45s ease; }
+@keyframes r1StoryIn { from { opacity: .2; transform: scale(.985); } to { opacity: 1; transform: none; } }
+
+/* ===== 第三修改計劃新增 B1-1:長柄拖把互動 ===== */
+/* 場景中的拖把:不掛文字標籤,改成微微發亮,讓玩家自己發現 */
+#exploreStage .explore-mop { width: 7.5%; }
+#exploreStage .explore-mop img { height: 120px; animation: r1MopIdle 2.4s ease-in-out infinite; }
+#exploreStage .explore-mop .explore-mop-glint { position: absolute; left: 50%; top: 18%; width: 22px; height: 22px; transform: translate(-50%, 0); background: radial-gradient(circle, #fff9d6 0 20%, #ffd76a66 45%, transparent 70%); border-radius: 50%; animation: r1MopGlint 2.4s ease-in-out infinite; pointer-events: none; }
+@keyframes r1MopIdle { 0%, 100% { filter: drop-shadow(3px 4px 3px #0008); } 50% { filter: drop-shadow(0 0 7px #ffe08a) drop-shadow(3px 4px 3px #0008); } }
+@keyframes r1MopGlint { 0%, 60%, 100% { opacity: 0; transform: translate(-50%, 0) scale(.4); } 75% { opacity: 1; transform: translate(-50%, 0) scale(1.2); } }
+/* 拿到拖把後,角色身上帶著拖把 */
+#exploreStage .explore-player.has-mop::after { content: ""; position: absolute; right: -38%; bottom: 4%; width: 62%; height: 112%; background: url("assets/cane-long-mop.svg") center bottom / contain no-repeat; transform: rotate(14deg); transform-origin: 50% 100%; filter: drop-shadow(2px 3px 2px #0008); pointer-events: none; z-index: 2; }
+#exploreStage .explore-player.is-mopping-player::after { display: none; }
+@keyframes r1MopCarry { from { transform: rotate(4deg); } to { transform: rotate(24deg); } }
+/* 拖地:動作拉長、水漬逐漸變乾、完成時閃光 */
+#exploreStage .is-mopping .explore-mop-sweep { animation: cane-mop-sweep .3s ease-in-out 6 alternate !important; }
+#exploreStage #exploreWater img { transition: opacity 1.7s ease, filter 1.7s ease, transform 1.7s ease; }
+#exploreStage #exploreWater.is-drying img { opacity: .25; filter: saturate(.3) brightness(1.2); transform: scale(.85); }
+#exploreStage #exploreWater.is-dried img { opacity: 0; transform: scale(.7); }
+#exploreStage #exploreWater.is-dried::after { content: "✦"; position: absolute; left: 50%; top: 40%; color: #fff6c8; font-size: 34px; text-shadow: 0 0 10px #ffe08a; animation: r1Dry 1s ease-out forwards; opacity: 1; }
+@keyframes r1Dry { from { transform: translate(-50%, 0) scale(.4); opacity: 1; } to { transform: translate(-50%, -30px) scale(1.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #exploreStage .explore-mop img, #exploreStage .explore-mop .explore-mop-glint, #exploreStage .explore-player.is-mopping-player::after { animation: none !important; } }

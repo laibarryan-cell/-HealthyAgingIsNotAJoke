@@ -1,0 +1,18 @@
+/* Only the fourth module's contextual controls and onboarding are refined here. */
+.kitchen-theater{position:relative;padding-bottom:140px}
+.noise-speech{position:absolute;z-index:5;bottom:8px;width:min(680px,70%);padding:17px 23px;border:1px solid #c5d5c3;border-radius:14px;box-shadow:0 6px 20px #28433312;background:#f4f8ec;pointer-events:none}
+.noise-speech.grandson{right:7%;border-bottom-right-radius:3px;background:#eef5e6}
+.noise-speech.elder{left:7%;border-bottom-left-radius:3px;background:#e8f1f5;border-color:#bfd1dc}
+.noise-speech:before{content:'';position:absolute;bottom:100%;border:10px solid transparent;border-bottom-color:#eef5e6;right:19px}
+.noise-speech.elder:before{right:auto;left:19px;border-bottom-color:#e8f1f5}
+.noise-speech>span{display:block;font-size:13px;font-weight:700;color:#617961;margin-bottom:5px;letter-spacing:.12em}
+.noise-speech p{font-size:clamp(18px,1.65vw,24px);line-height:1.6;overflow-wrap:anywhere}
+.noise-turn-status{text-align:center;font-size:14px;color:#758069;min-height:28px;margin:5px auto 12px}
+.noise-object-popover{position:fixed;z-index:80;width:min(290px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;padding:20px;background:#fffaf0;border:2px solid #b9c8a4;border-radius:12px;box-shadow:0 12px 40px #182d3b55}
+.noise-object-popover h3{font-size:21px;padding-right:30px;margin:4px 0 14px}.noise-object-popover>p:not(.eyebrow){font-size:14px;color:#6c795e;margin-bottom:10px}
+.noise-menu-actions{display:grid;gap:9px}.noise-menu-actions button{font-size:17px;padding:10px 14px;text-align:left;min-height:48px}
+.noise-close{position:absolute;top:9px;right:9px;width:36px;height:36px;display:grid;place-items:center;background:#e8ebdd;border:1px solid #c9d1bb;border-radius:50%;font-size:25px;line-height:1;padding:0;color:#3a5849}
+.noise-help-footer{display:flex;justify-content:center;border-top:1px solid #dbe0d0;padding-top:18px;margin:22px auto 0;max-width:1180px}.noise-help-footer button{font-size:15px;min-height:44px;padding:9px 25px}
+.noise-help-dialog{width:min(620px,calc(100vw - 28px));padding:32px;max-height:calc(100dvh - 36px);border:1px solid #c0c9b1;box-shadow:0 20px 80px #142c4266;overscroll-behavior:contain}
+.noise-help-dialog::backdrop{background:#142b28b5;backdrop-filter:blur(4px)}.noise-help-dialog h3{font-size:27px;margin:10px 28px 21px 0;line-height:1.45}.noise-help-dialog>.eyebrow{padding-right:28px}.noise-help-dialog ol{padding-left:25px;display:grid;gap:13px;font-size:18px;line-height:1.7;margin:0 0 22px}.noise-help-note{padding:13px 16px;background:#e9eedf;color:#526747;border-left:3px solid #8ca471;font-size:15px}.noise-help-dialog .noise-close{top:12px;right:12px;width:38px;height:38px}
+@media(max-width:650px){.kitchen-theater{padding-bottom:180px}.noise-speech{width:90%;padding:14px 16px}.noise-speech.elder{left:3%}.noise-speech.grandson{right:3%}.noise-help-dialog{padding:25px 20px}.noise-help-dialog h3{font-size:23px}.noise-help-dialog ol{font-size:16px}.noise-object-popover{width:min(270px,calc(100vw - 24px))}}

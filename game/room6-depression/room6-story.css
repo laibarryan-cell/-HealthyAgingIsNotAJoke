@@ -1,0 +1,133 @@
+/* room6-story.css — 房間六「方格表模式」版面:頁首精簡、操作提示列、進度條 */
+.r6-bar { display: flex !important; align-items: center; gap: 18px; }
+.r6-bar h2 { margin: 0; flex: 1; text-align: left; }
+.r6-bar .color-progress { margin-left: auto; }
+.r6-bar .color-progress i { width: 34px; height: 16px; }
+.r6-toolbar { margin: 8px 0; padding: 0 28px; box-sizing: border-box; }
+.r6-toolbar .hint-btn { padding: 6px 16px; min-height: 38px; font-size: 17px; }
+.r6-toolbar[hidden] { display: none; }
+.sk-drop-list.sk-hidden { pointer-events: none; }
+/* 相簿:狀態文字只給輔助科技朗讀,不再顯示操作說明 */
+.factors-module .f-message { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.factors-module .f-assessment-feedback:has(> p:empty) { display: none; }
+
+/* ===== 第二修改計劃 C6-0:房間六主畫面比照房間一(背景保留白天色調,介面統一) ===== */
+html.au-on body[data-au-room="6"] #roomView { background: none; }
+html.au-on body[data-au-room="6"] #roomView .game-hud { margin: 0 !important; width: 100% !important; }
+/* 計時器用房間一的深藍名牌,不是星星進度牌 */
+html.au-on body[data-au-room="6"] .game-hud #roomTimer.progress-chip {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; min-height: calc(33px * var(--au-h)); min-width: calc(var(--au-h) * 60px + 20px);
+  border-style: solid; border-color: transparent; border-width: calc(8px * var(--au-h)) calc(26px * var(--au-h));
+  border-image: url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill / calc(8px * var(--au-h)) calc(26px * var(--au-h)) stretch; image-rendering: pixelated;
+  color: #ffe9b0; font: 900 calc(var(--au-h) * 2px + 16px) / 1 "Noto Sans TC", system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+/* 房間圖:房間一的方形金框 */
+html.au-on body[data-au-room="6"] #roomView .room-shell { padding: calc(var(--au-h) * 4px) 1rem 0; }
+html.au-on body[data-au-room="6"] #roomView .room-frame { border: 3px solid var(--au-gold, #c99a3c); border-radius: 0 !important; box-shadow: 0 0 0 2px #0b1426, 0 6px 0 #0b1426; width: min(1420px, calc(100% - .25rem), calc((100dvh - var(--au-hud, 90px) - 80px) * 16 / 9)) !important; }
+html.au-on body[data-au-room="6"] #roomView .room-frame:after { display: none; }
+html.au-on body[data-au-room="6"] #roomView .room-hint, html.au-on body[data-au-room="6"] .au-dock .room-hint { color: #ffe9b0 !important; text-shadow: 0 1px 2px #000; font-weight: 800; }
+/* 物品:不加框;從房間圖裁出的同一塊畫面,滑過放大發亮、按下下壓(C1,與房間一相同手感) */
+html.au-on body[data-au-room="6"] #roomView .hotspot { border: 0 !important; box-shadow: none !important; background-color: transparent; background-repeat: no-repeat; border-radius: 6px;
+  animation: none !important; cursor: pointer; transform-origin: center; transition: transform .16s cubic-bezier(.2,.9,.3,1.3), filter .16s; }
+html.au-on body[data-au-room="6"] #roomView .hotspot:hover, html.au-on body[data-au-room="6"] #roomView .hotspot:focus-visible { transform: scale(1.06); filter: brightness(1.18) drop-shadow(0 0 8px rgba(255,218,120,.95)); outline: none; z-index: 3; }
+html.au-on body[data-au-room="6"] #roomView .hotspot:active, html.au-on body[data-au-room="6"] #roomView .hotspot.is-pressed { transform: translateY(3px) scale(.96); filter: brightness(1.35); }
+html.au-on body[data-au-room="6"] #roomView .hotspot.r6-shimmer { animation: r6-shimmer 1.15s ease-out !important; }
+@keyframes r6-shimmer { 0%, 100% { filter: none; } 40% { filter: brightness(1.4) drop-shadow(0 0 12px rgba(255,218,120,1)); transform: scale(1.04); } }
+/* 名稱標籤:房間一的深藍金邊小牌,只在滑過時出現 */
+html.au-on body[data-au-room="6"] #roomView .hotspot-label { top: auto; bottom: calc(100% + 6px); min-width: 0; padding: 2px 12px; gap: 0; background: #14294a; color: #ffe9b0; border: 3px solid #c99a3c; border-radius: 0; box-shadow: 0 0 0 2px #0b1426; }
+html.au-on body[data-au-room="6"] #roomView .hotspot-label > b, html.au-on body[data-au-room="6"] #roomView .hotspot-label small, html.au-on body[data-au-room="6"] #roomView .hotspot-label .check { display: none; }
+html.au-on body[data-au-room="6"] #roomView .hotspot-label > span { font: 900 clamp(15px, 1.3vw, 22px) / 1.3 "Noto Sans TC", system-ui, sans-serif; white-space: nowrap; }
+html.au-on body[data-au-room="6"] #roomView .hotspot.done::after { content: "✓"; right: -8px; top: -10px; background: #1c7a45; border: 2px solid #ffe9b0; }
+html.au-on body[data-au-room="6"] #roomView .hotspot::before { display: none !important; }
+html.au-on body[data-au-room="6"] #roomView .hotspot-label { transition: opacity .15s; }
+html.au-on body[data-au-room="6"] #roomView .hotspot .hotspot-label { top: auto !important; bottom: calc(100% + 6px) !important; left: 50% !important; right: auto !important; transform: translateX(-50%) !important; padding: 2px 12px !important; }
+html.au-on body[data-au-room="6"] #roomView .hotspot .hotspot-label > span { color: #ffe9b0 !important; font-size: clamp(15px, 1.3vw, 22px) !important; }
+
+/* ===== 第二修改計劃 C6-1 醫藥盒:「需求」「目標」清楚可讀(C3),與電話約定的出發/終點同款標籤 ===== */
+#routeBoard .route-tile.start, #routeBoard .route-tile.end { opacity: 1 !important; filter: none !important; background-color: #fff6dc !important; box-shadow: inset 0 0 0 3px #f0c75e; }
+#routeBoard .route-tile .tile-label { bottom: 4px; padding: 2px 6px; font-size: clamp(12px, 1.25vw, 16px) !important; line-height: 1.25; color: #1d2433; background: #fffdf3; border: 2px solid #3a2a14; border-radius: 3px; }
+#routeBoard .route-tile.start .tile-label, #routeBoard .route-tile.end .tile-label { font-size: clamp(14px, 1.5vw, 19px) !important; color: #fff !important; border-color: #ffe9b0; box-shadow: 0 0 0 2px #0b1426; padding: 3px 10px; }
+#routeBoard .route-tile.start .tile-label { background: #1f6b45; }
+#routeBoard .route-tile.end .tile-label { background: #8a2f2a; }
+
+/* ===== 第二修改計劃 C6-2 家庭相簿:版面豐富、文字對比清楚(只改呈現) ===== */
+.f-album .f-photo-page { background: radial-gradient(ellipse at 50% 40%, #fff6e2, #ead9b8 75%) !important; }
+.f-album .f-photo-placeholder { background: linear-gradient(160deg, #f3dfb8, #d9b98a) !important; border: 10px solid #fffdf6 !important; border-bottom-width: 34px !important; box-shadow: 0 10px 24px #3a2a1455, inset 0 0 40px #8a5a2a55 !important; position: relative; }
+.f-album .f-photo-placeholder::after { content: "♥"; position: absolute; right: 12px; bottom: -28px; font-size: 18px; color: #c0583c; }
+.f-album .f-photo-placeholder small { display: none !important; }
+.f-album .f-photo-icon { font-size: 92px !important; filter: drop-shadow(0 4px 0 #8a5a2a55) sepia(.2); color: #5a3a1a !important; }
+.f-album .f-photo-placeholder span { color: #4a2f14 !important; font-size: 20px !important; font-weight: 900; letter-spacing: .08em; }
+.f-album .f-photo-caption { color: #3a2a14 !important; font-size: 20px !important; font-weight: 800; }
+.f-album .f-story-page .f-page-number { color: #8a4b16 !important; font-size: 15px !important; font-weight: 900; letter-spacing: .12em; }
+.f-album .f-story-page h4 { color: #2a1d0c !important; font-size: 30px !important; font-weight: 900 !important; border-bottom: 3px dashed #c99a3c; padding-bottom: 8px; }
+.f-album .f-story-page p { color: #2f2414 !important; font-size: 21px !important; line-height: 1.75 !important; font-weight: 600; }
+.f-album .f-page-turn span { color: #3a2a14 !important; font-size: 16px !important; font-weight: 900; }
+.f-page-tabs button { min-width: 48px !important; min-height: 44px !important; font: 900 18px/1 "Noto Sans TC", system-ui, sans-serif !important; color: #ffe9b0 !important; background: #14294a !important; border: 3px solid #c99a3c !important; border-radius: 0 !important; box-shadow: 0 3px 0 #0b1426; transition: transform .12s; }
+.f-page-tabs button:hover { transform: translateY(-2px); }
+.f-page-tabs button:active { transform: translateY(2px); box-shadow: none; }
+.f-page-tabs button[aria-current], .f-page-tabs button.is-active, .f-page-tabs button.active { background: #f0c75e !important; color: #2a1d0c !important; }
+.f-album-foot, .f-album-foot span { color: #ffe9b0 !important; font-size: 16px !important; font-weight: 800; }
+.f-bookmark { color: #c99a3c !important; }
+
+/* ===== 第二修改計劃 C6-3 五日陪伴:文字對比(C3)與版面留白,只改呈現 ===== */
+#missionContent .day-track, #missionContent .day-track * { color: #ffe9b0 !important; opacity: 1 !important; }
+#missionContent .day-track small { font-size: 13px !important; }
+/* 事件卡 */
+#missionContent .event-panel .event-story, #missionContent .event-panel p { color: #2f2414 !important; font-size: 18px !important; line-height: 1.65 !important; }
+#missionContent .event-panel h3 { color: #2a1d0c !important; }
+#missionContent .event-panel .event-time, #missionContent .event-panel .feedback-kicker { color: #6b4a1e !important; font-weight: 900; }
+#missionContent .chosen-response { color: #24361f !important; }
+#missionContent .chosen-response small, #missionContent .chosen-response span { color: #4a5a3a !important; font-size: 13px !important; }
+#missionContent .animation-status { color: #6b4a1e !important; font-size: 14px !important; font-weight: 700; }
+#missionContent .choice-button { color: #2a1d0c !important; font-size: 17px !important; }
+#missionContent .mood-badge, #missionContent .scene-label { color: #2a1d0c; }
+#missionContent .scene-label { background: #14294a !important; color: #ffe9b0 !important; border: 2px solid #c99a3c; }
+/* 心情圖表:標題、圖例、底部數值放大加深,不再一片淡灰 */
+#missionContent .chart-heading, #missionContent .chart-heading * { color: #2a1d0c !important; }
+#missionContent .chart-heading small, #missionContent .chart-heading span { font-size: 13px !important; color: #6b4a1e !important; }
+#missionContent .legend, #missionContent .legend * { font-size: 13px !important; font-weight: 800; }
+#missionContent .chart-foot, #missionContent .chart-foot span, #missionContent .chart-foot b, #missionContent .ohlc, #missionContent .ohlc * { color: #3a2a14 !important; font-size: 14px !important; }
+#missionContent .simulation-note, #missionContent .inspect-label { color: #6b4a1e !important; font-size: 13px !important; }
+#missionContent .chart-panel svg text { fill: #5a4630 !important; }
+/* 每日回顧:三個片刻標題原本淡黃字在淡綠底上,看不見 */
+#missionContent .day-summary .summary-copy { padding: 18px 26px !important; }
+#missionContent .day-summary .summary-copy .eyebrow { color: #8a4b16 !important; font-size: 14px !important; font-weight: 900; }
+#missionContent .day-summary .summary-copy h3 { color: #2a1d0c !important; }
+#missionContent .day-summary .summary-copy p, #missionContent .summary-numbers span { color: #3a2a14 !important; font-size: 17px !important; }
+#missionContent .summary-numbers strong { color: #1f5a3c !important; }
+#missionContent .daily-moments article { background: #fff8e6 !important; border: 2px solid #c99a3c !important; }
+#missionContent .daily-moments article > span { color: #6b4a1e !important; font-weight: 900; font-size: 15px !important; }
+#missionContent .daily-moments article h4 { color: #2a1d0c !important; font-size: 20px !important; font-weight: 900 !important; }
+#missionContent .daily-moments article small { color: #4a3a24 !important; font-size: 14px !important; }
+#missionContent .summary-actions p { color: #ffe9b0 !important; font-size: 16px !important; }
+/* 五日完成頁 */
+#missionContent .care-final .eyebrow, #missionContent .care-final .final-heading, #missionContent .care-final .final-reflection, #missionContent .care-final .final-reflection p { color: #ffe9b0 !important; }
+#missionContent .care-final .final-reflection p { font-size: 17px !important; }
+#missionContent .care-final .final-note { color: #d8c79a !important; font-size: 13px !important; }
+#missionContent .care-final .clue-card { background: #fff6dc !important; border: 3px solid #c99a3c !important; }
+#missionContent .care-final .clue-card, #missionContent .care-final .clue-card * { color: #2a1d0c !important; }
+/* 心情表情飄在場景上,但不可蓋住「此刻心情」數字與場景標籤 */
+#missionContent .care-play .emoji-layer { z-index: 2 !important; }
+#missionContent .care-play .mood-badge, #missionContent .care-play .scene-label { z-index: 6 !important; }
+
+/* ===== 第二修改計劃追加 C6-0:房間六頁首尺寸、計時牌、提示列與房間一逐項對齊(數值取自房間一實測) ===== */
+html.au-on body[data-au-room="6"] #roomView .game-hud.game-hud { padding: 4px calc(var(--au-h, 1) * 12px + 10px) !important; gap: 4px 10px !important; min-height: 0 !important; height: auto !important; align-items: center !important; }
+html.au-on body[data-au-room="6"] #roomView #returnToMap.integration-back { padding: 0 !important; height: 44px !important; min-height: 0 !important; line-height: 22px !important; font-size: 20px !important; }
+html.au-on body[data-au-room="6"] #roomView .game-hud .heading { min-height: 65px !important; height: 65px !important; min-width: 0 !important; }
+html.au-on body[data-au-room="6"] #roomView .game-hud .heading h1#roomTitle { margin: 0 !important; font-size: 24px !important; line-height: 1.1 !important; }
+html.au-on body[data-au-room="6"] #roomView .game-hud .heading .eyebrow { display: none !important; }
+html.au-on body[data-au-room="6"] #roomView .hud-actions { gap: 4px !important; }
+html.au-on body[data-au-room="6"] #roomView #roomTimer.progress-chip.progress-chip { min-height: 0 !important; height: auto !important; border-width: 8px 26px !important;
+  border-image: url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill / 8px 26px stretch !important; background: none !important; padding: 12px 6px !important; color: #ffe9b0 !important; font-size: 20px !important; padding: 10px 15px !important; }
+html.au-on body[data-au-room="6"] #roomView #roomTimer.progress-chip::before, html.au-on body[data-au-room="6"] #roomView #roomTimer.progress-chip::after { display: none !important; }
+html.au-on body[data-au-room="6"] #roomView #openRoom6Code.room-code-button { min-height: 0 !important; font-size: 21px !important; line-height: 31.5px !important; padding: 12px 16px !important; }
+/* 提示列靠右,和房間一相同 */
+
+html.au-on body[data-au-room="6"] #roomView .au-dock p.room-hint.au-dock-hint { padding: 0 !important; flex: 1 1 auto !important; margin: 0 !important; width: auto !important; max-width: none !important; text-align: right !important; }
+html.au-on body[data-au-room="6"] #roomView .hotspot.au-pointed .hotspot-label { opacity: 1 !important; }
+
+/* 2026-11-18 使用者:從房間圖裁出的物件,邊界不要切得那麼明顯 → 跟地圖一樣柔邊:裁圖四邊各約 14% 漸淡,放大發亮時融進房間圖 */
+.sk-crop { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-repeat: no-repeat; image-rendering: pixelated; border-radius: inherit; }
+.sk-crop, .wallet-module .w-hotspot .w-hot-img {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect; }

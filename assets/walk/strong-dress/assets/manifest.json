@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "body": "strong",
+  "status": "900 組合可預覽；領巾與背面鏡腳修訂，待人工驗收",
+  "files": [
+    "approved-casual.png",
+    "base-0-1.png",
+    "base-0-2.png",
+    "base-1-0.png",
+    "base-1-1.png",
+    "base-1-2.png",
+    "base-2-0.png",
+    "base-2-1.png",
+    "base-2-2.png",
+    "hair-mask-0-0.png",
+    "fabric-mask-0-0.png",
+    "hair-mask-0-1.png",
+    "fabric-mask-0-1.png",
+    "hair-mask-0-2.png",
+    "fabric-mask-0-2.png",
+    "hair-mask-1-0.png",
+    "fabric-mask-1-0.png",
+    "hair-mask-1-1.png",
+    "fabric-mask-1-1.png",
+    "hair-mask-1-2.png",
+    "fabric-mask-1-2.png",
+    "hair-mask-2-0.png",
+    "fabric-mask-2-0.png",
+    "hair-mask-2-1.png",
+    "fabric-mask-2-1.png",
+    "hair-mask-2-2.png",
+    "fabric-mask-2-2.png",
+    "accessories.png",
+    "scarf-foreground-0.png",
+    "scarf-foreground-1.png",
+    "scarf-foreground-2.png",
+    "scarf-tailored.png"
+  ],
+  "baseLooks": [
+    [
+      "approved-casual.png",
+      "base-0-1.png",
+      "base-0-2.png"
+    ],
+    [
+      "base-1-0.png",
+      "base-1-1.png",
+      "base-1-2.png"
+    ],
+    [
+      "base-2-0.png",
+      "base-2-1.png",
+      "base-2-2.png"
+    ]
+  ],
+  "colorMasks": [
+    [
+      {
+        "hair": "hair-mask-0-0.png",
+        "outfit": "fabric-mask-0-0.png"
+      },
+      {
+        "hair": "hair-mask-0-1.png",
+        "outfit": "fabric-mask-0-1.png"
+      },
+      {
+        "hair": "hair-mask-0-2.png",
+        "outfit": "fabric-mask-0-2.png"
+      }
+    ],
+    [
+      {
+        "hair": "hair-mask-1-0.png",
+        "outfit": "fabric-mask-1-0.png"
+      },
+      {
+        "hair": "hair-mask-1-1.png",
+        "outfit": "fabric-mask-1-1.png"
+      },
+      {
+        "hair": "hair-mask-1-2.png",
+        "outfit": "fabric-mask-1-2.png"
+      }
+    ],
+    [
+      {
+        "hair": "hair-mask-2-0.png",
+        "outfit": "fabric-mask-2-0.png"
+      },
+      {
+        "hair": "hair-mask-2-1.png",
+        "outfit": "fabric-mask-2-1.png"
+      },
+      {
+        "hair": "hair-mask-2-2.png",
+        "outfit": "fabric-mask-2-2.png"
+      }
+    ]
+  ],
+  "accessories": true
+}

@@ -1,0 +1,54 @@
+/* room6-fit.css — 房間 6 活動頁一屏看完(搭配 room6-fit.js 的等比縮放)。 */
+html.r6-fit, html.r6-fit body { overflow: hidden; }
+html.r6-fit #missionView.mission-view { overflow: hidden !important; }
+
+/* ===== 風格統一:藍底、暖金框、羊皮紙面板、金色主按鈕(與房間 1~5 一致);只動外觀 ===== */
+html.r6-fit #missionView.mission-view {
+  --r6-gold: #f0a91c; --r6-gold-d: #9a6208; --r6-gold-l: #ffe9b0; --r6-navy: #14294a; --r6-navy-d: #0b1426; --r6-ink: #3a2a14;
+  --paper: #fff3d2; --ink: #3a2a14; --muted: #6a4a1a; --line: #c9a35a; --green: #9a6208;
+  background: linear-gradient(rgba(10,18,36,.9), rgba(8,14,28,.97)), url("../assets/art-final/rooms/room6-sunny-plant-corner.png") center/cover; color: var(--r6-gold-l);
+}
+html.r6-fit #missionView .mission-bar { background: linear-gradient(#14294a, #0e1c35); border-bottom: 3px solid var(--r6-gold); box-shadow: 0 3px 0 var(--r6-navy-d); min-height: 0; padding: 8px 28px; }
+html.r6-fit #missionView .mission-bar h2 { color: var(--r6-gold-l); font-size: 22px; text-shadow: 0 2px 0 var(--r6-navy-d); }
+html.r6-fit #missionView .mission-bar .eyebrow { color: #9fb6d9; font-size: 12px; }
+html.r6-fit #missionView .mission-bar > span { color: #9fb6d9; font-size: 13px; }
+html.r6-fit #missionView .mission-content { padding-top: 8px; color: var(--r6-gold-l); }
+
+html.r6-fit #missionView .ghost-button, html.r6-fit #missionView .secondary-button, html.r6-fit #missionView .small-button {
+  border: 3px solid #c98c1c; border-radius: 4px; background: linear-gradient(#27487c, var(--r6-navy)); color: var(--r6-gold-l); font-weight: 900; font-size: 16px; padding: 6px 16px;
+  box-shadow: 0 4px 0 var(--r6-navy-d), 0 0 0 2px var(--r6-navy-d); transition: transform .12s, filter .12s, box-shadow .12s; cursor: pointer;
+}
+html.r6-fit #missionView .primary-button {
+  border: 3px solid var(--r6-gold-d); border-radius: 4px; background: linear-gradient(#ffd466, var(--r6-gold)); color: var(--r6-ink); font-weight: 900; font-size: 18px;
+  box-shadow: 0 4px 0 #6b4306, 0 0 0 2px var(--r6-navy-d); transition: transform .12s, filter .12s, box-shadow .12s; cursor: pointer;
+}
+html.r6-fit #missionView :is(.ghost-button, .secondary-button, .small-button, .primary-button):hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1) drop-shadow(0 0 8px #ffd36a99); }
+html.r6-fit #missionView :is(.ghost-button, .secondary-button, .small-button, .primary-button):active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #6b4306; }
+html.r6-fit #missionView :is(.ghost-button, .secondary-button, .small-button, .primary-button):disabled { filter: grayscale(.7) brightness(.75); opacity: .75; cursor: not-allowed; }
+
+/* 羊皮紙面板 */
+html.r6-fit #missionView :is(.event-panel, .chart-panel, .panel, .intro-copy, .care-intro .intro-facts, .f-story-page, .f-album, .f-bin, .f-card-bank, .f-learning-columns, .f-balance, .summary-copy) {
+  box-sizing: border-box; color: var(--r6-ink); border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch; image-rendering: pixelated; background: none; border-radius: 0; box-shadow: none;
+  filter: drop-shadow(0 4px 0 #0b142680);
+}
+html.r6-fit #missionView :is(.event-panel, .chart-panel, .panel, .intro-copy) > * { image-rendering: auto; }
+html.r6-fit #missionView :is(.event-panel, .panel) :is(h1, h2, h3, h4) { color: var(--r6-ink); }
+html.r6-fit #missionView .choice-button { border: 2px solid #b98a3c; border-left: 6px solid var(--r6-gold); border-radius: 3px; background: #fff7e0; color: var(--r6-ink); box-shadow: 0 3px 0 #7a4f1066; transition: transform .12s, box-shadow .12s, background .12s; }
+html.r6-fit #missionView .choice-button:hover:not(:disabled) { transform: translateX(6px); background: #fff1c4; box-shadow: 0 3px 0 #7a4f1066, 0 0 14px #ffd36a; }
+html.r6-fit #missionView .day-track > div { border-bottom-color: #2b4a7c; color: #9fb6d9; }
+html.r6-fit #missionView .day-track > div.current { border-color: var(--r6-gold); color: var(--r6-gold-l); }
+html.r6-fit #missionView .day-track b { background: #1b335a; border-color: #2b4a7c; color: #9fb6d9; border-radius: 0; }
+html.r6-fit #missionView .day-track .current b, html.r6-fit #missionView .day-track .finished b { background: linear-gradient(#ffd466, var(--r6-gold)); border-color: var(--r6-gold-d); color: var(--r6-ink); }
+@media (prefers-reduced-motion: reduce) { html.r6-fit #missionView * { animation: none !important; transition: none !important; } }
+html.r6-fit #missionView .character-speech, html.r6-fit #missionView .character-speech * { color: var(--r6-ink); }
+html.r6-fit #missionView .f-heading, html.r6-fit #missionView .f-heading :is(h1, h2, h3, p) { color: var(--r6-gold-l); text-shadow: 0 2px 0 var(--r6-navy-d); }
+html.r6-fit #missionView .f-heading p, html.r6-fit #missionView .mission-content > .eyebrow { color: #b9c9e8; text-shadow: none; }
+html.r6-fit #missionView .eyebrow { color: #9fb6d9; }
+html.r6-fit #missionView :is(.event-panel, .panel, .chart-panel, .intro-copy, .f-story-page, .f-album, .f-bin, .f-card-bank) .eyebrow { color: #8a4f0c; }
+html.r6-fit #missionView .f-steps, html.r6-fit #missionView .f-steps * { color: #9fb6d9; }
+html.r6-fit #missionView .f-page-tabs button { border: 2px solid #c98c1c; background: #1b335a; color: var(--r6-gold-l); border-radius: 0; }
+html.r6-fit #missionView .f-page-tabs button.current, html.r6-fit #missionView .f-page-tabs [aria-current="true"] { background: linear-gradient(#ffd466, var(--r6-gold)); color: var(--r6-ink); }
+html.r6-fit #missionView .f-album-foot, html.r6-fit #missionView .f-drag-help, html.r6-fit #missionView .f-completed-note { color: #b9c9e8; }
+
+/* QA ISS-001:房間場景依「可用高度」限制寬度,1366×768 時提示列不再被切到視窗外。 */
+#roomView .room-frame{width:min(1420px,calc(100% - .25rem),calc((100dvh - 170px) * 16 / 9))!important}

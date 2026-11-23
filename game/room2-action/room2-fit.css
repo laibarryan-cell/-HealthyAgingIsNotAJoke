@@ -1,0 +1,95 @@
+/* room2-fit.css — 房間 2 活動頁 / 衛教頁一屏看完(搭配 room2-fit.js 的等比縮放)。 */
+html.r2-fit, html.r2-fit body { overflow: hidden; }
+html.r2-fit #app > .view:not(#roomView):not([hidden]) { margin: 0 auto; box-sizing: border-box; max-width: none; }
+
+/* ---- 版面壓縮 + 風格統一(藍底、金框;只動外觀,不動內容與流程) ---- */
+html.r2-fit .emergency-layout { grid-template-columns: 300px 520px; justify-content: center; gap: 18px; }
+html.r2-fit .emergency-paper > h2 { font-size: 1.5rem; margin: .1rem 0 .5rem; }
+html.r2-fit .emergency-board-wrap { padding: .6rem; border: 3px solid #c98c1c; background: #1c2b44; box-shadow: 0 0 0 2px #0b1426, 0 5px 0 #0b1426; }
+html.r2-fit .route-topbar { margin-bottom: .4rem; padding: .35rem .7rem; background: #0e1c35; font-size: .95rem; }
+html.r2-fit .route-board-large .route-tile { border-color: #0b1426; background: #e8e2d2; }
+html.r2-fit .route-board-large .route-tile.is-connected { background: #ffe9a0; box-shadow: inset 0 0 0 3px #f0a91c, 0 0 12px #ffd36a99; }
+html.r2-fit .catch-stage, html.r2-fit .shoot-stage { border: 3px solid #c98c1c; border-radius: 4px; box-shadow: 0 0 0 2px #0b1426, 0 5px 0 #0b1426; }
+html.r2-fit .catch-stage { height: 400px; }
+html.r2-fit .stat-pill, html.r2-fit .time-pill { background: linear-gradient(#27487c, #14294a); color: #ffe9b0; border: 2px solid #c98c1c; border-radius: 3px; font-weight: 900; box-shadow: 0 3px 0 #0b1426; }
+html.r2-fit .memory-grid { gap: 10px; margin: .5rem 0; }
+html.r2-fit .memory-card { height: 150px; }
+html.r2-fit .memory-face { border-radius: 4px; }
+html.r2-fit .memory-front { background: radial-gradient(circle at 50% 0, #1f4378, #14294a 70%, #0b1426); border: 3px solid #c98c1c; box-shadow: inset 0 0 0 2px #0b1426, 0 4px 0 #0b1426; }
+html.r2-fit .memory-front small { color: #ffe9b0; }
+html.r2-fit .memory-card:hover:not(.open):not(.done) .memory-inner { transform: translateY(-6px) rotate(-1deg); filter: drop-shadow(0 0 10px #ffd36a); }
+html.r2-fit .memory-back { background: #fff3d2; border: 3px solid #b98a3c; }
+html.r2-fit .memory-back .tag { border-radius: 0; background: #f0a91c; color: #3a2a14; }
+html.r2-fit .memory-card.done .memory-back { background: #eaf5d6; border-color: #2f8f4e; box-shadow: 0 0 14px #8fe6a066; }
+html.r2-fit .activity-shell > .actions { justify-content: center; }
+html.r2-fit .unit-card2, html.r2-fit .shoe-kind-card, html.r2-fit .item-chip { border-radius: 3px; border: 2px solid #b98a3c; border-left: 6px solid #f0a91c; background: #fff7e0; transition: transform .12s, box-shadow .12s; }
+html.r2-fit :is(.unit-card2, .shoe-kind-card, .item-chip):hover { transform: translateY(-3px); box-shadow: 0 0 14px #ffd36a; }
+
+/* QA ISS-006:[hidden] 的按鈕被 .actions/.primary 的 display 蓋掉,「進入衛教」在沒有功能時仍顯示(點了沒反應)。 */
+#app [hidden]{display:none!important}
+
+/* 活動頁固定以 1280px 排版再等比縮放,視窗窄於 1100px 時不要誤觸發 style.css 的窄螢幕單欄規則(淋浴區、翻牌) */
+html.r2-fit .shower-layout.refined { grid-template-columns: 320px 1fr; }
+html.r2-fit .memory-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* 第三修改計劃 B5:可點的卡片(鞋款、物品、預覽卡、單位卡)不用細邊框/外框線,改用房間一的像素卡框;選取與按下用亮度、浮起與按壓 */
+html.r2-fit :is(.unit-card2,.shoe-kind-card,.item-chip,.catch-preview-card){
+  border:10px solid transparent!important;border-radius:0!important;outline:none!important;
+  border-image:url("../assets/art-final/ui/clue-card-blank.png") 16 fill/10px stretch!important;image-rendering:pixelated;
+  background:none!important;box-shadow:0 6px 12px rgba(40,24,8,.18)!important;transition:transform .12s,filter .12s;
+}
+html.r2-fit :is(.unit-card2,.shoe-kind-card,.item-chip,.catch-preview-card):hover{filter:brightness(1.06);transform:translateY(-2px)}
+html.r2-fit :is(.unit-card2,.shoe-kind-card,.item-chip,.catch-preview-card):active{transform:translateY(2px) scale(.98);filter:brightness(.96)}
+html.r2-fit :is(.unit-card2,.shoe-kind-card,.item-chip,.catch-preview-card).selected{filter:brightness(1.08) drop-shadow(0 0 7px #ffd76a);transform:translateY(-3px)}
+html.r2-fit .drop-spot:is(:hover,:focus-visible){box-shadow:none!important;background:rgba(255,215,106,.18)!important}
+
+/* ===== 第三修改計劃 I 節:房二醫藥箱(接水管)— 與房一、四、五相同版面:一屏、左任務紙右棋盤、綠色需求/目標、結果區統一 ===== */
+html.r2-fit #activityView.r2-pipe { display: flex !important; flex-direction: column; overflow: hidden; box-sizing: border-box; padding-bottom: 0 !important; }
+html.r2-fit #activityView.r2-pipe > .mission-bar { flex: none; }
+html.r2-fit #activityView.r2-pipe .activity-shell { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; width: 1232px !important; max-width: none !important; margin: 0 auto 12px !important; padding: 0 !important; }
+html.r2-fit #activityView.r2-pipe .act-toolbar { flex: none; margin: 10px 0 6px !important; justify-content: flex-start; }
+html.r2-fit #activityView.r2-pipe #activityBody { flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; margin: 0 !important; padding: 14px 18px !important; box-sizing: border-box; }
+html.r2-fit #activityView.r2-pipe :is(#activityFeedback, .actions) { flex: none; }
+html.r2-fit #activityView.r2-pipe .emergency-layout { flex: 1 1 0; min-height: 0; display: grid !important; grid-template-columns: 400px minmax(0, 1fr) !important; gap: 18px !important; justify-content: stretch !important; margin: 0 !important; }
+html.r2-fit #activityView.r2-pipe .emergency-paper { min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+html.r2-fit #activityView.r2-pipe .emergency-paper h3 { font-size: 26px !important; margin: 2px 0 6px; }
+html.r2-fit #activityView.r2-pipe .emergency-paper p { font-size: 17px !important; line-height: 1.5; color: #2a2230 !important; }
+html.r2-fit #activityView.r2-pipe .emergency-paper h4 { font-size: 17px !important; }
+html.r2-fit #activityView.r2-pipe .mission-condition-list > div { font-size: 18px !important; padding: 6px 12px !important; }
+html.r2-fit #activityView.r2-pipe .emergency-board-wrap { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; padding: 10px !important; margin: 0 !important; }
+/* 起點/目標單位疊在棋盤上方左右角(同房三 E3-2),進度字放中間 */
+html.r2-fit #activityView.r2-pipe .route-topbar { position: absolute; inset: 10px 14px auto; z-index: 3; display: flex; justify-content: space-between; align-items: flex-start; margin: 0 !important; padding: 0 !important; background: none !important; pointer-events: none; }
+html.r2-fit #activityView.r2-pipe .route-topbar > b:first-child, html.r2-fit #activityView.r2-pipe .route-topbar > b:last-child { background: #16624a !important; color: #fff !important; border: 2px solid #bfe8d6; padding: 3px 12px; font-size: 17px; font-weight: 900; letter-spacing: .06em; }
+html.r2-fit #activityView.r2-pipe .route-topbar > #missionProgressText { display: none; }
+html.r2-fit #activityView.r2-pipe #routeBoard { flex: 1 1 0; min-height: 0; width: auto !important; max-width: 100%; aspect-ratio: 1; align-self: center; margin: 0 !important; gap: 5px !important; }
+html.r2-fit #activityView.r2-pipe .condition-status { flex: none; margin: 8px 0 0 !important; display: flex; gap: 8px; justify-content: center; }
+html.r2-fit #activityView.r2-pipe .condition-status span { font-size: 16px !important; font-weight: 800; padding: 4px 12px !important; }
+html.r2-fit #activityView.r2-pipe #puzzleLiveHint { flex: none; margin: 4px 0 0 !important; font-size: 16px !important; color: #ffe9b0 !important; font-weight: 800; }
+html.r2-fit #activityView.r2-pipe .route-tile { container-type: size; }
+html.r2-fit #activityView.r2-pipe .route-tile:not(:disabled) { transition: transform .1s ease, filter .1s ease, background .16s; }
+html.r2-fit #activityView.r2-pipe .route-tile:hover:not(:disabled) { filter: brightness(1.06); box-shadow: 0 0 12px #ffd36a; }
+html.r2-fit #activityView.r2-pipe .route-tile:active:not(:disabled) { transform: scale(.94); filter: brightness(1.12); }
+html.r2-fit #activityView.r2-pipe .route-tile:is(.role-start, .role-end) { background: #dff3e6 !important; border-color: #1f8a66 !important; opacity: 1 !important; box-shadow: inset 0 0 0 2px #bfe8d6; }
+html.r2-fit #activityView.r2-pipe .route-tile:is(.role-start, .role-end).is-connected { background: #c9efcf !important; }
+html.r2-fit #activityView.r2-pipe .route-tile-label { font-size: clamp(13px, 15.5cqw, 22px) !important; line-height: 1.15; white-space: normal !important; word-break: keep-all; overflow-wrap: anywhere; text-align: center; max-width: 92% !important; padding: 2px 5px !important; background: #fff8e6 !important; color: #2a1c08 !important; border: 2px solid #a76a1b !important; box-shadow: 0 2px 0 #5c3a0e; }
+html.r2-fit #activityView.r2-pipe :is(.role-start, .role-end) .route-tile-label { background: #16624a !important; color: #fff !important; border-color: #fff !important; box-shadow: 0 2px 0 #0b3b2c; font-weight: 900; }
+/* 任務完成(結果區):與「找到符合條件的單位」相同格式——深藍單位卡、白色大字、金色大按鈕 */
+html.r2-fit #activityView.r2-pipe .result-panel.success { flex: 1 1 0; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 10px; margin: 0 !important; padding: 12px 24px !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+html.r2-fit #activityView.r2-pipe .result-panel.success h3 { font-size: 34px !important; color: #3a2a14 !important; font-weight: 900; margin: 0 0 4px !important; }
+html.r2-fit #activityView.r2-pipe .resource-result-card { width: 100%; max-width: 900px; box-sizing: border-box; display: flex !important; flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px 26px !important; background: #14294a !important; border: 3px solid #c98c1c !important; border-radius: 0 !important; box-shadow: inset 0 0 0 2px #0b1426, 0 5px 0 #0b1426 !important; text-align: left; }
+html.r2-fit #activityView.r2-pipe .resource-result-card b { color: #fff !important; font-size: 30px !important; font-weight: 900; }
+html.r2-fit #activityView.r2-pipe .resource-result-card span { color: #ffd36a !important; font-size: 21px !important; font-weight: 900; }
+html.r2-fit #activityView.r2-pipe .resource-result-card small { color: #fff !important; font-size: 21px !important; line-height: 1.6; }
+html.r2-fit #activityView.r2-pipe #nextEmergency {
+  min-height: 0 !important; padding: 12px 40px !important; border-radius: 4px !important; font-size: 24px !important; font-weight: 900 !important; border-image: none !important; margin-top: 6px;
+  background: linear-gradient(#ffd466, #f0a91c) !important; color: #3a2a14 !important; border: 3px solid #9a6208 !important; box-shadow: 0 5px 0 #6b4306, 0 0 0 2px #0b1426 !important; transition: transform .12s, filter .12s;
+}
+html.r2-fit #activityView.r2-pipe #nextEmergency:hover { transform: translateY(-2px); filter: brightness(1.08); }
+html.r2-fit #activityView.r2-pipe #nextEmergency:active { transform: translateY(4px); box-shadow: 0 1px 0 #6b4306 !important; }
+html.r2-fit #activityView.r2-pipe .emergency-layout { grid-template-rows: minmax(0, 1fr) !important; }
+html.r2-fit #activityView.r2-pipe .emergency-board-wrap { height: 100%; box-sizing: border-box; }
+html.r2-fit #activityView.r2-pipe .result-panel.success { width: 100% !important; max-width: none !important; box-sizing: border-box; }
+html.r2-fit #activityView.r2-pipe .resource-result-card { margin: 0 auto !important; }
+
+/* 第三修改計劃新增 C2:蓋住背景圖上的藍／綠色標題(位置由 script.js 依裁切比例計算),外觀為本專案金框名牌;不擋點擊 */
+.shoot-stage .shoot-title-cover { position: absolute; z-index: 1; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 0 12px; background: linear-gradient(#1d3a66, #14294a); color: #ffe9b0; border: 3px solid #c98c1c; border-radius: 6px; box-shadow: inset 0 0 0 2px #0b1426, 0 4px 0 #0b1426, 0 8px 18px rgba(0,0,0,.45); font-weight: 900; letter-spacing: .06em; white-space: nowrap; text-shadow: 0 2px 0 #0b1426; pointer-events: none; }

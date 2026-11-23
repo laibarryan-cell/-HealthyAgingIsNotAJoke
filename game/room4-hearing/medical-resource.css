@@ -1,0 +1,249 @@
+/* Integration shell only: keeps the copied V9 resource view visually identical inside the hearing project. */
+.resource-view[hidden]{display:none!important}
+.resource-view{color:#f5f7fb;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+.resource-view .mission-bar{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:1rem;width:min(1180px,calc(100% - 2rem));margin:0 auto;padding:1.25rem 0 1rem;border-bottom:0}
+.resource-view .mission-heading{flex:1}
+.resource-view .mission-heading .eyebrow{margin:0 0 .35rem;color:#f6c76e;font-size:.78rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.resource-view .mission-heading h2{margin:0;color:#f5f7fb;font-size:clamp(1.25rem,2.6vw,1.75rem);line-height:1.18}
+.resource-view .ghost-button{min-height:44px;border:0;color:#aab4c0;background:transparent;cursor:pointer;font-weight:750;padding:0}
+.resource-view .ghost-button:hover{color:#ffd68a}
+.resource-view .progress-chip{flex:0 0 auto;padding:.65rem .9rem;border:1px solid #394657;border-radius:999px;color:#f5f7fb;background:rgba(9,16,25,.78);box-shadow:0 8px 28px rgba(0,0,0,.2);font-weight:700}
+.resource-view .primary-button{min-height:46px;padding:.7rem 1.05rem;border:0;border-radius:10px;color:#132018;background:linear-gradient(135deg,#ffd68a,#f6c76e);box-shadow:0 9px 22px rgba(246,199,110,.2);cursor:pointer;font-weight:850}
+.resource-view .primary-button:hover{filter:brightness(1.08);translate:0 -1px}
+
+/* =========================================================
+   V8：ICOPE 醫療資源任務（像素風服務站）
+   ========================================================= */
+.resource-view {
+  min-height: 100dvh;
+  padding-bottom: 2rem;
+  background:
+    linear-gradient(rgba(12,18,28,.78), rgba(12,18,28,.86)),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(255,255,255,.025) 31px 32px),
+    #101925;
+}
+.resource-shell {
+  width: min(1080px, calc(100% - 2rem));
+  margin: 1rem auto 0;
+}
+.resource-panel {
+  border: 4px solid #f4e9cf;
+  border-radius: 0;
+  background: #efe1bd;
+  color: #1f2833;
+  box-shadow: 10px 10px 0 rgba(0,0,0,.28);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.resource-panel .eyebrow { color: #704f24; }
+.resource-panel h3 { margin: .25rem 0 .55rem; font-size: clamp(1.35rem, 2.7vw, 2rem); }
+.resource-panel p { color: #43505d; line-height: 1.65; }
+.resource-intro { display: grid; grid-template-columns: 150px 1fr; gap: 1.4rem; align-items: center; }
+.pixel-sign {
+  display:grid; place-items:center; min-height:110px;
+  border:6px solid #5e4630; background:#d89c3f; color:#24190f;
+  box-shadow: inset 0 0 0 6px #f2c268, 6px 6px 0 rgba(0,0,0,.18);
+  font-family: monospace; font-size: 1.55rem; font-weight: 900; letter-spacing: .08em;
+}
+.district-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-top:1.25rem; }
+.district-choice, .unit-card, .resource-piece { font:inherit; cursor:pointer; }
+.district-choice {
+  min-height:150px; border:4px solid #684f35; border-radius:0; background:#fff5d8; color:#202831;
+  display:grid; place-items:center; align-content:center; gap:.4rem; padding:1rem;
+  box-shadow:5px 5px 0 rgba(70,49,29,.2); transition:transform .13s ease, box-shadow .13s ease;
+}
+.district-choice:hover, .district-choice:focus-visible { transform:translateY(-3px); box-shadow:7px 8px 0 rgba(70,49,29,.24); outline:4px solid #1f5f8b; outline-offset:3px; }
+.district-choice strong { font-size:1.5rem; }
+.district-choice small { color:#5a6672; font-weight:700; }
+.district-pin { color:#b86638; font-size:1.55rem; }
+.resource-step-head { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; }
+.resource-secondary { min-height:44px; border:3px solid #5d4934; background:#fff8e7; color:#2f261d; padding:.65rem .9rem; font-weight:800; cursor:pointer; }
+.unit-card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1.25rem; }
+.unit-card {
+  position:relative; display:grid; gap:.55rem; min-height:170px; text-align:left; padding:1.15rem;
+  border:4px solid #604a34; border-radius:0; background:#fff8e7; color:#222c36;
+  box-shadow:6px 6px 0 rgba(76,54,34,.18);
+}
+.unit-card:hover, .unit-card:focus-visible { outline:4px solid #1f5f8b; outline-offset:3px; transform:translateY(-2px); }
+.unit-card-index { position:absolute; right:.8rem; top:.65rem; color:#b7a47f; font-family:monospace; font-weight:900; font-size:1.2rem; }
+.unit-card strong { max-width:88%; font-size:1.15rem; line-height:1.45; }
+.unit-card small { align-self:end; color:#5f6a74; font-weight:700; }
+.unit-type-badge { display:inline-flex; width:max-content; padding:.32rem .55rem; border:2px solid #725735; background:#e7bf72; color:#2b2117; font-size:.8rem; font-weight:900; }
+.resource-detail-backdrop { position:fixed; inset:0; z-index:200; display:grid; place-items:center; padding:1rem; background:rgba(5,9,14,.76); }
+.resource-detail-backdrop[hidden] { display:none; }
+.resource-detail-dialog { position:relative; width:min(620px,100%); border:5px solid #f5ead0; background:#172231; color:#fff; padding:1.5rem; box-shadow:12px 12px 0 rgba(0,0,0,.38); }
+.resource-detail-dialog h3 { margin:.75rem 0 1rem; font-size:clamp(1.35rem,3vw,2rem); }
+.resource-detail-dialog dl { display:grid; gap:.65rem; }
+.resource-detail-dialog dl div { display:grid; grid-template-columns:70px 1fr; gap:.7rem; padding:.7rem; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); }
+.resource-detail-dialog dt { color:#f2ca75; font-weight:900; }
+.resource-detail-dialog dd { margin:0; line-height:1.55; }
+.resource-detail-note { color:#d3dce6; line-height:1.6; }
+.resource-close { position:absolute; right:.65rem; top:.55rem; width:44px; height:44px; border:0; background:#fff; color:#1a2430; font-size:1.5rem; font-weight:900; cursor:pointer; }
+.resource-collect-layout { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr); gap:1.2rem; margin-top:1rem; }
+.resource-pieces { display:grid; gap:.8rem; align-content:start; }
+.resource-piece { display:flex; gap:.8rem; align-items:center; text-align:left; padding:1rem; min-height:92px; border:4px solid #684f35; background:#fff8e7; color:#242d36; box-shadow:5px 5px 0 rgba(70,49,29,.18); }
+.resource-piece:hover, .resource-piece:focus-visible { outline:4px solid #1f5f8b; outline-offset:2px; }
+.resource-piece.is-collected { opacity:.46; transform:translateX(12px); box-shadow:none; }
+.resource-piece-icon { flex:0 0 auto; font-size:1.65rem; }
+.resource-piece span:last-child { display:grid; gap:.25rem; min-width:0; }
+.resource-piece small { color:#6f5c45; font-weight:900; }
+.resource-piece strong { overflow-wrap:anywhere; line-height:1.5; }
+.my-resource-card { border:5px solid #5b452f; background:#f7e6a9; color:#2a2119; padding:1rem; box-shadow:8px 8px 0 rgba(65,43,24,.2); }
+.resource-card-stamp { margin-bottom:.8rem; border:3px dashed #9c5d40; padding:.55rem; text-align:center; color:#7d382e; font-weight:900; letter-spacing:.08em; }
+.my-resource-card > div:not(.resource-card-stamp) { display:grid; gap:.28rem; padding:.7rem 0; border-bottom:2px dashed rgba(85,62,38,.28); }
+.my-resource-card span { color:#6d563b; font-size:.86rem; font-weight:900; }
+.my-resource-card strong { line-height:1.5; overflow-wrap:anywhere; }
+.resource-complete { margin-top:1.2rem; padding:1rem; border:4px solid #32624a; background:#e0f0df; color:#1d382a; }
+.resource-complete p { color:#355544; }
+@media (max-width:760px) {
+  .resource-intro { grid-template-columns:1fr; }
+  .pixel-sign { min-height:78px; }
+  .district-grid, .unit-card-grid, .resource-collect-layout { grid-template-columns:1fr; }
+  .resource-step-head { flex-direction:column; }
+}
+
+/* =========================================================
+   V8 final：資源查詢 + 5×5 旋轉路徑緊急任務
+   ========================================================= */
+.resource-view {
+  min-height: 100dvh;
+  background:
+    linear-gradient(rgba(8,14,22,.82), rgba(8,14,22,.9)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 8px);
+}
+.resource-shell { width:min(1180px,calc(100% - 2rem)); margin:.5rem auto 2rem; }
+.resource-panel {
+  border:4px solid #4a3d2e;
+  border-radius:0;
+  padding:clamp(1rem,2.5vw,1.6rem);
+  color:#202833;
+  background:#f2ead7;
+  box-shadow:10px 10px 0 rgba(0,0,0,.28);
+}
+.resource-panel[hidden] { display:none !important; }
+.resource-panel .eyebrow { color:#5e421e; }
+.resource-panel h3 { margin:.2rem 0 .55rem; color:#1c2732; font-size:clamp(1.35rem,2.7vw,2rem); }
+.resource-panel p { color:#3f4d5b; line-height:1.65; }
+.resource-home-hero { display:grid; grid-template-columns:150px minmax(0,1fr); gap:1.25rem; align-items:center; }
+.pixel-sign {
+  display:grid; place-items:center; aspect-ratio:1;
+  border:5px solid #493a2b; background:#d9bb72; color:#2c2116;
+  box-shadow:inset 0 0 0 5px #f6e4ad, 6px 6px 0 rgba(0,0,0,.15);
+  font-size:clamp(1.25rem,3vw,2rem); font-weight:1000; letter-spacing:.04em;
+}
+.resource-home-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1.35rem; }
+.resource-mode-card {
+  min-height:150px; padding:1.15rem; border:4px solid #354657; border-radius:0;
+  display:grid; grid-template-columns:64px 1fr; grid-template-rows:auto auto; gap:.25rem .9rem; align-items:center;
+  text-align:left; color:#152230; background:#f7f4ec; cursor:pointer;
+  box-shadow:6px 6px 0 rgba(0,0,0,.16); transition:transform .14s ease, box-shadow .14s ease;
+}
+.resource-mode-card:hover,.resource-mode-card:focus-visible { transform:translate(-2px,-2px); box-shadow:9px 9px 0 rgba(0,0,0,.18); }
+.resource-mode-card.is-mission { background:#fff0b7; border-color:#6e5424; }
+.resource-mode-icon { grid-row:1 / 3; display:grid; place-items:center; width:58px; height:58px; background:#172536; color:#fff; font-size:2rem; font-weight:1000; }
+.resource-mode-card strong { font-size:clamp(1.15rem,2vw,1.45rem); }
+.resource-mode-card small { color:#536171; font-size:.95rem; line-height:1.45; }
+.resource-source-note { margin:1rem 0 0; padding:.8rem 1rem; border-left:5px solid #6e5424; background:#fff9e8; color:#44515e !important; }
+.resource-step-head,.resource-puzzle-topbar { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; }
+.resource-step-head.compact { margin-top:1.4rem; padding-top:1.1rem; border-top:3px dashed #aa9a7d; }
+.resource-secondary { min-height:44px; border:3px solid #493a2b; border-radius:0; padding:.65rem .9rem; background:#fff8e7; color:#241b13; font-weight:900; cursor:pointer; }
+.district-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; margin-top:1rem; }
+.district-choice { min-height:100px; padding:.9rem; border:3px solid #435668; border-radius:0; background:#f9f6ee; color:#1c2b39; display:grid; gap:.25rem; text-align:left; cursor:pointer; }
+.district-pin { color:#8b6223; font-size:1.2rem; }.district-choice strong{font-size:1.25rem}.district-choice small{color:#5b6875}
+.query-unit-area { margin-top:.5rem; }
+.unit-card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; margin-top:.8rem; }
+.unit-card { position:relative; min-height:140px; padding:1rem; border:3px solid #405466; border-radius:0; background:#fffdf7; color:#1f2b36; display:grid; align-content:start; gap:.4rem; text-align:left; cursor:pointer; }
+.unit-card-index { position:absolute; right:.7rem; top:.55rem; color:#9d8b72; font-weight:1000; }
+.unit-card small { color:#697684; }.unit-type-badge{justify-self:start;padding:.25rem .55rem;background:#26394b;color:#fff;font-weight:900;font-size:.82rem}
+.resource-detail-backdrop { position:fixed; inset:0; z-index:250; display:grid; place-items:center; padding:1rem; background:rgba(5,9,14,.8); }
+.resource-detail-backdrop[hidden] { display:none; }
+.resource-detail-dialog { position:relative; width:min(620px,100%); border:5px solid #f5ead0; background:#172231; color:#fff; padding:1.5rem; box-shadow:12px 12px 0 rgba(0,0,0,.38); }
+.resource-detail-dialog h3 { margin:.75rem 0 1rem; font-size:clamp(1.35rem,3vw,2rem); }
+.resource-detail-dialog dl,.mission-result-card dl { display:grid; gap:.65rem; }
+.resource-detail-dialog dl div,.mission-result-card dl div { display:grid; grid-template-columns:70px 1fr; gap:.7rem; padding:.7rem; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); }
+.resource-detail-dialog dt,.mission-result-card dt { color:#f2ca75; font-weight:900; }.resource-detail-dialog dd,.mission-result-card dd{margin:0;line-height:1.55}
+.resource-detail-note { color:#d3dce6 !important; line-height:1.6; }
+.resource-close { position:absolute; right:.65rem; top:.55rem; width:44px; height:44px; border:0; background:#fff; color:#1a2430; font-size:1.5rem; font-weight:900; cursor:pointer; }
+
+.resource-mission-panel { padding:1rem; }
+.resource-puzzle-layout { display:grid; grid-template-columns:minmax(250px,.72fr) minmax(0,1.35fr); gap:1rem; margin-top:.8rem; align-items:start; }
+.mission-paper { position:relative; min-height:520px; padding:2rem 1.15rem 1.15rem; border:4px solid #5a4c3e; background:#fffdf6; color:#202832; box-shadow:6px 6px 0 rgba(0,0,0,.14); }
+.mission-paper-tape { position:absolute; left:50%; top:-10px; width:96px; height:28px; transform:translateX(-50%) rotate(-2deg); background:#e7d9b8; border:2px solid rgba(88,72,50,.22); }
+.mission-kicker { margin:0 !important; color:#7f2e22 !important; font-weight:1000; letter-spacing:.12em; }
+.mission-paper h4 { margin:.45rem 0 .35rem; font-size:1.6rem; color:#202832; }
+.mission-story { margin:.25rem 0 1rem !important; color:#344150 !important; font-size:1.02rem; }
+.mission-condition-title { margin-top:.9rem; padding-top:.8rem; border-top:3px solid #2c3741; font-weight:1000; }
+.mission-condition-list { display:grid; gap:.55rem; margin:.65rem 0 1rem; }
+.mission-condition-chip { display:flex; align-items:center; gap:.65rem; padding:.7rem .75rem; border:2px solid #455665; background:#f1eee5; font-size:1.08rem; }
+.mission-condition-chip span { color:#8d6320; }
+.mission-route-status { margin-top:1rem; padding:.8rem; background:#172536; color:#fff; }
+.mission-route-status > strong { display:block; margin-bottom:.45rem; color:#ffd36c; }
+#missionConditionStatus { display:grid; gap:.35rem; }
+#missionConditionStatus > div { display:flex; gap:.5rem; color:#cbd5df; font-weight:800; }
+#missionConditionStatus > div.is-reached { color:#8ff0c5; }
+.mission-help { margin:1rem 0 0 !important; padding:.75rem; background:#fff0b9; color:#352b1d !important; font-size:.92rem; }
+.puzzle-board-wrap { min-width:0; padding:.8rem; border:4px solid #303b45; background:#a7aaa5; box-shadow:6px 6px 0 rgba(0,0,0,.18); }
+.puzzle-board-head { display:flex; justify-content:space-between; gap:.5rem; margin-bottom:.6rem; padding:.55rem .7rem; background:#202b35; color:#fff; font-weight:900; font-size:.9rem; }
+.route-puzzle-board { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; width:100%; aspect-ratio:1; }
+.route-tile { position:relative; min-width:0; aspect-ratio:1; border:3px solid #252a2d; border-radius:8px; overflow:hidden; background:#f5f6f2; color:#17212b; cursor:pointer; transition:background .16s ease, transform .18s ease, box-shadow .16s ease; }
+.route-tile:hover:not(:disabled),.route-tile:focus-visible:not(:disabled){background:#fff7da;outline:3px solid #172536;outline-offset:1px}
+.route-tile.is-rotating { transform:scale(.94); }
+.route-tile.is-connected { background:#fff2a7; box-shadow:inset 0 0 0 3px #f0b631; }
+.route-tile.role-condition { border-color:#6b5230; background:#fffaf0; }
+.route-tile.role-start,.route-tile.role-end { background:#d8ded8; border-width:4px; }
+.route-tile.role-start.is-connected,.route-tile.role-end.is-connected { background:#d5f1c9; }
+.route-tile:disabled { cursor:default; opacity:1; }
+.route-pipe { position:absolute; inset:0; pointer-events:none; }
+.route-pipe::before { content:""; position:absolute; left:50%; top:50%; width:24%; height:24%; transform:translate(-50%,-50%); background:#202427; border-radius:3px; }
+.route-pipe.side-n::after,.route-pipe.side-s::after,.route-pipe.side-e::after,.route-pipe.side-w::after,
+.route-pipe.side-n span { content:""; }
+.route-pipe.side-n { background:linear-gradient(#202427 0 50%, transparent 50%) center top / 22% 50% no-repeat; }
+.route-pipe.side-s { box-shadow:none; }
+.route-pipe.side-s::after { content:""; position:absolute; left:39%; top:50%; width:22%; height:50%; background:#202427; }
+.route-pipe.side-e::before { content:""; position:absolute; left:50%; top:39%; width:50%; height:22%; background:#202427; }
+.route-pipe.side-w { box-shadow:inset 0 0 transparent; }
+.route-pipe.side-w::after { content:""; position:absolute; left:0; top:39%; width:50%; height:22%; background:#202427; }
+/* N 和多方向同時存在時，補上北側線段；中心方塊由 first ::before 處理 */
+.route-pipe.side-n::before { content:""; position:absolute; left:39%; top:0; width:22%; height:50%; background:#202427; }
+.route-tile.is-connected .route-pipe::before,
+.route-tile.is-connected .route-pipe::after { background:#e3a817; }
+.route-tile.is-connected .route-pipe.side-n { background:linear-gradient(#e3a817 0 50%, transparent 50%) center top / 22% 50% no-repeat; }
+.route-tile.is-connected .route-pipe.side-n::before,
+.route-tile.is-connected .route-pipe.side-s::after,
+.route-tile.is-connected .route-pipe.side-e::before,
+.route-tile.is-connected .route-pipe.side-w::after { background:#e3a817; }
+.route-tile-label { position:absolute; z-index:5; left:50%; bottom:5px; transform:translateX(-50%); max-width:88%; padding:3px 5px; border:2px solid #20262d; background:#fff; color:#1c242c; font-size:clamp(.58rem,1.1vw,.78rem); line-height:1.1; font-weight:1000; white-space:nowrap; }
+.role-start .route-tile-label,.role-end .route-tile-label { top:50%; bottom:auto; transform:translate(-50%,-50%); background:#172536; color:#fff; border-color:#fff; }
+.puzzle-live-hint { margin:.65rem 0 0 !important; padding:.65rem .75rem; background:#172536; color:#fff !important; font-weight:800; text-align:center; }
+.mission-result-panel { width:min(760px,100%); margin-inline:auto; text-align:center; }
+.mission-result-card { margin:1rem auto; padding:1rem; max-width:620px; background:#172536; color:#fff; text-align:left; border:4px solid #f2dfb3; }
+.mission-result-card h4 { margin:.75rem 0 1rem; font-size:clamp(1.3rem,3vw,1.9rem); }
+.mission-result-card .unit-type-badge { display:inline-block; }
+.resource-final-panel { width:min(720px,100%); margin-inline:auto; text-align:center; }
+.resource-final-clue { display:grid; place-items:center; gap:.25rem; width:min(300px,80%); margin:1.2rem auto; padding:1rem; border:5px solid #594420; background:#fff0aa; color:#2b2112; box-shadow:8px 8px 0 rgba(0,0,0,.18); }
+.resource-final-clue span { font-weight:900; letter-spacing:.12em; }.resource-final-clue strong{font-size:clamp(4rem,12vw,7rem);line-height:1}
+#resourceFinalReturn[hidden]{display:none!important}
+
+@media (max-width:860px){
+  .resource-puzzle-layout{grid-template-columns:1fr}.mission-paper{min-height:auto}.route-puzzle-board{max-width:650px;margin-inline:auto}
+}
+@media (max-width:620px){
+  .resource-home-hero{grid-template-columns:1fr}.pixel-sign{width:110px}.resource-home-actions,.district-grid,.unit-card-grid{grid-template-columns:1fr}
+  .resource-mode-card{min-height:120px}.resource-step-head,.resource-puzzle-topbar{flex-direction:column}.resource-secondary{align-self:flex-start}
+  .route-puzzle-board{gap:4px}.route-tile{border-width:2px}.route-tile-label{font-size:.55rem;padding:2px 3px}
+  .mission-paper{padding-inline:.85rem}.puzzle-board-wrap{padding:.45rem}.puzzle-board-head{font-size:.74rem}
+}
+
+/* V8 pipe renderer override */
+.route-pipe { position:absolute; inset:0; pointer-events:none; background:none !important; }
+.route-pipe::before,.route-pipe::after { content:none !important; }
+.pipe-center,.pipe-arm { position:absolute; display:none; background:#202427; z-index:1; }
+.pipe-center { display:block; left:39%; top:39%; width:22%; height:22%; border-radius:3px; }
+.pipe-arm.arm-n { left:39%; top:0; width:22%; height:50%; }
+.pipe-arm.arm-e { left:50%; top:39%; width:50%; height:22%; }
+.pipe-arm.arm-s { left:39%; top:50%; width:22%; height:50%; }
+.pipe-arm.arm-w { left:0; top:39%; width:50%; height:22%; }
+.route-pipe.side-n .arm-n,.route-pipe.side-e .arm-e,.route-pipe.side-s .arm-s,.route-pipe.side-w .arm-w { display:block; }
+.route-tile.is-connected .pipe-center,.route-tile.is-connected .pipe-arm { background:#e3a817; }
+
+/* ISS-029:5×5 路徑盤依視窗高度縮放,避免超出視窗 */
+.route-puzzle-board{width:min(100%,calc(100vh - 340px))!important;max-width:none!important;margin-inline:auto}

@@ -1,0 +1,147 @@
+/* 餐桌照護日記(房間 3 營養食物)——UI 套件風格:深藍底、暖金框、羊皮紙面板。
+   設計基準 1280×720,room3-layout.js 以 zoom 等比縮放,所以這裡用固定 px。
+   長輩對話框沿用房間進場對話框的 au-dialog 元件(art-ui),此處只負責擺放位置。 */
+.fl{--ink:#3a2a14;--gold:#c98c1c;--gold-l:#ffe9b0;--navy:#14294a;--navy-d:#0b1426;position:relative;box-sizing:border-box;width:min(1240px,100%);margin:0 auto;padding:8px 14px 10px;color:var(--ink);border:3px solid var(--gold);border-radius:6px;background:radial-gradient(circle at 50% 0,#1d3a66,var(--navy) 55%,var(--navy-d));box-shadow:inset 0 0 0 2px #0b1426,0 5px 0 #0b1426,0 12px 24px #0006}
+.fl p{margin:0;line-height:1.5}
+.fl-header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:6px}
+.fl-eyebrow{display:block;color:#9fb6d9;font-size:12px;font-weight:900;letter-spacing:.14em}
+.fl h2{margin:0;font-size:28px;line-height:1.2;color:var(--gold-l);text-shadow:0 2px 0 var(--navy-d)}
+.fl-phase{padding:3px 12px;border:2px solid var(--gold);background:var(--navy);color:var(--gold-l);font-weight:900;font-size:14px;white-space:nowrap}
+.fl h3{margin:0 0 6px;font-size:16px;color:var(--ink)}
+.fl-task{margin:0 0 8px;padding:6px 12px;border:2px solid #b98a3c;border-left:6px solid #8a4f0c;background:#fbeccb;font-size:15px;font-weight:700}
+.fl-task[hidden]{display:none}
+.fl-stage{position:relative}
+.fl-note{min-height:24px;margin:6px 0 0;color:var(--gold-l);font-weight:700;font-size:15px}
+.fl-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fl select{padding:6px 8px;border:2px solid #7a4f10;background:#fff3d2;color:var(--ink);font:inherit;font-weight:700}
+.fl button:disabled{opacity:.45;cursor:not-allowed}
+
+/* ---------- 共用:羊皮紙面板(clue-card-blank) ---------- */
+.fl-stock,.fl-conditions,.fl-tools,.fl-schedule section{box-sizing:border-box;border:10px solid transparent;border-image:url("../assets/art-final/ui/clue-card-blank.png") 16 fill/10px stretch;image-rendering:pixelated;background:none;color:var(--ink);filter:drop-shadow(0 3px 0 #0b142680)}
+.fl-stock>*,.fl-conditions>*,.fl-tools>*,.fl-schedule section>*{image-rendering:auto}
+.fl-hot{filter:drop-shadow(0 0 7px #ffd36a) brightness(1.06)!important}
+.fl-board.fl-hot{box-shadow:0 0 0 3px #ffd36a,0 0 18px #ffd36a,inset 0 0 30px #48280f66!important}
+
+/* ---------- 桌面、餐盤 ---------- */
+.fl-table,.fl-board{background:url("assets/table-realistic-pixel.png") center/cover;background-color:#8f6139;border:4px solid #7a4f10;border-radius:0;box-shadow:0 0 0 2px var(--navy-d),inset 0 0 30px #48280f66}
+.fl-table{position:relative;padding:10px;text-align:center}
+.fl-sprite{display:block;width:100%;height:100%;background-image:url("assets/food-realistic-pixel.png");background-size:400% 400%;background-position:var(--sx) var(--sy);image-rendering:pixelated}
+.fl-plate-image{display:block;width:100%;height:100%;object-fit:contain;image-rendering:auto}
+
+/* 情境 1:一盤飯菜肉 */
+.fl-simple-plate{position:relative;display:flex;align-items:center;justify-content:center;width:100%;max-width:350px;aspect-ratio:1;margin:auto;padding:0;gap:0;isolation:isolate}
+.fl-simple-plate:before{content:"";position:absolute;inset:0;z-index:-1;background:url("assets/plate-realistic.svg") center/contain no-repeat}
+.fl-simple-plate>div{width:25%;text-align:center}
+.fl-simple-plate>div:last-child{width:41%}
+.fl-simple-plate>div:last-child .fl-sprite{transform:scale(1.18)}
+.fl-simple-plate .fl-sprite{height:auto;aspect-ratio:1}
+.fl-simple-plate small{display:inline-block;padding:1px 6px;background:#fffae9d9;font-size:12px}
+.fl-cut-pieces{display:flex;flex-wrap:wrap;justify-content:center}
+.fl-simple-plate .fl-cut-pieces .fl-sprite{width:32%;height:auto;aspect-ratio:1;transform:none}
+.fl-cut-pieces small{width:100%}
+#fl-knife{position:absolute;right:3%;bottom:12%;display:grid;place-items:center;gap:2px;padding:6px 10px}
+#fl-knife .fl-sprite{width:84px;height:84px}
+.fl-cut{max-width:640px;margin:0 auto;text-align:center}
+.fl-cut svg{display:block;width:100%;touch-action:none;user-select:none;cursor:crosshair;image-rendering:pixelated;background:url("assets/table-realistic-pixel.png") center/cover;border:4px solid #7a4f10;box-shadow:0 0 0 2px var(--navy-d)}
+.fl-cut svg>rect{fill:#ceaa7b;opacity:.5}
+.fl-cut line{filter:drop-shadow(1px 1px 2px #321)}
+.fl-cut p{margin-top:6px;color:var(--gold-l);font-weight:800}
+
+/* 進場觀察(三個情境共用) */
+.fl-intro-scene{position:relative}
+.fl-preview-table{display:grid;place-items:center;height:330px}
+.fl-preview-plate{position:relative;width:310px;aspect-ratio:1}
+.fl-preview-plate>.fl-plate-image{position:absolute;inset:0;z-index:0}
+.fl-preview-plate>.fl-sprite{position:absolute;inset:0}
+.fl-preview-foods{position:absolute;inset:16%;z-index:2;display:flex;align-items:center;justify-content:center}
+.fl-preview-foods .fl-sprite{width:30%;height:auto;aspect-ratio:1}
+.fl-preview-foods .fl-sprite:last-child{width:43%;transform:scale(1.12)}
+.fl-feast{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:min(640px,100%);height:330px;margin:0 auto;padding:10px}
+.fl-feast>div{min-height:0}
+.fl-feast .fl-sprite{height:100%}
+.fl-intro-scene>.fl-board{width:330px;height:330px;margin:0 auto}
+
+/* ---------- 長輩對話框(房間進場對話框同一套 au-dialog) ---------- */
+.fl-talk{--au-s:2;position:absolute;left:0;right:0;bottom:6px;z-index:30;padding:0 8px;pointer-events:none;animation:flRise .22s ease-out}
+.fl-talk[hidden]{display:none}
+.fl-talk .au-dlg-row{pointer-events:none}
+.fl-talk.fl-talk-block .au-dlg-row,.fl-talk.fl-talk-flow .au-dlg-row{pointer-events:auto;cursor:pointer}
+.fl-talk.fl-talk-flow{position:relative;bottom:auto;margin:6px 0 0}
+.fl-stage:has(.fl-intro-scene) .fl-talk[hidden]{display:block;visibility:hidden;height:232px}
+@keyframes flRise{from{opacity:0;transform:translateY(12px)}}
+
+/* ---------- 食物卡 ---------- */
+.fl-cards{display:flex;flex-wrap:wrap;gap:6px;min-height:40px}
+.fl-card{display:inline-flex;align-items:center;gap:6px;min-height:48px;padding:3px 8px;border:2px solid #b98a3c;background:#fff3d2;font-size:14px;font-weight:700;color:var(--ink);box-shadow:0 3px 0 #7a4f1055;cursor:grab;user-select:none;touch-action:none;transition:transform .12s}
+.fl-card:hover{border-color:#8a4f0c;background:#fff8e2;transform:translateY(-2px)}
+.fl-card.fl-dragging{opacity:.35}
+.fl-card .fl-sprite{width:40px;height:40px;flex:none}
+.fl-card>.fl-food-name{font-size:13px}
+.fl-empty{align-self:center;color:#7a6a45;font-size:13px}
+
+/* ---------- 情境 2:一天的食物安排 ---------- */
+.fl-food-strip{margin:0 0 8px;padding:0 2px}
+.fl-food-strip h3{display:flex;justify-content:space-between}
+.fl-food-strip h3 small{color:#6b4a1e}
+.fl-food-strip .fl-cards{flex-wrap:nowrap;overflow-x:auto;min-height:0;padding-bottom:4px}
+.fl-food-strip .fl-card{flex:none;flex-direction:column;gap:0;min-width:70px;padding:3px 4px}
+.fl-planner{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(0,1.5fr);gap:10px;align-items:stretch}
+.fl-conditions{padding:0 4px}
+.fl-conditions>small{display:block;color:#6b5a38;font-size:12px;margin-bottom:2px}
+.fl-rule{display:flex;gap:8px;align-items:flex-start;padding:3px 0;border-bottom:1px dashed #cfae6a;color:#6b5a38}
+.fl-rule>span{min-width:20px;text-align:center;line-height:1.4;font-size:15px}
+.fl-rule p{font-size:13px;line-height:1.35}
+.fl-rule.fl-ok{color:#1f6d44;font-weight:800}
+.fl-rule.fl-ok>span{border-radius:50%;background:#cfe6c4}
+.fl-counts{margin-top:6px;font-size:13px;font-weight:800;color:#6b4a1e}
+.fl-swatches{display:flex;gap:6px;margin-top:6px}
+.fl-swatches i{display:block;width:26px;height:26px;border:3px solid #7a4f10;box-shadow:0 2px 0 #7a4f1055}
+.fl-schedule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fl-schedule section{min-height:112px;padding:0 2px}
+.fl-schedule h3{display:flex;flex-wrap:wrap;gap:6px;font-size:14px}
+.fl-schedule h3 small{margin-left:auto;color:#6b4a1e}
+.fl-schedule .fl-card{min-height:0;padding:2px 6px;gap:4px;font-size:12px}
+.fl-schedule .fl-card .fl-sprite{width:30px;height:30px}
+
+/* ---------- 情境 3:用分盤,整理餐桌 ---------- */
+.fl-plating{display:grid;grid-template-columns:minmax(0,1fr) 380px minmax(0,1fr);gap:12px;align-items:stretch}
+.fl-tools,.fl-conditions{min-height:0;padding:0 4px}
+.fl-tools label{display:block;margin:0 0 8px;font-weight:800;font-size:14px}
+.fl-tools label select{margin-left:6px;max-width:100%}
+.fl-tools p{margin-top:8px;font-size:13px;color:#5a4524}
+.fl-tools .fl-actions{gap:6px;margin-top:6px}
+.fl-tools .fl-actions button{padding:2px 10px;min-height:0;font-size:14px}
+.fl-board{position:relative;width:380px;height:380px;overflow:hidden;touch-action:none}
+.fl-dish{position:absolute;transform:translate(-50%,-50%);border-radius:50%;background:none;box-shadow:none;pointer-events:none;z-index:2}
+.fl-dish .fl-plate-image{position:absolute;inset:0;z-index:0}
+.fl-dish.selected{filter:drop-shadow(0 0 8px #ffd36a)}
+.fl-dish>span{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);z-index:3;padding:1px 8px;background:#10203ee8;color:var(--gold-l);font-size:12px;font-weight:800}
+.fl-piece{position:absolute;transform:translate(-50%,-50%);z-index:4;cursor:grab;user-select:none;touch-action:none;transition:filter .12s}
+.fl-piece:hover{filter:drop-shadow(0 0 6px #ffd36a) brightness(1.07)}
+.fl-piece.fl-dragging{opacity:.3}
+.fl-piece small{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);white-space:nowrap;padding:1px 5px;background:#10203ee8;color:var(--gold-l);font-size:11px;font-weight:800;pointer-events:none}
+.fl-ghost{position:fixed!important;z-index:99999!important;transform:translate(-50%,-50%)!important;width:110px!important;height:80px!important;pointer-events:none!important;opacity:.9;filter:drop-shadow(0 10px 12px #0006)}
+.fl-ghost.fl-card{background:none;border:0;box-shadow:none}
+.fl-ghost .fl-sprite{background-image:url("assets/food-realistic-pixel.png");background-size:400% 400%;background-position:var(--sx) var(--sy);image-rendering:pixelated}
+
+/* ---------- 體驗後的學習 ---------- */
+.fl .edu-stepper{display:grid;gap:10px}
+.fl .edu-line{min-height:96px;display:flex;align-items:center;padding:14px 18px;font-size:24px;line-height:1.55;font-weight:800;color:var(--ink);border:3px solid #b98a3c;border-radius:0;background:#fbeccb}
+.fl .edu-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.fl .edu-progress{font-weight:900;color:var(--gold-l)}
+.fl-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(prefers-reduced-motion:reduce){.fl *{transition:none!important;animation:none!important}}
+.fl .edu-speak{padding:6px 16px;border:3px solid var(--gold);background:linear-gradient(#27457a,#16294d);color:var(--gold-l);font:900 16px/1.2 inherit;font-family:inherit;box-shadow:0 3px 0 var(--navy-d);cursor:pointer}
+.fl .edu-speak:hover{filter:brightness(1.15)}
+.fl .edu-speak::before{content:"🔊 "}
+/* Room 1/2-style sentence-by-sentence education */
+.edu-stepper{display:grid;gap:18px;align-content:start}.edu-line{min-height:120px;display:flex;align-items:center;font-size:clamp(22px,2.1vw,30px);line-height:1.65;font-weight:700;padding:20px 22px;border-radius:18px;background:rgba(255,255,255,.82);border:2px solid rgba(83,103,91,.16)}.edu-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.edu-controls button{min-height:52px;font-size:18px}.edu-progress{font-weight:800;opacity:.7}.edu-speak::before{content:'🔊 ';}
+
+/* Four-scene post-game nutrition education: one frame, left illustration / right text */
+.fl-story-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:min(1320px,100%);margin:0 auto;background:#fff;border:1px solid #d9e6ee;border-radius:24px;overflow:hidden;min-height:min(66vh,690px)}
+.fl-story-media{margin:0;background:#edf6fa;min-width:0;display:flex;flex-direction:column}
+.fl-story-media>img{width:100%;height:auto;max-height:min(58vh,630px);object-fit:contain;display:block}
+.fl-story-caption{padding:16px 20px;background:#fff0d4;color:#563b28;font-size:clamp(16px,1.4vw,22px);line-height:1.65;font-weight:700}
+.fl-story-missing{flex:1;min-height:260px;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:24px;color:#27475a;font-size:22px}.fl-story-missing[hidden]{display:none}.fl-story-missing small{display:block;font-size:13px;margin-top:12px;color:#677d8d}
+.fl-story-copy{padding:clamp(18px,3vw,40px);display:flex;flex-direction:column;justify-content:center;gap:24px;min-width:0;color:#17384a}.fl-story-copy .edu-stepper{background:#fff;border:1px solid #d7e5ed;border-radius:18px;padding:clamp(16px,2vw,28px)}.fl-story-copy .edu-line{font-size:clamp(23px,2.2vw,36px);font-weight:800;color:#16374c;line-height:1.6}.fl-story-eyebrow{color:#24709b;font-weight:700}.fl-story-actions{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:800px){.fl-story-layout{grid-template-columns:1fr;min-height:0}.fl-story-media>img{max-height:46vh}.fl-story-copy{padding:18px}}

@@ -1,0 +1,38 @@
+/* story-grid.css — 房間一方格表:顏色進度條、操作提示按鈕、選項依序出現 */
+.color-progress { display: inline-flex !important; gap: 6px; align-items: center; }
+.color-progress i {
+  display: block; width: 44px; height: 18px; border: 2px solid #0b1426; border-radius: 3px;
+  background: #3b4560; box-shadow: inset 0 0 0 1px #5d6988; transition: background .4s, box-shadow .4s;
+}
+.color-progress i.is-filled:nth-child(1) { background: #e0675a; box-shadow: inset 0 0 0 1px #ffb3a8, 0 0 10px #e0675a; }
+.color-progress i.is-filled:nth-child(2) { background: #f0b73f; box-shadow: inset 0 0 0 1px #ffe39a, 0 0 10px #f0b73f; }
+.color-progress i.is-filled:nth-child(3) { background: #55b87a; box-shadow: inset 0 0 0 1px #a8efc2, 0 0 10px #55b87a; }
+.color-progress.is-full { animation: cp-full .8s ease-out; }
+@keyframes cp-full { 50% { filter: brightness(1.6); transform: scale(1.08); } }
+
+.grid-hint-button { margin-top: .8rem; font-size: 1.1rem; }
+
+/* 星星閃光飛向進度條 */
+.sd-star-fly { position: fixed; z-index: 2147482500; pointer-events: none; font-size: 28px; line-height: 1; color: #ffe27a; text-shadow: 0 0 8px #ffd34d, 0 0 18px #fff; }
+.sd-star-trail { position: fixed; z-index: 2147482499; pointer-events: none; width: 10px; height: 10px; background: #ffe27a; border-radius: 50%; box-shadow: 0 0 8px #ffd34d; }
+
+/* C4/C8 選項像下拉選單一樣,由上而下依序展開 */
+.choice-list.choice-hidden .choice-option { opacity: 0; transform: scaleY(.05); }
+.choice-list.choice-stagger .choice-option { transform-origin: top center; animation: choice-drop .38s cubic-bezier(.2, .9, .3, 1.15) both; }
+.choice-list.choice-stagger .choice-option:nth-of-type(1) { animation-delay: 0s; }
+.choice-list.choice-stagger .choice-option:nth-of-type(2) { animation-delay: .2s; }
+.choice-list.choice-stagger .choice-option:nth-of-type(3) { animation-delay: .4s; }
+.choice-list.choice-stagger .choice-option:nth-of-type(4) { animation-delay: .6s; }
+@keyframes choice-drop {
+  0% { opacity: 0; transform: translateY(-22px) scaleY(.05); clip-path: inset(0 0 100% 0); }
+  60% { opacity: 1; clip-path: inset(0 0 0 0); }
+  100% { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) { .choice-list.choice-stagger .choice-option { animation: none; } }
+
+/* ===== 房間一其他小遊戲(老花眼鏡/眼藥水/拐杖/藥盒)共用 ===== */
+.reading-stage .reading-hint-button { position: absolute !important; top: 1rem !important; left: 1rem !important; z-index: 5; font-size: 1.1rem; }
+.impact-toolbar { display: flex; justify-content: flex-start; margin: 0 0 .5rem; }
+.impact-toolbar .grid-hint-button { margin-top: 0; }
+.resource-step-head .grid-hint-button, .mission-paper .grid-hint-button { margin-top: .6rem; }
+.cataract-assessment-panel .grid-hint-button { margin-top: 0; }

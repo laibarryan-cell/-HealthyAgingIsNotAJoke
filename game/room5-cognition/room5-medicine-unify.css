@@ -1,0 +1,115 @@
+/* 第三修改計劃 G5-1:房五醫藥盒(接水管)— 依 I 節基準,與房一、房四水管遊戲統一。
+   由房四 room4-unify.css 的醫療盒規則轉寫;只改呈現,任務、條件、醫療單位資料不變。 */
+html.r5-fit #app > .cog-medicine { display: flex !important; flex-direction: column; overflow: hidden; box-sizing: border-box; padding-bottom: 0 !important; margin: 0 auto !important; }
+html.r5-fit .cog-medicine > .medicine-mission-bar { flex: none; }
+html.r5-fit .cog-medicine > .act-toolbar { flex: none; width: 1232px !important; margin: 10px auto 6px !important; flex-direction: row !important; align-items: center; gap: 12px; }
+/* 內容區:一屏、置中、填滿 */
+html.r5-fit .cog-medicine .resource-shell { flex: 1 1 0; min-height: 0; width: 1232px !important; max-width: none !important; margin: 0 auto 12px !important; padding: 0 !important; display: flex; flex-direction: column; }
+html.r5-fit .cog-medicine .resource-panel:not([hidden]) {
+  flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; box-sizing: border-box; margin: 0 !important; width: auto !important; max-width: none !important;
+  border: 3px solid #c98c1c !important; border-radius: 6px !important; background: #fbeccb !important; color: #3a2a14 !important;
+  box-shadow: inset 0 0 0 2px #fff3cf, 0 5px 0 #0b1426, 0 12px 24px rgba(0,0,0,.4) !important; padding: 18px 24px !important;
+}
+/* 首頁 */
+html.r5-fit .cog-medicine .resource-home-step:not([hidden]) { justify-content: center; gap: 22px; }
+html.r5-fit .cog-medicine .resource-home-hero { display: flex; align-items: center; gap: 26px; }
+html.r5-fit .cog-medicine .resource-home-hero h3 { font-size: 34px !important; color: #3a2a14 !important; margin: 0; }
+html.r5-fit .cog-medicine .pixel-sign { width: 150px !important; height: 150px !important; font-size: 34px !important; }
+html.r5-fit .cog-medicine .resource-home-actions { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 22px !important; }
+html.r5-fit .cog-medicine .resource-mode-card { min-height: 150px !important; font-size: 26px; cursor: pointer; transition: transform .12s, filter .12s, box-shadow .12s; }
+html.r5-fit .cog-medicine .resource-mode-card strong { font-size: 28px !important; }
+html.r5-fit .cog-medicine .resource-mode-card:hover { transform: translateY(-3px); filter: brightness(1.04); box-shadow: 0 0 18px #ffd36a; }
+html.r5-fit .cog-medicine .resource-mode-card:active { transform: translateY(2px) scale(.98); filter: brightness(1.08); }
+html.r5-fit .cog-medicine .resource-source-note { font-size: 18px !important; color: #3a2a14 !important; }
+/* 次要按鈕(回資源首頁、換一個區域):深藍名牌 */
+html.r5-fit .cog-medicine .resource-secondary {
+  padding: 7px 18px !important; border-radius: 4px !important; font-size: 17px !important; font-weight: 900; cursor: pointer;
+  background: linear-gradient(#27487c, #14294a) !important; color: #ffe9b0 !important; border: 3px solid #c98c1c !important; box-shadow: 0 4px 0 #0b1426 !important; transition: transform .12s, filter .12s;
+}
+html.r5-fit .cog-medicine .resource-secondary:hover { filter: brightness(1.15); }
+html.r5-fit .cog-medicine .resource-secondary:active { transform: translateY(3px); box-shadow: 0 1px 0 #0b1426 !important; }
+html.r5-fit .cog-medicine .primary-button {
+  align-self: center; min-height: 0 !important; padding: 12px 40px !important; border-radius: 4px !important; font-size: 24px !important; font-weight: 900 !important; cursor: pointer;
+  background: linear-gradient(#ffd466, #f0a91c) !important; color: #3a2a14 !important; border: 3px solid #9a6208 !important; box-shadow: 0 5px 0 #6b4306, 0 0 0 2px #0b1426 !important; transition: transform .12s, filter .12s, box-shadow .12s;
+}
+html.r5-fit .cog-medicine .primary-button:hover { filter: brightness(1.08) drop-shadow(0 0 8px #ffd36a99); transform: translateY(-2px); translate: none; }
+html.r5-fit .cog-medicine .primary-button:active { transform: translateY(4px); box-shadow: 0 1px 0 #6b4306, 0 0 0 2px #0b1426 !important; }
+/* 緊急任務:左邊任務紙(上方「回資源首頁」),右邊棋盤佔滿高度(同房間一) */
+html.r5-fit .cog-medicine .resource-mission-panel:not([hidden]) { display: grid !important; grid-template-columns: 400px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); column-gap: 18px; row-gap: 8px; padding: 14px 18px !important; }
+html.r5-fit .cog-medicine .resource-puzzle-topbar { grid-column: 1; grid-row: 1; display: flex; justify-content: flex-start; margin: 0 !important; padding: 0 !important; }
+html.r5-fit .cog-medicine .resource-puzzle-layout { display: contents !important; }
+html.r5-fit .cog-medicine .mission-paper { grid-column: 1; grid-row: 2; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding: 22px 18px 12px !important; margin: 0 !important; }
+html.r5-fit .cog-medicine .mission-paper h4 { font-size: 26px !important; margin: 2px 0 4px !important; }
+html.r5-fit .cog-medicine .mission-paper .mission-kicker { font-size: 15px !important; }
+html.r5-fit .cog-medicine .mission-story { font-size: 17px !important; line-height: 1.5 !important; margin: 0 0 8px !important; color: #2a2230 !important; }
+html.r5-fit .cog-medicine .mission-condition-title { font-size: 17px !important; margin-top: 4px !important; }
+html.r5-fit .cog-medicine .mission-condition-list { gap: 6px !important; margin: 6px 0 8px !important; }
+html.r5-fit .cog-medicine .mission-condition-list > * { font-size: 18px !important; padding: 6px 12px !important; }
+html.r5-fit .cog-medicine .mission-route-status { margin-top: auto !important; padding: 10px 14px !important; font-size: 17px; }
+html.r5-fit .cog-medicine .puzzle-board-wrap { grid-column: 2; grid-row: 1 / span 2; position: relative; display: flex; flex-direction: column; align-items: center; min-height: 0; padding: 10px !important; margin: 0 !important; }
+/* 起點/目標單位不另佔一列(同房間三 E3-2):疊在棋盤上方左右角 */
+html.r5-fit .cog-medicine .puzzle-board-head { position: absolute; inset: 10px 14px auto; z-index: 3; display: flex; justify-content: space-between; margin: 0 !important; padding: 0 !important; background: none !important; pointer-events: none; }
+html.r5-fit .cog-medicine .puzzle-board-head > span:not(.sr-only) { background: #16624a !important; color: #fff !important; border: 2px solid #bfe8d6; padding: 3px 12px !important; font-size: 17px !important; font-weight: 900; letter-spacing: .06em; }
+html.r5-fit .cog-medicine .route-puzzle-board { flex: 1 1 0; min-height: 0; width: auto !important; max-width: 100%; aspect-ratio: 1; align-self: center; gap: 5px !important; margin: 0 !important; }
+html.r5-fit .cog-medicine .puzzle-live-hint { flex: none; margin: 6px 0 0 !important; padding: 6px 14px !important; font-size: 18px !important; font-weight: 900; color: #ffe9b0 !important; background: #14294a !important; border-radius: 4px; }
+html.r5-fit .cog-medicine .route-tile { container-type: size; border-width: 3px !important; }
+html.r5-fit .cog-medicine .route-tile:not(:disabled) { transition: transform .1s ease, filter .1s ease, background .16s; }
+html.r5-fit .cog-medicine .route-tile:hover:not(:disabled), html.r5-fit .cog-medicine .route-tile:focus-visible:not(:disabled) { outline: none !important; filter: brightness(1.06); box-shadow: 0 0 12px #ffd36a; }
+html.r5-fit .cog-medicine .route-tile:active:not(:disabled) { transform: scale(.94); filter: brightness(1.12); }
+/* 需求/目標:綠底白字徽章(停用按鈕原本會被瀏覽器變灰) */
+html.r5-fit .cog-medicine .route-tile.role-start, html.r5-fit .cog-medicine .route-tile.role-end { color: #fff; opacity: 1; border-color: #1f8a66 !important; box-shadow: inset 0 0 0 2px #bfe8d6; }
+html.r5-fit .cog-medicine .role-start .route-tile-label, html.r5-fit .cog-medicine .role-end .route-tile-label { background: #16624a !important; color: #fff !important; border: 2px solid #fff !important; box-shadow: 0 2px 0 #0b3b2c; letter-spacing: .08em; }
+/* 條件文字:跟著格子大小,太長換兩行 */
+html.r5-fit .cog-medicine .route-tile-label { font-size: clamp(13px, 15.5cqw, 22px) !important; line-height: 1.15; white-space: normal !important; word-break: keep-all; overflow-wrap: anywhere; text-align: center; max-width: 92% !important; width: max-content; padding: 2px 5px !important; background: #fff8e6 !important; color: #2a1c08 !important; border: 2px solid #a76a1b !important; box-shadow: 0 2px 0 #5c3a0e; }
+html.r5-fit .cog-medicine .route-tile.role-condition { border-color: #c98a1e !important; }
+/* 找到符合條件的單位:標題、單位卡、說明文字都加深加大 */
+html.r5-fit .cog-medicine :is(.mission-result-panel, .resource-final-panel):not([hidden]) { justify-content: center; align-items: center; text-align: center; gap: 6px; }
+html.r5-fit .cog-medicine :is(.mission-result-panel, .resource-final-panel) h3 { font-size: 36px !important; color: #3a2a14 !important; margin: 0 0 6px !important; font-weight: 900; }
+html.r5-fit .cog-medicine .mission-result-card { width: 100%; max-width: 900px !important; margin: 6px auto !important; padding: 16px 24px !important; background: #14294a !important; border: 3px solid #c98c1c !important; box-shadow: inset 0 0 0 2px #0b1426, 0 5px 0 #0b1426; }
+html.r5-fit .cog-medicine .mission-result-card h4 { font-size: 34px !important; color: #fff !important; margin: 6px 0 10px !important; }
+html.r5-fit .cog-medicine .mission-result-card dl div { grid-template-columns: 90px 1fr !important; font-size: 22px; padding: 8px 12px !important; border-color: #ffffff40 !important; background: #ffffff12 !important; }
+html.r5-fit .cog-medicine .mission-result-card dt { color: #ffd36a !important; }
+html.r5-fit .cog-medicine .mission-result-card dd { color: #fff !important; }
+html.r5-fit .cog-medicine .unit-type-badge { font-size: 16px !important; font-weight: 900; }
+html.r5-fit .cog-medicine .resource-panel .resource-detail-note, html.r5-fit .cog-medicine .resource-final-panel p { color: #3a2a14 !important; font-size: 19px !important; font-weight: 700; line-height: 1.55; max-width: 900px; margin: 6px auto !important; }
+/* 查詢資源:區域與單位卡 */
+html.r5-fit .cog-medicine #resourceQueryStep .resource-step-head h3 { font-size: 28px !important; color: #3a2a14 !important; margin: 0; }
+html.r5-fit .cog-medicine #resourceQueryStep .district-grid { gap: 10px !important; margin-top: 10px !important; }
+html.r5-fit .cog-medicine #resourceQueryStep .query-unit-area:not([hidden]) { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+html.r5-fit .cog-medicine #resourceQueryStep .unit-card-grid { flex: 1 1 0; min-height: 0; overflow-y: auto; align-content: start; }
+html.r5-fit .cog-medicine :is(.district-choice, .unit-card) { cursor: pointer; transition: transform .12s, filter .12s, box-shadow .12s; }
+html.r5-fit .cog-medicine :is(.district-choice, .unit-card):hover { transform: translateY(-2px); box-shadow: 0 0 14px #ffd36a; }
+html.r5-fit .cog-medicine :is(.district-choice, .unit-card):active { transform: translateY(2px) scale(.98); }
+/* 任務紙與結果頁壓縮,確保一屏內完整顯示(不需捲動) */
+html.r5-fit .cog-medicine .mission-paper { padding: 16px 16px 10px !important; }
+html.r5-fit .cog-medicine .mission-paper-tape { display: none; }
+html.r5-fit .cog-medicine .mission-story { font-size: 16px !important; margin: 0 0 4px !important; }
+html.r5-fit .cog-medicine .mission-condition-list > * { font-size: 16px !important; padding: 3px 10px !important; min-height: 0 !important; }
+html.r5-fit .cog-medicine .mission-route-status { padding: 6px 12px !important; }
+html.r5-fit .cog-medicine .mission-route-status > * { font-size: 15px !important; }
+html.r5-fit .cog-medicine #missionConditionStatus > * { padding: 1px 0 !important; }
+html.r5-fit .cog-medicine .mission-result-panel:not([hidden]) { padding: 12px 24px !important; }
+html.r5-fit .cog-medicine .mission-result-panel h3 { font-size: 32px !important; margin: 0 !important; }
+html.r5-fit .cog-medicine .mission-result-card { padding: 10px 22px !important; margin: 4px auto !important; }
+html.r5-fit .cog-medicine .mission-result-card h4 { font-size: 28px !important; margin: 4px 0 8px !important; }
+html.r5-fit .cog-medicine .mission-result-card dl { gap: 6px !important; }
+html.r5-fit .cog-medicine .mission-result-card dl div { font-size: 20px !important; padding: 5px 12px !important; }
+html.r5-fit .cog-medicine .mission-result-panel .resource-detail-note { font-size: 17px !important; margin: 4px auto 8px !important; }
+/* 「回資源首頁」不另佔一列:放到棋盤區左下角(與接通狀態同一列),任務紙佔滿左欄高度 */
+html.r5-fit .cog-medicine .resource-mission-panel:not([hidden]) { grid-template-rows: minmax(0, 1fr); position: relative; }
+html.r5-fit .cog-medicine .mission-paper { grid-row: 1 !important; }
+html.r5-fit .cog-medicine .puzzle-board-wrap { grid-row: 1 !important; }
+html.r5-fit .cog-medicine .resource-puzzle-topbar { position: absolute; right: 30px; bottom: 24px; z-index: 4; }
+/* 查詢:區域卡與單位卡壓縮(同房間一),單位清單完整放進一屏 */
+html.r5-fit .cog-medicine #resourceQueryStep .district-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)) !important; }
+html.r5-fit .cog-medicine #resourceQueryStep .district-choice { min-height: 0 !important; padding: 10px 14px !important; display: grid !important; grid-template-columns: auto 1fr; align-items: center; column-gap: 10px; text-align: left; }
+html.r5-fit .cog-medicine #resourceQueryStep .district-choice > :first-child { grid-row: 1 / span 2; }
+html.r5-fit .cog-medicine #resourceQueryStep .district-choice strong { font-size: 21px !important; }
+html.r5-fit .cog-medicine #resourceQueryStep .query-unit-area:not([hidden]) { margin-top: 8px !important; padding-top: 8px !important; }
+html.r5-fit .cog-medicine #resourceQueryStep .unit-card-grid { margin-top: 8px !important; gap: 10px !important; grid-auto-rows: max-content; }
+html.r5-fit .cog-medicine #resourceQueryStep .unit-card { min-height: 0 !important; padding: 10px 14px !important; }
+html.r5-fit .cog-medicine #resourceQueryStep .unit-card strong { font-size: 19px !important; }
+html.r5-fit .cog-medicine #resourceQueryStep:has(.query-unit-area:not([hidden])) > .resource-step-head h3 { font-size: 22px !important; }
+/* 需求/目標格:淺綠底(與房四相同),停用狀態不變灰 */
+html.r5-fit .cog-medicine .route-tile:is(.role-start, .role-end) { background: #dff3e6 !important; opacity: 1 !important; filter: none !important; }
+html.r5-fit .cog-medicine .route-tile:is(.role-start, .role-end).is-connected { background: #c9efcf !important; }

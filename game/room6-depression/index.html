@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#364e43"><title>憂鬱／心理能力房 · 五日陪伴</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23364e43'/%3E%3Cpath d='M8 17q8-14 16 0M8 17q8 12 16 0' fill='%23eed5a1'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style-v9.css?v=10"><link rel="stylesheet" href="rpg/style.css?v=10"><link rel="stylesheet" href="factors/style.css?v=10"><link rel="stylesheet" href="room6-fit.css?v=1"><link rel="stylesheet" href="../shared/story-kit.css"><link rel="stylesheet" href="room6-story.css?v=2">
+  <link rel="stylesheet" href="../art-ui/art-ui.css?v=r15"><link rel="stylesheet" href="room6-unify.css?v=6">
+</head>
+<body>
+  <main id="app">
+    <section id="roomView" class="view room-view" aria-labelledby="roomTitle">
+      <header class="game-hud">
+        <button id="returnToMap" class="ghost-button integration-back" type="button">← 返回房間配置圖</button>
+        <div class="heading">
+          <h1 id="roomTitle">房間6•心理陪伴客廳</h1>
+        </div>
+        <div class="hud-actions">
+          <div id="roomTimer" class="progress-chip" aria-live="polite">🕰️ 00:00</div>
+          <span id="roomCount" hidden>0</span>
+          <button id="openRoom6Code" class="primary-button room-code-button" type="button">🔐 輸入密碼</button>
+        </div>
+        <span id="clueCount" hidden>物品請在左下角收集系統查看</span>
+      </header>
+      <div class="room-shell">
+        <div class="room-frame">
+          <img class="room-bg" src="assets/room.png" alt="陽光照進溫暖的客廳。桌上有平板，沙發旁放著相簿，櫃子上有醫藥盒。">
+          <button type="button" class="hotspot hotspot-tablet" data-item="tablet" aria-label="平板照護日誌：進入五日陪伴"><span class="hotspot-label"><b>01</b><span>五日陪伴<small>打開照護日誌 ↗</small></span><i class="check" aria-hidden="true">✓</i></span></button>
+          <button type="button" class="hotspot hotspot-album" data-item="album" aria-label="家庭相簿：最近發生了什麼？"><span class="hotspot-label"><b>02</b><span>家庭相簿<small>生活裡的片刻</small></span><i class="check" aria-hidden="true">✓</i></span></button>
+          <button type="button" class="hotspot hotspot-medicine" data-item="medicine" aria-label="醫藥盒：心理支持與醫療資源"><span class="hotspot-label"><b>03</b><span>醫藥盒<small>身邊的支持</small></span><i class="check" aria-hidden="true">✓</i></span></button>
+        </div>
+        <p class="room-hint"><span aria-hidden="true">✦</span> 留意每兩秒亮起一次的物品，點擊即可調查。</p>
+      </div>
+    </section>
+    <section id="missionView" class="view mission-view" hidden aria-labelledby="missionTitle">
+      <header class="mission-bar r6-bar"><button id="returnRoom" class="ghost-button">← 返回房間</button><h2 id="missionTitle">五日陪伴</h2><div id="r6Bar" class="progress-chip color-progress" aria-label="進度"></div><span id="saveStatus" role="status" hidden></span><span class="eyebrow" hidden></span></header>
+      <div id="r6Toolbar" class="act-toolbar r6-toolbar" hidden><button id="r6Hint" class="secondary-button hint-btn" type="button">💡 操作提示</button><div id="r6Extra" class="act-extra"></div></div>
+      <div id="missionContent" class="mission-content"></div>
+    </section>
+  </main>
+  <dialog id="room6CodeDialog" class="dialog-overlay room6-code-overlay" aria-labelledby="room6CodeTitle"><div class="dialog-card room6-code-card"><p class="eyebrow">房間 6｜通關密碼</p><h2 id="room6CodeTitle">輸入本房密碼</h2><p>請輸入在收集系統中發現的本房密碼。</p><form id="room6CodeForm"><input id="room6CodeInput" inputmode="numeric" autocomplete="off" required placeholder="輸入數字密碼" aria-label="房間 6 通關密碼"><p id="room6CodeFeedback" role="status"></p><div class="actions"><button type="button" id="closeRoom6Code" class="secondary-button">返回房間</button><button id="submitRoom6Code" class="primary-button" type="submit">確認密碼</button></div></form></div></dialog>
+  <dialog id="placeholderDialog" aria-labelledby="placeholderTitle"><button class="dialog-close" aria-label="關閉">×</button><span class="eyebrow">下一段旅程</span><h2 id="placeholderTitle"></h2><p>功能製作中</p><p id="placeholderDescription"></p><button class="primary-button dialog-return">返回房間</button></dialog>
+  <dialog id="replayDialog" aria-labelledby="replayTitle"><h2 id="replayTitle">重新開始五日陪伴？</h2><p>這次的 15 段日誌將重新記錄。已取得的物品與完成標記會保留。</p><div class="actions"><button class="secondary-button" id="cancelReplay">保留日誌</button><button class="primary-button" id="confirmReplay">重新陪伴</button></div></dialog>
+
+  <template id="resourceTemplate">
+    <div class="resource-shell">
+      <section id="resourceHome" class="panel resource-panel">
+        <div class="resource-hero"><div class="pixel-sign">ICOPE</div><div><h3>出現情緒低落或持續心情困擾時，你知道可以先去哪裡嗎？</h3></div></div>
+        <div class="resource-modes">
+          <button id="openQuery" class="mode-card" type="button"><b>⌕</b><strong>查詢心理支持資源</strong><small>查看可作為情緒困擾起點的院所、地址與電話</small></button>
+          <button id="openPuzzle" class="mode-card mission" type="button"><b>!</b><strong>開始心理支持任務</strong><small>依情境完成三題旋轉方塊路徑</small></button>
+        </div>
+        <p class="source-note">資料依「115 年臺南市執行內在能力檢測（ICOPE 評估）單位」清單整理。本模組可作為長者出現情緒低落、生活壓力或心情困擾時的查找練習；實際服務科別、門診時間與是否適合個別需要，仍應先向院所確認。</p>
+      </section>
+      <section id="queryStep" class="panel resource-panel" hidden>
+        <div class="section-head"><div><h3>選擇區域</h3></div><button class="small-button resource-home-button" type="button">回資源首頁</button></div>
+        <div id="districts" class="district-grid"></div>
+        <div id="unitArea" hidden><div class="section-head compact"><h3><span id="districtName"></span>的單位</h3><button id="changeDistrict" class="small-button" type="button">換一個區域</button></div><div id="unitCards" class="unit-grid"></div></div>
+      </section>
+      <section id="puzzleStep" class="panel resource-panel" hidden>
+        <div class="section-head"><div><h3 id="puzzleTitle">任務 1／3</h3></div><button class="small-button resource-home-button" type="button">回資源首頁</button></div>
+        <div class="puzzle-layout">
+          <aside class="mission-paper"><span class="paper-tape"></span><p class="mission-kicker">心理支持任務</p><h4 id="personName"></h4><p id="missionStory"></p><strong>指定條件</strong><div id="missionConditions" class="condition-list"></div><div class="route-status"><strong>目前接通</strong><div id="conditionStatus"></div></div></aside>
+          <div class="board-wrap"><div class="board-head"><span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span><span id="puzzleProgress">完成 0／3</span><span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span></div><div id="routeBoard" class="route-board" role="grid" aria-label="五乘五旋轉路徑拼圖"></div><p id="puzzleHint" class="puzzle-hint" aria-live="polite"></p></div>
+        </div>
+      </section>
+      <section id="puzzleResult" class="panel resource-panel centered" hidden><h3>找到符合條件的單位！</h3><div id="resultCard" class="result-card"></div><button id="nextPuzzle" class="primary-button" type="button">下一個心理支持任務</button></section>
+      <section id="resourceFinal" class="panel resource-panel centered" hidden><h3>心理支持資源任務完成！</h3><button id="resourceReturn" class="primary-button" type="button" hidden>完成學習</button></section>
+    </div>
+    <div id="unitDialog" class="dialog-backdrop" hidden><div class="unit-dialog" role="dialog" aria-modal="true"><button id="closeUnitDialog" type="button" aria-label="關閉">×</button><div id="unitDetail"></div></div></div>
+  </template>
+
+  <script>
+  // Reset only when room 6 is opened as its own HTML document. When embedded
+  // by the main game, the parent page owns the single session reset.
+  (() => {
+    try {
+      const host = window.parent !== window && window.parent.document ? window.parent : window;
+      if (!host.__icopeAchievementSessionReset) {
+        host.localStorage.removeItem('icopeAchievementSystem');
+        host.localStorage.removeItem('icope.psychological.room.v3.2-reset');
+        host.__icopeAchievementSessionReset = true;
+      }
+    } catch (_) {
+      try {
+        localStorage.removeItem('icopeAchievementSystem');
+        localStorage.removeItem('icope.psychological.room.v3.2-reset');
+      } catch (__) {}
+    }
+  })();
+  </script>
+  <script src="../achievement-system/achievement-data.js"></script>
+<script src="../achievement-system/puzzles/depression.js"></script>
+<script src="../achievement-system/achievement-objects.js"></script>
+<script src="../achievement-system/achievement.js?v=20261123-learning"></script>
+<script src="../shared/memory-maze-character.js"></script><script src="../shared/story-copy.js?v=20261118-3"></script><script src="../shared/story-art-config.js"></script><script src="../shared/story-dialog.js?v=20261118-2"></script><script src="../shared/story-kit.js"></script><script src="room6-story.js?v=2"></script>
+<script src="rpg/data.js"></script><script src="rpg/engine.js"></script><script src="rpg/ui.js"></script><script src="factors/data.js"></script><script src="factors/engine.js"></script><script src="factors/ui.js?v=learning1"></script><script src="script-v9.js?v=20261115-g1"></script>
+
+<!-- Shared achievement UI; no room-specific implementation. -->
+
+
+
+<script>AchievementSystem.initRoom("depression", { roomSelector: "#roomView", activitySelector: "dialog[open], .dialog-overlay:not([hidden]), .overlay:not([hidden])", keepInventoryVisibleDuringActivity: true });</script>
+
+<script src="room6-fit.js?v=1"></script>
+<script src="../art-ui/art-ui.js?v=r25" data-room="6"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+/* room4-fit.css — 房間 4 活動頁版面(載入順序最後)。
+   活動頁以 room4-fit.js 固定 1280px 寬、依視窗等比縮放;這裡把各頁壓縮到 1280×~720 放得下。 */
+html.r4-fit, html.r4-fit body { overflow-x: hidden; }
+html.r4-fit #app > .mission { margin: 0 auto; box-sizing: border-box; padding-bottom: 8px; }
+
+/* ---- 共通:標題壓縮 ---- */
+html.r4-fit #app > .mission { max-width: none; padding: 6px 28px 6px; }
+html.r4-fit .mission > .mission-bar { padding-bottom: 6px; }
+html.r4-fit .mission .stage-heading { margin: 6px 0 8px; align-items: center; gap: 12px; }
+html.r4-fit .mission .stage-heading h2 { font-size: 27px; line-height: 1.2; margin: 0; }
+html.r4-fit .mission .stage-heading p { margin: 2px 0 0; font-size: 15px; line-height: 1.35; }
+html.r4-fit .mission .stage-heading .eyebrow { font-size: 12px; margin: 0; }
+
+/* ---- 環境噪音:廚房 / 公園 ---- */
+html.r4-fit .noise-theater { grid-template-columns: 1fr 680px 1fr; margin: 0; position: relative; }
+html.r4-fit .noise-center { width: 680px; justify-self: center; border-width: 4px; }
+html.r4-fit .noise-person,
+html.r4-fit .noise-person[data-mm-character],
+html.r4-fit .noise-person[data-mm-grandson],
+html.r4-fit .noise-person[data-mm-foot-grandson] { height: 330px; }
+html.r4-fit .noise-actor { width: 100%; margin-left: 0; }
+html.r4-fit .noise-speech { left: 50%; right: auto; transform: translateX(-50%); width: 620px; padding: 8px 18px; bottom: 8px; box-shadow: 0 4px 16px #0004; }
+html.r4-fit .noise-speech:before { display: none; }
+html.r4-fit .noise-speech > span { font-size: 12px; margin-bottom: 2px; }
+html.r4-fit .noise-speech p { font-size: 20px; line-height: 1.45; }
+html.r4-fit .noise-turn-status { margin: 2px auto 4px; min-height: 22px; }
+html.r4-fit .noise-action-message { margin: 0 0 6px; padding: 8px 16px; font-size: 16px; line-height: 1.4; }
+html.r4-fit .noise-kitchen-footer { margin-top: 4px; }
+html.r4-fit .noise-audio-note { margin: 4px 0; font-size: 12px; }
+html.r4-fit .noise-help-footer { margin: 2px auto 0; padding-top: 6px; }
+html.r4-fit .noise-help-footer button { min-height: 36px; padding: 4px 22px; }
+html.r4-fit .kitchen-theater, html.r4-fit .park-theater { padding-bottom: 0; }
+
+/* ---- 電視體驗:遙控器與電視縮小一點,兩欄一屏放得下 ---- */
+html.r4-fit #tvExperienceMain { grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; }
+html.r4-fit #tvExperienceMain .tv-stage-card { padding: 16px 20px; gap: 12px; }
+html.r4-fit #tvExperienceMain .tv-set.realistic { zoom: .8; margin: 0 auto; }
+html.r4-fit #tvExperienceMain .remote-panel { zoom: .78; padding: 14px; gap: 10px; }
+
+/* ---- 公園:場景 + 提問 + 選項一屏 ---- */
+html.r4-fit .park-theater { grid-template-columns: 1fr 540px 1fr; }
+html.r4-fit .park-theater .noise-center { width: 540px; }
+html.r4-fit .park-theater .noise-person,
+html.r4-fit .park-theater .noise-person[data-mm-character],
+html.r4-fit .park-theater .noise-person[data-mm-grandson],
+html.r4-fit .park-theater .noise-person[data-mm-foot-grandson] { height: 260px; }
+html.r4-fit .park-dialogue { padding: 8px 16px; margin-top: 8px; }
+html.r4-fit .park-dialogue p { margin: 2px 0; }
+html.r4-fit .park-question { margin-top: 6px; padding: 10px 18px; }
+html.r4-fit .park-question h3 { font-size: 20px; margin: 2px 0 8px; }
+html.r4-fit .park-question .noise-choices button { min-height: 0; padding: 8px 14px; }
+html.r4-fit .noise-park-feedback { margin-top: 6px; padding: 8px 14px; font-size: 15px; }
+html.r4-fit .park-theater { grid-template-columns: 1fr 500px 1fr; }
+html.r4-fit .park-theater .noise-center { width: 500px; }
+html.r4-fit .park-theater .noise-person,
+html.r4-fit .park-theater .noise-person[data-mm-character],
+html.r4-fit .park-theater .noise-person[data-mm-grandson],
+html.r4-fit .park-theater .noise-person[data-mm-foot-grandson] { height: 240px; }
+html.r4-fit .noise-dialogue { margin: 8px auto 6px; }
+html.r4-fit .noise-dialogue .noise-line { padding: 6px 16px; }
+html.r4-fit .noise-park-status { margin: 0; padding: 0 16px 6px; font-size: 14px; }
+html.r4-fit .noise-card { padding: 10px 18px; }
+html.r4-fit .noise-choices { margin: 6px 0; gap: 8px; }
+html.r4-fit .noise-choices button { padding: 8px 14px; font-size: 17px; line-height: 1.4; }
+html.r4-fit .park-question .eyebrow { margin: 0; }
+html.r4-fit .park-theater { grid-template-columns: 1fr 460px 1fr; }
+html.r4-fit .park-theater .noise-center { width: 460px; }
+html.r4-fit .park-theater .noise-person,
+html.r4-fit .park-theater .noise-person[data-mm-character],
+html.r4-fit .park-theater .noise-person[data-mm-grandson],
+html.r4-fit .park-theater .noise-person[data-mm-foot-grandson] { height: 220px; }
+html.r4-fit .noise-dialogue .noise-line { padding: 2px 16px; min-height: 0; }
+html.r4-fit .noise-dialogue .noise-line p { margin: 0; font-size: 18px; }
+html.r4-fit .noise-help-footer { padding-top: 2px; }
+html.r4-fit, html.r4-fit body { overflow-y: hidden; }
+
+/* ---- 客廳探索:自然切割的發光物件(取代黃框)、玩家用裝扮台走路動圖 ---- */
+.inspect-object.au-obj { translate: none; border: 0 !important; background: none !important; box-shadow: none !important; cursor: default; }
+.inspect-object.au-obj.nearby { cursor: pointer; }
+.inspect-object.au-obj > span { display: none; }
+.explore-scene .au-fx-layer { z-index: 3; }
+.explore-scene .au-fx.on .au-fx-glow { animation: r4Pulse 1.3s ease-in-out infinite; }
+@keyframes r4Pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(255,218,120,.9)) drop-shadow(0 0 10px rgba(255,185,60,.45)); }
+  50% { filter: drop-shadow(0 0 7px rgba(255,236,160,1)) drop-shadow(0 0 20px rgba(255,185,60,.8)); }
+}
+.explore-player .explore-avatar { display: none; }
+.explore-player.has-avatar { width: 14%; height: auto; aspect-ratio: 1; transform: translate(-50%, -90%); filter: drop-shadow(0 3px 2px rgba(0,0,0,.35)); }
+.explore-player.has-avatar .pixel-person { display: none; }
+.explore-player.has-avatar .explore-avatar { display: block; position: absolute; inset: 0; }
+.explore-player.has-avatar .explore-avatar canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.explore-player.has-avatar .player-thought { bottom: 96%; }
+@media (prefers-reduced-motion: reduce) { .explore-scene .au-fx.on .au-fx-glow { animation: none; } }
+
+/* 探索時查看物件的彈窗:比視窗高時縮小,不被切掉 */
+html.r4-fit #dialog { max-height: calc(100dvh - 16px); overflow-y: auto; }
+@media (max-height: 760px) { html.r4-fit #dialog { zoom: .8; max-height: calc((100dvh - 16px) / .8); } }
+@media (max-height: 600px) { html.r4-fit #dialog { zoom: .66; max-height: calc((100dvh - 16px) / .66); } }

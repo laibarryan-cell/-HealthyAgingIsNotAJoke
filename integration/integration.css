@@ -1,0 +1,28 @@
+/* 整合版專用樣式：讓「地圖」畫面變成放組員正式遊戲 iframe 的容器。
+   舊的測試地圖元素仍留在 DOM（game.js 啟動時需要它們），但在整合版中不顯示。 */
+#screen-map.integrated{background:#1c1815}
+#screen-map.integrated>.topbar,
+#screen-map.integrated>.map-toolbar,
+#screen-map.integrated>#hint-button{display:none}
+#screen-map.integrated #room-map{display:none}
+/* 走路角色畫在 iframe 上方，只負責顯示，不攔截滑鼠 */
+#screen-map.integrated .map-viewport{position:fixed;inset:0;height:auto;padding:0;overflow:visible;pointer-events:none;z-index:30}
+#integrated-game-frame{position:fixed;inset:0;width:100vw;height:100vh;border:0;background:#1c1815;z-index:1}
+
+/* ===== 全螢幕鈕（BUG-003）與轉橫向提示（BUG-005） ===== */
+#integrated-game-frame{height:100vh;height:100dvh}
+.shell-fullscreen{position:fixed;left:6px;bottom:6px;z-index:100;width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center;background:#0d1b31cc;border:2px solid #c89443;cursor:pointer}
+.shell-fullscreen img{width:32px;height:32px;image-rendering:pixelated;pointer-events:none}
+.shell-fullscreen:hover,.shell-fullscreen:focus-visible{background:#1b3358;outline:2px solid #fff0c0;outline-offset:2px}
+@media (min-width:1800px) and (min-height:1000px){.shell-fullscreen{width:64px;height:64px;left:10px;bottom:10px}.shell-fullscreen img{width:48px;height:48px}}
+.rotate-hint{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:#050b18f2;padding:16px}
+.rotate-hint[hidden]{display:none}
+.rotate-hint-card{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;color:#fff0c0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.rotate-hint-card img{width:128px;height:128px;image-rendering:pixelated}
+.rotate-hint-card p{margin:0;font-size:24px;font-weight:700}
+.rotate-hint-card small{font-size:16px;opacity:.85}
+.rotate-hint-card button{min-height:44px;margin-top:8px}
+.dialog-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+/* 在房間裡時，左下角有成就「物品」圓鈕(72px)，全螢幕鈕改放在它上方 */
+body[data-in-room="1"] .shell-fullscreen{left:38px;bottom:106px}
+@media (min-width:1800px) and (min-height:1000px){body[data-in-room="1"] .shell-fullscreen{left:28px;bottom:106px}}

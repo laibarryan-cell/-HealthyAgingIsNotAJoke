@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><script src="../art-ui/art-ui-guard.js"></script><meta name="viewport" content="width=device-width,initial-scale=1"><title>聽力房｜日常裡的聲音</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="tv-refinement.css"><link rel="stylesheet" href="social.css"><link rel="stylesheet" href="noise.css"><link rel="stylesheet" href="noise-v1.1.css"><link rel="stylesheet" href="noise-v1.2.css"><link rel="stylesheet" href="medical-resource.css"><link rel="stylesheet" href="room4-fit.css?v=1"><link rel="stylesheet" href="room4-pages.css?v=1"><link rel="stylesheet" href="../shared/story-kit.css"><link rel="stylesheet" href="room4-story.css?v=1"><style id="memory-maze-font-unify">
+html,body,button,input,select,textarea{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif!important}
+</style>
+<link rel="stylesheet" href="../art-ui/art-ui.css?v=r15"><link rel="stylesheet" href="room4-unify.css?v=3"></head>
+<body data-au-skin="inner" data-au-page="4"><main id="app"></main><section id="resourceView" class="view resource-view" hidden aria-labelledby="resourceTitle">
+  <header class="mission-bar resource-mission-bar">
+    <button class="ghost-button room-return" type="button">← 返回房間</button>
+    <div class="mission-heading">
+      <p class="eyebrow sr-only">醫療資源任務</p>
+      <h2 id="resourceTitle">臺南醫療資源服務站</h2>
+    </div>
+    <div id="r4Bar" class="progress-chip color-progress" aria-label="進度"></div>
+  </header>
+  <div class="act-toolbar"><button id="resourceHint" class="secondary hint-btn" type="button">💡 操作提示</button></div>
+
+  <div class="resource-shell">
+    <section id="resourceHomeStep" class="resource-panel resource-home-step">
+      <div class="resource-home-hero">
+        <div class="pixel-sign" aria-hidden="true">ICOPE</div>
+        <div>
+          <h3>需要醫療資源時，你知道怎麼找嗎？</h3>
+        </div>
+      </div>
+      <div class="resource-home-actions">
+        <button id="openResourceQuery" class="resource-mode-card" type="button">
+          <span class="resource-mode-icon" aria-hidden="true">⌕</span>
+          <strong>查詢醫療資源</strong>
+        </button>
+        <button id="startEmergencyMission" class="resource-mode-card is-mission" type="button">
+          <span class="resource-mode-icon" aria-hidden="true">!</span>
+          <strong>開始緊急任務</strong>
+        </button>
+      </div>
+      <p class="resource-source-note">資料來源：115年臺南市執行內在能力檢測（ICOPE評估）單位清單。清單中的單位服務內容不完全相同，實際就醫前仍應先向院所確認。</p>
+    </section>
+
+    <section id="resourceQueryStep" class="resource-panel" hidden>
+      <div class="resource-step-head">
+        <div>
+          <h3>先選擇區域</h3>
+        </div>
+        <button id="queryBackHome" class="resource-secondary" type="button">回資源首頁</button>
+      </div>
+      <div id="districtChoices" class="district-grid" aria-label="可選擇的臺南區域"></div>
+      <div id="queryUnitArea" class="query-unit-area" hidden>
+        <div class="resource-step-head compact">
+          <div>
+            <h3><span id="selectedDistrictName"></span>的單位</h3>
+          </div>
+          <button id="changeDistrict" class="resource-secondary" type="button">換一個區域</button>
+        </div>
+        <div id="unitCards" class="unit-card-grid"></div>
+      </div>
+    </section>
+
+    <section id="resourceMissionStep" class="resource-panel resource-mission-panel" hidden>
+      <div class="resource-puzzle-topbar">
+        <div>
+          <h3 id="missionPuzzleTitle" class="sr-only">任務 1／3</h3>
+        </div>
+        <button id="missionBackHome" class="resource-secondary" type="button">回資源首頁</button>
+      </div>
+
+      <div class="resource-puzzle-layout">
+        <aside class="mission-paper" aria-labelledby="missionPersonName">
+          <div class="mission-paper-tape" aria-hidden="true"></div>
+          <p class="mission-kicker">緊急任務</p>
+          <h4 id="missionPersonName"></h4>
+          <p id="missionStory" class="mission-story"></p>
+          <div class="mission-condition-title">指定條件</div>
+          <div id="missionConditions" class="mission-condition-list"></div>
+          <div class="mission-route-status">
+            <strong>目前接通</strong>
+            <div id="missionConditionStatus"></div>
+          </div>
+        </aside>
+
+        <div class="puzzle-board-wrap">
+          <div class="puzzle-board-head">
+            <span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span>
+            <span id="missionProgressText" class="sr-only">任務完成 0／3</span>
+            <span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span>
+          </div>
+          <div id="routePuzzleBoard" class="route-puzzle-board" role="grid" aria-label="五乘五旋轉路徑拼圖"></div>
+          <p class="puzzle-live-hint" id="puzzleLiveHint" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="resourceMissionResult" class="resource-panel mission-result-panel" hidden aria-live="polite">
+      <h3>找到符合條件的單位！</h3>
+      <div class="mission-result-card">
+        <span id="missionResultType" class="unit-type-badge"></span>
+        <h4 id="missionResultName"></h4>
+        <dl>
+          <div><dt>區域</dt><dd id="missionResultDistrict"></dd></div>
+          <div><dt>地址</dt><dd id="missionResultAddress"></dd></div>
+          <div><dt>電話</dt><dd id="missionResultPhone"></dd></div>
+        </dl>
+      </div>
+      <p class="resource-detail-note">這裡呈現的是你提供的 ICOPE 評估單位資料。若要處理特定聽力問題，仍需向院所確認科別、聽力檢查服務與看診時間。</p>
+      <button id="nextEmergencyMission" class="primary-button" type="button">下一個緊急任務</button>
+    </section>
+
+    <section id="resourceFinalStep" class="resource-panel resource-final-panel" hidden aria-live="polite">
+      <h3>醫療資源任務完成！</h3>
+      <p>你已經完成三次「看條件 → 拼路徑 → 找到資源」的任務。</p>
+      <button id="resourceFinalReturn" class="primary-button" type="button" hidden>完成學習</button>
+    </section>
+  </div>
+
+  <div id="unitDetailDialog" class="resource-detail-backdrop" hidden>
+    <div class="resource-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="unitDetailName">
+      <button id="closeUnitDetail" class="resource-close" type="button" aria-label="關閉">×</button>
+      <span id="unitDetailType" class="unit-type-badge"></span>
+      <h3 id="unitDetailName"></h3>
+      <dl>
+        <div><dt>區域</dt><dd id="unitDetailDistrict"></dd></div>
+        <div><dt>地址</dt><dd id="unitDetailAddress"></dd></div>
+        <div><dt>電話</dt><dd id="unitDetailPhone"></dd></div>
+      </dl>
+      <p class="resource-detail-note">這是 ICOPE 評估單位資料。若要處理特定聽力問題，仍需向院所確認科別與聽力檢查服務。</p>
+    </div>
+  </div>
+</section><p id="storageNotice" hidden role="status">目前無法儲存進度，仍可繼續遊玩；請保持此頁開啟。</p><dialog id="dialog" aria-labelledby="dialogTitle"><div id="dialogBody"></div><button id="closeDialog" class="primary">繼續探索</button></dialog><script src="../shared/memory-maze-character.js"></script>
+<script src="../achievement-system/achievement-data.js"></script>
+<script src="../achievement-system/puzzles/hearing-audio.js"></script>
+<script src="../achievement-system/puzzles/hearing.js"></script>
+<script src="../achievement-system/achievement-objects.js"></script>
+<script src="../achievement-system/achievement.js?v=20261123-learning"></script>
+<script src="../shared/story-copy.js?v=20261118-3"></script><script src="../shared/story-art-config.js"></script><script src="../shared/story-dialog.js?v=20261118-2"></script><script src="../shared/story-kit.js"></script><script src="room4-story.js?v=1"></script>
+<script src="data.js"></script><script src="exploration.js"></script><script src="learning-image.js"></script><script src="social-data.js"></script><script src="social-engine.js"></script><script src="social-ui.js"></script><script src="noise-data.js"></script><script src="noise-engine.js"></script><script src="noise-audio.js"></script><script src="noise-ui.js?v=learning1"></script><script src="medical-resource.js"></script><script src="script.js?v=learning1"></script><script src="room4-fit.js?v=1"></script><script src="../art-ui/objects.js"></script><script src="../art-ui/art-ui.js?v=r25" data-objects="4"></script>
+<script>AchievementSystem.initRoom("hearing", { roomSelector: "#app > .room", activitySelector: "dialog[open], .dialog-overlay:not([hidden]), .overlay:not([hidden])" });</script>
+</body></html>

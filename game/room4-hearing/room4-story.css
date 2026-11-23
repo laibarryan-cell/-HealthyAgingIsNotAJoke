@@ -1,0 +1,19 @@
+/* room4-story.css — 房間四「方格表模式」版面:頁首精簡、操作提示列、進度條 */
+.mission .mission-heading h2 { font-size: 26px; font-weight: 700; margin: 0; }
+.mission .mission-bar .progress-chip { margin-left: auto; }
+.mission .mission-bar .r4-barextra { margin-left: auto; }
+.mission .mission-bar .r4-barextra + .progress-chip { margin-left: 14px; }
+.mission .mission-bar .r4-barextra button { padding: 4px 16px; min-height: 34px; font-size: 16px; }
+.mission .mission-bar .color-progress i { width: 40px; height: 16px; }
+.r4-sub { margin: 4px 0 0; color: var(--muted); font-size: 16px; }
+.mission .act-toolbar { margin: 8px 0 8px; }
+.mission .act-toolbar .hint-btn { padding: 6px 16px; min-height: 38px; font-size: 17px; }
+.sk-drop-list.sk-hidden { pointer-events: none; }
+.inspect-object.seen::after { content: "✓"; position: absolute; right: -8px; top: -10px; width: 26px; height: 26px; border-radius: 50%; background: #244e3a; color: #fff; border: 2px solid #e9e9c8; font-size: 15px; line-height: 22px; text-align: center; }
+/* 醫藥盒(醫療資源任務)頁的操作提示列 */
+.resource-view .act-toolbar { width: min(1180px, calc(100% - 2rem)); margin: 8px auto; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.resource-view .act-toolbar .hint-btn { padding: 6px 16px; min-height: 38px; font-size: 17px; }
+.resource-view .mission-bar .color-progress i { width: 40px; height: 16px; }
+.resource-view .act-toolbar .hint-btn { color: #243a35; background: #e8e8da; border: 1px solid #c7ccbe; }
+/* 警鈴頁:刪除說明文字後,警鈴按鈕置中 */
+.bell-game .bell-controls { display: flex; align-items: center; justify-content: center; }

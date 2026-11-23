@@ -1,0 +1,93 @@
+/* story-dialog.css — 共用「立繪 + 對話框」元件(B5–B8、B11)
+   右側 NPC(片尾老人半身立繪)、左側玩家(已裝扮角色半身),滑鼠點擊推進。 */
+.sd-overlay {
+  position: fixed; inset: 0; z-index: 2147482000; display: flex; flex-direction: column;
+  justify-content: flex-end; align-items: stretch;
+  background: rgba(8, 14, 28, .55); font-family: "Noto Sans TC", system-ui, sans-serif;
+  animation: sd-fade .22s ease-out; user-select: none; cursor: pointer;
+}
+.sd-overlay[data-pos="center"] { justify-content: center; }
+.sd-overlay.sd-clear { background: transparent; }
+@keyframes sd-fade { from { opacity: 0 } to { opacity: 1 } }
+
+.sd-stage {
+  position: relative; width: min(1560px, 100%); margin: 0 auto; box-sizing: border-box;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr) minmax(0, 1fr);
+  align-items: end; padding: 0 16px; --ph: min(56vh, 490px);
+}
+.sd-overlay[data-pos="center"] .sd-stage { margin-bottom: 4vh; }
+
+.sd-portrait { position: relative; align-self: end; height: var(--ph); pointer-events: none; }
+.sd-portrait.sd-left { grid-column: 1; grid-row: 1; }
+.sd-portrait.sd-right { grid-column: 3; grid-row: 1; }
+.sd-portrait[hidden] { display: block; visibility: hidden; }
+.sd-portrait .sd-art {
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  height: 100%; aspect-ratio: 3 / 4; overflow: hidden; transition: filter .2s, transform .2s;
+}
+.sd-portrait:not(.sd-speaking) .sd-art { filter: brightness(.6) saturate(.8); transform: translateX(-50%) translateY(8px); }
+.sd-portrait.sd-speaking .sd-art { animation: sd-bob .55s ease-in-out infinite alternate; }
+@keyframes sd-bob { from { margin-bottom: 0 } to { margin-bottom: 6px } }
+.sd-art > img { width: 100%; height: 100%; object-fit: contain; object-position: bottom; image-rendering: pixelated; display: block; }
+.sd-art > svg { width: 100%; height: 100%; display: block; }
+/* 玩家全身(腳底對齊底部);NPC 為半身 */
+.sd-player-art { aspect-ratio: auto !important; width: 100%; }
+.sd-player-art [data-mm-character] { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); height: 96%; aspect-ratio: 260 / 520; }
+.sd-player-art [data-mm-character] > canvas.mm-character-canvas { width: 100% !important; height: 100% !important; }
+
+/* 對話框:垂直中心落在人物身體(胸口)高度,而不是頭部以上 */
+.sd-box {
+  grid-column: 2; grid-row: 1; position: relative; z-index: 2;
+  margin: 0 0 calc(var(--ph) * .17); min-height: calc(var(--ph) * .46); padding: 24px 30px 16px; box-sizing: border-box;
+  background: #f6dfae; color: #2a2230; border: 5px solid #c98c1c; border-radius: 8px;
+  box-shadow: inset 0 0 0 4px #fff3cf, 0 0 0 5px #0b1426, 0 14px 34px rgba(0, 0, 0, .5);
+  display: flex; flex-direction: column; gap: 10px; cursor: pointer;
+}
+/* 只有一位角色時(只有 NPC / 只有玩家),人物在左,對話框佔中間到右側 */
+.sd-overlay[data-mode="npc"] .sd-box, .sd-overlay[data-mode="player"] .sd-box { grid-column: 2 / span 2; }
+.sd-name {
+  position: absolute; left: 22px; top: -26px; padding: 5px 22px; font-weight: 900; font-size: 21px;
+  background: #14294a; color: #ffe9b0; border: 4px solid #c98c1c; border-radius: 5px;
+}
+.sd-text { margin: 12px 0 0; font-size: clamp(21px, 2.4vw, 32px); line-height: 1.55; font-weight: 800; flex: 1; }
+.sd-hint { align-self: flex-end; font-size: 16px; color: #7a4f10; font-weight: 800; animation: sd-blink 1s steps(2) infinite; }
+@keyframes sd-blink { 50% { opacity: .25 } }
+.sd-buttons { display: flex; gap: 14px; justify-content: flex-end; flex-wrap: wrap; }
+.sd-btn {
+  font: 900 22px/1 "Noto Sans TC", system-ui, sans-serif; padding: 13px 28px; cursor: pointer;
+  background: #14294a; color: #ffe9b0; border: 4px solid #c98c1c; border-radius: 5px; box-shadow: 0 5px 0 #0b1426;
+}
+.sd-btn:hover, .sd-btn:focus-visible { background: #1d3a68; outline: 3px solid #ffe9b0; outline-offset: 2px; }
+.sd-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #0b1426; }
+
+/* 「要開始冒險了嗎?」面板 */
+.sd-panel-title { margin: 8px 0 0; font-size: clamp(24px, 2.8vw, 38px); font-weight: 900; color: #5a3a0c; }
+
+/* 預留佔位圖外觀 */
+.sd-placeholder-label { font: 700 12px sans-serif; fill: #fff; }
+
+@media (max-width: 760px) {
+  .sd-stage { --ph: 34vh; grid-template-columns: 1fr 1fr; }
+  .sd-box, .sd-overlay[data-mode] .sd-box { grid-column: 1 / span 2; grid-row: 2; margin-bottom: 8px; }
+  .sd-portrait.sd-left { grid-column: 1; } .sd-portrait.sd-right { grid-column: 2; }
+}
+@media (prefers-reduced-motion: reduce) { .sd-overlay, .sd-portrait.sd-speaking .sd-art, .sd-hint { animation: none; } }
+/* NPC <-> 孫子 在同一站位對換:新圖樣淡入並由旁邊滑入 */
+.sd-art.sd-swap > img { animation: sd-swap-in .38s ease-out both; }
+@keyframes sd-swap-in { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+.sd-left .sd-art.sd-swap > img { animation-name: sd-swap-in-l; }
+@keyframes sd-swap-in-l { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sd-art.sd-swap > img { animation: none; } }
+
+/* 第三修改計劃 B4:同一顆按鈕由「完成學習」換成「返回○○」時彈一下 */
+.sd-stage-back { animation: sd-stage-pop .42s cubic-bezier(.3,1.6,.5,1); }
+@keyframes sd-stage-pop { 0% { transform: scale(.82); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+/* 2026-11-18:對話進行時,房間右下的「留意每兩秒亮起一次的物品」提示會被老人立繪切到一半 → 對話期間先隱藏,結束後再出現 */
+html.sd-busy .room-hint, html.sd-busy .room45-hint, html.sd-busy p.hint { visibility: hidden; }
+
+/* D4(2026-11-18 晚):老人立繪沒在說話時也有輕微呼吸,畫面不會像貼紙 */
+.sd-portrait:not(.sd-speaking) .sd-art { animation: sd-breathe 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes sd-breathe { 50% { transform: scaleY(1.012); } }
+@media (prefers-reduced-motion: reduce) { .sd-portrait .sd-art { animation: none !important; } }
+html.mm-reduce .sd-portrait .sd-art { animation: none !important; }

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><script src="../art-ui/art-ui-guard.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>房間 2｜行動密室</title>
+<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../art-ui/art-ui.css?v=r15">
+<link rel="stylesheet" href="room2-fit.css?v=5">
+<link rel="stylesheet" href="../shared/story-kit.css">
+</head>
+<body data-au-room="2">
+<main id="app">
+  <section id="roomView" class="view room-view">
+    <header class="hud">
+      <button id="returnMap" class="ghost" type="button">← 返回房間配置圖</button>
+      <div class="heading"><h1>房間2•行動與防跌浴室</h1></div>
+      <div class="hud-actions">
+        <div id="timer" class="chip">🕰️ 00:00</div>
+        <span id="doneCount" hidden>0</span>
+        <button id="openCode" class="primary" type="button">🔐 輸入密碼</button>
+      </div>
+    </header>
+    <div class="room-shell">
+      <div class="room-canvas">
+        <img src="../assets/art-final/rooms/room2-mobility-bathroom.png" alt="行動房間浴室">
+        <button class="hotspot h-sink" data-key="sink" aria-label="洗手台"><span></span><b>洗手台</b></button>
+        <button class="hotspot h-medkit" data-key="medkit" aria-label="醫藥箱"><span></span><b>醫藥箱</b></button>
+        <button class="hotspot h-toilet" data-key="stand" aria-label="馬桶與扶手"><span></span><b>馬桶＋扶手</b></button>
+        <button class="hotspot h-shower" data-key="shower" aria-label="淋浴區"><span></span><b>淋浴區</b></button>
+        <button class="hotspot h-shoes" data-key="shoes" aria-label="鞋櫃與浴室鞋"><span></span><b>鞋櫃／浴室鞋</b></button>
+      </div>
+      <p class="hint">✦ 留意每兩秒亮起一次的物品，點擊即可調查。</p>
+    </div>
+  </section>
+
+  <section id="activityView" class="view" hidden>
+    <header class="mission-bar">
+      <button class="ghost back-room" type="button">← 返回房間</button>
+      <div class="heading"><p class="eyebrow sr-only">行動任務</p><h2 id="activityTitle"></h2></div>
+      <div id="activityProgress" class="chip"></div>
+    </header>
+    <div class="activity-shell">
+      <div id="activityIntro" class="intro-card" hidden></div>
+      <div class="act-toolbar"><button id="hintBtn" class="secondary hint-btn" type="button">💡 操作提示</button><div id="hintExtra" class="act-extra"></div></div>
+      <div id="activityBody" class="activity-card"></div>
+      <div id="activityFeedback" class="feedback" hidden aria-live="polite"></div>
+      <div class="actions"><button id="activityContinue" class="primary" type="button" hidden>進入衛教 ▶</button></div>
+    </div>
+  </section>
+
+  <section id="lessonView" class="view" hidden>
+    <header class="mission-bar">
+      <button class="ghost back-room" type="button">← 返回房間</button>
+      <div class="heading"><p class="eyebrow">遊戲後衛教</p><h2 id="lessonTitle"></h2></div>
+      <div class="chip">左圖右文＋語音</div>
+    </header>
+    <div class="lesson-card">
+      <div id="lessonVisual" class="lesson-visual"></div>
+      <div class="lesson-copy">
+        <p class="eyebrow">一次只看一句</p>
+        <p id="lessonLine" class="lesson-line" aria-live="polite"></p>
+        <p class="tap-note">按「下一句」後，上一句會消失並換成下一句。</p>
+        <div class="actions lesson-actions">
+          <button id="speakLine" class="secondary" type="button">🔊 再聽一次</button>
+          <button id="nextLine" class="primary" type="button">下一句 ▶</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  
+
+  <div id="codeOverlay" class="overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <p class="eyebrow">房間 2｜通關密碼</p>
+      <h2>輸入本房密碼</h2>
+      <p>在收集系統完成安全盒互動後，輸入你發現的本房密碼。</p>
+      <input id="codeInput" class="code-input" inputmode="numeric" autocomplete="off" placeholder="輸入數字密碼">
+      <div id="codeFeedback" class="feedback" hidden></div>
+      <div id="clueSummary" class="clue-summary"></div>
+      <div class="actions">
+        <button id="closeCode" class="secondary" type="button">返回房間</button>
+        <button id="submitCode" class="primary" type="button">確認密碼</button>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="../achievement-system/achievement-data.js"></script>
+<script src="../achievement-system/puzzles/mobility.js"></script>
+<script src="../achievement-system/achievement-objects.js"></script>
+<script src="../achievement-system/achievement.js?v=20261123-learning"></script>
+<script src="../shared/story-copy.js?v=20261118-3"></script>
+<script src="../shared/story-art-config.js"></script>
+<script src="../shared/story-dialog.js?v=20261118-2"></script>
+<script src="../shared/story-kit.js"></script>
+<script src="script.js?v=learning1"></script><script src="room2-fit.js?v=2"></script>
+
+<!-- Shared achievement UI; no room-specific implementation. -->
+
+
+
+<script src="../art-ui/objects.js"></script><script src="../art-ui/art-ui.js?v=r25" data-room="2"></script>
+<script>AchievementSystem.initRoom("mobility", { roomSelector: "#roomView", activitySelector: "dialog[open], .dialog-overlay:not([hidden]), .overlay:not([hidden])" });</script>
+
+</body>
+</html>

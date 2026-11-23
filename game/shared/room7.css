@@ -1,0 +1,169 @@
+/* room7.css — 2026-11-20 房間 7 記憶回望:四個階段都放進同一個 16:9 舞台(.r7-board),任何視窗都不會出現垂直捲軸。
+   舞台大小 = 可用高度 × 16/9 與可用寬度取小;內部尺寸一律用容器單位(cqw/cqh)跟著舞台縮放。
+   階段 2 = 旅程結算(共用 shared/room-clear.js 的 .rcs 結算表)、階段 3 = 塔羅翻牌、階段 4 = 旅程完成。 */
+#endingScreen.room7-screen { overflow: hidden !important; }
+#endingScreen.room7-screen.active { display: flex !important; flex-direction: column; }
+#endingScreen .room7-wrap { flex: 1; min-height: 0 !important; display: flex; align-items: center; justify-content: center; padding: 8px 12px 12px !important; box-sizing: border-box; overflow: hidden !important; }
+#endingScreen .room7-stage { margin: 0 !important; }
+#endingScreen #room7Stage2.active, #endingScreen #room7Stage3.active, #endingScreen #room7Stage4.active { display: block; width: auto; max-width: none; }
+
+.r7-board { position: relative; container-type: size; overflow: hidden; box-sizing: border-box;
+  width: min(calc(100vw - 24px), calc((100vh - var(--au-hud, 86px) - 24px) * 16 / 9)); aspect-ratio: 16 / 9;
+  border: 4px solid #f0c25a; border-radius: 16px; box-shadow: 0 0 0 4px #2a1a08, 0 16px 40px rgba(0,0,0,.55);
+  background: #0c1a33; color: #fff2cf; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+.r7-board::before { content: ""; position: absolute; inset: -20px; z-index: 0; background: url("../assets/art-final/rooms/room7-memory-core.png") center / cover; filter: blur(6px) brightness(.38) saturate(1.2); }
+.r7-board > * { position: relative; z-index: 1; }
+.r7-title { position: absolute; left: 3cqw; top: 3cqh; margin: 0; font-size: clamp(16px, 2.3cqw, 36px); font-weight: 900; color: #ffe9b0; text-shadow: 0 3px 0 #0b1426; letter-spacing: .08em; }
+.r7-title small { display: block; font-size: .5em; color: #f0c25a; letter-spacing: .3em; }
+.r7-actions { position: absolute; right: 2.4cqw; bottom: 3cqh; display: flex; gap: 1cqw; z-index: 12; }
+.r7-actions button, .r7-tabs button { font-family: inherit; font-weight: 900; font-size: clamp(12px, 1.25cqw, 20px); padding: .6em 1.1em; border-radius: 10px; cursor: pointer;
+  border: 2px solid #f0c25a; background: #22406f; color: #ffe9b0; }
+.r7-actions .primary { background: linear-gradient(#f3c75d, #d7962c); color: #3a2208; border-color: #fff1b8; }
+.r7-actions button:disabled { opacity: .45; cursor: not-allowed; }
+.r7-actions button:not(:disabled):hover, .r7-tabs button:hover, .r7-actions button:focus-visible, .r7-tabs button:focus-visible { filter: brightness(1.12); outline: 2px solid #fff0c0; outline-offset: 2px; }
+
+/* ---------- 階段 2:旅程結算 ---------- */
+#room7Board2 .rcs { left: 27%; top: 54%; width: 46cqw; max-height: 84cqh; gap: .7cqh; padding: 1.6cqh 1.8cqw 1.8cqh; }
+#room7Board2 .rcs-rows { gap: .55cqh; }
+#room7Board2 .rcs-row { padding: .5cqh .8cqw; grid-template-columns: 2.4cqw 1fr auto; }
+#room7Board2 .rcs-lab b { font-size: clamp(12px, 1.2cqw, 19px); }
+#room7Board2 .rcs-val { font-size: clamp(14px, 1.6cqw, 26px); min-width: 3.6em; }
+#room7Board2 .rcs-num { font-size: clamp(28px, 4.4cqw, 72px); }
+#room7Board2 .rcs-stamp { width: clamp(52px, 7.4cqw, 120px); }
+#room7Board2 .rcs-stamp b { font-size: clamp(32px, 5cqw, 84px); }
+#room7Board2 .rcs-skip { bottom: auto; top: 1.6cqh; right: 8cqw; transform: none; }
+#room7Board2 .rcs-head { padding-bottom: .5cqh; }
+.r7-side { position: absolute; left: 52cqw; top: 12cqh; right: 2.4cqw; bottom: 13cqh; display: flex; flex-direction: column; gap: 1cqh; }
+.r7-tabs { display: flex; gap: .6cqw; }
+.r7-tabs button { background: #172a4c; border-radius: 10px 10px 0 0; border-bottom: 0; }
+.r7-tabs button[aria-selected="true"] { background: #fff8e4; color: #2b1d0e; }
+.r7-pane { flex: 1; min-height: 0; overflow: hidden; background: #fff8e4; color: #3f3122; border: 2px solid #f0c25a; border-radius: 0 12px 12px 12px; padding: 1.8cqh 1.6cqw; box-sizing: border-box; }
+.r7-pane[hidden] { display: none; }
+.r7-pane h3 { margin: 0 0 1cqh; font-size: clamp(14px, 1.6cqw, 26px); color: #6b4a1a; }
+#room7PersonalAnalysis { font-size: clamp(13px, 1.45cqw, 23px) !important; line-height: 1.75 !important; padding: 0 !important; background: none !important; border: 0 !important; }
+#room7PersonalAnalysis .r7-caret { display: inline-block; width: .5em; height: 1em; vertical-align: -.1em; background: #c99632; animation: r7Caret .8s steps(2) infinite; }
+@keyframes r7Caret { 50% { opacity: 0; } }
+.r7-journey-total { margin-top: 1.4cqh; padding-top: 1cqh; border-top: 2px dashed #d7bf8e; display: flex; justify-content: space-between; font-weight: 900; font-size: clamp(13px, 1.4cqw, 22px); }
+/* 學習成果(AchievementSystem.learning.html() 原樣顯示,只縮放字級讓它塞得進去) */
+#room7LearningResults { font-size: clamp(10px, 1.02cqw, 16px); }
+#room7LearningResults * { font-size: inherit !important; line-height: 1.4 !important; }
+#room7LearningResults h3, #room7LearningResults h4 { font-size: 1.2em !important; margin: 0 0 .5em !important; }
+#room7LearningResults table { width: 100%; border-collapse: collapse; }
+#room7LearningResults td, #room7LearningResults th { padding: .25em .4em !important; }
+
+/* ---------- 階段 3:塔羅翻牌 ---------- */
+.r7-lead { position: absolute; left: 3cqw; top: 13cqh; margin: 0; width: 44cqw; font-size: clamp(12px, 1.35cqw, 21px); line-height: 1.6; color: #e8dcc0; }
+.r7-fan { position: absolute; left: 0; right: 0; top: 0; bottom: 0; perspective: 1400px; pointer-events: none; }
+.r7-card { position: absolute; left: 50%; top: 60%; width: 13cqw; aspect-ratio: 3 / 5; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto;
+  transform-style: preserve-3d; transform: translate(-50%, -50%) translate(var(--fx, 0), var(--fy, 0)) rotate(var(--fr, 0deg));
+  transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .4s, filter .3s; filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)); }
+.r7-card.deal { transform: translate(-50%, -50%) translate(0, 30cqh) scale(.6); opacity: 0; transition: none; }
+.r7-card:not(:disabled):hover, .r7-card:not(:disabled):focus-visible { transform: translate(-50%, -50%) translate(var(--fx, 0), calc(var(--fy, 0px) - 3.5cqh)) rotate(var(--fr, 0deg)) scale(1.06); filter: drop-shadow(0 0 14px #ffd86d) drop-shadow(0 12px 16px rgba(0,0,0,.6)); outline: none; z-index: 5; }
+.r7-card-in { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.4,.1,.2,1); }
+.r7-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 6%; overflow: hidden; }
+.r7-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.r7-front { transform: rotateY(180deg); }
+/* 圖還沒到時的 CSS 牌(img 載入失敗會加 .noimg) */
+.r7-face.noimg { background: radial-gradient(circle, #ffd06a 0 22%, transparent 23%), repeating-conic-gradient(#20366a 0 10deg, #172a52 10deg 20deg); border: .5cqw solid #f0c25a; box-sizing: border-box; }
+.r7-front.noimg { background: #f7eac4; display: grid; place-items: center; color: #3c220c; font: 900 3cqw Georgia, serif; }
+.r7-burst { position: absolute; z-index: 9; left: 24cqw; top: 54cqh; width: 2px; height: 2px; pointer-events: none; }
+.r7-burst::before { content: ""; position: absolute; left: -30cqw; top: -30cqw; width: 60cqw; height: 60cqw; border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255,226,140,.7) 0 6deg, transparent 6deg 20deg); -webkit-mask: radial-gradient(closest-side, #000 15%, transparent 100%); mask: radial-gradient(closest-side, #000 15%, transparent 100%);
+  animation: r7BurstR 1.4s ease-out forwards; }
+@keyframes r7BurstR { from { transform: scale(.2) rotate(0); opacity: 1; } to { transform: scale(1.2) rotate(40deg); opacity: 0; } }
+.r7-card.gone { opacity: 0; transform: translate(-50%, -50%) translate(var(--fx, 0), 40cqh) rotate(var(--fr, 0deg)) scale(.7) !important; pointer-events: none; }
+/* 2026-11-20 電影級翻牌(時間軸見 game/index.html 的 R7FX 註解)。牌的位置用 transform;顫動/呼吸用 translate、過衝放大用 scale(獨立屬性,不會互相蓋掉) */
+.r7-card.picked { z-index: 10; cursor: default; perspective: 1200px; transform-style: flat; filter: none; transition: opacity .4s; transform: translate(-50%, -50%) translate(-26cqw, -6cqh) scale(1.85); animation: r7Rise .65s cubic-bezier(.3,.7,.25,1) both; }
+@keyframes r7Rise {
+  0% { transform: translate(-50%, -50%) translate(var(--fx), var(--fy)) rotate(var(--fr)); }
+  45% { transform: translate(-50%, -50%) translate(calc(var(--fx) * .4 - 15cqw), -16cqh) rotate(-8deg) scale(1.5); }
+  100% { transform: translate(-50%, -50%) translate(-26cqw, -6cqh) scale(1.85); } }
+/* 翻面用 animation(不用 transition),才能在快翻完時「頓格」:.hold 暫停 80ms 再爆開 */
+.r7-card.picked.flip .r7-card-in { transform: rotateY(180deg); transition: none; animation: r7Flip .36s cubic-bezier(.55,0,.3,1) both; }
+.r7-card.picked.flip.glow .r7-card-in { animation: r7Flip .36s cubic-bezier(.55,0,.3,1) both, r7Breathe 2.6s ease-in-out .5s infinite alternate; }
+.r7-card.hold .r7-card-in { animation-play-state: paused; }
+@keyframes r7Flip { from { transform: rotateY(0); } to { transform: rotateY(180deg); } }
+/* 蓄力:牌邊緣金光越來越亮 + 微微顫動(幅度漸大) */
+/* 光暈 .r7-aura:牌後方一層「牌形狀」的金光(用牌背圖當遮罩 → 外層模糊),只動 opacity/scale,不動 filter,1920×1080 也不掉幀 */
+.r7-aura { position: absolute; inset: -2.5%; pointer-events: none; opacity: 0; filter: blur(1.6cqw); will-change: opacity, transform; }
+.r7-aura i { position: absolute; inset: 0; background: radial-gradient(#fffbe6, #ffd86d 55%, #ffb13b);
+  -webkit-mask: var(--mask) center / 100% 100% no-repeat; mask: var(--mask) center / 100% 100% no-repeat; }
+.r7-card.picked:not(.charge):not(.glow) .r7-aura { opacity: .3; transition: opacity .4s; }
+.r7-card.charge .r7-aura { animation: r7AuraCharge .6s ease-in forwards; }
+@keyframes r7AuraCharge { 0% { opacity: .2; transform: scale(1); } 100% { opacity: .95; transform: scale(1.05); } }
+.r7-card.charge:not(.flip) .r7-card-in { animation: r7Tremble .6s linear forwards; }
+@keyframes r7Tremble { 0% { translate: 0 0; } 15% { translate: .3% -.4%; } 30% { translate: -.4% .2%; } 45% { translate: .5% .4%; } 60% { translate: -.7% -.5%; } 75% { translate: .8% .3%; } 90% { translate: -.9% -.6%; } 100% { translate: 0 -.8%; } }
+/* 揭曉:過衝放大 → 強光收斂成外發光(沿著牌的形狀)→ 浮空呼吸 */
+.r7-card.picked.glow { animation: r7Rise .65s both, r7Pop .5s cubic-bezier(.2,1.5,.4,1); }
+.r7-card.glow .r7-aura { animation: r7AuraIn .9s ease-out forwards, r7AuraPulse 1.8s ease-in-out .9s infinite alternate; }
+@keyframes r7AuraIn { 0% { opacity: 1; transform: scale(1.14); } 100% { opacity: .75; transform: scale(1.03); } }
+@keyframes r7AuraPulse { from { opacity: .75; transform: scale(1.03); } to { opacity: 1; transform: scale(1.07); } }
+@keyframes r7Pop { 0% { scale: 1; } 30% { scale: 1.12; } 100% { scale: 1; } }
+@keyframes r7Breathe { from { translate: 0 0; } to { translate: 0 -1.2%; } }
+/* 金框掃光:一道斜向高光從左上掃到右下,以牌圖本身當遮罩(圓角外透明的地方不會亮) */
+.r7-shine { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(115deg, transparent 40%, rgba(255,250,225,.9) 50%, transparent 60%) 100% 100% / 300% 300% no-repeat;
+  -webkit-mask: var(--mask) center / 100% 100% no-repeat; mask: var(--mask) center / 100% 100% no-repeat; }
+.r7-card.shine .r7-shine { animation: r7Shine .85s ease-in-out forwards; }
+@keyframes r7Shine { 0% { opacity: 1; background-position: 100% 100%; } 90% { opacity: 1; } 100% { opacity: 0; background-position: 0 0; } }
+/* 暗場:牌桌最底層(在標題、牌、籤詩之下),以牌為中心的暗角,背景約剩 35% 亮度 */
+#room7Board3 > .r7-dim { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .55s ease;
+  background: radial-gradient(ellipse 60% 75% at 24% 49%, rgba(4,6,16,.35) 0, rgba(4,6,16,.68) 55%, rgba(0,0,0,.86) 100%); }
+#room7Board3.r7-dark > .r7-dim { opacity: 1; }
+/* 牌後方的放射狀光芒:蓄力時淡淡出現並緩慢旋轉,揭曉時爆開 */
+.r7-rays { position: absolute; left: 24cqw; top: 49cqh; width: 96cqh; height: 96cqh; margin: -48cqh 0 0 -48cqh; border-radius: 50%; pointer-events: none; opacity: 0; scale: .5;
+  background: repeating-conic-gradient(rgba(255,222,130,.6) 0 5deg, transparent 5deg 15deg);
+  -webkit-mask: radial-gradient(closest-side, #000 20%, transparent 100%); mask: radial-gradient(closest-side, #000 20%, transparent 100%);
+  transition: opacity .6s ease, scale .6s ease; animation: r7Spin 28s linear infinite; will-change: rotate; }
+.r7-rays.charge { opacity: .35; scale: .8; }
+.r7-rays.burst { opacity: .55; scale: 1.1; animation: r7Spin 28s linear infinite, r7RaysBurst 1.6s ease-out; }
+@keyframes r7RaysBurst { 0% { opacity: .35; scale: .8; } 15% { opacity: .95; scale: 1.25; } 100% { opacity: .55; scale: 1.1; } }
+@keyframes r7Spin { to { rotate: 360deg; } }
+/* 揭曉瞬間的暫時節點(播完由程式移除):全畫面金白閃光、兩道衝擊波光環、粒子 canvas */
+#room7Board3 > .r7-flash { position: absolute; inset: 0; z-index: 20; pointer-events: none; animation: r7FlashK .55s ease-out forwards;
+  background: radial-gradient(circle at 24% 49%, #fffef6 0, #fff2c2 28%, rgba(255,214,120,.65) 60%, rgba(255,200,90,.25) 100%); }
+@keyframes r7FlashK { 0% { opacity: .95; } 100% { opacity: 0; } }
+#room7Board3 > .r7-shock { position: absolute; z-index: 9; left: 24cqw; top: 49cqh; width: 10cqw; height: 10cqw; margin: -5cqw 0 0 -5cqw; border-radius: 50%; pointer-events: none; box-sizing: border-box;
+  border: .45cqw solid rgba(255,244,200,.95); box-shadow: 0 0 1.6cqw #ffd86d, inset 0 0 1.6cqw #ffd86d; opacity: 0; animation: r7Shock .8s cubic-bezier(.1,.6,.3,1) forwards; }
+#room7Board3 > .r7-shock2 { border-width: .25cqw; animation-delay: .12s; }
+@keyframes r7Shock { 0% { transform: scale(.3); opacity: 1; } 100% { transform: scale(9); opacity: 0; } }
+#room7Board3 > .r7-particles { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 11; pointer-events: none; }
+/* 牌桌震動約 0.4 秒,由強到弱 */
+#room7Board3.r7-shake { animation: r7Shake .42s linear; }
+@keyframes r7Shake { 0% { translate: 0 0; } 10% { translate: -12px 7px; } 20% { translate: 10px -8px; } 30% { translate: -8px 5px; } 45% { translate: 6px -4px; } 60% { translate: -4px 3px; } 75% { translate: 2px -1px; } 100% { translate: 0 0; } }
+.r7-reading { position: absolute; left: 47cqw; right: 3cqw; top: 22cqh; bottom: 15cqh; padding: 3cqh 2.4cqw; box-sizing: border-box; border-radius: 14px;
+  background: rgba(255,248,228,.96); color: #3f3122; border: 3px solid #f0c25a; opacity: 0; transform: translateX(3cqw); transition: opacity .5s, transform .5s; pointer-events: none; }
+.r7-reading.on { opacity: 1; transform: none; pointer-events: auto; }
+.r7-reading small { display: block; color: #a0712a; font-weight: 900; letter-spacing: .3em; font-size: clamp(11px, 1.1cqw, 17px); }
+.r7-reading h3 { margin: .6cqh 0 1.6cqh; font-size: clamp(18px, 2.4cqw, 38px); color: #4b3a14; }
+.r7-reading p { margin: 0; font-size: clamp(13px, 1.55cqw, 25px); line-height: 1.8; min-height: 5em; }
+.r7-reading em { display: block; margin-top: 1.6cqh; font-style: normal; font-size: clamp(11px, 1.05cqw, 16px); color: #8a6a3a; font-weight: 800; }
+
+/* ---------- 階段 4:旅程完成 ---------- */
+#room7Board4 { display: grid; place-items: center; text-align: center; }
+#room7Board4 .exit-animation { all: unset; display: flex; flex-direction: column; align-items: center; gap: 2cqh; }
+#room7Board4 h2 { margin: 0; font-size: clamp(24px, 4cqw, 64px); color: #ffe9b0; text-shadow: 0 4px 0 #0b1426; }
+#room7Board4 p { margin: 0; font-size: clamp(14px, 1.8cqw, 28px); color: #e8dcc0; }
+#room7Board4 .exit-home, #room7Board4 .exit-walker { font-size: clamp(30px, 5cqw, 80px); }
+#room7Board4 button { font-family: inherit; font-weight: 900; font-size: clamp(14px, 1.6cqw, 24px); padding: .7em 1.6em; border-radius: 12px; cursor: pointer; background: linear-gradient(#f3c75d, #d7962c); color: #3a2208; border: 2px solid #fff1b8; }
+
+html.mm-reduce .r7-card, html.mm-reduce .r7-card-in, html.mm-reduce .r7-reading { transition: none !important; }
+html.mm-reduce .r7-burst, html.mm-reduce .r7-flash, html.mm-reduce .r7-shock, html.mm-reduce .r7-rays, html.mm-reduce .r7-shine, html.mm-reduce .r7-particles { display: none; }
+html.mm-reduce #room7PersonalAnalysis .r7-caret, html.mm-reduce .r7-card.picked, html.mm-reduce .r7-card.picked .r7-card-in, html.mm-reduce #room7Board3 { animation: none !important; }
+html.mm-reduce .r7-card .r7-aura { animation: none !important; }
+html.mm-reduce .r7-card.glow .r7-aura { opacity: .85; transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .r7-card, .r7-card-in, .r7-reading, .r7-dim { transition: none !important; } .r7-burst, .r7-flash, .r7-shock, .r7-rays, .r7-shine, .r7-particles { display: none; }
+  .r7-card.picked, .r7-card.picked .r7-card-in, #room7Board3 { animation: none !important; } .r7-card .r7-aura { animation: none !important; } .r7-card.glow .r7-aura { opacity: .85; transform: scale(1.04); } }
+/* 調整:結算表要完整放進舞台(標題下方到底部),列改成單行標籤 */
+#room7Board2 .rcs { top: 55.5%; max-height: 83cqh; width: 47cqw; }
+#room7Board2 .rcs-head strong { font-size: clamp(14px, 1.6cqw, 26px); }
+#room7Board2 .rcs-row { padding: .35cqh .8cqw; }
+#room7Board2 .rcs-lab { grid-template-columns: auto 1fr; column-gap: .8cqw; align-items: baseline; }
+#room7Board2 .rcs-lab .rcs-bar { grid-column: 1 / -1; }
+#room7Board2 .rcs-pt { display: none; }
+#room7Board2 .rcs-foot { margin-top: 0; padding-top: .6cqh; }
+#room7Board2 .rcs-num { font-size: clamp(26px, 3.6cqw, 60px); }
+#room7Board2 .rcs-stamp { width: clamp(46px, 5.6cqw, 96px); }
+#room7Board2 .rcs-stamp b { font-size: clamp(28px, 3.8cqw, 64px); border-width: 3px; }
+#room7Board2 .rcs-best { font-size: clamp(11px, 1.15cqw, 18px); min-height: 1.2em; }
+.r7-fan .r7-card { top: 55%; }
+.r7-picked .r7-lead { opacity: 0; transition: opacity .3s; }

@@ -1,0 +1,16 @@
+/* Portrait and message share a speaker name; only portrait gets a fixed aspect ratio. */
+.phone-module .message.grandson{aspect-ratio:auto;height:auto}
+.phone-module article p{margin:14px 0}
+.phone-module .story img{animation:story-settle 3s ease-out}
+@keyframes story-settle{from{transform:scale(1.025)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.phone-module .story img{animation:none}}
+.route-warning{width:min(540px,90vw);border:3px solid #b52f2f;border-radius:20px;padding:36px;background:#fff7f3;color:#8e2121;text-align:center;box-shadow:0 20px 70px #0005}
+.route-warning::backdrop{background:#29131299}
+.route-warning h2{font-size:clamp(36px,6vw,60px);color:#bc2424;margin:0 0 20px}
+.route-warning p{font-size:21px;line-height:1.8;margin-bottom:24px}
+.phone-module .route-warning button{background:#a52d2d;color:#fff;border:0;font-weight:bold}
+.route-shake{animation:route-shake .55s ease-in-out}
+.board.vertical-board{width:100%;max-width:530px;margin:0 auto}
+.phone-module .vertical-board .tile{aspect-ratio:1/.82}
+@keyframes route-shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+@media(prefers-reduced-motion:reduce){.route-shake{animation:none}}

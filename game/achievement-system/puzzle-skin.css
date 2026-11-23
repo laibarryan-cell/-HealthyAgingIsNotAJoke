@@ -1,0 +1,195 @@
+/* puzzle-skin.css — 第三修改計劃 B1:六間房的物品組合謎題共用版面(比照房間一小遊戲)
+   在 achievement 的 Shadow Root 裡最後載入,只改外觀與排版,不改玩法。
+   房間一小遊戲版面:深藍底、頁首金線;左「← 返回房間」藍色名牌;中間燈籠標題牌;右側步驟進度;
+   說明條用羊皮紙牌;物品用卡片框;按鈕一律像素名牌+按壓回饋,不用外框線。 */
+:host{--pb:1}
+
+/* ---------- 整體 ---------- */
+.as-panel.as-puzzle[open]{
+  display:flex!important;flex-direction:column;overflow:hidden!important;
+  /* 1280×720 設計尺寸,--pz 由 puzzle-ui.js 依視窗設定(與房間三原本做法相同) */
+  zoom:var(--pz,1)!important;width:calc(100vw / var(--pz,1))!important;max-width:none!important;height:calc(100dvh / var(--pz,1))!important;max-height:none!important;
+  inset:0!important;margin:0!important;padding:0!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+  background:radial-gradient(ellipse at 50% 35%,#1a3157 0%,#10213f 55%,#0b1426 100%)!important;color:#f6e7c8!important;
+  font-family:"Noto Sans TC",system-ui,sans-serif;
+}
+.as-puzzle .as-content{flex:1 1 auto;min-height:0;overflow:auto;padding:clamp(8px,1.4vh,16px) clamp(12px,2vw,32px) clamp(8px,1.4vh,16px)!important;display:flex;flex-direction:column}
+.as-puzzle .as-content>section{flex:1 1 auto;min-height:0}
+
+/* ---------- 頁首 ---------- */
+.as-puzzle .as-header{
+  position:relative!important;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto auto auto;align-items:center;gap:14px;
+  padding:clamp(6px,1vh,12px) clamp(12px,1.4vw,24px)!important;background:#0b1426!important;border-bottom:3px solid #c98c1c!important;flex:0 0 auto
+}
+.as-puzzle .as-navslot{display:flex;justify-content:flex-start;min-width:0}
+.as-puzzle .as-navslot nav{display:flex!important;flex-wrap:nowrap;gap:8px;justify-content:flex-start;margin:0!important;padding:0!important;background:none!important;border:0!important;position:static!important}
+.as-puzzle .as-header h2{
+  box-sizing:border-box;margin:0!important;min-width:0;width:100%;max-width:640px;justify-self:center;text-align:center;overflow:hidden;text-overflow:ellipsis;
+  min-height:calc(65px*var(--pb));display:flex;align-items:center;justify-content:center;
+  border-style:solid;border-color:transparent;
+  border-width:calc(14px*var(--pb)) calc(30px*var(--pb)) calc(14px*var(--pb)) calc(60px*var(--pb));
+  border-image:url("../assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill/calc(14px*var(--pb)) calc(30px*var(--pb)) calc(14px*var(--pb)) calc(60px*var(--pb)) stretch;
+  image-rendering:pixelated;background:none!important;
+  color:#3a2a14!important;font-size:calc(var(--pb)*2px + 17px)!important;font-weight:900;letter-spacing:0;line-height:1.15;white-space:nowrap
+}
+.as-puzzle .as-toolslot{justify-self:end;display:flex;gap:8px;align-items:center}
+.as-puzzle .as-toolslot:empty{display:none}
+.as-puzzle .as-steps{justify-self:end;display:flex;gap:5px;padding:6px 8px;border:3px solid #c98c1c;border-radius:3px;background:#0b1426}
+.as-step{width:calc(var(--pb)*4px + 16px);height:calc(var(--pb)*4px + 18px);background:#2a3d63;border:2px solid #081022;color:#fff3c0;font-size:calc(var(--pb)*3px + 12px);line-height:1;display:grid;place-items:center;font-weight:900}
+.as-step.on{background:linear-gradient(#ffd25a,#e39a12);color:#7a3d00;text-shadow:0 1px 0 #fff4c2}
+.as-step.pop{animation:asStepPop .55s cubic-bezier(.3,1.7,.5,1)}
+@keyframes asStepPop{0%{transform:scale(.6);filter:brightness(2.2)}60%{transform:scale(1.25)}100%{transform:scale(1);filter:none}}
+.as-puzzle .as-close{width:calc(var(--pb)*8px + 36px)!important;height:calc(var(--pb)*8px + 36px)!important;border:3px solid #c98c1c!important;border-radius:4px!important;background:#14294a!important;color:#ffe9b0!important;font-size:26px!important;outline:none!important}
+
+/* ---------- 按鈕(像素藍色名牌,與房間一相同) ---------- */
+.as-puzzle :is(.as-navslot button,.as-toolslot button,.vp-button,.mp-button,.np-button,.hp-button,.cp-button,.dp-button,.hp-final button,.hp-audio-controls button,.hp-assist){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:.35em;white-space:nowrap;
+  min-height:calc(33px*var(--pb));padding:0 2px;
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--pb)) calc(26px*var(--pb));
+  border-image:url("../assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--pb)) calc(26px*var(--pb)) stretch;image-rendering:pixelated;
+  color:#ffe9b0!important;font:900 calc(var(--pb)*3px + 15px)/1.1 "Noto Sans TC",system-ui,sans-serif;
+  transition:transform .12s cubic-bezier(.2,.9,.3,1.3),filter .12s
+}
+.as-puzzle :is(.as-navslot button,.as-toolslot button,.vp-button,.mp-button,.np-button,.hp-button,.cp-button,.dp-button,.hp-final button,.hp-audio-controls button,.hp-assist):hover:not(:disabled){filter:brightness(1.18);transform:scale(1.04)}
+.as-puzzle :is(.as-navslot button,.as-toolslot button,.vp-button,.mp-button,.np-button,.hp-button,.cp-button,.dp-button,.hp-final button,.hp-audio-controls button,.hp-assist):active:not(:disabled){filter:brightness(.92);transform:scale(.96) translateY(1px)}
+.as-puzzle :is(.as-navslot button,.as-toolslot button,.vp-button,.mp-button,.np-button,.hp-button,.cp-button,.dp-button,.hp-final button,.hp-audio-controls button,.hp-assist):disabled{filter:grayscale(.8) brightness(.7);cursor:not-allowed}
+.as-puzzle .as-navslot .as-back2{opacity:.92}
+/* 主要動作(最後一步「記住密碼並返回房間」等):羊皮紙金牌,比照完成學習 */
+.as-puzzle :is(.vp-scene,.mp-scene,.np-scene,.hp-scene,.cp-scene,.dp-scene)>:is(.vp-button,.mp-button,.np-button,.hp-button,.cp-button,.dp-button):last-child,
+.as-puzzle .np-side>.np-button:last-child,.as-puzzle .hp-final>button:last-child{
+  min-height:calc(44px*var(--pb));border-width:calc(14px*var(--pb)) calc(24px*var(--pb));
+  border-image:url("../assets/art-final/ui/pin-display.png") 16 24 fill/calc(14px*var(--pb)) calc(24px*var(--pb)) stretch;color:#1b2236!important
+}
+.as-puzzle button{outline:none!important;-webkit-tap-highlight-color:transparent}
+.as-puzzle button::-moz-focus-inner{border:0}
+.as-puzzle button:focus-visible{filter:brightness(1.16)}
+
+/* ---------- 說明條(羊皮紙牌) ---------- */
+.as-puzzle :is(.vp-status,.mp-status,.np-status,.hp-status,.cp-status,.dp-status){
+  box-sizing:border-box;align-self:center;margin:0 auto clamp(6px,1.2vh,14px)!important;min-height:calc(46px*var(--pb));width:fit-content;max-width:min(1100px,94%);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  border-style:solid;border-color:transparent;border-width:calc(12px*var(--pb)) calc(22px*var(--pb));
+  border-image:url("../assets/art-final/ui/pin-display.png") 16 24 fill/calc(12px*var(--pb)) calc(22px*var(--pb)) stretch;image-rendering:pixelated;
+  background:none!important;color:#3a2a14!important;font-weight:800!important;font-size:calc(var(--pb)*3px + 16px)!important;line-height:1.35!important;padding:0 8px!important
+}
+.as-puzzle :is(.vp-status,.mp-status,.np-status,.hp-status,.cp-status,.dp-status):empty{visibility:hidden}
+
+/* ---------- 遊玩區 ---------- */
+.as-puzzle :is(.vp-scene,.mp-scene,.np-scene,.hp-scene,.cp-scene,.dp-scene){
+  max-width:none!important;width:100%;margin:0 auto!important;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  background:none!important;color:#f6e7c8;text-align:center
+}
+.as-puzzle :is(.vp-caption,.mp-note,.np-note,.hp-note,.cp-note,.dp-note,.vp-caption){color:#cdbf9f!important;font-size:14px!important;margin:6px auto 0!important;max-width:1000px}
+
+/* ---------- 物品格(羊皮紙卡片) ---------- */
+.as-puzzle :is(.vp-tray,.mp-tray,.np-tray,.hp-tray,.cp-tray,.dp-tray){display:flex!important;flex-wrap:wrap;justify-content:center;gap:clamp(8px,1vw,16px)!important;margin:clamp(6px,1.2vh,14px) auto 0!important;padding:0!important;background:none!important;border:0!important}
+.as-puzzle :is(.vp-tool,.mp-tool,.np-tool,.hp-tool,.cp-tool,.dp-tool){
+  all:unset;box-sizing:border-box;cursor:grab;display:inline-flex!important;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  min-width:calc(var(--pb)*40px + 120px);min-height:calc(var(--pb)*30px + 92px);padding:0 4px;
+  border-style:solid;border-color:transparent;border-width:14px;
+  border-image:url("../assets/art-final/ui/clue-card-blank.png") 16 fill/14px stretch;image-rendering:pixelated;
+  color:#3a2a14!important;font:800 calc(var(--pb)*2px + 14px)/1.25 "Noto Sans TC",system-ui,sans-serif;text-align:center;
+  transition:transform .14s cubic-bezier(.2,.9,.3,1.3),filter .14s;touch-action:none
+}
+.as-puzzle :is(.vp-tool,.mp-tool,.np-tool,.hp-tool,.cp-tool,.dp-tool) img{width:calc(var(--pb)*24px + 72px)!important;height:calc(var(--pb)*18px + 54px)!important;object-fit:contain;image-rendering:pixelated;pointer-events:none}
+.as-puzzle :is(.vp-tool,.mp-tool,.np-tool,.hp-tool,.cp-tool,.dp-tool):hover:not(:disabled){transform:translateY(-4px) scale(1.04);filter:brightness(1.08)}
+.as-puzzle :is(.vp-tool,.mp-tool,.np-tool,.hp-tool,.cp-tool,.dp-tool):active:not(:disabled){transform:scale(.96);cursor:grabbing}
+.as-puzzle :is(.vp-tool,.mp-tool,.np-tool,.hp-tool,.cp-tool,.dp-tool):disabled{cursor:default;filter:grayscale(.85) brightness(.75);opacity:.75}
+.as-puzzle :is(.vp-selected,.mp-selected,.np-selected,.hp-selected,.cp-selected,.dp-selected){outline:none!important;box-shadow:none!important;transform:translateY(-6px) scale(1.05);filter:drop-shadow(0 0 6px #ffd86b) drop-shadow(0 0 12px #f0a91c) brightness(1.08)!important;animation:asSel 1s ease-in-out infinite alternate}
+@keyframes asSel{to{filter:drop-shadow(0 0 10px #ffe58f) drop-shadow(0 0 20px #f0a91c) brightness(1.15)}}
+.as-puzzle .as-lift{transform:scale(1.06) translateY(-4px);filter:brightness(1.12)}
+
+/* 拖曳中的物品:浮起、微微傾斜、帶陰影(用 scale/rotate 屬性,不蓋掉各房原本的定位 transform) */
+.as-puzzle [class*="ghost"]{scale:1.18;rotate:-6deg;filter:drop-shadow(0 12px 10px #000a) drop-shadow(0 0 8px #ffd86b);transition:scale .12s}
+
+/* 拖到放置區附近:金色發光,不用框線 */
+.as-puzzle :is(.vp-near,.mp-near,.np-near,.hp-near,.cp-near,.dp-near){outline:none!important;box-shadow:none!important;filter:drop-shadow(0 0 6px #ffe08a) drop-shadow(0 0 16px #f0a91c) brightness(1.1)!important;animation:asNear .7s ease-in-out infinite alternate}
+@keyframes asNear{to{filter:drop-shadow(0 0 10px #fff1b8) drop-shadow(0 0 24px #ffb43a) brightness(1.18)}}
+.as-puzzle :is(button,[role=button],[tabindex]):is(:hover,:focus,:focus-visible,:active){outline:none!important}
+
+/* ---------- 動畫元件 ---------- */
+.as-fly{position:fixed;width:90px;height:72px;object-fit:contain;pointer-events:none;z-index:2147483600;image-rendering:pixelated;filter:drop-shadow(0 6px 8px #0009)}
+.as-burst{position:fixed;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;pointer-events:none;z-index:2147483600;
+  background:radial-gradient(circle,#fff8d0 0%,#ffd25a 35%,rgba(240,169,28,.0) 70%);animation:asBurst .75s ease-out forwards}
+@keyframes asBurst{0%{transform:scale(.4);opacity:1}100%{transform:scale(9);opacity:0}}
+.as-spark,.as-star{position:fixed;pointer-events:none;z-index:2147483601;color:#ffe27a;text-shadow:0 0 8px #ffb000,0 0 2px #fff;font-size:24px;line-height:1}
+.as-star{font-size:34px}
+
+/* ---------- 密碼數字翻牌 ---------- */
+.as-pw{perspective:400px;display:inline-block}
+.as-digit{display:inline-block;animation:asFlip .7s cubic-bezier(.3,1.5,.5,1) both;transform-origin:50% 60%}
+@keyframes asFlip{0%{transform:rotateX(-100deg) scale(.6);opacity:0;filter:brightness(2.5)}60%{transform:rotateX(15deg) scale(1.15);opacity:1;filter:brightness(1.6) drop-shadow(0 0 10px #ffd86b)}100%{transform:rotateX(0) scale(1);filter:none}}
+
+@media (prefers-reduced-motion:reduce){.as-puzzle *{animation:none!important;transition:none!important}}
+
+/* 拖曳中的物品與特效:抵消外層縮放,讓它們準確跟著游標(各房以視窗座標定位) */
+.as-puzzle [class*="ghost"],.as-fly,.as-burst,.as-spark,.as-star{zoom:calc(1 / var(--pz,1))}
+
+/* 房五、房六右側說明卡:改成羊皮紙卡片、深色字 */
+.as-puzzle :is(.cp-controls,.dp-controls){
+  box-sizing:border-box;background:none!important;border-style:solid!important;border-color:transparent!important;border-width:14px!important;border-radius:0!important;box-shadow:none!important;
+  border-image:url("../assets/art-final/ui/clue-card-blank.png") 16 fill/14px stretch!important;image-rendering:pixelated;color:#3a2a14!important;text-align:left
+}
+.as-puzzle :is(.cp-controls,.dp-controls) :is(h3,h4,p,span,strong,label,small){color:#3a2a14!important}
+.as-puzzle :is(.vp-side,.hp-side,.mp-side) :is(p,span,label,h3,strong){color:#f6e7c8}
+/* 房五、房六的物品列原本有淺色底與上框線,改透明 */
+.as-puzzle :is(.cp-tray,.dp-tray){position:static!important;background:none!important;border:0!important}
+
+/* 密碼顯示:各房一律金色大字、高對比 */
+.as-puzzle :is(.dp-result,.cp-drawer,.mp-drawer) strong,.as-puzzle .as-pw{color:#ffe27a!important;text-shadow:0 2px 0 #5a3500,0 0 12px #f0a91c!important;font-weight:900!important}
+.as-puzzle .dp-result{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px auto!important;padding:6px 26px!important;background:#0b1426!important;border:3px solid #c98c1c!important;border-radius:4px}
+.as-puzzle .dp-result span{color:#ffe9b0!important;font-weight:800;font-size:18px}
+.as-puzzle .dp-result strong{font-size:44px!important;letter-spacing:.12em}
+/* 密碼數字一律橫排、放大 */
+.as-panel.as-puzzle .as-pw{display:inline-flex!important;flex-direction:row!important;align-items:baseline;justify-content:center;gap:.06em;writing-mode:horizontal-tb!important}
+.as-panel.as-puzzle :is(.dp-result,.cp-drawer,.mp-drawer) strong.as-pw{font-size:46px!important;line-height:1.05!important;letter-spacing:.08em}
+.as-panel.as-puzzle .dp-result strong.as-pw{font-size:64px!important}
+.as-panel.as-puzzle :is(.cp-drawer,.mp-drawer) strong.as-pw{background:#0b1426;padding:2px 20px;border-radius:4px;margin-top:4px}
+.as-panel.as-puzzle :is(.cp-drawer,.mp-drawer)>span{color:#3a2a14!important;font-weight:800}
+
+/* ===== 放置區:虛線框 → 柔和金色光暈(使用者 2026-11-15 指定) ===== */
+.as-panel.as-puzzle .as-drop{border-color:transparent!important;border-style:solid!important;outline:0!important}
+.as-panel.as-puzzle .as-drop:not(.as-drop-done){
+  background:radial-gradient(ellipse at center,rgba(255,214,120,.30) 0%,rgba(255,200,90,.14) 55%,rgba(255,190,80,0) 78%)!important;
+  box-shadow:0 0 18px 6px rgba(255,205,110,.30),inset 0 0 22px rgba(255,220,140,.30)!important;
+  color:#fff4d6!important;text-shadow:0 1px 3px #000c,0 0 8px #000a;
+  animation:asDropBreath 2.4s ease-in-out infinite!important;transition:box-shadow .18s,background .18s,filter .18s
+}
+.as-panel.as-puzzle .as-drop:is(.hp-near,.mp-near,.cp-near,.dp-near,.np-near,.cp-over){
+  animation:none!important;filter:brightness(1.25);
+  background:radial-gradient(ellipse at center,rgba(255,230,150,.55) 0%,rgba(255,210,110,.30) 60%,rgba(255,200,90,0) 85%)!important;
+  box-shadow:0 0 30px 12px rgba(255,220,130,.65),inset 0 0 30px rgba(255,235,170,.55)!important
+}
+.as-panel.as-puzzle .as-drop.as-drop-done{animation:asDropFade .6s ease-out forwards!important}
+@keyframes asDropBreath{0%,100%{box-shadow:0 0 12px 3px rgba(255,205,110,.20),inset 0 0 16px rgba(255,220,140,.20)}50%{box-shadow:0 0 24px 9px rgba(255,205,110,.42),inset 0 0 26px rgba(255,220,140,.40)}}
+@keyframes asDropFade{from{box-shadow:0 0 30px 12px rgba(255,220,130,.6)}to{box-shadow:none}}
+.as-panel.as-puzzle .np-rim.as-drop{color:transparent!important;text-shadow:none}
+/* 轉動提示圈、錄音帶捲軸、平衡區:同樣去掉虛線,改柔光 */
+.as-panel.as-puzzle :is(.cp-turn-ring,.dp-turn-ring,.mp-rotation-ring){border:3px solid rgba(255,215,130,.45)!important;box-shadow:0 0 18px 4px rgba(255,205,110,.35),inset 0 0 14px rgba(255,220,140,.3);animation:asDropBreath 2.4s ease-in-out infinite}
+.as-panel.as-puzzle .hp-reel{border:2px solid rgba(255,230,170,.25)!important}
+.as-panel.as-puzzle .mp-balance-zone{border:0!important;background:linear-gradient(90deg,rgba(255,215,120,0),rgba(255,215,120,.35),rgba(255,215,120,0));opacity:1}
+.as-panel.as-puzzle .hp-play{border-style:solid!important;border-color:rgba(212,193,152,.55)!important}
+/* 淺色底(記憶盒白板、日記頁)上的放置區:深色字、較飽和的金色光暈 */
+.as-panel.as-puzzle :is(.cp-card-slot,.cp-frame-slot,.dp-page-target).as-drop{color:#5a3c0c!important;text-shadow:0 1px 0 #fff8!important;font-weight:800}
+.as-panel.as-puzzle :is(.cp-card-slot,.cp-frame-slot,.dp-page-target).as-drop:not(.as-drop-done){
+  background:radial-gradient(ellipse at center,rgba(255,196,70,.34) 0%,rgba(240,175,50,.18) 60%,rgba(230,160,40,.04) 85%)!important;
+  box-shadow:0 0 16px 5px rgba(232,165,40,.45),inset 0 0 20px rgba(232,170,50,.35)!important}
+.as-panel.as-puzzle :is(.cp-card-slot,.cp-frame-slot,.dp-page-target).as-drop:is(.cp-near,.dp-near,.cp-over){box-shadow:0 0 28px 12px rgba(240,170,30,.75),inset 0 0 28px rgba(245,185,60,.6)!important}
+.as-panel.as-puzzle .dp-placement-label{color:#5a3c0c;font-weight:800}
+.as-puzzle .cp-scene>.cp-desk{align-self:stretch;width:100%;box-sizing:border-box;margin-left:auto!important;margin-right:auto!important}
+
+/* ===== 第三修改計劃 E3-4:罐頭標籤貼齊兩個罐頭的米色標籤區(依圖檔實測位置),字依罐頭大小縮放 ===== */
+.as-puzzle .np-can{container-type:size}
+.as-puzzle .np-can .np-label{background:transparent!important;align-items:center;text-align:center;justify-content:center;gap:0;overflow:hidden;line-height:1.18;color:#273f36}
+.as-puzzle .np-can:has(.np-can-art[src*="nutrition_can_a"]) .np-label{left:25.5%;right:25.5%;top:44%;bottom:27%}
+.as-puzzle .np-can:has(.np-can-art[src*="nutrition_can_b"]) .np-label{left:28.5%;right:28.5%;top:46%;bottom:26.5%}
+.as-puzzle .np-can .np-label strong{font-size:max(9px,7.4cqw)}
+.as-puzzle .np-can .np-label .np-serving{font-size:max(7px,4cqw)}
+.as-puzzle .np-can .np-label b{font-size:max(8px,5.8cqw)}
+.as-puzzle .np-can .np-label span:not(.np-serving){font-size:max(8px,5.5cqw)}
+/* 選罐頭畫面:桌面空間很多,罐頭放大,標籤字才看得清楚 */
+.as-puzzle .np-can-row{gap:4%!important}
+.as-puzzle .np-can-row .np-can-wrap{width:min(47%,400px);flex:none}
+.as-puzzle .np-can-wrap button{white-space:nowrap}
+.as-puzzle .np-body{align-self:stretch;width:100%}

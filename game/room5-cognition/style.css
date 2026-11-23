@@ -1,0 +1,39 @@
+:root{--ink:#243a35;--muted:#68756d;--paper:#f6f1e5;--green:#294f42;--line:#d9d7c8}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:19px/1.7 "Microsoft JhengHei",system-ui,sans-serif}button{font:inherit;color:inherit;cursor:pointer}h1,h2,p{margin:0}button:focus-visible{outline:4px solid #dfae4f;outline-offset:4px}[hidden]{display:none!important}.eyebrow{font-size:13px;font-weight:700;letter-spacing:.17em;color:var(--muted)}
+.room{min-height:100svh;display:grid;place-items:center;background:#192723}.room-frame{position:relative;width:min(100vw,177.777svh);aspect-ratio:16/9;isolation:isolate}.room-art{display:block;width:100%;height:100%;object-fit:cover}.room-shade{position:absolute;inset:0;box-shadow:inset 0 0 100px #182b2466;pointer-events:none;background:linear-gradient(#112b262e,transparent 24%,transparent 80%,#112b264d)}.room-heading{position:absolute;top:4%;left:4%;color:#fff;text-shadow:0 2px 13px #0009;pointer-events:none}.room-heading .eyebrow{color:#f4ead0}.room-heading h1{font-weight:500;font-size:clamp(26px,3vw,48px);letter-spacing:.15em;line-height:1.5}.room-footer{position:absolute;left:4%;right:4%;bottom:3%;display:flex;justify-content:space-between;gap:12px;color:#fff;font-size:15px;text-shadow:0 2px 8px #000;pointer-events:none}.room-footer>span{background:#223c32db;padding:6px 13px;border-radius:5px}.room-footer p{align-self:center}.hotspot{position:absolute;transform:translate(-50%,-50%);background:#fff0;border:2px solid #f6d08770;border-radius:7px;box-shadow:0 0 15px #ffe3a047,inset 0 0 12px #ffe3a022;animation:breathe 2.4s ease-in-out infinite;z-index:2;min-width:32px;min-height:36px}.hotspot:hover,.hotspot:focus-visible{background:#fff3bc16;border-color:#ffe4a9}.tag{position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);background:#193c31f2;color:white;padding:5px 13px;font-size:16px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;border-radius:5px;line-height:1.4}.tag small{display:block;font-size:11px;opacity:.7}.hotspot:hover .tag,.hotspot:focus-visible .tag{opacity:1}.object-number{position:absolute;bottom:5px;right:5px;font:12px/1.2 monospace;color:#fff8db;background:#234437cc;border:1px solid #e5d29a55;padding:4px 5px;border-radius:3px}.image-error{position:absolute;bottom:14%;left:10%;right:10%;background:#fff2d0;padding:20px;z-index:3}
+.module-view{max-width:1500px;padding:25px 4vw 36px;margin:auto;min-height:100svh}.mission-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:20px;border-bottom:1px solid var(--line)}.back{background:transparent;border:0;padding:10px 0;font-size:17px}.entry-chip{font-size:14px;color:var(--green);background:#e6eadc;padding:6px 12px;border-radius:5px;white-space:nowrap}.stage-heading{margin:30px 0 25px}.stage-heading h1{font-size:35px;font-weight:600;margin:5px 0}.stage-heading>p:last-child{color:var(--muted);font-size:17px}.entry-layout{display:grid;grid-template-columns:1.25fr 1fr;gap:30px;align-items:stretch}.entry-context{position:relative;align-self:center;aspect-ratio:16/9;border-radius:10px;overflow:hidden;box-shadow:0 12px 35px #28372b18}.entry-context img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.68)}.entry-outline{position:absolute;transform:translate(-50%,-50%);border:2px solid #ffe6a8;box-shadow:0 0 18px #ffe4a047;background:#ffe6ab16;border-radius:5px}.entry-caption{position:absolute;bottom:15px;left:18px;color:#fff;font-size:17px;text-shadow:0 2px 8px #000}.entry-placeholder{padding:30px;background:#fffaf0;border:1px solid var(--line);border-radius:10px;position:relative;overflow:hidden}.entry-number{display:block;font:44px/1.3 Georgia,serif;color:#a6b295;margin-bottom:18px}.entry-placeholder h2{font-size:27px;margin:8px 0 16px;font-weight:600}.entry-placeholder>p:not(.eyebrow){font-size:18px;color:#687565}.reserved-note{border-left:3px solid #8b9c72;background:#edf0e3;color:#6b765e;padding:12px 16px;margin:24px 0;font-size:15px}.primary{background:var(--green);color:#fff;padding:12px 22px;border:0;border-bottom:4px solid #16382b;border-radius:8px;font-weight:700;min-height:48px;font-size:17px}.module-footer{margin-top:32px;padding-top:15px;border-top:1px solid var(--line);color:#8b937f;font-size:13px}
+.room-heading{left:50%;top:3%;transform:translateX(-50%);text-align:center;white-space:nowrap}.hotspot[data-object="bedroom"] .tag,.hotspot[data-object="kitchen"] .tag{bottom:auto;top:10px}.hotspot[data-object="photo"] .tag{bottom:auto;top:calc(100% + 8px)}
+@keyframes breathe{50%{box-shadow:0 0 22px #ffe3a07a,inset 0 0 15px #ffe3a045;border-color:#ffe3a0b0}}@media(max-width:850px){.module-view{padding:18px}.entry-layout{grid-template-columns:1fr}.mission-bar>.eyebrow{display:none}.entry-placeholder{padding:23px}.entry-number{margin-bottom:8px}.room-footer{font-size:11px}.room-footer>p{display:none}.room-heading .eyebrow{font-size:9px}.tag{font-size:12px;padding:3px 7px}.tag small{display:none}.object-number{font-size:10px;padding:2px 3px}.hotspot .tag{opacity:1}.room-heading h1{font-size:23px}.room-footer>span{margin-left:auto}.stage-heading h1{font-size:29px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+/* Integrated into the main game's Room2-style HUD: hide duplicate inner-room chrome. */
+.room-heading,
+.reset-progress,
+.room-footer{
+  display:none!important;
+}
+.room{
+  min-height:0!important;
+  width:100%!important;height:100%!important;
+  overflow:hidden!important;
+}
+.room-frame{
+  width:100%!important;height:100%!important;
+  max-width:none!important;max-height:none!important;
+  aspect-ratio:16/9!important;
+  margin:0!important;
+}
+.room-art{
+  width:100%!important;height:100%!important;
+  object-fit:cover!important;display:block!important;
+}
+
+/* Integrated overview: avoid nested iframe scrollbar. */
+html:has(.room), body:has(.room){overflow:hidden!important;width:100%!important;height:100%!important;}
+body:has(.room){min-height:0!important;}
+
+/* Show completion check only after the activity actually finishes. */
+.hotspot.done{animation:none!important;box-shadow:none!important;border-color:#d8e4b766!important;}
+.hotspot.done:after{content:'✓';position:absolute;right:-12px;top:-12px;background:#244e3a;color:#fff;border:2px solid #e9e9c8;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;font-weight:900;z-index:5;}
+
+/* Room 1/2-style sentence-by-sentence education */
+.edu-stepper{display:grid;gap:18px;align-content:start}.edu-line{min-height:120px;display:flex;align-items:center;font-size:clamp(22px,2.1vw,30px);line-height:1.65;font-weight:700;padding:20px 22px;border-radius:18px;background:rgba(255,255,255,.82);border:2px solid rgba(83,103,91,.16)}.edu-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.edu-controls button{min-height:52px;font-size:18px}.edu-progress{font-weight:800;opacity:.7}.edu-speak::before{content:'🔊 ';}

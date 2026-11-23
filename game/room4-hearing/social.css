@@ -1,0 +1,61 @@
+.social-mission{--social-blue:#e4f0f6;--social-green:#e7efdf}
+.social-story-wrap{position:relative;width:min(100%,calc(55vh * 16 / 9));margin:auto;border-radius:12px;overflow:hidden;box-shadow:0 12px 40px #35453720;background:#e8dfca}
+.social-story{position:relative;aspect-ratio:16/9;isolation:isolate}
+.social-story img{width:100%;height:100%;object-fit:cover;display:block}
+.story-bubble{position:absolute;left:var(--bx);top:var(--by);transform:translateX(-50%);width:max-content;max-width:37%;padding:12px 20px;border:2px solid #655c48;background:#fffdf5;color:#393e32;font-size:clamp(18px,1.8vw,29px);font-weight:700;line-height:1.55;border-radius:16px;box-shadow:4px 5px 0 #3d342326;z-index:2}
+.story-bubble:before,.story-bubble:after{content:'';position:absolute;top:100%;border:14px solid transparent}
+.story-bubble:before{border-top-color:#655c48;left:28%}.story-bubble:after{border-top-color:#fffdf5;margin-top:-3px;left:28%}
+.story-bubble.right:before,.story-bubble.right:after{left:62%}
+.story-bubble.ellipsis{min-width:68px;padding:2px 17px 9px;text-align:center;font-size:clamp(26px,3vw,40px);line-height:1.3}
+.story-navigation{display:flex;align-items:center;justify-content:space-between;gap:18px;width:min(100%,calc(55vh * 16 / 9));margin:20px auto 0}.story-navigation p{font-size:17px;color:var(--muted)}
+.social-story.is-overwhelmed{animation:social-shake .12s linear infinite}
+.social-thought-layer{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:#1d2e2999;padding:18px}
+.social-thought-card{background:#fffbef;border:1px solid #d9cdac;padding:35px;text-align:center;box-shadow:8px 8px 0 #222d2466;max-width:92%;border-radius:10px}
+.social-thought-card h3{font-size:clamp(23px,2.7vw,37px);margin:13px 0 26px;line-height:1.55}
+.social-question{max-width:1000px;margin:0 auto;background:#fffcf3;border:1px solid var(--line);border-radius:10px;padding:30px}
+.social-question-reminder{padding:12px 18px;background:#eee6d4;border-left:4px solid #b7a173;color:#645440;margin-bottom:23px}
+.social-question h3{font-size:26px;margin-bottom:22px}
+.social-choices{display:grid;gap:12px}
+.social-choices button{display:flex;gap:17px;align-items:center;text-align:left;background:white;border:2px solid #dbddce;padding:15px 19px;font-size:19px;line-height:1.6}
+.social-choices button span{width:34px;height:34px;display:grid;place-items:center;background:#edf0e3;flex-shrink:0;border-radius:6px;font-size:17px}
+.social-choices button:hover{background:#f3f5e9;border-color:#a8b496}.social-choices button.correct{border-color:#799167;background:#e5eeda}.social-choices button.retry{border-color:#b8a985;background:#f5eddc}
+.social-answer{margin-top:21px;padding:16px 20px;background:#e9ede1;border-left:4px solid #829768;min-height:70px;font-size:18px}
+.social-source,.social-simulation{font-size:14px!important;color:#697461;margin-top:18px}.social-storage{font-size:15px;background:#fff0c4;padding:10px;margin-top:20px}
+.rpg-progress{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+.rpg-progress>span{display:flex;align-items:center;gap:9px;border-bottom:3px solid #d6ddcd;padding:6px 8px 10px;color:#828b79;font-size:19px;font-variant-numeric:tabular-nums}
+.rpg-progress small{font-size:14px}.rpg-progress>span.active{border-color:#b09252;color:#745b2f}.rpg-progress>span.done{border-color:#6a8b68;color:#41643d}
+.social-rpg{display:grid;grid-template-columns:minmax(120px,.65fr) minmax(0,1.2fr) minmax(0,1.2fr) minmax(120px,.65fr);gap:15px;align-items:stretch}
+.social-actor{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0;padding-top:5px}
+.actor-portrait{width:100%;height:310px;background-image:url('assets/social/portraits.png');background-size:200% auto;background-repeat:no-repeat;background-position:left center;border-radius:12px;filter:brightness(.3) saturate(.45);transition:filter .35s;box-shadow:0 3px 15px #3445360d}
+.player .actor-portrait{background-position:right center}.social-actor.is-speaking .actor-portrait{filter:brightness(1) saturate(1)}
+.social-actor h3{font-size:20px;margin-top:12px}.speaker-label{font-size:13px;color:#8b9184;border-radius:20px;padding:3px 12px;margin-top:4px;background:#e6e8dd}.is-speaking .speaker-label{background:#345e4c;color:#fff}
+.social-chat{border:1px solid #cedadb;border-radius:12px;display:flex;flex-direction:column;min-width:0;padding:16px 14px 10px;box-shadow:0 6px 20px #2f40300a}
+.elder-chat{background:var(--social-blue);border-color:#c1d6e2}.player-chat{background:var(--social-green);border-color:#c7d8be}
+.social-chat header{display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid #8ba8a233;margin-bottom:15px}
+.social-chat h3{font-size:18px}.chat-dot{width:8px;height:8px;border-radius:50%;background:#719bad}.player-chat .chat-dot{background:#86a075}
+.social-chat-log{height:290px;overflow:auto;padding:0 4px 0 0;scroll-behavior:smooth}
+.social-message{background:#fffdf9;padding:13px 15px;border-radius:11px 11px 11px 2px;margin-bottom:12px;line-height:1.8;font-size:18px;border:1px solid #e0e8e6;overflow-wrap:anywhere;animation:arrive .25s}
+.player-chat .social-message{border-radius:11px 11px 2px 11px;background:#f8fbed;border-color:#d4e1c9}
+.smile-message{font-size:34px}.read-receipt{font-size:12px;color:#6e847c;text-align:right;padding-top:7px;min-height:24px}
+.question-draft{padding:16px;border:1px dashed #b6c5aa;border-radius:10px;color:#526649;font-size:18px;line-height:1.8}.question-draft small{display:block;color:#829374;margin-bottom:8px}.chat-empty{font-size:16px;color:#7993a0;text-align:center;margin:30px 0}
+.rpg-response-panel{padding:17px 23px;background:#fffcf3;border:1px solid #dcdcc9;border-radius:8px;margin-top:20px;min-height:86px;font-size:18px}.rpg-response-panel p{margin-top:4px;font-size:16px;color:var(--muted)}
+.social-rpg-actions{display:flex;justify-content:center;margin-top:17px;min-height:64px}.strategy-group{display:flex;gap:16px;justify-content:center}.strategy-button{background:#fff9e9;border:1px solid #cbbd92;border-bottom:4px solid #b0a074;min-width:230px;padding:9px 24px;display:grid;gap:2px;text-align:center;transition:background .2s}.strategy-button:hover:not(:disabled){background:#f4e9c9}.strategy-button strong{font-size:19px}.strategy-button small{font-size:13px;color:#6d7059}
+.social-summary{max-width:1020px;margin:auto}.summary-kicker{font-size:15px;color:var(--muted);text-align:center}.social-summary>h3{text-align:center;font-size:29px;margin:12px 0 24px}.social-round-results{display:grid;gap:10px}.social-round-results article{display:flex;align-items:center;gap:18px;padding:16px 23px;background:#fffcf3;border:1px solid #d7dbca;border-radius:8px}.social-round-results article>span{color:#8c9a77;font-size:23px;min-width:35px}.social-round-results h4{margin:0 0 5px;font-size:20px}.social-round-results p{font-size:17px;color:var(--muted)}.social-round-results b{margin-left:auto;color:#6a8956}
+@keyframes social-shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-1px)}75%{transform:translate(-2px,-2px)}}
+@media(min-width:1700px){.actor-portrait{height:375px}.social-chat-log{height:350px}.social-message{font-size:20px}.social-rpg{gap:20px}}
+@media(max-width:1000px){.social-rpg{grid-template-columns:100px minmax(0,1fr) minmax(0,1fr) 100px;gap:9px}.actor-portrait{height:250px}.social-message{font-size:16px;padding:11px}.social-chat{padding:12px 9px}.social-chat h3{font-size:16px}.rpg-progress small{display:none}.story-bubble{padding:8px 13px}}
+@media(max-width:650px){.social-rpg{grid-template-columns:62px minmax(0,1fr) minmax(0,1fr) 62px;gap:5px}.actor-portrait{height:160px}.social-chat{padding:10px 6px}.social-message{font-size:14px;padding:7px}.social-chat h3{font-size:13px}.social-chat-log{height:265px}.social-actor h3{font-size:15px}.speaker-label{font-size:10px;padding:3px 6px}.chat-dot{display:none}.social-question{padding:17px}.social-choices button{font-size:16px}.strategy-button{min-width:0;padding:10px 14px}.strategy-group{gap:9px}.strategy-button strong{font-size:16px}.story-bubble{font-size:14px;max-width:43%;padding:6px 9px}.story-bubble.ellipsis{min-width:35px;font-size:21px;padding:1px 9px 6px}.social-thought-card{padding:20px}.social-thought-card h3{font-size:19px;margin:8px 0 14px}.social-thought-card .primary{font-size:14px;padding:8px 12px;min-height:40px}.story-navigation p{font-size:14px}.social-story-wrap,.story-navigation{width:100%}.social-round-results article{padding:13px}}
+@media(prefers-reduced-motion:reduce){.social-story.is-overwhelmed{animation:none;filter:contrast(1.07) saturate(.6)}.actor-portrait{transition:none}.social-message{animation:none}.social-chat-log{scroll-behavior:auto}}
+
+/* Room 1/2-style sentence-by-sentence education */
+.edu-stepper{display:grid;gap:18px;align-content:start}.edu-line{min-height:120px;display:flex;align-items:center;font-size:clamp(22px,2.1vw,30px);line-height:1.65;font-weight:700;padding:20px 22px;border-radius:18px;background:rgba(255,255,255,.82);border:2px solid rgba(83,103,91,.16)}.edu-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.edu-controls button{min-height:52px;font-size:18px}.edu-progress{font-weight:800;opacity:.7}.edu-speak::before{content:'🔊 ';}
+
+/* Family photograph / table: four-scene educational story */
+.social-mission .social-edu-story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%;max-width:1320px;margin:0 auto;overflow:hidden;border-radius:26px;background:#fff;box-shadow:0 18px 38px rgba(24,44,45,.12)}
+.social-mission .social-edu-visual{display:flex;flex-direction:column;min-width:0;background:#eaf5fa}
+.social-mission .social-edu-visual img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.social-mission .social-edu-caption{margin:0;padding:16px 20px;background:#fff0d7;color:#543019;font-weight:700;font-size:clamp(16px,1.4vw,20px);line-height:1.6;flex:1}
+.social-mission .social-edu-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:24px;padding:clamp(20px,3vw,42px);color:#11394d;background:#fff}
+.social-mission .social-edu-copy .edu-line{min-height:0;background:#fff;border:1px solid #d4e5eb;color:#103e52}
+.social-mission .social-edu-copy .edu-controls{align-items:center}
+@media(max-width:760px){.social-mission .social-edu-story{grid-template-columns:1fr}.social-mission .social-edu-copy{padding:20px}.social-mission .social-edu-visual img{max-height:50vh;object-fit:contain}}

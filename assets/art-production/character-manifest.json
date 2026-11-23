@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "style": "pure-pixel-art",
+  "previewCanvas": {"width": 128, "height": 192, "displayScale": 4, "centerX": 64, "groundY": 182},
+  "walkCanvas": {"width": 64, "height": 96, "displayScale": 2, "centerX": 32, "groundY": 90, "framesPerDirection": 6},
+  "directions": ["down", "up", "left", "right"],
+  "bodies": [
+    {"id": "body01-slim", "label": "瘦高型", "headAnchor": {"x": 64, "y": 43}},
+    {"id": "body02-round", "label": "圓潤型", "headAnchor": {"x": 64, "y": 51}},
+    {"id": "body03-strong", "label": "健壯型", "headAnchor": {"x": 64, "y": 45}}
+  ],
+  "hair": ["hair01-neat-short", "hair02-soft-side-part", "hair03-swept-back"],
+  "hairColors": ["silver", "charcoal", "deep-brown", "warm-brown", "pale-gold-gray"],
+  "outfits": ["outfit01-casual-cardigan", "outfit02-daywear-polo", "outfit03-formal-jacket"],
+  "outfitColors": ["navy", "burgundy", "forest", "warm-brown", "cream"],
+  "accessories": ["none", "glasses", "hat", "scarf"]
+}

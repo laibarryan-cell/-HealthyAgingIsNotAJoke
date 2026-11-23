@@ -1,0 +1,3207 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>爺爺的記憶迷宮｜ICOPE 密室逃脫</title>
+<style>
+:root{
+  --ink:#41352a;
+  --paper:#fffaf0;
+  --paper2:#f5ead8;
+  --wood:#6c5a49;
+  --olive:#687d58;
+  --olive2:#82966f;
+  --gold:#d9b86b;
+  --gold2:#f6df9b;
+  --danger:#b96258;
+  --shadow:rgba(24,18,12,.25);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  background:#251f1a;color:var(--ink);
+  font-size:20px;line-height:1.72;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+img{display:block;max-width:100%}
+.screen{display:none;width:100%;height:100%;overflow:hidden}
+.screen.active{display:flex}
+.soft-card{
+  background:rgba(255,250,240,.96);
+  border:1px solid rgba(111,87,59,.18);
+  box-shadow:0 22px 70px rgba(0,0,0,.35);
+  border-radius:28px;
+  backdrop-filter:blur(8px);
+}
+.primary{
+  border:0;border-radius:16px;
+  background:linear-gradient(180deg,var(--olive2),var(--olive));
+  color:#fff;padding:14px 22px;font-weight:900;font-size:1.06rem;
+  box-shadow:0 10px 24px rgba(84,100,70,.25);
+}
+.primary:hover{filter:brightness(1.05)}
+.secondary{
+  border:1px solid #cbbca7;border-radius:14px;
+  background:#fffaf0;color:#5d5146;padding:12px 16px;font-weight:800;font-size:1rem;
+}
+.secondary:hover{background:#fff6e7}
+.small-pill{
+  padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.16);font-weight:800
+}
+
+/* login */
+#loginScreen{
+  align-items:center;justify-content:center;padding:24px;
+  background:
+    linear-gradient(rgba(39,31,24,.32),rgba(39,31,24,.70)),
+    url("assets/art-final/map/night-map.png") center/cover no-repeat;
+}
+.login-card{
+  width:min(720px,95vw);padding:40px 34px;text-align:center;
+}
+.login-card h1{
+  margin:0 0 10px;font-size:clamp(2rem,4vw,3rem);
+  font-family:Georgia,"Noto Serif TC",serif;color:#3d332a
+}
+.login-card p{margin:0 auto 10px;color:#706254;font-size:1.1rem;max-width:34em}
+.tip-box{
+  margin-top:18px;padding:16px 18px;border-radius:18px;background:#fff4dd;
+  border:1px solid #ead7a8;text-align:left;font-size:1rem
+}
+.login-row{display:flex;gap:12px;margin-top:22px}
+.login-row input{
+  flex:1;min-width:0;padding:15px 16px;border-radius:16px;border:2px solid #cfbfaa;
+  background:#fffef9;outline:none;font-size:1.02rem
+}
+.login-row input:focus{border-color:#82966f;box-shadow:0 0 0 4px rgba(130,150,111,.15)}
+.error{min-height:28px;color:#b45b51;font-size:1rem;margin-top:10px}
+
+/* common */
+#mapScreen,#roomScreen,#endingScreen{flex-direction:column;background:#1c1815;height:100%;overflow:hidden}
+.topbar{
+  min-height:68px;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  background:linear-gradient(180deg,#4c4034,#372f28);color:#f8ecd6;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.brand{
+  font-size:1.22rem;font-weight:900;letter-spacing:.03em
+}
+.subbrand{font-size:.92rem;color:#ead7bc;margin-top:1px}
+.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{
+  padding:11px 16px;border-radius:999px;background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.14);font-weight:900;font-size:1rem
+}
+.timer.warn{
+  color:#ffd8cf;border-color:#e89882;
+  animation:pulse 1s infinite
+}
+@keyframes pulse{50%{opacity:.58}}
+.stage-wrap{
+  flex:1;display:grid;place-items:center;padding:10px;min-height:0;overflow:hidden
+}
+.stage{
+  position:relative;width:100%;height:auto;aspect-ratio:1672 / 941;
+  border-radius:18px;overflow:hidden;background:#000;
+  box-shadow:0 22px 80px rgba(0,0,0,.40)
+}
+.stage img{width:100%;height:100%;object-fit:cover}
+.progress{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;color:#e7d8c1;font-size:.98rem
+}
+.dot{
+  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  background:#655749;color:#d5c9b9;font-size:.85rem;font-weight:900
+}
+.dot.done{background:#7e956a;color:#fff}
+.status-note{padding:8px 12px;border-radius:999px;background:#f5ead8;border:1px solid #deccb7;color:#6a5b4f;font-size:.98rem;font-weight:800}
+
+/* music controls */
+.music-control{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)
+}
+.music-btn{min-width:48px;padding:8px 12px}
+.music-control input[type="range"]{width:110px;accent-color:#e2c477}
+
+/* map stage visual */
+.map-stage{position:relative}
+.map-base{
+  position:absolute;inset:0;
+  filter:grayscale(.72) saturate(.58) brightness(.86) blur(1.2px) sepia(.08);
+  transform:scale(1.01);
+}
+.map-color{
+  position:absolute;inset:0;opacity:0;transition:opacity .8s ease;
+}
+.map-color.show{opacity:1}
+.map-tip{
+  position:absolute;left:50%;top:2.3%;transform:translateX(-50%);
+  padding:10px 16px;border-radius:999px;background:rgba(49,40,31,.84);
+  color:#fff2d5;font-weight:900;font-size:clamp(13px,1vw,18px);pointer-events:none
+}
+.room-outline{
+  position:absolute;border-radius:18px;pointer-events:none;opacity:0;
+  box-shadow:0 0 0 1px rgba(255,238,202,.55), inset 0 0 0 1px rgba(255,238,202,.32),
+             0 0 28px rgba(255,216,124,.20);
+  transition:opacity .8s ease, box-shadow .8s ease
+}
+.room-outline.show{opacity:1}
+.room-outline.final{
+  box-shadow:0 0 0 1px rgba(255,238,202,.72), inset 0 0 0 1px rgba(255,238,202,.44),
+             0 0 34px rgba(255,213,108,.28), 0 0 60px rgba(255,223,145,.16)
+}
+.map-hotspot{
+  position:absolute;border:0;background:transparent;border-radius:18px;
+  transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  display:flex;align-items:flex-end;justify-content:center;padding:8px;color:inherit
+}
+.map-hotspot:hover,.map-hotspot:focus-visible{
+  transform:translateY(-1px);
+  outline:none;box-shadow:inset 0 0 0 2px rgba(255,231,176,.48), 0 0 22px rgba(255,216,124,.16)
+}
+.map-hotspot .label{
+  padding:6px 11px;border-radius:999px;background:rgba(34,29,24,.78);color:#fff4db;
+  font-size:clamp(11px,.95vw,16px);font-weight:900;opacity:0;transform:translateY(6px);transition:.2s
+}
+.map-hotspot:hover .label,.map-hotspot:focus-visible .label{opacity:1;transform:none}
+.map-hotspot.locked-room{
+  filter:saturate(.65)
+}
+.map-hotspot.locked-room::before{
+  content:"尚未修復";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:rgba(36,31,27,.76);color:#f2e7d1;border-radius:999px;padding:8px 12px;
+  font-size:clamp(12px,.95vw,17px);font-weight:900;pointer-events:none
+}
+.map-hotspot.cleared-room::before{
+  content:"✓ 已修復";position:absolute;left:50%;top:11%;transform:translateX(-50%);
+  background:rgba(101,126,84,.92);color:#fff;border-radius:999px;padding:8px 12px;
+  font-size:clamp(12px,.95vw,17px);font-weight:900;pointer-events:none
+}
+.map-hotspot[data-start="1"]::before{
+  content:"從這裡開始";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);
+  background:rgba(99,126,82,.92);color:#fff;border-radius:999px;padding:9px 14px;
+  font-size:clamp(12px,.95vw,17px);font-weight:900;pointer-events:none;
+  animation:startGlow 1.8s ease-in-out infinite
+}
+@keyframes startGlow{
+  50%{box-shadow:0 0 24px rgba(255,220,132,.62);transform:translate(-50%,-50%) scale(1.04)}
+}
+.final-lock::before{
+  content:"🔒 完成六關後開啟";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:rgba(45,36,28,.84);color:#fff0d0;border-radius:999px;padding:10px 14px;
+  font-weight:900;font-size:clamp(12px,.95vw,17px);pointer-events:none
+}
+.legend-card{
+  position:absolute;left:18px;bottom:18px;max-width:min(460px,54%);
+  background:rgba(255,250,240,.90);border-radius:16px;padding:14px 16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.18);border:1px solid rgba(106,86,61,.18)
+}
+.legend-card h3{margin:0 0 8px;font-size:1.02rem}
+.legend-card p{margin:0;font-size:.96rem;color:#66584c}
+
+/* room stage */
+.room-stage{position:relative}
+.room-title-chip{
+  position:absolute;left:20px;top:16px;padding:11px 16px;border-radius:999px;
+  background:rgba(55,44,35,.84);color:#fff2d6;font-weight:900;font-size:1rem;pointer-events:none
+}
+.room-help-chip{
+  position:absolute;left:20px;bottom:16px;padding:10px 14px;border-radius:999px;
+  background:rgba(255,248,236,.90);color:#6b5b4e;font-weight:900;font-size:.96rem;pointer-events:none;
+  box-shadow:0 8px 18px rgba(0,0,0,.14)
+}
+#hotspotLayer{position:absolute;inset:0}
+.hotspot{
+  position:absolute;border:2px solid transparent;background:rgba(255,228,163,0);border-radius:16px;
+  transition:.18s ease;appearance:none
+}
+.hotspot:hover,.hotspot:focus-visible{
+  background:rgba(255,222,122,.10);border-color:rgba(255,239,193,.92);outline:none
+}
+.hotspot:hover .hint-ping,.hotspot:focus-visible .hint-ping{opacity:.12}
+.hotspot .hint-ping{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,241,200,.95) 0%, rgba(255,212,113,.88) 42%, rgba(255,212,113,0) 70%);
+  box-shadow:0 0 22px rgba(255,216,118,.65);
+  animation:ping 1.8s ease-in-out infinite;
+  opacity:.95;pointer-events:none;transition:opacity .22s ease
+}
+.hotspot.explored .hint-ping{opacity:0}
+@keyframes ping{
+  0%,100%{transform:translate(-50%,-50%) scale(.95);opacity:.82}
+  50%{transform:translate(-50%,-50%) scale(1.3);opacity:1}
+}
+.lock-button{
+  position:absolute;right:2.2%;bottom:3.2%;
+  border:1px solid rgba(255,236,190,.62);border-radius:14px;
+  background:rgba(58,46,36,.90);color:#fff0cf;font-weight:900;
+  padding:13px 18px;box-shadow:0 10px 26px rgba(0,0,0,.26)
+}
+.lock-button:hover{background:#6a5441}
+
+/* modal */
+.overlay{
+  display:none;position:fixed;inset:0;z-index:50;padding:18px;
+  background:rgba(16,13,10,.68);backdrop-filter:blur(7px);align-items:center;justify-content:center
+}
+.overlay.show{display:flex}
+.modal{
+  width:min(720px,96vw);max-height:90vh;overflow:auto;
+  background:#fffaf0;border-radius:24px;padding:28px;border:1px solid #e2d2bd;
+  box-shadow:0 26px 88px rgba(0,0,0,.44)
+}
+.modal h2{
+  margin:0 0 12px;font-size:1.72rem;color:#45392e;
+  font-family:Georgia,"Noto Serif TC",serif
+}
+.info{
+  background:#f7eddc;border-left:6px solid #81956d;border-radius:14px;
+  padding:19px 20px;font-size:1.1rem;line-height:1.92
+}
+.clue{
+  margin-top:16px;padding:13px 15px;border-radius:13px;background:#fff0c8;
+  border:1px solid #ead18e;color:#654e2e;font-size:1.06rem;font-weight:900
+}
+.modal-actions{
+  display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px
+}
+.code-input{
+  width:100%;margin-top:16px;padding:15px 16px;border-radius:14px;
+  border:2px solid #cdbca2;outline:none;background:#fffef9;
+  font-size:1.35rem;letter-spacing:.12em;text-align:center
+}
+.code-input:focus{border-color:#83976f;box-shadow:0 0 0 4px rgba(131,151,111,.15)}
+.result-box{text-align:center}
+.result-box .big{font-size:60px;margin-bottom:6px}
+.review-list{
+  margin-top:14px;background:#f6efdf;border-radius:14px;padding:16px 18px;text-align:left
+}
+.review-list div{margin:7px 0;font-size:1.05rem}
+.tiny{font-size:.92rem;color:#786959}
+.notice{
+  display:inline-block;margin-top:10px;padding:8px 12px;border-radius:999px;
+  background:#fff2cf;border:1px solid #ecd899;color:#71572d;font-weight:900;font-size:.95rem
+}
+
+@media(max-width:900px){
+  html,body{font-size:18px}
+  .topbar{padding:7px 10px;gap:8px}
+  .brand{font-size:1.04rem}
+  .subbrand{display:none}
+  .badge{padding:8px 11px;font-size:.9rem}
+  .secondary{padding:9px 12px;font-size:.9rem}
+  .music-control{padding:4px 7px}
+}
+@media(max-width:720px){
+  html,body{font-size:17px}
+  .login-row{flex-direction:column}
+  .stage-wrap{padding:6px}
+  .map-hotspot .label{display:none}
+  .music-control input[type="range"]{width:58px}
+  .room-help-chip{display:none}
+  .room-title-chip{font-size:.82rem;padding:8px 10px}
+  .lock-button{font-size:.9rem;padding:9px 12px}
+  .progress{display:none}
+}
+
+/* ===== 角色對話系統 ===== */
+.character-dock{position:absolute;left:18px;bottom:70px;z-index:8;display:flex;align-items:flex-end;gap:12px;max-width:min(620px,72%);pointer-events:none}
+.character-avatar{width:112px;height:150px;flex:0 0 auto;border-radius:46% 46% 36% 36%;background:linear-gradient(180deg,#f3d9b4 0 28%,#8ca17a 28% 64%,#6d7f5e 64%);border:3px solid rgba(255,247,225,.88);box-shadow:0 10px 28px rgba(0,0,0,.26);position:relative;overflow:hidden}
+.character-avatar::before{content:"";position:absolute;left:50%;top:13px;transform:translateX(-50%);width:56px;height:56px;border-radius:50%;background:#e7bf92;box-shadow:inset 0 -5px 0 rgba(120,82,54,.06)}
+.character-avatar::after{content:"👴";position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:54px;line-height:1}
+.character-dialog{pointer-events:auto;min-width:0;background:rgba(255,250,240,.96);border:1px solid rgba(129,101,70,.20);border-radius:18px 18px 18px 6px;padding:14px 17px;box-shadow:0 12px 30px rgba(0,0,0,.22);color:#514338;font-size:1rem;line-height:1.65}
+.character-name{display:block;color:#748765;font-size:.9rem;font-weight:900;margin-bottom:3px}
+.character-dialog strong{color:#5f704f}.character-dialog.hidden{display:none}.character-reaction{animation:dialogPop .24s ease-out}@keyframes dialogPop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+#endingScreen{flex-direction:column;background:#211b16;height:100%;overflow:hidden}.ending-wrap{flex:1;display:grid;place-items:center;padding:10px;min-height:0;overflow:hidden}.ending-stage{position:relative;width:100%;height:auto;aspect-ratio:1672/941;border-radius:20px;overflow:hidden;box-shadow:0 24px 90px rgba(0,0,0,.42);background:#000}.ending-stage>img{width:100%;height:100%;object-fit:cover}.ending-panel{position:absolute;right:3.2%;top:7%;width:min(540px,43%);background:rgba(255,250,240,.94);border:1px solid rgba(135,104,67,.20);border-radius:24px;padding:24px;box-shadow:0 18px 45px rgba(0,0,0,.24);backdrop-filter:blur(6px)}.ending-panel h2{margin:0 0 10px;font-size:1.75rem;font-family:Georgia,"Noto Serif TC",serif;color:#51402f}.ending-panel p{margin:8px 0;color:#655647;font-size:1.04rem}.badge-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.memory-badge{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#fff6df;border:1px solid #ead8aa;border-radius:13px;font-weight:900;color:#665333}.reflection{margin-top:15px;padding-top:14px;border-top:1px solid #decfb9}.reflection h3{margin:0 0 8px;font-size:1.06rem}.reflection-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ending-character{position:absolute;left:4%;bottom:5%;display:flex;align-items:flex-end;gap:14px;width:min(620px,56%)}.ending-character .character-avatar{width:132px;height:180px}.ending-character .character-dialog{font-size:1.04rem}.ending-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:900px){.character-dock{max-width:86%;bottom:72px}.ending-panel{position:absolute;left:4%;right:4%;top:4%;width:auto}.ending-character{left:4%;right:4%;bottom:4%;width:auto}}
+@media(max-width:720px){.character-avatar{width:82px;height:112px}.character-avatar::before{width:44px;height:44px}.character-avatar::after{font-size:43px}.character-dock{left:8px;bottom:64px;gap:8px;max-width:94%}.character-dialog{font-size:.92rem;padding:11px 13px}.ending-panel{font-size:.92rem;padding:16px}.badge-grid{grid-template-columns:1fr 1fr}.reflection-options{grid-template-columns:1fr 1fr}.ending-character .character-avatar{width:90px;height:124px}}
+
+
+/* ===== 整合版：首頁角色系統 ===== */
+.character-avatar.integrated-player{background:none!important;border:none!important;border-radius:0!important;overflow:visible!important;box-shadow:none!important}
+.character-avatar.integrated-player::before,.character-avatar.integrated-player::after{display:none!important}
+.character-avatar .integrated-character-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;z-index:1}
+.character-avatar .integrated-accessory-img{position:absolute;left:50%;top:7%;width:34%;height:18%;object-fit:contain;image-rendering:pixelated;transform:translateX(-50%);z-index:2}
+.character-avatar[data-base="1"] .integrated-accessory-img{top:10%;width:31%}
+.character-avatar[data-base="2"] .integrated-accessory-img{top:7%;width:32%}
+.player-badge{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);font-weight:900}
+
+/* ===== v3：房間 7 分段式結尾 ===== */
+#endingScreen .ending-panel{cursor:pointer;min-height:220px;display:flex;flex-direction:column;justify-content:center}
+#endingScreen .ending-step{display:none;animation:endingFade .28s ease}
+#endingScreen .ending-step.active{display:block}
+#endingScreen .ending-step h2{margin-bottom:10px!important;font-size:1.22rem!important}
+#endingScreen .ending-step p{font-size:.88rem!important;line-height:1.6!important}
+#endingScreen .compact-badges{grid-template-columns:repeat(2,1fr)!important;gap:7px!important}
+#endingScreen .compact-badges .memory-badge{padding:7px 9px!important;font-size:.78rem!important}
+#endingScreen .compact-summary{margin-top:2px!important;padding-top:0!important;border-top:0!important}
+#endingScreen .reflection{margin-top:0!important;padding-top:0!important;border-top:0!important}
+#endingScreen .reflection-options{grid-template-columns:repeat(2,1fr)!important;gap:7px!important}
+
+#endingScreen .ending-click-hint{margin-top:auto;padding-top:12px;text-align:right;font-size:.72rem;font-weight:800;color:#8c7459;opacity:.9;animation:hintPulse 1.25s ease-in-out infinite}
+#endingScreen .ending-click-hint.waiting-choice{animation:none;color:#7b6a55}
+#endingScreen .final-actions{justify-content:flex-end!important;margin-top:16px!important}
+#endingScreen .final-actions button{min-width:118px}
+@keyframes endingFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes hintPulse{0%,100%{opacity:.55}50%{opacity:1}}
+
+
+/* v4 elder-friendly typography */
+html,body{font-size:22px!important}
+.brand{font-size:1.38rem!important}.subbrand{font-size:1.08rem!important;line-height:1.5!important}
+.progress{font-size:1.08rem!important}.badge,.player-badge,.secondary,.primary{font-size:1.06rem!important}
+.status-note{font-size:1.08rem!important}
+.map-hotspot .label{font-size:clamp(18px,1.25vw,24px)!important;padding:8px 12px!important}
+.map-tip{font-size:clamp(18px,1.2vw,23px)!important;padding:9px 14px!important}
+.room-help-chip{font-size:clamp(18px,1.2vw,23px)!important;padding:9px 13px!important}
+.room-title-chip{font-size:clamp(18px,1.2vw,23px)!important;padding:9px 13px!important}
+.lock-button{font-size:1.08rem!important;padding:12px 16px!important}
+.character-dialog{font-size:1.15rem!important;line-height:1.72!important;padding:16px 19px!important}
+.character-name{font-size:1.02rem!important}
+.modal-card h2,.dialog-card h2{font-size:1.55rem!important}
+.modal-card p,.dialog-card p,.modal-card li,.dialog-card li{font-size:1.12rem!important;line-height:1.75!important}
+.notice{font-size:1.08rem!important;line-height:1.65!important}
+#endingScreen .ending-panel{width:min(620px,46%)!important;padding:27px!important}
+#endingScreen .ending-step h2{font-size:1.5rem!important;line-height:1.35!important}
+#endingScreen .ending-step p{font-size:1.08rem!important;line-height:1.75!important}
+#endingScreen .compact-badges .memory-badge{font-size:1rem!important;padding:10px 12px!important}
+
+#endingScreen .ending-click-hint{font-size:.92rem!important}
+#endingScreen .journey-summary,#endingScreen #journeyRoomTimes{font-size:1rem!important}
+#endingScreen .journey-total{font-size:1.08rem!important}
+#endingScreen .final-actions button{font-size:1.05rem!important;min-width:140px!important;padding:12px 16px!important}
+@media(max-height:850px){html,body{font-size:20px!important}.topbar{padding-top:9px!important;padding-bottom:9px!important}.stage-wrap,.ending-wrap{padding:6px!important}}
+
+
+/* ===== 房間 1：嵌入視界密室 V8 ===== */
+#room1ExternalScreen,#room2ExternalScreen,#room3ExternalScreen{padding:0;background:#0d1520;}
+#room6ExternalScreen{padding:0;background:#eef7fb;}
+.room1-external-shell,.room2-external-shell,.room3-external-shell{position:relative;width:100%;height:100%;min-height:100%;background:#0d1520;}
+.room6-external-shell{position:relative;width:100%;height:100%;min-height:100%;background:#eef7fb;}
+#room1Frame,#room2Frame,#room3Frame{display:block;width:100%;height:100%;min-height:100%;border:0;background:#0d1520;}
+#room6Frame{display:block;width:100%;height:100%;min-height:100%;border:0;background:#eef7fb;}
+
+
+
+/* ===== Room 4/5 external integration ===== */
+#room4ExternalScreen,#room5ExternalScreen{padding:0;background:#eef5f4;}
+.external-topic-screen{display:none;flex-direction:column;height:100vh;overflow:hidden}
+.external-topic-screen.active{display:flex}
+.external-room-toolbar{height:76px;flex:0 0 76px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 22px;background:#fff8e9;border-bottom:3px solid #d7c59c;box-sizing:border-box;color:#263b3a}
+.external-room-toolbar b{font-size:22px;display:block}.external-room-toolbar span{font-size:14px;opacity:.78}
+.external-room-toolbar>div:last-child{display:flex;gap:10px}
+.external-room-shell{flex:1;min-height:0;background:#dfe9e8}.external-room-shell iframe{width:100%;height:100%;border:0;background:white}
+
+/* ===== Room 7 memory review ===== */
+.room7-screen{background:#f6eddc;overflow:auto}.room7-wrap{min-height:calc(100vh - 74px);padding:18px;box-sizing:border-box}
+.room7-stage{display:none;max-width:1280px;margin:0 auto}.room7-stage.active{display:block}
+.room7-scene{position:relative;border:5px solid #fff;border-radius:22px;overflow:hidden;box-shadow:0 12px 35px #5b4a3030;background:#ddd}
+.room7-scene>img{display:block;width:100%;height:auto}
+.room7-guide{position:absolute;left:3%;top:4%;max-width:430px;background:#fff9e9e8;border:3px solid #a77a42;border-radius:16px;padding:14px 18px;font-size:18px;line-height:1.55;color:#4b3827;box-shadow:0 5px 14px #0002}
+.memory-object{position:absolute;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;border:4px solid #fff;background:#315c57e8;color:#fff;font-size:26px;font-weight:900;box-shadow:0 0 0 4px #315c5755,0 6px 18px #0004;cursor:pointer;transition:.18s}
+.memory-object:hover{transform:translate(-50%,-50%) scale(1.1)}.memory-object span{display:block;font-size:13px}.memory-object.reviewed{background:#d49b45}.memory-object.reviewed:after{content:"✓";position:absolute;right:-7px;top:-9px;background:#fff;color:#37624c;border-radius:50%;width:26px;height:26px;line-height:26px;font-size:17px}
+.room7-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:14px 18px;background:#fff;border-radius:16px;font-size:18px}
+.exit-animation{max-width:900px;margin:35px auto;background:#fffdf6;border:4px solid #d9c49d;border-radius:24px;padding:28px;box-shadow:0 12px 30px #5b4a3025;color:#3f352b}
+.exit-animation h2{font-size:30px;margin-top:0}.room7-time-list{display:grid;gap:10px;margin:22px 0}.journey-time-row{display:flex;justify-content:space-between;padding:12px 16px;background:#f2eadb;border-radius:12px;font-size:18px}.journey-total{display:flex;justify-content:space-between;padding:15px 18px;background:#dfeee6;border-radius:14px;font-size:21px}.room7-analysis-text{margin-top:18px;padding:18px;background:#fff3cc;border-radius:14px;line-height:1.7;font-size:18px}.room7-actions{display:flex;justify-content:space-between;gap:12px;margin-top:22px}.reflection-options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.room7-reflection{min-height:32px;margin:18px 0;font-size:17px;line-height:1.6}.room7-exit-btn{width:100%;font-size:21px}.exit-door,.exit-home{font-size:92px;text-align:center}.exit-animation{text-align:center;overflow:hidden}.exit-walker{font-size:55px;animation:walkOut 3s ease-in-out both}@keyframes walkOut{0%{transform:translateX(-35%);opacity:1}100%{transform:translateX(45%);opacity:.25}}
+@media(max-width:760px){.external-room-toolbar{height:auto;flex-wrap:wrap}.reflection-options{grid-template-columns:1fr}.memory-object{width:58px;height:58px;font-size:20px}.room7-guide{font-size:14px;max-width:300px}}
+
+
+/* ===== 2026-10-02 visual unification ===== */
+html,body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+
+/* Room 4 / 5: same visual language as Rooms 1–3 */
+#room4ExternalScreen,#room5ExternalScreen{background:#eef7fb;color:#17364a}
+.external-topic-screen{overflow:hidden}
+.external-room-toolbar{
+  min-height:86px;height:auto;flex:0 0 auto;
+  padding:10px 28px 10px 40px;
+  background:linear-gradient(180deg,#f8fcff,#edf8fd);
+  border-bottom:1px solid #cfe4ef;
+  color:#17364a;
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+.external-room-toolbar b{font-size:28px;font-weight:900;letter-spacing:.02em;line-height:1.25}
+.external-room-toolbar span{font-size:17px;font-weight:600;color:#557381;margin-top:5px;display:block}
+.external-room-toolbar .secondary,.external-room-toolbar .primary{
+  min-height:58px;border-radius:18px;padding:12px 20px;font-size:19px;font-weight:900;
+}
+.external-room-toolbar .secondary{background:#fff;border:1px solid #bfd8e5;color:#176188}
+.external-room-toolbar .primary{background:linear-gradient(180deg,#91a77f,#738965);color:#fff}
+.external-room-shell{background:#eef7fb;overflow:hidden}
+#room4Frame,#room5Frame{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+
+/* Room 7 can scroll at normal browser zoom, like Rooms 1–3 */
+#endingScreen.room7-screen{overflow-y:auto;overflow-x:hidden;height:100%;display:none}
+#endingScreen.room7-screen.active{display:block}
+.room7-wrap{min-height:calc(100vh - 68px);padding:18px 24px 34px;overflow:visible}
+.room7-stage{width:min(1280px,100%);overflow:visible}
+.room7-scene{overflow:hidden}
+
+/* Replace the six extra numbered circles with transparent game-style hotspots */
+.memory-object{display:none!important}
+.memory-hotspot{
+  position:absolute;display:block;border:2px solid transparent;border-radius:20px;
+  background:rgba(255,255,255,0);cursor:pointer;z-index:5;
+  transition:background .18s,border-color .18s,box-shadow .18s,transform .18s;
+}
+.memory-hotspot::before{
+  content:"";position:absolute;inset:5px;border-radius:16px;
+  box-shadow:0 0 0 0 rgba(255,255,255,0);transition:.18s;
+}
+.memory-hotspot:hover,.memory-hotspot:focus-visible{
+  outline:none;border-color:rgba(255,255,255,.9);
+  background:rgba(255,248,211,.12);
+  box-shadow:0 0 0 4px rgba(57,119,129,.28),0 0 28px rgba(255,240,170,.72);
+}
+.memory-hotspot.reviewed{
+  border-color:rgba(255,255,255,.82);
+  box-shadow:0 0 0 4px rgba(76,139,105,.42),0 0 22px rgba(255,242,170,.52);
+}
+.memory-hotspot.reviewed::after{
+  content:"✓";position:absolute;right:-12px;top:-14px;width:36px;height:36px;
+  display:grid;place-items:center;border-radius:50%;background:#fff;color:#507d61;
+  border:3px solid #78a282;font-size:22px;font-weight:900;box-shadow:0 4px 10px #0002;
+}
+/* Coordinates follow the actual six illustrated platforms/objects */
+.hs-nutrition{left:32.5%;top:25.5%;width:18%;height:24%}
+.hs-mobility{left:52.0%;top:23.0%;width:18%;height:27%}
+.hs-vision{left:65.0%;top:45.0%;width:18%;height:24%}
+.hs-hearing{left:52.0%;top:70.0%;width:18%;height:25%}
+.hs-cognition{left:28.0%;top:68.0%;width:19%;height:27%}
+.hs-mood{left:20.0%;top:45.0%;width:18%;height:25%}
+
+/* Keep completion state and CTA visible instead of hiding below the fold */
+.room7-review-tools{
+  position:absolute;right:2.2%;top:2.4%;z-index:8;display:flex;align-items:center;gap:10px;
+  padding:9px 10px 9px 15px;border-radius:16px;
+  background:rgba(255,253,247,.94);border:2px solid #d4b77d;
+  box-shadow:0 5px 18px #493b2828;color:#4c3b2c;font-weight:900;
+}
+.room7-review-tools #room7ReviewCount{white-space:nowrap;font-size:17px}
+.room7-review-tools .primary{padding:10px 15px;border-radius:12px;font-size:16px}
+.room7-review-tools .primary:disabled{opacity:.48;cursor:not-allowed;box-shadow:none}
+.room7-scroll-note{
+  margin-top:12px;padding:12px 16px;border-radius:14px;background:#fffdf7;
+  border:1px solid #dfd1b7;color:#5d5146;font-size:16px;font-weight:700;text-align:center;
+}
+.room7-guide{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+
+@media(max-width:900px){
+ .external-room-toolbar{padding:9px 14px;gap:10px;flex-wrap:wrap}
+ .external-room-toolbar b{font-size:22px}.external-room-toolbar span{font-size:14px}
+ .external-room-toolbar .secondary,.external-room-toolbar .primary{min-height:48px;font-size:16px}
+ .room7-review-tools{top:1.5%;right:1.5%;transform:scale(.86);transform-origin:top right}
+ .room7-guide{max-width:45%;font-size:13px}
+}
+
+
+/* ===== Room 4/5 exact Room 1–3 shell ===== */
+#room4ExternalScreen.room45-screen,#room5ExternalScreen.room45-screen{
+  padding:0;background:#eef9ff;color:#0c3852;overflow-y:auto;overflow-x:hidden;
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+.room45-page{width:100%;min-height:100%;box-sizing:border-box;background:linear-gradient(180deg,#f4fbff 0%,#e9f7fd 100%);padding:0 20px 24px}
+.room45-header{
+  min-height:128px;display:grid;grid-template-columns:240px minmax(420px,1fr) auto;
+  align-items:center;gap:18px;padding:10px 22px;box-sizing:border-box;
+}
+.room45-back{
+  justify-self:start;border:0;background:transparent;color:#126c98;
+  font-size:22px;font-weight:900;padding:12px 4px;white-space:nowrap;
+}
+.room45-back:hover{text-decoration:underline}
+.room45-heading{align-self:center}
+.room45-kicker{font-size:21px;line-height:1.2;font-weight:900;color:#19709c;letter-spacing:.02em;margin-bottom:7px}
+.room45-heading h1{margin:0;color:#082f49;font-size:38px;line-height:1.1;font-weight:900;letter-spacing:.01em}
+.room45-status{display:flex;align-items:center;justify-content:flex-end;gap:14px;white-space:nowrap}
+.room45-pill,.room45-code{
+  height:64px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+  border:1.5px solid #c4e1ee;border-radius:30px;background:#fff;color:#0c3852;
+  padding:0 24px;font-size:20px;font-weight:900;box-shadow:0 7px 18px rgba(39,113,145,.05)
+}
+.room45-pill b{font-size:21px}
+.room45-code{
+  border-radius:18px;background:#dff5ff;border-color:#8dd4ef;color:#0c4768;cursor:pointer;
+}
+.room45-code:hover{background:#d2f0fc}
+.room45-stage-wrap{width:100%;box-sizing:border-box;padding:0 2px 18px;display:flex;justify-content:center}
+.room45-frame{
+  width:100%;height:calc(100vh - 155px);min-height:650px;
+  border-radius:28px;overflow:hidden;background:#17332d;
+  border:1px solid #c8e0e8;box-shadow:0 8px 24px rgba(32,91,112,.08);
+}
+.room45-frame iframe{display:block;width:100%;height:100%;border:0;background:#17332d}
+
+/* Hide the old external toolbar rules completely */
+.external-room-toolbar{display:none!important}
+
+@media(max-width:1180px){
+ .room45-header{grid-template-columns:190px 1fr;gap:8px 16px}
+ .room45-status{grid-column:1/-1;justify-content:flex-end;margin-top:-8px;padding-bottom:8px}
+ .room45-heading h1{font-size:32px}.room45-frame{height:calc(100vh - 205px)}
+}
+
+
+/* ===== Room 4/5 sizes matched to Room 2; workflow untouched ===== */
+.room45-header{
+  min-height:auto!important;
+  display:flex!important;align-items:center!important;gap:1rem!important;justify-content:space-between!important;
+  width:min(1240px,calc(100% - 2rem))!important;margin:auto!important;padding:1rem 0!important;
+}
+.room45-back{
+  padding:.75rem 1.05rem!important;font-size:1rem!important;line-height:1.5!important;font-weight:900!important;
+}
+.room45-heading{flex:1!important}
+.room45-kicker{
+  margin:0 0 .25rem!important;font-size:1rem!important;line-height:1.35!important;font-weight:900!important;letter-spacing:.1em!important;
+}
+.room45-heading h1{
+  margin:.1rem 0!important;font-size:clamp(1.45rem,3vw,2rem)!important;line-height:1.25!important;font-weight:900!important;
+}
+.room45-status{display:flex!important;gap:.75rem!important;align-items:center!important;flex-wrap:wrap!important}
+.room45-pill{
+  height:auto!important;min-height:0!important;padding:.65rem .95rem!important;font-size:1rem!important;line-height:1.5!important;font-weight:900!important;
+}
+.room45-pill b{font-size:1rem!important}
+.room45-code{
+  height:auto!important;min-height:0!important;padding:.75rem 1rem!important;font-size:1rem!important;line-height:1.5!important;font-weight:900!important;
+}
+.room45-hint{
+  width:max-content;max-width:calc(100% - 2rem);margin:.8rem auto 0;padding:.6rem 1rem;
+  color:#557381;font-size:1rem;line-height:1.5;font-weight:700;text-align:center;
+}
+
+
+/* ===== Room 4/5 fit + exact Room2 sizing fix ===== */
+.room45-header{
+  display:grid!important;
+  grid-template-columns:240px minmax(360px,1fr) auto!important;
+  align-items:center!important;gap:1rem!important;
+  width:min(1400px,calc(100% - 2rem))!important;
+  margin:0 auto!important;padding:1rem 0!important;
+}
+.room45-back{
+  justify-self:start!important;
+  font-size:1rem!important;line-height:1.5!important;
+  padding:.75rem 1.05rem!important;font-weight:900!important;
+}
+.room45-heading{min-width:0!important}
+.room45-kicker{
+  margin:0 0 .25rem!important;
+  font-size:1rem!important;line-height:1.35!important;
+  font-weight:900!important;letter-spacing:.1em!important;
+}
+.room45-heading h1{
+  margin:.1rem 0!important;
+  font-size:clamp(1.45rem,3vw,2rem)!important;
+  line-height:1.25!important;font-weight:900!important;
+  white-space:nowrap!important;
+}
+.room45-status{
+  display:flex!important;align-items:center!important;
+  justify-content:flex-end!important;gap:.75rem!important;
+  flex-wrap:nowrap!important;
+}
+.room45-pill{
+  padding:.65rem .95rem!important;height:auto!important;min-height:0!important;
+  font-size:1rem!important;line-height:1.5!important;font-weight:900!important;
+}
+.room45-pill b{font-size:1rem!important}
+.room45-code{
+  min-height:48px!important;height:auto!important;
+  padding:.75rem 1.05rem!important;
+  font-size:1rem!important;line-height:1.5!important;font-weight:900!important;
+}
+.room45-stage-wrap{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:flex-start!important;
+  width:100%!important;padding:0 0 1.5rem!important;
+}
+.room45-frame{
+  width:min(1400px,calc(100% - 1rem))!important;
+  height:auto!important;min-height:0!important;
+  aspect-ratio:16/9!important;
+  margin:0 auto!important;border-radius:28px!important;
+  overflow:hidden!important;background:#17332d!important;
+}
+.room45-frame iframe{
+  display:block!important;width:100%!important;height:100%!important;
+  border:0!important;margin:0!important;padding:0!important;
+}
+.room45-hint{
+  display:block!important;position:static!important;float:none!important;
+  width:auto!important;max-width:calc(100% - 2rem)!important;
+  margin:.8rem auto 0!important;padding:.6rem 1rem!important;
+  font-size:1rem!important;line-height:1.5!important;font-weight:700!important;
+  text-align:center!important;color:#557381!important;
+}
+@media(max-width:1050px){
+ .room45-header{grid-template-columns:190px 1fr!important}
+ .room45-status{grid-column:1/-1!important;justify-content:flex-end!important}
+ .room45-heading h1{white-space:normal!important}
+}
+
+
+
+/* ===== Room 4/5 overview vs activity separation ===== */
+.room45-screen.activity-mode{overflow:hidden!important;height:100vh!important;min-height:100vh!important}
+.room45-screen.activity-mode .room45-page{height:100vh!important;min-height:0!important;padding:0!important}
+.room45-screen.activity-mode .room45-header,
+.room45-screen.activity-mode .room45-hint{display:none!important}
+.room45-screen.activity-mode .room45-stage-wrap{height:100vh!important;padding:0!important;margin:0!important}
+.room45-screen.activity-mode .room45-frame{width:100%!important;max-width:none!important;height:100vh!important;aspect-ratio:auto!important;border-radius:0!important;margin:0!important;overflow:hidden!important;background:#fff!important}
+.room45-screen.activity-mode .room45-frame iframe{width:100%!important;height:100%!important;overflow:auto!important;background:#fff!important}
+
+/* Room 6: overview keeps the inner room scroller; activity expands the iframe to a full activity page. */
+.room6-screen.activity-mode{overflow:hidden!important;height:100vh!important;min-height:100vh!important;padding:0!important;background:#fff!important}
+.room6-screen.activity-mode .room6-external-shell{width:100%!important;height:100vh!important;min-height:0!important;overflow:hidden!important;background:#fff!important}
+.room6-screen.activity-mode #room6Frame{display:block!important;width:100%!important;height:100vh!important;min-height:0!important;border:0!important;overflow:auto!important;background:#fff!important}
+
+/* ===== Room 7 focused revision 2026-10-02 ===== */
+.room7-guide,.room7-scroll-note{display:none!important}
+.hs-nutrition{left:29.4%!important;top:21.3%!important;width:15.4%!important;height:20.3%!important}
+.hs-mobility{left:55.0%!important;top:20.0%!important;width:14.4%!important;height:21.3%!important}
+.hs-vision{left:67.0%!important;top:42.0%!important;width:18.4%!important;height:20.5%!important}
+.hs-hearing{left:55.3%!important;top:68.5%!important;width:17.7%!important;height:21.0%!important}
+.hs-cognition{left:25.9%!important;top:67.5%!important;width:19.8%!important;height:21.0%!important}
+.hs-mood{left:13.8%!important;top:41.4%!important;width:19.7%!important;height:21.8%!important}
+
+
+.journey-time-row{font-size:21px!important;padding:14px 18px!important}.journey-total{font-size:24px!important}
+.room7-analysis-text{font-size:21px!important;line-height:1.85!important;padding:22px!important}
+.room7-actions button{font-size:18px!important;padding:13px 18px!important}
+.reflection-lead{font-size:20px!important;line-height:1.7!important}
+.reflection-options{grid-template-columns:repeat(3,1fr)!important;gap:16px!important;margin:24px 0!important}
+
+
+
+.room7-reflection{font-size:20px!important;line-height:1.8!important}.fortune-result{padding:22px 24px;border-radius:18px;background:#fff3cc;border:2px solid #d8bb72}.fortune-result h3{font-size:28px;margin:0 0 10px;color:#4b633f}.fortune-result p{margin:0}
+@media(max-width:760px){.reflection-options{grid-template-columns:repeat(2,1fr)!important}.room7-analysis-text{font-size:18px!important}}
+
+
+/* Room 7 development shortcut: always visible on the map */
+
+</style>
+
+<style id="v5-elder-large-fixed-ui">
+/* ===== v5：長者友善－固定介面大字＋角色 2 倍 ===== */
+/* 最上方固定資訊列：允許稍微壓到場景，優先確保可讀性 */
+#mapScreen .topbar,
+#roomScreen .topbar,
+#endingScreen .topbar{
+  min-height:88px!important;
+  padding:12px 18px!important;
+  gap:14px!important;
+  position:relative!important;
+  z-index:60!important;
+}
+#mapScreen .brand,#roomScreen .brand,#endingScreen .brand{
+  font-size:clamp(26px,2vw,36px)!important;
+  line-height:1.2!important;
+}
+#mapScreen .subbrand,#roomScreen .subbrand,#endingScreen .subbrand{
+  font-size:clamp(20px,1.35vw,26px)!important;
+  line-height:1.35!important;
+}
+#mapScreen .progress,#roomScreen .progress{
+  display:flex!important;
+  font-size:clamp(19px,1.25vw,24px)!important;
+  line-height:1.35!important;
+  gap:9px!important;
+}
+#mapScreen .dot,#roomScreen .dot{
+  width:34px!important;height:34px!important;
+  font-size:18px!important;
+}
+#mapScreen .badge,#roomScreen .badge,#endingScreen .badge,
+#mapScreen .player-badge,#roomScreen .player-badge,#endingScreen .player-badge,
+#mapScreen .secondary,#roomScreen .secondary,#endingScreen .secondary{
+  font-size:clamp(18px,1.15vw,23px)!important;
+  padding:9px 13px!important;
+  line-height:1.25!important;
+}
+#mapScreen .music-control,#roomScreen .music-control,#endingScreen .music-control{
+  padding:7px 9px!important;gap:7px!important;
+}
+#mapScreen .music-btn,#roomScreen .music-btn,#endingScreen .music-btn{
+  min-width:44px!important;padding:7px 10px!important;font-size:20px!important;
+}
+#mapScreen .music-control input[type="range"],
+#roomScreen .music-control input[type="range"],
+#endingScreen .music-control input[type="range"]{width:95px!important}
+
+/* 房間配置圖固定提示與狀態 */
+#mapScreen .map-tip{
+  top:1.3%!important;
+  font-size:clamp(21px,1.45vw,29px)!important;
+  padding:10px 16px!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+  opacity:.96!important;
+}
+#mapScreen .map-hotspot .label{
+  font-size:clamp(19px,1.3vw,26px)!important;
+  padding:8px 12px!important;
+  line-height:1.25!important;
+}
+#mapScreen .map-hotspot.locked-room::before,
+#mapScreen .map-hotspot.cleared-room::before,
+#mapScreen .map-hotspot[data-start="1"]::before,
+#mapScreen .final-lock::before{
+  font-size:clamp(21px,1.45vw,29px)!important;
+  padding:9px 14px!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+}
+#mapScreen .map-hotspot.cleared-room::before{top:12%!important}
+
+/* 點進房間後：左上房間名稱、固定說明、經過時間等都加大 */
+#roomScreen .room-title-chip{
+  left:16px!important;top:14px!important;
+  font-size:clamp(23px,1.55vw,31px)!important;
+  padding:11px 16px!important;
+  line-height:1.25!important;
+  opacity:.96!important;
+  z-index:25!important;
+}
+#roomScreen .room-help-chip{
+  display:block!important;
+  left:16px!important;bottom:15px!important;
+  font-size:clamp(20px,1.3vw,27px)!important;
+  padding:10px 14px!important;
+  line-height:1.3!important;
+  z-index:20!important;
+  max-width:68%!important;
+}
+#roomScreen .lock-button{
+  font-size:clamp(19px,1.2vw,25px)!important;
+  padding:11px 15px!important;
+}
+
+/* 房間 1～6：老人角色依目前比例直接放大 2 倍 */
+#roomScreen .character-dock{
+  left:14px!important;bottom:18px!important;
+  max-width:62%!important;gap:12px!important;
+  z-index:35!important;
+}
+#roomScreen .character-avatar{
+  width:184px!important;height:248px!important;
+}
+/* 對話框維持可閱讀但不跟角色一起暴增 */
+#roomScreen .character-dialog{
+  max-width:390px!important;
+  font-size:clamp(20px,1.2vw,25px)!important;
+  line-height:1.55!important;
+  padding:13px 16px!important;
+}
+#roomScreen .character-name{font-size:clamp(18px,1.05vw,22px)!important}
+
+/* 房間 7：老人角色同樣放大 2 倍 */
+#endingScreen .ending-character{
+  left:2%!important;bottom:2.5%!important;
+  width:min(760px,55%)!important;
+  gap:16px!important;
+  z-index:40!important;
+}
+#endingScreen .ending-character .character-avatar{
+  width:248px!important;height:336px!important;
+}
+#endingScreen .ending-character .character-dialog{
+  max-width:430px!important;
+  font-size:clamp(19px,1.12vw,24px)!important;
+  line-height:1.5!important;
+  padding:13px 16px!important;
+}
+#endingScreen .ending-character .character-name{font-size:clamp(18px,1.05vw,22px)!important}
+
+/* 低高度螢幕也不要再把固定文字縮回很小 */
+@media(max-height:760px){
+  #mapScreen .topbar,#roomScreen .topbar,#endingScreen .topbar{min-height:76px!important;padding:8px 12px!important}
+  #mapScreen .brand,#roomScreen .brand,#endingScreen .brand{font-size:25px!important}
+  #mapScreen .subbrand,#roomScreen .subbrand,#endingScreen .subbrand{font-size:18px!important}
+  #mapScreen .progress,#roomScreen .progress{display:flex!important;font-size:17px!important}
+  #mapScreen .badge,#roomScreen .badge,#endingScreen .badge,
+  #mapScreen .secondary,#roomScreen .secondary,#endingScreen .secondary{font-size:17px!important;padding:7px 10px!important}
+  #roomScreen .character-avatar{width:156px!important;height:210px!important}
+  #endingScreen .ending-character .character-avatar{width:210px!important;height:284px!important}
+}
+</style>
+
+<style>
+/* B4 房間 7 史詩時刻 */
+.r7-orb{position:absolute;z-index:6;width:36px;height:36px;margin:-18px;border-radius:50%;pointer-events:none;background:radial-gradient(#fffbe0,#ffd86d 45%,#ffb84000 70%);box-shadow:0 0 18px 6px #ffd86d99;animation:r7Fly 1.25s cubic-bezier(.5,0,.3,1) forwards}
+@keyframes r7Fly{0%{transform:scale(.3);opacity:0}20%{transform:scale(1.4);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.6);opacity:.9}}
+.r7-burst{position:absolute;z-index:7;width:40px;height:40px;margin:-20px;border-radius:50%;pointer-events:none;background:radial-gradient(#fff,#ffe39acc 35%,#ffb84000 70%);animation:r7Burst 1.8s ease-out forwards}
+@keyframes r7Burst{0%{transform:scale(.2);opacity:1}60%{opacity:.9}100%{transform:scale(22);opacity:0}}
+.room7-scene{transition:transform 1.6s cubic-bezier(.3,0,.2,1)}.room7-scene.r7-push{transform:scale(1.04)}
+/* D6 房間轉場門 */
+.door-fx{position:fixed;inset:0;z-index:2147480000;pointer-events:none;display:flex}
+.door-fx i{flex:1;background:linear-gradient(90deg,#3a2414,#5a3a20 45%,#3a2414);box-shadow:inset 0 0 0 6px #241408,inset 0 0 40px #0008}
+.door-fx i:first-child{border-right:3px solid #c98c1c}.door-fx i:last-child{border-left:3px solid #c98c1c}
+.door-open i:first-child{animation:doorL .8s cubic-bezier(.6,0,.3,1) forwards}.door-open i:last-child{animation:doorR .8s cubic-bezier(.6,0,.3,1) forwards}
+@keyframes doorL{to{transform:translateX(-100%)}}@keyframes doorR{to{transform:translateX(100%)}}
+.door-close{background:#0b1426;animation:doorDim .8s ease forwards}.door-close i{display:none}
+@keyframes doorDim{0%{opacity:.85}100%{opacity:0}}
+</style>
+</head>
+<body class="au-shell">
+
+<section id="loginScreen" class="screen">
+  <div class="login-card soft-card">
+    <h1>爺爺的記憶迷宮</h1>
+    <p>WHO ICOPE 長者身心健康評估 × 溫馨童話風密室逃脫</p>
+    <p>請修復爺爺散落在六個生活空間裡的記憶，完成六大健康主題的探索，最後開啟記憶核心。</p>
+
+    <div class="tip-box">
+      <b>遊玩方式：</b><br>
+      先閱讀房間 0 的任務說明 → 進入房間 1～6 點擊家具找出 A、B 線索 →
+      將兩組數字「依序連接」輸入密碼鎖 → 通關後房間會在配置圖上重新恢復彩色。
+    </div>
+
+    <form id="loginForm">
+      <div class="login-row">
+        <input id="loginPassword" type="password" autocomplete="off" placeholder="輸入密鑰 health" aria-label="登入密鑰">
+        <button class="primary" type="submit">進入記憶之家</button>
+      </div>
+      <div id="loginError" class="error" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<section id="mapScreen" class="screen">
+  <header class="topbar">
+    <div>
+      <div class="brand map-brand au-titlebar">記憶之家｜房間配置圖</div>
+      <div class="subbrand">先閱讀房間 0，再依序點亮房間 1～6，最後前往房間 7</div>
+      <div class="progress" id="mapProgress"></div>
+    </div>
+    <div class="map-progress-wrap" aria-label="房間修復進度">
+      <span class="map-progress-label">記憶修復</span>
+      <div id="completionBadge" class="color-progress map-progress" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-label="已修復 0 間，共 6 間"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="top-actions">
+      <span class="player-badge" id="playerBadge">冒險家</span>
+      <div class="music-control">
+        <button id="musicToggleMap" class="secondary music-btn" type="button" aria-label="切換背景音樂">♫</button>
+        <input id="musicVolumeMap" type="range" min="0" max="1" step="0.05" value="0.32" aria-label="背景音樂音量">
+      </div>
+      <button id="logoutBtn" class="secondary" type="button">返回首頁</button>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage map-stage" id="mapStage">
+<!--MAP-ART-TOP-->
+      <img src="assets/art-final/map/night-map.png" alt="夜間記憶之家配置圖（未修復房間為暗色）" class="map-base">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room0" style="-webkit-mask-image:url(assets/art-final/map/mask-room0.png);mask-image:url(assets/art-final/map/mask-room0.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:51.72% 87.03%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room1" style="-webkit-mask-image:url(assets/art-final/map/mask-room1.png);mask-image:url(assets/art-final/map/mask-room1.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:28.52% 16.47%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room2" style="-webkit-mask-image:url(assets/art-final/map/mask-room2.png);mask-image:url(assets/art-final/map/mask-room2.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:72.45% 17.24%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room3" style="-webkit-mask-image:url(assets/art-final/map/mask-room3.png);mask-image:url(assets/art-final/map/mask-room3.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:19.08% 42.35%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room4" style="-webkit-mask-image:url(assets/art-final/map/mask-room4.png);mask-image:url(assets/art-final/map/mask-room4.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:24.31% 84.66%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room5" style="-webkit-mask-image:url(assets/art-final/map/mask-room5.png);mask-image:url(assets/art-final/map/mask-room5.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:79.42% 77.80%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room6" style="-webkit-mask-image:url(assets/art-final/map/mask-room6.png);mask-image:url(assets/art-final/map/mask-room6.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:82.89% 43.59%">
+      <img src="assets/art-final/map/night-map.png" alt="" class="map-color" id="reveal-room7" style="-webkit-mask-image:url(assets/art-final/map/mask-room7.png);mask-image:url(assets/art-final/map/mask-room7.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:50.15% 51.29%">
+      <svg class="map-outlines" viewBox="0 0 1672 941" preserveAspectRatio="none" aria-hidden="true">
+        <polygon class="room-outline" id="outline-room0" points="756,747 754,764 742,771 730,804 718,815 715,823 707,831 706,870 714,885 713,907 697,923 685,940 978,940 975,926 960,911 957,904 957,884 965,869 964,820 958,811 958,799 970,788 973,762 969,761 959,750 955,750 943,760 943,772 940,775 935,775 917,766 916,752 911,745 759,745" style="transform-origin:865px 819px"/>
+        <polygon class="room-outline" id="outline-room1" points="721,74 702,62 632,38 616,34 596,34 583,38 497,10 473,15 354,52 350,52 341,46 333,46 288,58 280,58 261,51 255,45 244,45 229,59 195,82 188,90 188,94 197,106 197,189 201,194 228,203 241,212 286,225 327,241 340,249 351,250 356,247 365,247 424,269 447,268 453,265 459,265 466,269 482,267 530,247 541,248 550,253 556,260 561,261 584,250 602,230 626,219 646,217 660,219 670,215 684,216 694,208 702,209 706,206 708,160 701,143 693,135 692,121 697,113 708,107 712,88 720,81" style="transform-origin:477px 155px"/>
+        <polygon class="room-outline" id="outline-room2" points="964,91 967,97 968,109 978,119 977,136 968,146 963,159 965,205 968,208 978,208 983,216 989,220 1025,217 1045,222 1058,232 1068,231 1082,241 1083,251 1088,260 1113,273 1118,272 1119,256 1128,246 1137,246 1185,268 1193,276 1204,281 1210,277 1212,264 1222,258 1237,263 1245,270 1252,270 1359,228 1375,230 1426,211 1440,211 1449,201 1470,193 1474,187 1473,111 1480,97 1478,93 1464,94 1431,105 1426,99 1427,77 1425,74 1419,73 1406,80 1384,72 1367,74 1347,70 1334,64 1321,64 1286,52 1267,53 1262,47 1262,37 1258,31 1186,10 1171,10 998,68 970,80" style="transform-origin:1211px 162px"/>
+        <polygon class="room-outline" id="outline-room3" points="27,293 27,296 37,307 36,468 38,472 51,480 64,476 72,477 183,527 198,527 213,534 221,534 258,519 277,521 289,516 301,519 314,516 330,516 382,493 391,495 394,503 402,506 470,473 487,469 521,449 527,441 528,380 531,367 537,357 537,347 534,340 536,325 532,319 513,314 498,305 464,293 444,289 434,283 365,257 340,251 318,239 249,215 234,215 214,221 37,287" style="transform-origin:319px 398px"/>
+        <polygon class="room-outline" id="outline-room4" points="62,648 64,654 77,662 78,674 77,741 72,747 56,745 51,750 56,766 54,787 59,799 60,812 72,822 90,827 101,834 106,840 104,852 107,856 125,858 142,865 150,883 164,896 171,898 178,905 183,915 188,915 198,908 207,908 211,905 214,892 218,888 228,885 228,867 233,861 237,860 246,863 259,874 283,886 310,881 319,893 338,900 353,896 367,899 370,893 371,870 376,864 389,869 411,864 414,869 415,885 421,889 427,888 436,876 443,872 452,872 479,884 487,884 560,846 566,829 582,819 590,820 606,831 608,835 606,848 608,851 613,851 658,829 662,825 662,821 656,811 657,800 668,790 688,797 704,796 710,804 706,816 706,821 710,824 717,813 727,805 738,783 738,774 728,757 729,743 727,739 721,735 711,735 699,725 697,710 686,694 686,684 677,674 676,644 672,640 611,608 564,576 528,558 523,557 504,565 498,565 393,518 377,521 297,555 140,614" style="transform-origin:407px 797px"/>
+        <polygon class="room-outline" id="outline-room5" points="1003,640 1004,643 1010,643 1025,637 1033,643 1034,731 1044,743 1056,751 1063,762 1208,842 1216,843 1223,835 1232,837 1248,835 1252,840 1252,849 1256,853 1280,838 1305,836 1347,813 1352,813 1357,821 1363,822 1369,816 1372,806 1379,800 1384,800 1393,805 1407,802 1412,806 1414,815 1418,820 1431,826 1437,826 1533,777 1538,773 1538,770 1530,763 1533,750 1541,741 1556,741 1569,732 1572,700 1584,693 1586,670 1591,664 1600,659 1600,655 1595,651 1513,615 1456,593 1444,594 1276,520 1264,523 1166,568 1155,576 1134,582 1088,606 1079,609 1059,608" style="transform-origin:1328px 732px"/>
+        <polygon class="room-outline" id="outline-room6" points="1136,324 1140,339 1133,346 1132,356 1142,367 1142,440 1144,445 1185,470 1203,474 1256,500 1260,504 1255,513 1257,516 1276,509 1285,509 1298,515 1334,518 1339,513 1340,502 1343,499 1348,499 1379,517 1388,518 1400,513 1408,513 1440,520 1444,524 1444,531 1448,534 1484,533 1507,525 1519,524 1529,516 1543,517 1552,509 1578,515 1605,505 1610,492 1607,467 1612,462 1623,462 1625,460 1626,319 1623,311 1603,299 1594,296 1582,298 1568,294 1536,278 1520,275 1442,244 1433,238 1429,226 1425,223 1406,220 1375,232 1359,230 1248,273 1229,261 1219,261 1213,266 1212,285 1207,293 1154,312" style="transform-origin:1386px 410px"/>
+        <polygon class="room-outline final" id="outline-room7" points="656,434 653,463 656,471 668,480 672,505 680,506 701,499 709,499 713,502 713,507 706,520 693,529 689,536 698,541 700,555 706,562 719,566 727,572 729,580 726,592 729,600 735,605 744,604 750,594 762,594 771,586 779,584 789,585 794,589 795,606 798,606 811,589 819,587 831,602 831,616 825,627 826,638 832,642 839,642 845,637 847,605 851,592 856,587 870,589 882,602 896,602 908,592 918,590 926,583 940,583 946,593 952,596 970,592 982,583 1008,577 1016,572 1014,567 1004,563 999,558 996,543 965,520 965,515 976,503 990,506 999,504 1001,482 1013,470 1010,464 1011,460 1025,447 1036,441 1038,431 1035,427 1023,422 1017,415 1004,412 976,385 976,374 972,370 937,354 892,341 888,333 886,303 883,293 876,283 871,286 873,318 867,323 803,323 797,318 799,285 796,282 792,283 777,297 766,300 763,305 764,320 759,325 746,329 746,332 759,344 759,347 755,351 739,351 730,354 691,375 688,379 688,391 668,412" style="transform-origin:838px 483px"/>
+      </svg>
+      <!--/MAP-ART-TOP-->
+
+      <div class="map-tip">把滑鼠移到房間上，房間會亮起放大；點一下就能進入</div>
+      <div id="mapPlayerCursor" class="map-player-cursor" aria-hidden="true"></div>
+
+<!--MAP-ART-HOTSPOTS-->
+      <button class="map-hotspot" data-start="1" type="button" aria-label="房間 0｜任務說明" style="left:40.97%;top:79.17%;width:17.52%;height:20.72%;--poly:polygon(24.23% 1.03%,23.55% 9.74%,19.45% 13.33%,15.36% 30.26%,11.26% 35.90%,10.24% 40.00%,7.51% 44.10%,7.17% 64.10%,9.90% 71.79%,9.56% 83.08%,4.10% 91.28%,0.00% 100.00%,100.00% 100.00%,98.98% 92.82%,93.86% 85.13%,92.83% 81.54%,92.83% 71.28%,95.56% 63.59%,95.22% 38.46%,93.17% 33.85%,93.17% 27.69%,97.27% 22.05%,98.29% 8.72%,96.93% 8.21%,93.52% 2.56%,92.15% 2.56%,88.05% 7.69%,88.05% 13.85%,87.03% 15.38%,85.32% 15.38%,79.18% 10.77%,78.84% 3.59%,77.13% 0.00%,25.26% 0.00%);--dx:51.19%;--dy:53.85%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">房間 0｜任務說明</span>
+      </button>
+      <button class="map-hotspot" data-room="1" type="button" aria-label="1 視界休息角" style="left:11.24%;top:1.06%;width:31.88%;height:27.52%;--poly:polygon(100.00% 24.71%,96.44% 20.08%,83.30% 10.81%,80.30% 9.27%,76.55% 9.27%,74.11% 10.81%,57.97% 0.00%,53.47% 1.93%,31.14% 16.22%,30.39% 16.22%,28.71% 13.90%,27.20% 13.90%,18.76% 18.53%,17.26% 18.53%,13.70% 15.83%,12.57% 13.51%,10.51% 13.51%,7.69% 18.92%,1.31% 27.80%,0.00% 30.89%,0.00% 32.43%,1.69% 37.07%,1.69% 69.11%,2.44% 71.04%,7.50% 74.52%,9.94% 77.99%,18.39% 83.01%,26.08% 89.19%,28.52% 92.28%,30.58% 92.66%,31.52% 91.51%,33.21% 91.51%,44.28% 100.00%,48.59% 99.61%,49.72% 98.46%,50.84% 98.46%,52.16% 100.00%,55.16% 99.23%,64.17% 91.51%,66.23% 91.89%,67.92% 93.82%,69.04% 96.53%,69.98% 96.91%,74.30% 92.66%,77.67% 84.94%,82.18% 80.69%,85.93% 79.92%,88.56% 80.69%,90.43% 79.15%,93.06% 79.54%,94.93% 76.45%,96.44% 76.83%,97.19% 75.68%,97.56% 57.92%,96.25% 51.35%,94.75% 48.26%,94.56% 42.86%,95.50% 39.77%,97.56% 37.45%,98.31% 30.12%,99.81% 27.41%);--dx:89.49%;--dy:54.05%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">1 視界休息角</span>
+      </button>
+      <button class="map-hotspot" data-room="2" type="button" aria-label="2 行動防跌浴室" style="left:57.60%;top:1.06%;width:30.92%;height:28.80%;--poly:polygon(0.19% 29.89%,0.77% 32.10%,0.97% 36.53%,2.90% 40.22%,2.71% 46.49%,0.97% 50.18%,0.00% 54.98%,0.39% 71.96%,0.97% 73.06%,2.90% 73.06%,3.87% 76.01%,5.03% 77.49%,11.99% 76.38%,15.86% 78.23%,18.38% 81.92%,20.31% 81.55%,23.02% 85.24%,23.21% 88.93%,24.18% 92.25%,29.01% 97.05%,29.98% 96.68%,30.17% 90.77%,31.91% 87.08%,33.66% 87.08%,42.94% 95.20%,44.49% 98.15%,46.62% 100.00%,47.78% 98.52%,48.16% 93.73%,50.10% 91.51%,53.00% 93.36%,54.55% 95.94%,55.90% 95.94%,76.60% 80.44%,79.69% 81.18%,89.56% 74.17%,92.26% 74.17%,94.00% 70.48%,98.07% 67.53%,98.84% 65.31%,98.65% 37.27%,100.00% 32.10%,99.61% 30.63%,96.91% 31.00%,90.52% 35.06%,89.56% 32.84%,89.75% 24.72%,89.36% 23.62%,88.20% 23.25%,85.69% 25.83%,81.43% 22.88%,78.14% 23.62%,74.27% 22.14%,71.76% 19.93%,69.25% 19.93%,62.48% 15.50%,58.80% 15.87%,57.83% 13.65%,57.83% 9.96%,57.06% 7.75%,43.13% 0.00%,40.23% 0.00%,6.77% 21.40%,1.35% 25.83%);--dx:9.09%;--dy:47.97%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">2 行動防跌浴室</span>
+      </button>
+      <button class="map-hotspot" data-room="3" type="button" aria-label="3 營養照護廚房" style="left:1.61%;top:22.85%;width:30.50%;height:33.90%;--poly:polygon(0.00% 24.45%,0.00% 25.39%,1.96% 28.84%,1.76% 79.31%,2.16% 80.56%,4.71% 83.07%,7.25% 81.82%,8.82% 82.13%,30.59% 97.81%,33.53% 97.81%,36.47% 100.00%,38.04% 100.00%,45.29% 95.30%,49.02% 95.92%,51.37% 94.36%,53.73% 95.30%,56.27% 94.36%,59.41% 94.36%,69.61% 87.15%,71.37% 87.77%,71.96% 90.28%,73.53% 91.22%,86.86% 80.88%,90.20% 79.62%,96.86% 73.35%,98.04% 70.85%,98.24% 51.72%,98.82% 47.65%,100.00% 44.51%,100.00% 41.38%,99.41% 39.18%,99.80% 34.48%,99.02% 32.60%,95.29% 31.03%,92.35% 28.21%,85.69% 24.45%,81.76% 23.20%,79.80% 21.32%,66.27% 13.17%,61.37% 11.29%,57.06% 7.52%,43.53% 0.00%,40.59% 0.00%,36.67% 1.88%,1.96% 22.57%);--dx:93.33%;--dy:56.43%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">3 營養照護廚房</span>
+      </button>
+      <button class="map-hotspot" data-room="4" type="button" aria-label="4 聽力照護客廳" style="left:3.05%;top:55.05%;width:41.09%;height:42.19%;--poly:polygon(1.60% 32.75%,1.89% 34.26%,3.78% 36.27%,3.93% 39.29%,3.78% 56.17%,3.06% 57.68%,0.73% 57.18%,0.00% 58.44%,0.73% 62.47%,0.44% 67.76%,1.16% 70.78%,1.31% 74.06%,3.06% 76.57%,5.68% 77.83%,7.28% 79.60%,8.01% 81.11%,7.71% 84.13%,8.15% 85.14%,10.77% 85.64%,13.25% 87.41%,14.41% 91.94%,16.45% 95.21%,17.47% 95.72%,18.49% 97.48%,19.21% 100.00%,19.94% 100.00%,21.40% 98.24%,22.71% 98.24%,23.29% 97.48%,23.73% 94.21%,24.31% 93.20%,25.76% 92.44%,25.76% 87.91%,26.49% 86.40%,27.07% 86.15%,28.38% 86.90%,30.28% 89.67%,33.77% 92.70%,37.70% 91.44%,39.01% 94.46%,41.78% 96.22%,43.96% 95.21%,46.00% 95.97%,46.43% 94.46%,46.58% 88.66%,47.31% 87.15%,49.20% 88.41%,52.40% 87.15%,52.84% 88.41%,52.98% 92.44%,53.86% 93.45%,54.73% 93.20%,56.04% 90.18%,57.06% 89.17%,58.37% 89.17%,62.30% 92.19%,63.46% 92.19%,74.09% 82.62%,74.96% 78.34%,77.29% 75.82%,78.46% 76.07%,80.79% 78.84%,81.08% 79.85%,80.79% 83.12%,81.08% 83.88%,81.80% 83.88%,88.36% 78.34%,88.94% 77.33%,88.94% 76.32%,88.06% 73.80%,88.21% 71.03%,89.81% 68.51%,92.72% 70.28%,95.05% 70.03%,95.92% 72.04%,95.34% 75.06%,95.34% 76.32%,95.92% 77.08%,96.94% 74.31%,98.40% 72.29%,100.00% 66.75%,100.00% 64.48%,98.54% 60.20%,98.69% 56.68%,98.40% 55.67%,97.53% 54.66%,96.07% 54.66%,94.32% 52.14%,94.03% 48.36%,92.43% 44.33%,92.43% 41.81%,91.12% 39.29%,90.98% 31.74%,90.39% 30.73%,81.51% 22.67%,74.67% 14.61%,69.43% 10.08%,68.70% 9.82%,65.94% 11.84%,65.07% 11.84%,49.78% 0.00%,47.45% 0.76%,35.81% 9.32%,12.95% 24.18%);--dx:82.82%;--dy:34.51%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">4 聽力照護客廳</span>
+      </button>
+      <button class="map-hotspot" data-room="5" type="button" aria-label="5 認知照護廊道" style="left:59.99%;top:55.26%;width:35.71%;height:35.39%;--poly:polygon(0.00% 36.04%,0.17% 36.94%,1.17% 36.94%,3.69% 35.14%,5.03% 36.94%,5.19% 63.36%,6.87% 66.97%,8.88% 69.37%,10.05% 72.67%,34.34% 96.70%,35.68% 97.00%,36.85% 94.59%,38.36% 95.20%,41.04% 94.59%,41.71% 96.10%,41.71% 98.80%,42.38% 100.00%,46.40% 95.50%,50.59% 94.89%,57.62% 87.99%,58.46% 87.99%,59.30% 90.39%,60.30% 90.69%,61.31% 88.89%,61.81% 85.89%,62.98% 84.08%,63.82% 84.08%,65.33% 85.59%,67.67% 84.68%,68.51% 85.89%,68.84% 88.59%,69.51% 90.09%,71.69% 91.89%,72.70% 91.89%,88.78% 77.18%,89.61% 75.98%,89.61% 75.08%,88.27% 72.97%,88.78% 69.07%,90.12% 66.37%,92.63% 66.37%,94.81% 63.66%,95.31% 54.05%,97.32% 51.95%,97.65% 45.05%,98.49% 43.24%,100.00% 41.74%,100.00% 40.54%,99.16% 39.34%,85.43% 28.53%,75.88% 21.92%,73.87% 22.22%,45.73% 0.00%,43.72% 0.90%,27.30% 14.41%,25.46% 16.82%,21.94% 18.62%,14.24% 25.83%,12.73% 26.73%,9.38% 26.43%);--dx:7.87%;--dy:43.54%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">5 認知照護廊道</span>
+      </button>
+      <button class="map-hotspot" data-room="6" type="button" aria-label="6 心理陪伴客廳" style="left:67.70%;top:23.38%;width:29.55%;height:33.37%;--poly:polygon(0.81% 33.12%,1.62% 37.90%,0.20% 40.13%,0.00% 43.31%,2.02% 46.82%,2.02% 70.06%,2.43% 71.66%,10.73% 79.62%,14.37% 80.89%,25.10% 89.17%,25.91% 90.45%,24.90% 93.31%,25.30% 94.27%,29.15% 92.04%,30.97% 92.04%,33.60% 93.95%,40.89% 94.90%,41.90% 93.31%,42.11% 89.81%,42.71% 88.85%,43.72% 88.85%,50.00% 94.59%,51.82% 94.90%,54.25% 93.31%,55.87% 93.31%,62.35% 95.54%,63.16% 96.82%,63.16% 99.04%,63.97% 100.00%,71.26% 99.68%,75.91% 97.13%,78.34% 96.82%,80.36% 94.27%,83.20% 94.59%,85.02% 92.04%,90.28% 93.95%,95.75% 90.76%,96.76% 86.62%,96.15% 78.66%,97.17% 77.07%,99.39% 77.07%,99.80% 76.43%,100.00% 31.53%,99.39% 28.98%,95.34% 25.16%,93.52% 24.20%,91.09% 24.84%,88.26% 23.57%,81.78% 18.47%,78.54% 17.52%,62.75% 7.64%,60.93% 5.73%,60.12% 1.91%,59.31% 0.96%,55.47% 0.00%,49.19% 3.82%,45.95% 3.18%,23.48% 16.88%,19.64% 13.06%,17.61% 13.06%,16.40% 14.65%,16.19% 20.70%,15.18% 23.25%,4.45% 29.30%);--dx:6.68%;--dy:57.32%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">6 心理陪伴客廳</span>
+      </button>
+      <button class="map-hotspot" id="finalRoomBtn" data-final="1" type="button" aria-label="7 終點｜記憶核心" style="left:39.06%;top:29.97%;width:23.03%;height:38.26%;--poly:polygon(0.78% 42.22%,0.00% 50.28%,0.78% 52.50%,3.90% 55.00%,4.94% 61.94%,7.01% 62.22%,12.47% 60.28%,14.55% 60.28%,15.58% 61.11%,15.58% 62.50%,13.77% 66.11%,10.39% 68.61%,9.35% 70.56%,11.69% 71.94%,12.21% 75.83%,13.77% 77.78%,17.14% 78.89%,19.22% 80.56%,19.74% 82.78%,18.96% 86.11%,19.74% 88.33%,21.30% 89.72%,23.64% 89.44%,25.19% 86.67%,28.31% 86.67%,30.65% 84.44%,32.73% 83.89%,35.32% 84.17%,36.62% 85.28%,36.88% 90.00%,37.66% 90.00%,41.04% 85.28%,43.12% 84.72%,46.23% 88.89%,46.23% 92.78%,44.68% 95.83%,44.94% 98.89%,46.49% 100.00%,48.31% 100.00%,49.87% 98.61%,50.39% 89.72%,51.43% 86.11%,52.73% 84.72%,56.36% 85.28%,59.48% 88.89%,63.12% 88.89%,66.23% 86.11%,68.83% 85.56%,70.91% 83.61%,74.55% 83.61%,76.10% 86.39%,77.66% 87.22%,82.34% 86.11%,85.45% 83.61%,92.21% 81.94%,94.29% 80.56%,93.77% 79.17%,91.17% 78.06%,89.87% 76.67%,89.09% 72.50%,81.04% 66.11%,81.04% 64.72%,83.90% 61.39%,87.53% 62.22%,89.87% 61.67%,90.39% 55.56%,93.51% 52.22%,92.73% 50.56%,92.99% 49.44%,96.62% 45.83%,99.48% 44.17%,100.00% 41.39%,99.22% 40.28%,96.10% 38.89%,94.55% 36.94%,91.17% 36.11%,83.90% 28.61%,83.90% 25.56%,82.86% 24.44%,73.77% 20.00%,62.08% 16.39%,61.04% 14.17%,60.52% 5.83%,59.74% 3.06%,57.92% 0.28%,56.62% 1.11%,57.14% 10.00%,55.58% 11.39%,38.96% 11.39%,37.40% 10.00%,37.92% 0.83%,37.14% 0.00%,36.10% 0.28%,32.21% 4.17%,29.35% 5.00%,28.57% 6.39%,28.83% 10.56%,27.53% 11.94%,24.16% 13.06%,24.16% 13.89%,27.53% 17.22%,27.53% 18.06%,26.49% 19.17%,22.34% 19.17%,20.00% 20.00%,9.87% 25.83%,9.09% 26.94%,9.09% 30.28%,3.90% 36.11%);--dx:47.27%;--dy:66.11%">
+        <span class="hit"></span><span class="door-marker" aria-hidden="true"></span>
+        <span class="label">7 終點｜記憶核心</span>
+      </button>
+      <!--/MAP-ART-HOTSPOTS-->
+</div>
+  </div>
+</section>
+
+<section id="roomScreen" class="screen">
+  <header class="topbar">
+    <div>
+      <div class="brand" id="roomTitleText">房間探索</div>
+      <div class="subbrand">點擊家具上的微光標記，取得 ICOPE 衛教線索與通關密碼</div>
+      <div class="progress" id="roomProgress"></div>
+    </div>
+    <div class="top-actions">
+      <span class="badge timer" id="timerBadge">🕰️ 記憶旅程 00:00</span>
+      <div class="music-control">
+        <button id="musicToggleRoom" class="secondary music-btn" type="button" aria-label="切換背景音樂">♫</button>
+        <input id="musicVolumeRoom" type="range" min="0" max="1" step="0.05" value="0.32" aria-label="背景音樂音量">
+      </div>
+      <button id="backMapBtn" class="secondary" type="button">← 返回房間配置圖</button>
+    </div>
+  </header>
+
+  <div class="stage-wrap">
+    <div class="stage room-stage" id="roomStage">
+      <img id="roomImage" alt="">
+      <div class="room-title-chip" id="roomChipText">房間探索中</div>
+      <div id="hotspotLayer"></div>
+      <div class="character-dock" id="characterDock" aria-live="polite">
+        <div class="character-avatar" id="characterAvatar" aria-label="玩家角色"></div>
+        <div class="character-dialog character-reaction" id="characterDialog">
+          <span class="character-name">我的角色</span>
+          <span id="characterDialogText">這個房間好像藏著一些熟悉的記憶……</span>
+        </div>
+      </div>
+      <button id="doorLockBtn" class="lock-button" type="button">🔐 通關密碼鎖</button>
+    </div>
+  </div>
+</section>
+
+
+<section id="room1ExternalScreen" class="screen" aria-label="房間 1 視力照護探索">
+  <div class="room1-external-shell">
+    <iframe id="room1Frame" title="房間 1｜視界密室" src="about:blank" allow="autoplay"></iframe>
+  </div>
+</section>
+
+<section id="room2ExternalScreen" class="screen" aria-label="房間 2 行動與防跌探索">
+  <div class="room2-external-shell">
+    <iframe id="room2Frame" title="房間 2｜行動密室" src="about:blank" allow="autoplay"></iframe>
+  </div>
+</section>
+
+<section id="room3ExternalScreen" class="screen" aria-label="房間 3 營養照護探索">
+  <div class="room3-external-shell">
+    <iframe id="room3Frame" title="房間 3｜營養密室" src="about:blank" allow="autoplay"></iframe>
+  </div>
+</section>
+<section id="room4ExternalScreen" class="screen room45-screen" aria-label="房間 4 聽力照護探索">
+  <div class="room45-page">
+    <header class="room45-header">
+      <button class="room45-back" id="room4BackBtn" type="button">← 返回房間配置圖</button>
+      <div class="room45-heading">
+        <h1>房間4•聽力照護客廳</h1>
+      </div>
+      <div class="room45-status">
+        <div class="room45-pill room45-time" id="room4Time">🕰️ 00:00</div>
+        <b id="room4Found" hidden>0 / 5</b>
+        <button class="room45-code" id="room4CodeBtn" type="button">🔐 輸入密碼</button>
+      </div>
+    </header>
+    <div class="room45-stage-wrap">
+      <div class="room45-frame"><iframe id="room4Frame" title="房間 4｜聽力照護" src="about:blank" allow="autoplay" scrolling="no"></iframe></div>
+      <p class="room45-hint">✦ 留意每兩秒亮起一次的物品，點擊即可調查。</p>
+    </div>
+  </div>
+</section>
+
+<section id="room5ExternalScreen" class="screen room45-screen" aria-label="房間 5 認知照護探索">
+  <div class="room45-page">
+    <header class="room45-header">
+      <button class="room45-back" id="room5BackBtn" type="button">← 返回房間配置圖</button>
+      <div class="room45-heading">
+        <h1>房間5•認知照護廊道</h1>
+      </div>
+      <div class="room45-status">
+        <div class="room45-pill room45-time" id="room5Time">🕰️ 00:00</div>
+        <b id="room5Found" hidden>0 / 5</b>
+        <button class="room45-code" id="room5CodeBtn" type="button">🔐 輸入密碼</button>
+      </div>
+    </header>
+    <div class="room45-stage-wrap">
+      <div class="room45-frame"><iframe id="room5Frame" title="房間 5｜認知照護" src="about:blank" allow="autoplay" scrolling="no"></iframe></div>
+      <p class="room45-hint">✦ 留意每兩秒亮起一次的物品，點擊即可調查。</p>
+    </div>
+  </div>
+</section>
+
+<section id="room6ExternalScreen" class="screen room6-screen" aria-label="房間 6 心理陪伴探索">
+  <div class="room6-external-shell">
+    <iframe id="room6Frame" title="房間 6｜心理陪伴客廳" src="about:blank" allow="autoplay" scrolling="no"></iframe>
+  </div>
+</section>
+
+<section id="endingScreen" class="screen room7-screen">
+  <header class="topbar">
+    <div><div class="brand">房間 7｜記憶回望</div><div class="subbrand">把六段旅程重新看一遍，再帶一件重要的事回到生活</div></div>
+    <div class="top-actions"><button id="endingBackBtn" class="secondary" type="button">← 返回房間配置圖</button></div>
+  </header>
+
+  <div class="room7-wrap">
+    <div id="room7Stage1" class="room7-stage active">
+      <div class="room7-scene">
+        <img src="assets/art-final/rooms/room7-memory-core.png" alt="夜間記憶核心房間">
+        <button class="core-hotspot" id="room7CoreBtn" type="button" aria-label="記憶核心"></button>
+        <button class="memory-hotspot hs-nutrition" data-memory="3" aria-label="營養記憶"></button>
+        <button class="memory-hotspot hs-mobility" data-memory="2" aria-label="行動記憶"></button>
+        <button class="memory-hotspot hs-vision" data-memory="1" aria-label="視力記憶"></button>
+        <button class="memory-hotspot hs-hearing" data-memory="4" aria-label="聽力記憶"></button>
+        <button class="memory-hotspot hs-cognition" data-memory="5" aria-label="認知記憶"></button>
+        <button class="memory-hotspot hs-mood" data-memory="6" aria-label="心情記憶"></button>
+        <div class="room7-review-tools">
+          <span id="room7ReviewCount">已回顧 0 / 6</span>
+          <button id="room7AnalysisBtn" class="primary" disabled>前往旅程分析 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2026-11-20 階段 2~4 改成 16:9 舞台(shared/room7.css),不再需要上下捲動 -->
+    <div id="room7Stage2" class="room7-stage">
+      <div class="r7-board rcs-host" id="room7Board2">
+        <h2 class="r7-title"><small>房間 7・記憶回望</small>我的記憶旅程</h2>
+        <div class="r7-side">
+          <div class="r7-tabs" role="tablist">
+            <button type="button" role="tab" aria-selected="true" data-r7tab="analysis">旅程分析</button>
+            <button type="button" role="tab" aria-selected="false" data-r7tab="learn">學習成果</button>
+          </div>
+          <div class="r7-pane" data-r7pane="analysis" role="tabpanel">
+            <h3>這一路上的你</h3>
+            <div id="room7PersonalAnalysis" class="room7-analysis-text" aria-live="polite"></div>
+            <div class="r7-journey-total"><span>六關總時間</span><strong id="journeyTotalTime">00:00</strong></div>
+          </div>
+          <div class="r7-pane" data-r7pane="learn" role="tabpanel" hidden><div id="room7LearningResults"></div></div>
+          <div id="room7LearningGrade" class="r7-learning-grade" hidden aria-live="polite"></div>
+        </div>
+        <div class="r7-actions"><button id="room7BackReviewBtn" class="secondary" type="button">← 再看一次六段記憶</button><button id="room7ToExitBtn" class="primary" type="button">抽一張記憶卡 →</button></div>
+      </div>
+    </div>
+
+    <div id="room7Stage3" class="room7-stage">
+      <div class="r7-board" id="room7Board3">
+        <h2 class="r7-title"><small>房間 7・記憶回望</small>旅程的最後,抽一張記憶卡</h2>
+        <p class="r7-lead">六張記憶卡看起來都一樣。憑直覺選一張吧;翻開之後,這次旅程就只留下屬於你的那一句。</p>
+        <div class="r7-fan" id="room7Fan"></div>
+        <div id="reflectionFeedback" class="r7-reading" aria-live="polite"></div>
+        <div class="r7-actions"><button id="room7ExitBtn" class="primary" type="button" disabled>帶著這句話,離開記憶房間 →</button></div>
+      </div>
+    </div>
+
+    <div id="room7Stage4" class="room7-stage">
+      <div class="r7-board" id="room7Board4">
+        <div class="exit-animation">
+          <div class="exit-home">🏠</div><div class="exit-walker">🚶</div>
+          <h2>旅程完成</h2>
+          <p id="endingFinalText">謝謝你陪著這些生活記憶重新亮起來。</p>
+          <button id="playAgainBtn" class="primary">再玩一次</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<audio id="bgm" preload="auto" loop></audio>
+<audio id="sfxClick" src="assets/sfx-click.wav" preload="auto"></audio>
+<audio id="sfxError" src="assets/sfx-error.wav" preload="auto"></audio>
+<audio id="sfxSuccess" src="assets/sfx-success.wav" preload="auto"></audio>
+<audio id="sfxUnlock" src="assets/sfx-unlock.wav" preload="auto"></audio>
+
+<script>
+// Start a fresh achievement/inventory session every time this HTML document opens.
+// The in-memory runtime still keeps progress while the page remains open.
+(() => {
+  try {
+    if (!window.__icopeAchievementSessionReset) {
+      const learning=JSON.parse(localStorage.getItem('icopeAchievementSystem')||'null')?.extensions?.learning;
+      if(learning)localStorage.setItem('icopeAchievementSystem',JSON.stringify({version:1,items:[],extensions:{learning}}));
+      else localStorage.removeItem('icopeAchievementSystem');
+      localStorage.removeItem('icope.psychological.room.v3.2-reset');
+      window.__icopeAchievementSessionReset = true;
+    }
+  } catch (_) {}
+})();
+</script>
+<script src="achievement-system/achievement-data.js"></script>
+<script src="achievement-system/achievement-objects.js"></script>
+<script src="achievement-system/achievement.js?v=20261123-learning"></script>
+<script src="art-ui/objects.js"></script>
+<!-- 第三修改計劃 J-1:不再載入 room7-sprites.js(額外的平台圖疊在原圖上);物件改用原圖本身做按壓特效 -->
+<script src="shared/gallery.js?v=4"></script>
+<script src="shared/sound-kit.js?v=17"></script>
+<script src="art-ui/art-ui.js?v=r25"></script>
+<script src="shared/room-clear.js?v=20261123-learning"></script>
+<script>
+(() => {
+const roomData = {
+    1:{
+      title:"1. 活力餐廚房（營養與吞嚥）",
+      image:"assets/room1-kitchen.png",
+      review:["掌握 1.2 g/kg 蛋白質線索","理解每日補充水分的重要性","記住坐正、微收下巴的吞嚥安全原則"],
+      hotspots:[
+        {x:80.0,y:8.0,w:16.0,h:34.0,type:"board",title:"📋 營養衛教看板",body:"爺爺目前體重為 <b>50 公斤</b>。為預防肌肉流失，長者每日每公斤體重可攝取約 <b>1.2 克</b> 優質蛋白質。<br>因此蛋白質目標：<b>50 × 1.2 = 60 克（A=60）</b>。"},
+        {x:58.3,y:15.8,w:14.4,h:43.0,type:"fridge",title:"🧊 冰箱保鮮區",body:"高齡飲食可搭配豆類、魚類、蛋、肉與乳品等蛋白質來源，並依個別健康狀況調整。"},
+        {x:27.0,y:59.2,w:38.0,h:21.5,type:"table",title:"🥣 餐桌與水分線索",body:"桌上的水壺提醒每日補充水分。本關設定線索為 <b>2 公升（B=2）</b>。<div class='clue'>🔑 密碼規則：將 A 與 B 依序連接 → 60｜2</div>"},
+        {x:39.7,y:40.5,w:18.6,h:18.5,type:"stove",title:"🥄 爐台與吞嚥安全",body:"進食與喝水時保持坐姿穩定、避免仰頭，並以微收下巴的方式協助安全吞嚥。"},
+        {x:18.0,y:45.0,w:16.0,h:13.5,type:"sink",title:"🚰 洗手槽與備餐區",body:"保持備餐區整潔、食材處理前後洗手，也能減少感染與飲食風險。"}
+      ]
+    },
+    2:{
+      title:"2. 衛浴安全走廊（行動防跌）",
+      image:"assets/room2-bathroom.png",
+      review:["完成 5 次起立線索探索","辨識 4 類居家跌倒危險","理解防滑與扶手的重要性"],
+      hotspots:[
+        {x:58.0,y:15.5,w:23.5,h:53.0,type:"shower",title:"🚿 淋浴區安全動線",body:"淋浴區應注意防滑、扶手、照明與移位空間；必要時使用穩固淋浴椅。"},
+        {x:37.0,y:35.0,w:14.0,h:31.0,type:"toilet",title:"🚶 行動能力線索",body:"本關以 <b>5 次椅子起立（A=5）</b> 作為行動能力探索線索。"},
+        {x:7.5,y:43.0,w:22.0,h:25.0,type:"sink",title:"⚠️ 洗手台旁的防跌檢核",body:"檢查散落物、濕滑地面、過高門檻與夜間照明，共設定 <b>4 類危險因子（B=4）</b>。<div class='clue'>🔑 密碼規則：A、B 依序連接 → 5｜4</div>"},
+        {x:77.0,y:49.0,w:15.0,h:29.0,type:"chair",title:"🪑 坐姿與移位",body:"坐下或起身前，確認椅面穩固、地面乾燥，並善用扶手以降低跌倒風險。"},
+        {x:33.0,y:77.0,w:22.0,h:9.0,type:"slippers",title:"🥿 地面安全",body:"浴室門口的鞋履與地墊要避免滑動、翹起或阻擋通道。"}
+      ]
+    },
+    3:{
+      title:"3. 採光明亮臥室（視力照護）",
+      image:"assets/room3-bedroom.png",
+      review:["理解夜間走道 20 Lux 線索","認識高對比黃色標示","建立安全起身與視覺動線概念"],
+      hotspots:[
+        {x:31.5,y:10.0,w:37.0,h:37.0,type:"window",title:"☀️ 自然採光與視力",body:"充足且不刺眼的採光，可幫助辨識家具邊界與室內動線。"},
+        {x:5.5,y:37.5,w:45.0,h:38.0,type:"bed",title:"🛏️ 臥室照明線索",body:"本關將夜間走道照度設定為 <b>20 Lux（A=20）</b>。床邊也應保留可立即操作的燈源。"},
+        {x:78.0,y:38.0,w:18.0,h:36.0,type:"dresser",title:"🎨 高對比標示",body:"對比敏感度下降時，可在家具邊緣增加高對比色。本關黃色色票代碼設定為 <b>5（B=5）</b>。<div class='clue'>🔑 密碼規則：A、B 依序連接 → 20｜5</div>"},
+        {x:57.0,y:42.5,w:13.5,h:26.5,type:"chair",title:"👁️ 視覺休息角",body:"保持良好照明、避免眩光，並依照醫療專業建議定期進行視力檢查。"},
+        {x:8.0,y:47.0,w:10.0,h:22.0,type:"nightstand",title:"💡 床頭燈",body:"床邊保留可隨手操作的燈具，夜間起身時先開燈再移動。"}
+      ]
+    },
+    4:{
+      title:"4. 玄關通訊門鈴角（聽力照護）",
+      image:"assets/room4-entryway.png",
+      review:["掌握門鈴 800 Hz 線索","理解 1 公尺面對面溝通原則","知道降低背景雜音的重要性"],
+      hotspots:[
+        {x:44.0,y:12.0,w:22.0,h:61.0,type:"door",title:"🚪 玄關通訊入口",body:"清楚的門鈴、視覺提示與安全動線能讓長者更容易掌握訪客與環境訊息。"},
+        {x:38.0,y:29.0,w:7.2,h:20.0,type:"intercom",title:"🔔 門鈴頻率線索",body:"本關設定適合辨識的中低頻門鈴線索為 <b>800 Hz（A=800）</b>。"},
+        {x:69.8,y:53.0,w:19.8,h:22.0,type:"bench",title:"📻 溝通環境",body:"與聽力下降的長者溝通時，先降低背景雜音、面對對方說話。本關距離線索為 <b>1 公尺（B=1）</b>。<div class='clue'>🔑 密碼規則：A、B 依序連接 → 800｜1</div>"},
+        {x:2.0,y:47.5,w:27.0,h:28.0,type:"cabinet",title:"🗝️ 玄關日常線索",body:"常用鑰匙、電話與提醒物固定位置，可以減少尋找壓力並提升日常安全。"},
+        {x:17.0,y:23.0,w:15.0,h:32.0,type:"coatRack",title:"🧥 衣帽架",body:"玄關物品固定擺放位置，有助減少尋找與遺忘。"}
+      ]
+    },
+    5:{
+      title:"5. 記憶書房用藥角（認知功能）",
+      image:"assets/room5-study.png",
+      review:["掌握日期 19 號定向感線索","理解 9 宮格認知刺激","認識分格藥盒的整理功能"],
+      hotspots:[
+        {x:30.0,y:39.5,w:33.0,h:27.0,type:"desk",title:"🧠 記憶與空間活化",body:"桌面活動可安排簡單閱讀、分類、拼圖等認知刺激。本關九宮格線索設定為 <b>9 格（B=9）</b>。"},
+        {x:74.5,y:9.5,w:20.5,h:33.0,type:"board",title:"🗓️ 時間定向感",body:"利用月曆、照片牆與固定作息支持時間定向。本關日期線索為 <b>19 號（A=19）</b>。"},
+        {x:65.0,y:39.0,w:15.0,h:20.0,type:"pillbox",title:"💊 分格藥盒",body:"分格藥盒可協助整理服藥時段；實際用藥仍應依醫師與藥師指示。<div class='clue'>🔑 密碼規則：A、B 依序連接 → 19｜9</div>"},
+        {x:7.0,y:8.0,w:21.0,h:49.0,type:"bookshelf",title:"📚 回憶書櫃",body:"熟悉的書籍與照片可作為生活史提示，協助喚起過往經驗與話題。"},
+        {x:81.0,y:56.0,w:18.0,h:35.0,type:"armchair",title:"🪑 閱讀休息椅",body:"將閱讀與休息安排在固定區域，有助建立穩定的日常節奏。"}
+      ]
+    },
+    6:{
+      title:"6. 心理陪伴客廳（心理能力）",
+      image:"assets/art-final/rooms/room6-sunny-plant-corner.png",
+      review:["理解傾聽與陪伴的重要性","辨識身體與生活改變對心情的影響","知道需要時可以尋求心理支持與醫療資源"],
+      hotspots:[
+        {x:33.0,y:0.0,w:53.0,h:42.0,type:"view",title:"☀️ 日照與戶外活動",body:"規律接觸戶外環境與白天自然光，有助維持作息與活動量。本關日曬時間線索為 <b>30 分鐘（A=30）</b>。"},
+        {x:57.5,y:47.0,w:22.0,h:29.0,type:"chair",title:"🪑 休閒與社交",body:"安排自己喜歡的園藝、散步、閱讀或社區活動，有助維持社交連結與生活節奏。"},
+        {x:10.5,y:31.5,w:28.0,h:32.0,type:"plants",title:"🪴 園藝放鬆角",body:"簡單園藝可作為日常休閒活動，搭配可安全操作的桌面高度與動線。"},
+        {x:40.0,y:52.0,w:15.0,h:17.0,type:"table",title:"☎️ 心理支持線索",body:"本關設定安心關懷專線密碼線索為 <b>1925（B=1925）</b>。若本人或身邊的人出現明顯心理困擾，可尋求專業支持。<div class='clue'>🔑 密碼規則：A、B 依序連接 → 30｜1925</div>"},
+        {x:81.0,y:31.0,w:15.5,h:35.0,type:"shelf",title:"🧺 收納與活動用品",body:"將常用活動用品收在固定位置，使用後歸位，可降低絆倒與尋找困擾。"}
+      ]
+    }
+  };
+
+
+  const characterLines = {
+    roomEnter:{1:"聞到廚房的味道，我好像想起每天吃飯和喝水的習慣了。先看看桌上和冰箱吧。",2:"浴室最怕滑倒。扶手、地面和移動的地方，都值得仔細看看。",3:"這個房間很明亮，但晚上起床時可不一定。燈光和顏色可能是重要線索。",4:"門鈴、電話、說話的距離……這些好像都和我聽不聽得清楚有關。",5:"好多照片和書。時間、日期和藥盒，也許能幫我把生活順序想起來。",6:"這裡留下了很多生活片段。也許陪伴、傾聽，以及適時尋求支持，都是照顧心情的重要線索。"},
+    hotspot:{fridge:"冰箱裡的東西好多，我得想想哪些食物能幫助維持體力。",table:"桌上的東西看起來很日常，但日常習慣往往最重要。",sink:"洗手槽附近也藏著生活安全的小細節。",shower:"這裡濕濕的，果然要先注意安全。",toilet:"起身坐下看似簡單，其實很能看出下肢力量。",slippers:"鞋子和地墊如果亂放，一不注意就可能絆到。",window:"白天的光線很舒服，看東西也清楚多了。",bed:"晚上從床上起來時，我最怕沒有看清楚路。",dresser:"家具邊緣如果看不清楚，顏色對比就會很重要。",nightstand:"床邊如果有順手的燈，晚上會安心很多。",door:"玄關是每天都會經過的地方，聽見和看見提示都很重要。",intercom:"這個門鈴的聲音，好像有什麼特別的頻率。",bench:"安靜一點、面對面說話，我比較容易聽懂。",cabinet:"東西有固定位置，我就不用一直找來找去。",coatRack:"常用物品放在固定地方，真的比較不容易忘記。",desk:"做些小拼圖、閱讀或分類，好像能讓腦袋動一動。",board:"月曆和照片都能提醒我現在是什麼時候。",pillbox:"藥盒分得清楚，才不容易忘記或重複。",bookshelf:"看到熟悉的書和照片，很多事情就慢慢想起來了。",armchair:"有個固定的閱讀角落，生活會更有規律。",view:"曬曬太陽、看看外面，我的心情也跟著亮起來。",chair:"坐下休息一下，也別忘了和人聊聊天。",plants:"照顧植物的時候，我也像是在照顧自己的心情。",shelf:"活動用品收好，下一次想用時就更方便。"},
+    wrong:["好像還差一點……再看看房間裡有沒有哪個數字被漏掉了。","我記得答案不是用加法，而是把 A 和 B 依序接起來。","別急，我們再找一次線索。很多答案就藏在很日常的物件裡。"],
+    success:["想起來了！這一段記憶終於亮起來了。","原來這些小習慣，都是讓生活更安全的重要線索。","謝謝你陪我一起找，這個房間的記憶修好了。"]
+  };
+  function sayCharacter(text){
+    const box=$("#characterDialog");
+    const textEl=$("#characterDialogText");
+    if(!box || !textEl) return;
+
+    clearTimeout(sayCharacter._hideTimer);
+    box.classList.remove("auto-hide");
+    textEl.textContent=text;
+    box.classList.remove("character-reaction");
+    void box.offsetWidth;
+    box.classList.add("character-reaction");
+
+    sayCharacter._hideTimer=setTimeout(()=>{
+      box.classList.add("auto-hide");
+    },3800);
+  };
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  const state = {
+    currentRoom:null,
+    completed:new Set(),
+    celebrated:new Set(),   /* 追加二 A2:已播過恢復色彩演出的房間 */
+    endingPlayed:false,     /* 追加二 A3:全圖恢復色彩與結局對話已播過 */
+    timer:null,
+    roomTimes:{1:0,2:0,3:0,4:0,5:0,6:0},
+    roomScores:{},   /* 2026-11-20 各房第一次通關時的結算結果(RoomClear.score),房間 7 的旅程總評用;與 roomTimes 同生命週期 */
+    roomSessionStartedAt:null,
+    roomTimerPaused:false,
+    bgmEnabled:true,
+    audioUnlocked:false,
+    currentTrack:"",
+    explored:{1:new Set(),2:new Set(),3:new Set(),4:new Set(),5:new Set(),6:new Set()}
+  };
+
+  const achievementRoomIds={1:"vision",2:"mobility",3:"nutrition",4:"hearing",5:"cognition",6:"depression"};
+
+  const screens = {
+    login:$("#loginScreen"),
+    map:$("#mapScreen"),
+    room:$("#roomScreen"),
+    room1External:$("#room1ExternalScreen"),
+    room2External:$("#room2ExternalScreen"),
+    room3External:$("#room3ExternalScreen"),
+    room4External:$("#room4ExternalScreen"),
+    room5External:$("#room5ExternalScreen"),
+    room6External:$("#room6ExternalScreen"),
+    ending:$("#endingScreen")
+  };
+
+  const musicTracks = {
+    login:"assets/bgm-login.wav",
+    map:"assets/bgm-map.wav",
+    roomA:"assets/bgm-room-a.wav",
+    roomB:"assets/bgm-room-b.wav",
+    final:"assets/bgm-final.wav"
+  };
+
+
+  /* ================= ART UI GLUE (official night UI kit; no gameplay logic is changed here) ================= */
+  const randomCharacterLine = arr => arr[Math.floor(Math.random() * arr.length)];   // was referenced but never defined in the source
+  const ROOM_META = ArtUI.ROOMS;
+  const plainText = html => String(html || "").replace(/<br\s*\/?>/gi, "\n").replace(/<\/(div|p)>/gi, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
+  const stripEmoji = t => String(t || "").replace(/^[\p{Extended_Pictographic}️\s]+/u, "").trim();
+  const room45Visited = {4:new Set(), 5:new Set()};
+  const room45MissionPanel = {};
+  const ROOM_LESSONS = {1:"視力：適時休息、留意光線，閱讀與活動更舒服。", 2:"行動：防滑、扶手與穩固的鞋，降低跌倒風險。", 3:"營養：吃得足夠、均衡，也要補充水分。", 4:"聽力：降低背景雜音、面對面溝通。", 5:"認知：固定物品位置、保持思考與生活參與。", 6:"心情：生活改變會牽動心情，多傾聽、多陪伴，需要時尋求心理支持與醫療資源。"};
+
+  function room6Clues(){
+    return roomData[6].hotspots.map((h, i) => ({done: state.explored[6].has(i), label: stripEmoji(h.title), text: plainText(h.body), crop: {room:6, x:h.x, y:h.y, w:h.w, h:h.h}}));
+  }
+  /* 第二修改計劃追加二 B:任務只在小遊戲真正完成(拿到寶物、completeActivity)時才算完成;點開不算 */
+  function room45Done(id){
+    try{ return new Set(AchievementSystem.getRoomProgress(achievementRoomIds[id]).completedActivities || []); }catch(e){ return new Set(); }
+  }
+  function room45Items(id){
+    const out = [];
+    try{
+      const doc = $(`#room${id}Frame`).contentDocument;
+      doc.querySelectorAll("[data-object]").forEach(b => {
+        const key = b.getAttribute("data-object");
+        out.push({key, label:(b.getAttribute("aria-label") || key).replace(/^進入/, "").replace(/介面$/, "").replace(/[：:].*$/, ""), done: room45Done(id).has(key)});
+      });
+    }catch(e){}
+    return out;
+  }
+  function memoryCrop(n){
+    const st = ArtUI.store.get(), c = (st.clues[n] || [])[0];
+    return c && c.crop ? c.crop : {room:n, x:20, y:25, w:60, h:55};
+  }
+  /* 第二修改計劃 A2/B3:地圖與房間共用同一款任務面板(標題 + 項目 + 完成勾);點項目 → 收合並指出位置 */
+  const mapMissionPanel = ArtUI.mission({room:0, title:"記憶之家｜房間配置圖", getState(){
+    return {items: [1,2,3,4,5,6].map(n => ({room:n, label:`房間${n}・${ROOM_META[n].name}`, done: state.completed.has(n)}))};
+  }, onPick(it){ const b = document.querySelector(`.map-hotspot[data-room="${it.room}"]`); if(b) ArtUI.pointAt(b); }});
+  const roomMissionPanel = ArtUI.mission({room:6, getState(){
+    const c = room6Clues();
+    return {items: c.map(x => ({label:x.label, done:x.done}))};
+  }});
+  function getRoom45Panel(id){
+    return room45MissionPanel[id] || (room45MissionPanel[id] = ArtUI.mission({room:id, getState(){
+      return {items: room45Items(id)};
+    }, onPick(it){
+      try{ const b = $(`#room${id}Frame`).contentDocument.querySelector(`[data-object="${it.key}"]`); if(b) ArtUI.pointAt(b); }catch(e){}
+    }}));
+  }
+  function showSpotClue(id, index, spot){
+    artSync();
+    if(screens.room.classList.contains("active")) pauseRoomTimer();
+    ArtUI.clueCard({title: stripEmoji(spot.title), text: plainText(spot.body), photo:{room:id, x:spot.x, y:spot.y, w:spot.w, h:spot.h},
+      onClose(){ if(screens.room.classList.contains("active")) resumeRoomTimer(); roomMissionPanel.render(); }});
+  }
+  function artSync(){
+    if(!window.ArtUI) return;
+    ArtUI.store.patch(v => {
+      v.completed = [...state.completed].sort();
+      if(state.currentRoom && !v.visited.includes(state.currentRoom)) v.visited.push(state.currentRoom);
+      v.clues[6] = room6Clues().filter(c => c.done).map(c => ({label:c.label, text:c.text, crop:c.crop}));
+    });
+    [mapMissionPanel, roomMissionPanel, ...Object.values(room45MissionPanel)].forEach(p => { if(p && !p.box.hidden) p.render(); });
+  }
+  function artOnScreen(name){
+    if(!window.ArtUI) return;
+    ArtUI.dialog.close(true);
+    [mapMissionPanel, roomMissionPanel, ...Object.values(room45MissionPanel)].forEach(p => p && p.close());
+    ArtUI.closeAllModals();
+    // a room that is no longer on screen is frozen (timers, animation frames, audio, input) until it is entered again
+    for(let n = 1; n <= 6; n++){
+      const f = $(`#room${n}Frame`);
+      if(!f || !f.contentWindow || !f.getAttribute("src") || f.getAttribute("src") === "about:blank") continue;
+      const active = screens[`room${n}External`].classList.contains("active");
+      try{ f.contentWindow.postMessage({type: active ? "memoryMaze:resume" : "memoryMaze:pause"}, "*"); }catch(e){}
+    }
+    syncHudHeight();
+  }
+  /* 第三修改計劃 B6:畫框大小依頁首高度計算。小遊戲進行中頁首是隱藏的(高度 0),那時不更新,
+     否則在小遊戲中切換全螢幕後,回到房間畫框會被放大卡住(要退出再進入全螢幕才恢復)。 */
+  function syncHudHeight(){
+    const a = document.querySelector(".screen.active");
+    const hdr = a && a.querySelector(".topbar, .room45-header");
+    if(hdr && hdr.offsetHeight > 0) document.documentElement.style.setProperty("--au-hud", hdr.offsetHeight + "px");
+  }
+  function refitAll(){
+    syncHudHeight(); try{ fitAllStages(); }catch(e){}
+    document.querySelectorAll("iframe").forEach(f => { try{ f.contentWindow && f.contentWindow.dispatchEvent(new Event("resize")); }catch(e){} });
+  }
+  window.MemoryMazeRefit = refitAll;
+  /* 2026-11-18 晚:使用者不再使用舊的燈籠對話框 → 房間 0、房間 7 的說明也改用老人立繪對話框(StoryDialog),由 1 號老人說 */
+  async function npcSay(lines, npc = 1){
+    const L = lines.map(t => ({ who: "npc", text: typeof t === "string" ? t : t.text }));
+    try{ if(await ArtUI.loadStory() && window.StoryDialog) return await StoryDialog.play({ npc, position: "bottom", lines: L }); }catch(e){}
+    return ArtUI.dialog.open({ host: document.body, lines: L.map(l => l.text) });
+  }
+  function artIntro(id){
+    if(ArtUI.store.introSeen(id)) { ArtUI.store.visit(id); return; }
+    ArtUI.store.markIntro(id); ArtUI.store.visit(id);
+    setTimeout(() => {
+      if(state.currentRoom !== id && id !== 7) return;
+      if(id === 7){ npcSay([ROOM_META[id].intro, `房間 ${id}｜${ROOM_META[id].name}：${ROOM_META[id].hint}`]); return; }
+      ArtUI.storyIntro(id);
+    }, 500);
+  }
+  function addArtButtons(container, panel, {collect = false, mission = true} = {}){
+    if(!container || container.querySelector(".au-hud-tools")) return;
+    const tools = ArtUI.el("div", "au-hud-tools");
+    const chip = ArtUI.playerChip(); if(chip) tools.appendChild(chip);
+    if(mission){
+      const b = ArtUI.el("button", "au-hudbtn", `${ArtUI.sprite("task-icon-hint-s", "au-ico")}<span>任務</span>`);
+      b.type = "button"; b.setAttribute("aria-label", "任務與提示");
+      b.addEventListener("click", () => { const p = typeof panel === "function" ? panel() : panel; p.toggle(); });
+      tools.appendChild(b);
+    }
+    if(collect){
+      const c = ArtUI.el("button", "au-hudbtn", `${ArtUI.sprite("clue-photo-frame-s", "au-ico")}<span>收集</span>`);
+      c.type = "button"; c.setAttribute("aria-label", "記憶碎片收集");
+      c.addEventListener("click", () => ArtUI.collection());
+      tools.appendChild(c);
+    }
+    if(container.matches(".room45-status")){          // rooms 4 / 5: the tools sit in a slim bar under the picture, not in the header
+      const frame = container.closest(".room45-page").querySelector(".room45-frame");
+      ArtUI.mountDock(frame, ".room45-hint").prepend(tools);
+    } else container.prepend(tools);
+  }
+  addArtButtons(document.querySelector("#mapScreen .top-actions"), mapMissionPanel);
+  /* 第二修改計劃追加 A3:地圖頂列順序 = 頭貼 → 任務 → 記憶修復 → 音量 → 返回首頁 */
+  (() => { const t = document.querySelector("#mapScreen .top-actions .au-hud-tools"), w = document.querySelector("#mapScreen .map-progress-wrap"); if(t && w) t.after(w); })();
+  addArtButtons(document.querySelector("#roomScreen .top-actions"), roomMissionPanel);
+  addArtButtons(document.querySelector("#endingScreen .top-actions"), null, {mission:false});
+  addArtButtons(document.querySelector("#room4ExternalScreen .room45-status"), () => getRoom45Panel(4));
+  addArtButtons(document.querySelector("#room5ExternalScreen .room45-status"), () => getRoom45Panel(5));
+  { const lock=$("#doorLockBtn"), bar=document.querySelector("#roomScreen .top-actions"); if(lock&&bar) bar.insertBefore(lock, $("#backMapBtn")); }   // password button lives in the header, not on top of the picture
+
+  // room 6 / room 7: objects light up and grow a little (shape-true masks, no frames)
+  ArtUI.watchObjects({room:6, canvasSel:"#roomStage", hsSel:"#hotspotLayer .hotspot", keyOf:(b, i) => ["view", "chair", "plants", "table", "shelf"][i]});
+  ArtUI.watchObjects({room:7, canvasSel:".room7-scene", hsSel:".memory-hotspot,.core-hotspot", keyOf:b => b.classList.contains("core-hotspot") ? "core" : (b.className.match(/hs-(\w+)/) || [])[1]});
+  // room 7 memory core: tells the player how far the review has come (does not change the review flow)
+  /* 第三修改計劃 J-4:六段記憶回顧完 → 記憶核心發光;點核心 → 三位 NPC 與玩家對話(J2)→ 自動前往旅程分析。
+     「前往旅程分析」在聽完核心對話後才開啟(使用者 2026-11-15 決定)。回顧未完成時點核心仍是原本的提示。 */
+  let room7CoreBusy = false;
+  $("#room7CoreBtn").addEventListener("click", async () => {
+    const n = room7Reviewed.size;
+    if(n < 6){
+      npcSay([`記憶核心閃著微光，裡面收藏著這趟旅程找回的六段記憶。`, `目前已回顧 ${n} / 6。點選周圍的記憶臺，把剩下的記憶看完吧。`]);
+      return;
+    }
+    if(room7CoreBusy) return; room7CoreBusy = true;
+    try{
+      playSfx("restore");
+      if(await ArtUI.loadStory() && window.StoryCopy && StoryCopy.room7) await StoryDialog.play({npc: 1, position: "bottom", mode: "both", lines: StoryCopy.room7.core});
+      room7CoreDone = true; syncRoom7Core();
+      if($("#endingScreen").classList.contains("active") && $("#room7Stage1").classList.contains("active")) $("#room7AnalysisBtn").click();
+    } finally { room7CoreBusy = false; }
+  });
+  // map: moving the pointer onto a room lights it up and enlarges it a little (same for keyboard focus)
+  document.querySelectorAll(".map-hotspot").forEach(btn => {
+    const id = btn.dataset.start ? 0 : btn.dataset.final ? 7 : Number(btn.dataset.room);
+    const hit = btn.querySelector(".hit"), layer = $("#reveal-room" + id), outline = $("#outline-room" + id);
+    const set = v => { if(v && btn.classList.contains("locked-room")) return; layer && layer.classList.toggle("hover", v); outline && outline.classList.toggle("hover", v); btn.classList.toggle("is-hover", v); const g = $("#gray-room" + id); if(g && g.classList.contains("map-gray-soft")) g.classList.toggle("hover", v && !g.hidden); };
+    hit.addEventListener("pointerenter", e => { if(!e.pointerType || e.pointerType === "mouse") set(true); });
+    hit.addEventListener("pointerleave", () => set(false));
+    hit.addEventListener("pointerdown", () => { layer && layer.classList.add("press"); });
+    hit.addEventListener("click", () => { if(!layer) return; layer.classList.remove("bounce"); void layer.offsetWidth; layer.classList.add("bounce"); setTimeout(() => layer.classList.remove("bounce"), 380); });
+    hit.addEventListener("pointerup", () => { layer && layer.classList.remove("press"); });
+    btn.addEventListener("focusin", () => { if(btn.matches(":focus-within") && document.activeElement && document.activeElement.matches(":focus-visible")) set(true); });
+    btn.addEventListener("focusout", () => set(false));
+  });
+  /* A2:未完成的房間以灰階呈現、不發光(仍可點選);完成後灰階層移除,回到原本色彩 */
+  [1,2,3,4,5,6].forEach(n => {
+    const reveal = $("#reveal-room" + n), btn = document.querySelector(`.map-hotspot[data-room="${n}"]`);
+    if(!reveal || !btn) return;
+    const gray = reveal.cloneNode(false);
+    gray.id = "gray-room" + n; gray.className = "map-gray"; gray.setAttribute("aria-hidden", "true");
+    reveal.after(gray);
+    /* 追加二 A2:完成但還沒播過恢復演出的房間,先維持灰色,等演出時才褪色 */
+    const sync = () => { if(gray.classList.contains("map-gray-fading")) return; gray.hidden = !btn.classList.contains("locked-room") && state.celebrated.has(n); };
+    new MutationObserver(sync).observe(btn, {attributes:true, attributeFilter:["class"]});
+    sync();
+  });
+  /* ===== 第二修改計劃追加二 A2:完成一間房間後第一次回到地圖 → 印章落下鎖定、震動、閃光、由灰轉彩(每間只播一次) ===== */
+  function mapFxBox(n){
+    const btn = n === 7 ? $("#finalRoomBtn") : document.querySelector(`.map-hotspot[data-room="${n}"]`), stage = $("#mapStage");
+    if(!btn || !stage) return null;
+    const fx = document.createElement("div");
+    fx.className = "map-fx"; fx.setAttribute("aria-hidden", "true");
+    ["left","top","width","height"].forEach(k => fx.style[k] = btn.style[k]);
+    stage.appendChild(fx);
+    return fx;
+  }
+  function mapSparkles(host, count, spread){
+    for(let i = 0; i < count; i++){
+      const b = document.createElement("b");
+      const star = i % 3 === 0;
+      b.className = star ? "map-fx-star" : "map-fx-dot";
+      if(star) b.textContent = "★";
+      const a = (360 / count) * i + Math.random() * 20, d = spread * (0.55 + Math.random() * 0.6);
+      b.style.setProperty("--a", a + "deg"); b.style.setProperty("--d", d + "px");
+      b.style.animationDelay = (Math.random() * 0.25).toFixed(2) + "s";
+      host.appendChild(b);
+    }
+  }
+  const mapWait = ms => new Promise(r => setTimeout(r, ms));
+  const mapBlocked = () => $("#modalOverlay").classList.contains("show") || document.querySelector(".rc-overlay, .sd-overlay, .au-modal-back, .au-mission.au-open, .au-codemodal") || !screens.map.classList.contains("active");
+  async function playRoomRestore(n){
+    const gray = $("#gray-room" + n), reveal = $("#reveal-room" + n), outline = $("#outline-room" + n);
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    state.celebrated.add(n);
+    if(!gray){ return; }
+    const fx = mapFxBox(n);
+    gray.hidden = false;
+    if(fx && !reduce){
+      fx.innerHTML = `<div class="map-fx-seal">${ArtUI.sprite("clue-seal-complete")}</div>`;
+      playSfx("unlock");
+      await mapWait(650);                                   // 1. 印章落下鎖定
+      [gray, reveal, outline].forEach(el => el && el.classList.add("map-shake"));
+      await mapWait(560);                                   // 2. 震動
+      [gray, reveal, outline].forEach(el => el && el.classList.remove("map-shake"));
+      const burst = document.createElement("div"); burst.className = "map-fx-burst"; fx.appendChild(burst);
+      mapSparkles(burst, 18, Math.max(60, fx.offsetWidth * 0.55));   // 3. 閃亮特效
+      playSfx("success");
+    }
+    gray.classList.add("map-gray-fading");                 // 4. 由灰色恢復原本色彩
+    await mapWait(reduce ? 300 : 1400);
+    gray.classList.remove("map-gray-fading"); gray.hidden = true;
+    if(fx){ fx.classList.add("map-fx-out"); await mapWait(500); fx.remove(); }
+  }
+  let mapRestoreBusy = false;
+  async function runMapRestores(){
+    if(mapRestoreBusy) return;
+    mapRestoreBusy = true;
+    try{
+      for(;;){
+        const next = [1,2,3,4,5,6].find(n => state.completed.has(n) && !state.celebrated.has(n));
+        if(!next) break;
+        let t = 0;
+        while(mapBlocked() && t < 600){ await mapWait(250); t++; }   // 等完成視窗、對話、任務面板都關掉才播
+        if(!screens.map.classList.contains("active")) break;
+        await mapWait(300);
+        await playRoomRestore(next);
+      }
+    } finally { mapRestoreBusy = false; }
+  }
+  new MutationObserver(() => { if(screens.map.classList.contains("active")) runMapRestores(); }).observe(screens.map, {attributes:true, attributeFilter:["class"]});
+
+  /* ===== 第二修改計劃追加二 A1/A3:房間 7、走廊與大廳一開始也是淡灰;六間完成後點房間 7 → 整張地圖慢慢恢復色彩 + 大量星光 → 結局對話 ===== */
+  [0,7].forEach(n => {
+    const reveal = $("#reveal-room" + n); if(!reveal) return;
+    const g = reveal.cloneNode(false);
+    g.id = "gray-room" + n; g.className = "map-gray map-gray-soft"; g.setAttribute("aria-hidden", "true");
+    reveal.after(g);
+  });
+  /* 房間 1~6 以外(走廊、大廳、入口、房間 7)的淡灰層:整張圖減去六間房間的遮罩 */
+  (() => {
+    const base = document.querySelector("#mapStage .map-base"); if(!base) return;
+    const rest = base.cloneNode(false);
+    rest.id = "gray-rest"; rest.alt = ""; rest.className = "map-gray map-gray-soft map-gray-rest"; rest.setAttribute("aria-hidden", "true");
+    const mk = ["linear-gradient(#000,#000)", ...[1,2,3,4,5,6].map(n => `url(assets/art-final/map/mask-room${n}.png)`)].join(",");
+    rest.style.webkitMaskImage = mk; rest.style.maskImage = mk;
+    rest.style.webkitMaskComposite = "xor"; rest.style.maskComposite = "exclude";
+    base.after(rest);
+    /* 第三修改計劃 A3:已點亮的房間改用柔邊遮罩(mask-roomN-soft.png,房內不透明、往外約 20px 漸淡),
+       彩色像燈光一樣往外淡出,不再看到一條硬切線;未點亮的房間維持原本遮罩 */
+    const url = (n, soft) => `url(assets/art-final/map/mask-room${n}${soft ? "-soft" : ""}.png)`;
+    const lit = n => { const g = $("#gray-room" + n); return !!g && (g.hidden || g.classList.contains("map-gray-fading")); };
+    const softSync = () => {
+      const on = [1,2,3,4,5,6].map(lit);
+      [1,2,3,4,5,6].forEach((n, i) => { const r = $("#reveal-room" + n); if(r){ r.style.webkitMaskImage = url(n, on[i]); r.style.maskImage = url(n, on[i]); } });
+      const m = ["linear-gradient(#000,#000)", ...[1,2,3,4,5,6].map((n, i) => url(n, on[i]))].join(",");
+      rest.style.webkitMaskImage = m; rest.style.maskImage = m;
+    };
+    const watchGray = () => [1,2,3,4,5,6].forEach(n => { const g = $("#gray-room" + n); if(g) new MutationObserver(softSync).observe(g, {attributes:true, attributeFilter:["hidden","class"]}); });
+    setTimeout(() => { watchGray(); softSync(); }, 0);
+  })();
+  function syncFinalGray(){
+    const done = !!state.endingPlayed;
+    ["#gray-rest", "#gray-room0", "#gray-room7"].forEach(sel => { const g = $(sel); if(g && !g.classList.contains("map-gray-fading")) g.hidden = done; });
+    $("#mapStage")?.classList.toggle("map-all-restored", done);
+  }
+  syncFinalGray();
+  async function playEndingRestore(){
+    const stage = $("#mapStage"), reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fx = document.createElement("div"); fx.className = "map-end-fx"; fx.setAttribute("aria-hidden", "true"); stage.appendChild(fx);
+    const core = mapFxBox(7);
+    playSfx("restore");
+    if(!reduce){
+      fx.innerHTML = `<div class="map-end-flash"></div>`;
+      if(core){ const b = document.createElement("div"); b.className = "map-fx-burst"; core.appendChild(b); mapSparkles(b, 36, Math.max(140, stage.offsetWidth * 0.32)); }
+    }
+    await mapWait(reduce ? 0 : 500);
+    // 整張地圖由記憶核心向外慢慢恢復色彩
+    stage.classList.add("map-all-restored");
+    ["#gray-rest", "#gray-room0", "#gray-room7", ...[1,2,3,4,5,6].map(n => "#gray-room" + n)].forEach(sel => { const g = $(sel); if(g && !g.hidden) g.classList.add("map-gray-fading"); });
+    if(!reduce){
+      for(let w = 0; w < 7; w++){            // 一波波光點在整張地圖上擴散
+        for(let i = 0; i < 6; i++){
+          const p = document.createElement("div"); p.className = "map-fx-burst map-fx-free";
+          p.style.left = (8 + Math.random() * 84) + "%"; p.style.top = (10 + Math.random() * 80) + "%";
+          fx.appendChild(p); mapSparkles(p, 8, 40 + Math.random() * 50);
+        }
+        if(w === 2) playSfx("success");
+        await mapWait(420);
+      }
+    } else await mapWait(800);
+    await mapWait(reduce ? 200 : 900);
+    state.endingPlayed = true; [1,2,3,4,5,6].forEach(n => state.completed.has(n) && state.celebrated.add(n));
+    ["#gray-rest", "#gray-room0", "#gray-room7", ...[1,2,3,4,5,6].map(n => "#gray-room" + n)].forEach(sel => { const g = $(sel); if(g){ g.classList.remove("map-gray-fading"); g.hidden = true; } });
+    fx.classList.add("map-fx-out"); core && core.classList.add("map-fx-out");
+    await mapWait(500); fx.remove(); core && core.remove();
+    /* 第三修改計劃 J-6:原本這裡的 7 句結局對話移到房間七的記憶核心(J2),恢復色彩後直接進入房間七(J1) */
+  }
+
+  document.querySelector("#room7Stage4 .exit-animation")?.insertAdjacentHTML("afterbegin", `<div class="au-seal-final" aria-label="完成章">${ArtUI.sprite("clue-seal-complete")}</div>`);
+  window.addEventListener("resize", syncHudHeight);
+  if(window.ResizeObserver){ const hro = new ResizeObserver(syncHudHeight); document.querySelectorAll(".topbar, .room45-header").forEach(h => hro.observe(h)); }
+  ["fullscreenchange","webkitfullscreenchange"].forEach(ev => { document.addEventListener(ev, () => { refitAll(); setTimeout(refitAll, 250); }); try{ top.document.addEventListener(ev, () => { refitAll(); setTimeout(refitAll, 250); }); }catch(e){} });
+
+  const bgm = $("#bgm");
+  const sfx = {
+    click:$("#sfxClick"),
+    error:$("#sfxError"),
+    success:$("#sfxSuccess"),
+    unlock:$("#sfxUnlock")
+  };
+  bgm.volume = 0.32;
+
+  function playSfx(name){
+    if(name === "click") return;      // clicks are played by ArtUI (every button / object, every page)
+    if(window.SoundKit){ SoundKit.sfx(name); return; }   // 2026-11-17 全遊戲共用音效(game/shared/sound-kit.js)
+    const a = sfx[name];
+    if(!a || !state.audioUnlocked) return;
+    try{
+      a.currentTime = 0;
+      a.volume = Math.min(1, bgm.volume * 1.1);
+      a.play().catch(()=>{});
+    }catch(err){}
+  }
+
+  function syncMusicUI(){
+    const icon = state.bgmEnabled ? "🔊" : "♫";
+    ["#musicToggleMap","#musicToggleRoom","#musicToggleEnding"].forEach(sel => {
+      const el = $(sel);
+      if(el) el.textContent = icon;
+    });
+    ["#musicVolumeMap","#musicVolumeRoom","#musicVolumeEnding"].forEach(sel => {
+      const el = $(sel);
+      if(el) el.value = bgm.volume;
+    });
+  }
+
+  async function unlockAudio(){
+    if(state.audioUnlocked) return;
+    state.audioUnlocked = true;
+    if(window.SoundKit){ SoundKit.unlock(); state.bgmEnabled = SoundKit.settings.musicOn; }
+    syncMusicUI();
+    await playCurrentSceneMusic();
+  }
+
+  function fadeToTrack(trackKey){
+    const src = musicTracks[trackKey];
+    if(!src || !state.bgmEnabled || !state.audioUnlocked) return;
+    if(state.currentTrack === trackKey && bgm.src.includes(src)) {
+      bgm.play().catch(()=>{});
+      return;
+    }
+    state.currentTrack = trackKey;
+    const targetVolume = Number($("#musicVolumeMap")?.value || $("#musicVolumeRoom")?.value || bgm.volume || 0.32);
+    const fadeOut = setInterval(() => {
+      bgm.volume = Math.max(0, bgm.volume - 0.04);
+      if(bgm.volume <= 0.02){
+        clearInterval(fadeOut);
+        bgm.src = src;
+        bgm.currentTime = 0;
+        bgm.play().catch(()=>{});
+        const fadeIn = setInterval(() => {
+          bgm.volume = Math.min(targetVolume, bgm.volume + 0.04);
+          if(bgm.volume >= targetVolume - 0.005){
+            bgm.volume = targetVolume;
+            clearInterval(fadeIn);
+          }
+        }, 70);
+      }
+    }, 70);
+  }
+
+  /* 2026-11-17:每個畫面不同配樂(SoundKit 即時合成):地圖=放鬆的「午後散步」、房間 1~6 各自一首、房間七=記憶核心 */
+  function currentSceneKey(){
+    if(screens.login.classList.contains("active") || screens.map.classList.contains("active")) return "map";
+    if(screens.ending.classList.contains("active")) return "room7";
+    for(const n of [1,2,3,4,5,6]) if(screens["room"+n+"External"] && screens["room"+n+"External"].classList.contains("active")) return "room"+n;
+    if(screens.room.classList.contains("active")) return "room"+(state.currentRoom||1);
+    return "map";
+  }
+  window.__skScene = currentSceneKey;
+  async function playCurrentSceneMusic(){
+    if(!window.SoundKit) return;
+    let onMap = true; try{ onMap = !top.document.getElementById("screen-map") || top.document.getElementById("screen-map").classList.contains("active"); }catch(e){}
+    if(onMap) SoundKit.music(currentSceneKey());
+  }
+
+  ["#musicToggleMap","#musicToggleRoom","#musicToggleEnding"].forEach(sel => {
+    $(sel)?.addEventListener("click", async () => {
+      if(!state.audioUnlocked){
+        state.bgmEnabled = true;
+        await unlockAudio();
+        syncMusicUI();
+        return;
+      }
+      if(window.SoundKit){ state.bgmEnabled = SoundKit.toggleMusic(); syncMusicUI(); return; }
+      state.bgmEnabled = !state.bgmEnabled;
+      if(state.bgmEnabled){
+        await playCurrentSceneMusic();
+      }else{
+        bgm.pause();
+      }
+      syncMusicUI();
+    });
+  });
+
+  ["#musicVolumeMap","#musicVolumeRoom","#musicVolumeEnding"].forEach(sel => {
+    $(sel)?.addEventListener("input", e => {
+      const v = Math.max(0, Math.min(1, Number(e.target.value) || 0));
+      bgm.volume = v; if(window.SoundKit) SoundKit.set("musicVol", v);
+      ["#musicVolumeMap","#musicVolumeRoom","#musicVolumeEnding"].forEach(other => {
+        const el = $(other);
+        if(el && el !== e.target) el.value = v;
+      });
+    });
+  });
+
+  /* D6(2026-11-18 晚)房間轉場:從地圖進房 → 兩扇門向兩側打開+開門聲;回地圖 → 門在身後關上的聲音與短暫暗場。只加圖層,不擋操作 */
+  function roomDoorFx(from, to){
+    const intoRoom = from === "map" && /External$|^ending$/.test(to), outRoom = to === "map" && /External$|^ending$/.test(from || "");
+    if(!intoRoom && !outRoom) return;
+    if(document.documentElement.classList.contains("mm-reduce")) return;
+    const fx = document.createElement("div"); fx.className = "door-fx " + (intoRoom ? "door-open" : "door-close");
+    fx.innerHTML = "<i></i><i></i>"; document.body.appendChild(fx);
+    try{ window.SoundKit && SoundKit.sfx(intoRoom ? "door" : "close"); }catch(e){}
+    setTimeout(() => fx.remove(), 900);
+  }
+  function showScreen(name){
+    if(name!=='room6External')document.querySelector('#room6Frame')?.contentWindow?.postMessage({type:'memoryMaze:room6Pause'},'*');
+    const wasActive = screens[name].classList.contains("active");
+    const prevScreen = document.body.dataset.screen;
+    Object.values(screens).forEach(s => s.classList.remove("active"));
+    screens[name].classList.add("active");
+    if(!wasActive && window.SoundKit) SoundKit.sfx(name === "map" ? "whooshSoft" : "whoosh");
+    document.body.dataset.screen = name;
+    if(!wasActive) roomDoorFx(prevScreen, name);
+    artOnScreen(name);
+    playCurrentSceneMusic();
+    requestAnimationFrame(fitAllStages);
+    setTimeout(fitAllStages, 80);   // also when animation frames are throttled (hidden / embedded pane)
+    // A1:頁首按鈕、字型、外層 iframe 尺寸會在進入後才定案,多補幾次量測,避免地圖停在縮小的尺寸
+    [250, 600, 1200].forEach(ms => setTimeout(fitAllStages, ms));
+  }
+
+  function progressDotsHTML(){
+    return [1,2,3,4,5,6].map(n =>
+      `<span class="dot ${state.completed.has(n) ? "done" : ""}">${state.completed.has(n) ? "✓" : n}</span>`
+    ).join("");
+  }
+
+  /* 第二修改計劃 A1:地圖「完成 n／6」改成 6 格顏色進度條,完成一間填一格 */
+  /* 使用者決定(2026-11-14):目前所有房間都允許直接輸入正確密碼就算完成(測試用);
+     之後要改成「小遊戲全部完成才算」,把這個值改成 false 即可。 */
+  const ALLOW_PASSWORD_BYPASS = true;
+  function roomTrulyDone(n){
+    if(state.room7Test) return true;   /* 開發測試捷徑(Room 7 測試)維持原本行為 */
+    try{ const p=AchievementSystem.getRoomProgress(achievementRoomIds[n]); return !!(p.completed && (ALLOW_PASSWORD_BYPASS || p.allActivitiesCompleted)); }catch(e){ return false; }
+  }
+  function roomMissingCount(n){
+    try{ return (AchievementSystem.getRoomProgress(achievementRoomIds[n]).missingActivities || []).length; }catch(e){ return 0; }
+  }
+  function setMapBar(done){
+    const bar = $("#completionBadge"); if(!bar) return;
+    const n = done.size;
+    [...bar.children].forEach((c, i) => c.classList.toggle("is-filled", i < n));
+    bar.classList.toggle("is-full", n >= 6);
+    bar.setAttribute("aria-valuenow", String(n)); bar.setAttribute("aria-label", `已修復 ${n} 間，共 6 間`);
+  }
+  function renderProgress(){
+    for(const [n,id] of Object.entries(achievementRoomIds))if(roomTrulyDone(n))state.completed.add(Number(n));
+    /* 第二修改計劃追加二 B:地圖上的完成 = 密碼正確 且 房內所有小遊戲都真正完成 */
+    for(const n of [...state.completed])if(!roomTrulyDone(n))state.completed.delete(n);
+    $("#mapProgress").innerHTML = progressDotsHTML() + `<span class="status-note">灰色＝未修復　彩色＝已點亮</span>`;
+    $("#roomProgress").innerHTML = progressDotsHTML();
+    setMapBar(state.completed);
+
+    // Color reveals
+    $("#reveal-room0").classList.add("show");
+    $("#outline-room0").classList.add("show");
+    $("#reveal-room7").classList.add("show");
+    $("#outline-room7").classList.add("show");
+
+    [1,2,3,4,5,6].forEach(n => {
+      const done = state.completed.has(n);
+      $("#reveal-room" + n).classList.toggle("show", done);
+      $("#outline-room" + n).classList.toggle("show", done);
+
+      const btn = document.querySelector(`.map-hotspot[data-room="${n}"]`);
+      btn.classList.toggle("locked-room", !done);
+      btn.classList.toggle("cleared-room", done);
+    });
+
+    const finalBtn = $("#finalRoomBtn");
+    const finalUnlocked = state.completed.size >= 6;
+    finalBtn.classList.toggle("final-lock", !finalUnlocked);
+    finalBtn.setAttribute("aria-disabled", finalUnlocked ? "false" : "true");
+    artSync();
+  }
+
+  async function enterMapAfterLogin(){
+    await unlockAudio();
+    renderProgress();
+    showScreen("map");
+  }
+
+  $("#loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const pass = $("#loginPassword").value.trim().toLowerCase();
+    if(pass !== "health"){
+      $("#loginError").textContent = "密鑰錯誤，請輸入 health";
+      playSfx("error");
+      return;
+    }
+    $("#loginError").textContent = "";
+    playSfx("unlock");
+    await enterMapAfterLogin();
+  });
+
+  $("#logoutBtn").addEventListener("click", () => {
+    stopTimer();
+    if(window.parent!==window){ window.parent.postMessage({type:"memoryMaze:returnHome"},"*"); } else { window.location.href = "../index.html"; }
+  });
+
+  document.querySelector('.map-hotspot[data-start="1"]').addEventListener("click", async () => {
+    await unlockAudio();
+    playSfx("click");
+    npcSay([
+      "你的任務：修復爺爺散落在六個生活空間裡的記憶。",
+      "房間修復後會恢復色彩。把滑鼠移到房間上，它會亮起來並微微放大，點一下就能進入。",
+      "在房間裡點擊亮著微光的物品進行探索，每一房都有數個線索。",
+      "找到密碼後，點擊「輸入密碼」。成功通關後，該房間會出現「已修復」的記號，還能取得一枚記憶碎片。",
+      "六個房間全部修復之後，中央的房間 7「記憶核心」才會開啟。"
+    ]);
+  });
+
+  $$('.map-hotspot[data-room]').forEach(btn => {
+    btn.addEventListener("click", async () => {
+      await unlockAudio();
+      playSfx("click");
+      enterRoom(Number(btn.dataset.room));
+    });
+  });
+
+  // ===== 房間 7：六段記憶回顧 → 旅程分析 → 離開 =====
+  const room7Reviewed=new Set();
+  const room7Labels={1:"👁️ 視力",2:"🚶 行動",3:"🍳 營養",4:"👂 聽力",5:"🧠 認知",6:"💛 心情"};
+  const room7Lessons={
+    1:"你在視界休息角裡發現了照顧眼睛的生活技巧：適時休息、留意光線，也讓日常閱讀與活動看得更清楚、更舒服。",
+    2:"你在行動與防跌浴室裡找出了藏在鞋子、地面與浴室環境中的風險，也帶走了讓起身、走路與洗澡更安心的防跌技巧。",
+    3:"你在營養照護廚房裡找到了讓每一餐更完整的祕訣。吃得足夠、吃得均衡，也記得補充水分，都是維持體力的重要一步。",
+    4:"你在聽力照護房裡重新留意生活中的聲音，學會降低背景干擾、面對面溝通，也知道聽力需要像視力一樣被好好照顧。",
+    5:"你在認知照護房裡從熟悉的日常物件找到線索。固定物品位置、保持思考與生活參與，都能讓每天的生活更有方向。",
+    6:"你在心理陪伴客廳裡看見了生活改變如何牽動心情，也練習用傾聽、陪伴與適當的心理支持，讓需要幫助的時候不必一個人承擔。"
+  };
+  let room7IntroPlayed = false, room7CoreDone = false;
+  /* B4(2026-11-18 晚)房間 7 史詩時刻:第六段記憶看完的那一刻 → 六個記憶臺依序發光、各響一個音(六段旋律疊成和弦),
+     六道光飛向中央核心,核心爆出金光、鏡頭微微推進。只加演出,不改回顧與核心的流程。 */
+  function room7Epic(scene, core){
+    if(document.documentElement.classList.contains("mm-reduce")) return;
+    /* 第六段記憶的說明視窗還開著時先等,關掉後才播,玩家才看得到 */
+    const modalOpen = () => [...document.querySelectorAll(".au-overlay,.sd-overlay,[aria-modal=true]:not([hidden]),dialog[open]")].some(e => e.getClientRects().length);
+    if(modalOpen()){ if(!scene._epicWait){ scene._epicWait = setInterval(() => { if(!modalOpen()){ clearInterval(scene._epicWait); scene._epicWait = 0; setTimeout(() => room7Epic(scene, core), 250); } }, 300); } return; }
+    const pads = [...scene.querySelectorAll(".memory-hotspot")].slice(0, 6);
+    const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98];
+    const cr = core && core.getBoundingClientRect(), sr = scene.getBoundingClientRect();
+    if(!cr || !cr.width) return;
+    const k = sr.width / (scene.offsetWidth || sr.width) || 1;   // 舞台可能被縮放:畫面座標換回場景內座標
+    const cx = (cr.left + cr.width/2 - sr.left)/k, cy = (cr.top + cr.height/2 - sr.top)/k;
+    pads.forEach((pad, i) => setTimeout(() => {
+      try{ window.SoundKit && SoundKit.sfx(i === pads.length - 1 ? "restore" : "memory"); }catch(e){}
+      const r = pad.getBoundingClientRect(), x = (r.left + r.width/2 - sr.left)/k, y = (r.top + r.height/2 - sr.top)/k;
+      const orb = document.createElement("i"); orb.className = "r7-orb";
+      orb.style.left = x + "px"; orb.style.top = y + "px"; orb.style.setProperty("--dx", (cx - x) + "px"); orb.style.setProperty("--dy", (cy - y) + "px");
+      scene.appendChild(orb); setTimeout(() => orb.remove(), 1300);
+    }, 300 + i * 380));
+    setTimeout(() => {
+      const burst = document.createElement("i"); burst.className = "r7-burst"; burst.style.left = cx + "px"; burst.style.top = cy + "px";
+      scene.appendChild(burst); scene.classList.add("r7-push");
+      try{ window.SoundKit && SoundKit.sfx("fanfare"); }catch(e){}
+      setTimeout(() => { burst.remove(); scene.classList.remove("r7-push"); }, 1800);
+    }, 300 + pads.length * 380 + 700);
+  }
+  function syncRoom7Core(){
+    const all = room7Reviewed.size >= 6;
+    $("#room7AnalysisBtn").disabled = !room7CoreDone;
+    $("#room7ReviewCount").textContent = all && !room7CoreDone ? "六段記憶都回顧完了！點中間的記憶核心" : `已回顧 ${room7Reviewed.size} / 6`;
+    const ready = all && !room7CoreDone, core = $("#room7CoreBtn");
+    const scene7 = document.querySelector(".room7-scene");
+    if(ready && scene7 && !scene7.classList.contains("r7-core-ready")) room7Epic(scene7, core);
+    scene7?.classList.toggle("r7-core-ready", ready);
+    /* 核心可以點了:用原圖的核心本身持續發光(nearby 讓滑鼠移開後仍亮著),不另加圖層 */
+    if(core){ core.classList.toggle("nearby", ready); core._auFx?.classList.toggle("on", ready); core._auFx?.classList.toggle("r7-ready", ready); }
+  }
+  function showRoom7Stage(n){
+    document.querySelectorAll(".room7-stage").forEach((el,i)=>el.classList.toggle("active",i===n-1));
+    requestAnimationFrame(fitAllStages);
+  }
+  function room7Analysis(){
+    const arr=[1,2,3,4,5,6].map(n=>({n,t:state.roomTimes[n]||0}));
+    const valid=arr.filter(x=>x.t>0);
+    if(!valid.length) return "這趟旅程已經走完。每一個房間都留下了一段屬於你的探索紀錄。";
+    const slow=valid.reduce((a,b)=>a.t>=b.t?a:b), fast=valid.reduce((a,b)=>a.t<=b.t?a:b);
+    const avg=valid.reduce((a,b)=>a+b.t,0)/valid.length;
+    const spread=Math.max(...valid.map(x=>x.t))-Math.min(...valid.map(x=>x.t));
+    let extra=spread < Math.max(20,avg*.25) ? "六個房間的停留時間相當接近，你的探索節奏整體很平均。" : "不同房間的停留時間有些差異，表示你在各種內容上用了不同的探索節奏。";
+    return `你在 <b>${room7Labels[slow.n]}</b> 停留得比較久（${formatMemoryTime(slow.t)}），可能是這一站有更多內容讓你慢慢看、慢慢想；<b>${room7Labels[fast.n]}</b> 的探索時間較短（${formatMemoryTime(fast.t)}）。${extra}`;
+  }
+  document.querySelectorAll(".memory-hotspot").forEach(btn=>btn.addEventListener("click",()=>{
+    const n=Number(btn.dataset.memory); room7Reviewed.add(n); btn.classList.add("reviewed"); playSfx("memory");
+    $("#room7ReviewCount").textContent=`已回顧 ${room7Reviewed.size} / 6`;
+    syncRoom7Core();
+    openModal(`${room7Labels[n]}｜第 ${n} 段記憶`,`<div class="result-box"><p>這個房間的記憶旅程：<b>${formatMemoryTime(state.roomTimes[n]||0)}</b></p><div class="notice">${room7Lessons[n]}</div></div>`);
+  }));
+  /* 六房成果直接累加 J/A，共 27 項，不使用舊百分制快取。 */
+  const reduceMotion = () => document.documentElement.classList.contains("mm-reduce") || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function room7Journey(){ return AchievementSystem.learning.total(); }
+  function typeHTML(el, html, speed){
+    clearInterval(el._typing);
+    return new Promise(res => {
+      if(reduceMotion()){ el.innerHTML = html; return res(); }
+      let i = 0;
+      el._typing = setInterval(() => {
+        if(html[i] === "<") i = html.indexOf(">", i) + 1; else i++;
+        el.innerHTML = html.slice(0, i) + '<i class="r7-caret" aria-hidden="true"></i>';
+        if(i % 3 === 0) playSfx("type");
+        if(i >= html.length){ clearInterval(el._typing); el.innerHTML = html; res(); }
+      }, speed || 34);
+    });
+  }
+  let room7Panel = null;
+  function room7ShowTab(name){
+    document.querySelectorAll("#room7Board2 [data-r7tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.r7tab === name)));
+    document.querySelectorAll("#room7Board2 [data-r7pane]").forEach(p => p.hidden = p.dataset.r7pane !== name);
+    const badge = $("#room7LearningGrade");
+    badge.hidden = name !== "learn";
+    if (name === "learn") {
+      const s = room7Journey(), g = RoomClear.gradeOf(s.score);
+      badge.innerHTML = `<span>學習成果評級</span><div class="rcs-stamp on still" data-g="${g.grade}" role="img" aria-label="評級 ${g.grade}"><i class="rcs-rays"></i><b>${g.grade}</b></div><strong>${s.score}／27 題</strong><small>${g.gradeText}</small>`;
+    }
+  }
+  document.querySelectorAll("#room7Board2 [data-r7tab]").forEach(b => b.addEventListener("click", () => { room7ShowTab(b.dataset.r7tab); playSfx("tab"); }));
+  $("#room7AnalysisBtn").addEventListener("click",()=>{
+    const board = $("#room7Board2");
+    $("#journeyTotalTime").textContent=formatMemoryTime(getTotalJourneyTime());
+    $("#room7LearningResults").innerHTML=AchievementSystem.learning.html();
+    const an = $("#room7PersonalAnalysis"); clearInterval(an._typing); an.innerHTML = "";
+    room7ShowTab("analysis");
+    if(room7Panel){ room7Panel.destroy(); room7Panel = null; }
+    showRoom7Stage(2); playSfx("click");
+    const J = room7Journey();
+    if(window.RoomClear && RoomClear.learningSequence){
+      room7Panel = RoomClear.learningSequence(board, J, {collapsible:false, shakeTarget:board, flashHost:board});
+      const currentPanel = room7Panel;
+      currentPanel.done.then(() => { if(room7Panel === currentPanel) typeHTML(an, room7Analysis()); });
+    } else typeHTML(an, room7Analysis());
+  });
+  $("#room7BackReviewBtn").addEventListener("click",()=>{ if(room7Panel){room7Panel.destroy();room7Panel=null;} showRoom7Stage(1); });
+  $("#room7ToExitBtn").addEventListener("click",()=>{ if(room7Panel){room7Panel.destroy();room7Panel=null;} showRoom7Stage(3); room7DealCards(); playSfx("click"); });
+  const room7Fortunes={
+    1:{title:"慢一點，也是在前進",text:"有些事情不需要急著一次做到最好。願意多看一眼、多想一下、多照顧自己一點，這些小小的停留，最後都會成為讓生活更安穩的力量。"},
+    2:{title:"把照顧藏進每天的小事裡",text:"真正能陪你走很久的，往往不是一次很大的改變，而是每天記得吃飯、走穩一點、看清楚一點，也聽聽自己的需要。"},
+    3:{title:"重要的聲音，值得被聽見",text:"這趟旅程不只是在找線索，也是在練習留意自己與身邊的人。當你願意聽、願意說、願意保持連結，生活就多了一份支持。"},
+    4:{title:"今天找到的，就帶回生活裡",text:"你已經走過六個房間，也帶走了不少方法。不必全部記住，只要從其中一件最做得到的小事開始，這趟旅程就沒有停在遊戲裡。"},
+    5:{title:"身體一直都在給你線索",text:"看得清不清楚、走得穩不穩、吃得好不好、心情有沒有變化，都是生活裡的重要訊息。多留意一點，就能更早替自己做出照顧。"},
+    6:{title:"願意開始，就是很好的改變",text:"照顧健康不需要等到完美的時機。今天願意認識一個新方法、改變一個小習慣，或和一個人多說幾句話，都已經是新的開始。"}
+  };
+  /* 2026-11-20 塔羅翻牌:六張牌扇形排開(每次進來重新洗牌,牌的位置和籤詩對應是隨機的)→ 點一張 → 其他牌落下、
+     這張飛到左側放大 → 3D 翻面 → 光芒與閃光(同日改為電影級演出,見下方 R7FX)→ 右側逐字打出籤詩 → 收進回憶館「塔羅牌」。
+     牌圖:assets/tarot/tarot-back.png、tarot-01..06.png(01~06 對應 room7Fortunes 的 1~6);圖不存在時用 CSS 畫的暫代牌。 */
+  let room7ReflectionChosen=false, room7Deck=[];
+  const R7_ROMAN = ["I","II","III","IV","V","VI"];
+  function r7Img(img, fallback){ img.onerror = () => { const f = img.parentNode; f.classList.add("noimg"); if(fallback) f.textContent = fallback; img.remove(); }; }
+  /* 2026-11-20 電影級翻牌特效(分工指令 40):暗場 → 飛起(金色殘影)→ 懸停蓄力 → 快速翻面 → 頓格 → 閃光 + 衝擊波 + 震動 + 粒子噴發 + 光芒
+     → 掃光、浮空呼吸 → 籤詩。粒子全部畫在同一張 canvas 上(.r7-particles),粒子落完整張移除;閃光、衝擊波節點播完即刪。
+     減少動態:不暗場淡入、不震動、不閃光、不噴粒子、不旋轉光芒,牌直接翻面 + 靜態外發光。window.__r7fx = 幀數與長幀(>50ms)統計。 */
+  const R7FX = (() => {
+    let cv = null, cx = null, raf = 0, parts = [], emit = null, sprites = null, last = 0, board = null, card = null, scale = 1, perf = {frames:0, long:0, maxGap:0};
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    function sprite(draw){ const c = document.createElement("canvas"); c.width = c.height = 64; draw(c.getContext("2d")); return c; }
+    function makeSprites(){
+      return {
+        glow: sprite(g => { const r = g.createRadialGradient(32,32,0,32,32,32); r.addColorStop(0,"rgba(255,255,240,1)"); r.addColorStop(.25,"rgba(255,226,140,.9)"); r.addColorStop(1,"rgba(255,170,40,0)"); g.fillStyle = r; g.fillRect(0,0,64,64); }),
+        star: sprite(g => { g.translate(32,32); const r = g.createRadialGradient(0,0,0,0,0,30); r.addColorStop(0,"#fffbe6"); r.addColorStop(.45,"#ffd86d"); r.addColorStop(1,"rgba(255,180,60,0)"); g.fillStyle = r;
+          g.beginPath(); for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4, rr = i % 2 ? 6 : 31; g.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } g.closePath(); g.fill(); })
+      };
+    }
+    function cardBox(){ const b = board.getBoundingClientRect(), r = card.getBoundingClientRect(); return {x: r.left + r.width / 2 - b.left, y: r.top + r.height / 2 - b.top, w: r.width, h: r.height}; }
+    function add(p){ if(parts.length < 260) parts.push(p); }
+    function tick(now){
+      raf = requestAnimationFrame(tick);
+      const gap = last ? now - last : 16.7; if(last){ perf.frames++; if(gap > 50) perf.long++; perf.maxGap = Math.max(perf.maxGap, Math.round(gap)); } last = now;
+      const dt = Math.min(gap, 50) / 16.7;
+      if(emit && card && card.isConnected) emit(cardBox(), dt);
+      cx.clearRect(0, 0, cv.width, cv.height); cx.globalCompositeOperation = "lighter";
+      for(let i = parts.length - 1; i >= 0; i--){
+        const p = parts[i]; p.life -= dt;
+        if(p.life <= 0){ parts.splice(i, 1); continue; }
+        p.vx *= Math.pow(p.drag, dt); p.vy = p.vy * Math.pow(p.drag, dt) + p.g * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+        if(p.sway) p.x += Math.sin((p.life + p.ph) * .08) * p.sway * dt;
+        const k = Math.min(1, p.life / p.fade), s = p.size * (.4 + .6 * k);
+        cx.globalAlpha = k * p.a; cx.drawImage(p.star ? sprites.star : sprites.glow, p.x - s / 2, p.y - s / 2, s, s);
+      }
+      cx.globalAlpha = 1;
+      if(!emit && !parts.length) stop();
+    }
+    function stop(){ cancelAnimationFrame(raf); raf = 0; emit = null; parts = []; if(cv) cv.remove(); cv = null; }
+    function start(b, c){
+      stop(); board = b; card = c; sprites = sprites || makeSprites();
+      cv = document.createElement("canvas"); cv.className = "r7-particles"; cv.setAttribute("aria-hidden", "true");
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); cv.width = Math.round(b.clientWidth * dpr); cv.height = Math.round(b.clientHeight * dpr);
+      b.appendChild(cv); cx = cv.getContext("2d"); cx.setTransform(dpr, 0, 0, dpr, 0, 0); scale = b.clientWidth / 1366;
+      perf = {frames:0, long:0, maxGap:0}; window.__r7fx = perf; last = 0; raf = requestAnimationFrame(tick);
+    }
+    return {
+      start, stop, get running(){ return !!raf; },
+      /* 飛行中:牌身拖出金色光點殘影 */
+      trail(){ emit = c => { for(let i = 0; i < 2; i++) add({x: c.x + rnd(-.45,.45) * c.w, y: c.y + rnd(-.45,.45) * c.h, vx: rnd(-.5,.5) * scale, vy: rnd(-.2,.6) * scale, g: .02 * scale, drag: .96, life: rnd(22,40), fade: 20, a: .9, size: rnd(6,14) * scale}); }; },
+      /* 蓄力:牌的左右邊緣滲出往上飄的光點 */
+      charge(){ emit = (c, dt) => { if(Math.random() < .8 * dt){ const sd = Math.random() < .5 ? -1 : 1; add({x: c.x + sd * c.w * rnd(.4,.5), y: c.y + rnd(-.5,.5) * c.h, vx: -sd * rnd(.2,.8) * scale, vy: rnd(-1.4,-.4) * scale, g: 0, drag: .98, life: rnd(26,46), fade: 18, a: .85, size: rnd(8,16) * scale}); } }; },
+      /* 翻開瞬間:56 顆金色光點/星星往外噴,受重力緩緩落下 */
+      burst(){ if(!raf) return; const c = cardBox(); emit = null;
+        for(let i = 0; i < 56; i++){ const a = rnd(0, Math.PI * 2), sp = rnd(4,15) * scale; add({x: c.x + Math.cos(a) * c.w * .2, y: c.y + Math.sin(a) * c.h * .15, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2 * scale, g: .16 * scale, drag: .94, life: rnd(55,95), fade: 35, a: 1, size: rnd(14,30) * scale, star: i % 3 === 0}); } },
+      /* 之後:牌周圍少量金粉飄落 ms 毫秒,停止後粒子落完就移除 canvas */
+      dust(ms){ if(!raf) return; const until = performance.now() + ms; emit = (c, dt) => { if(performance.now() > until){ emit = null; return; }
+        if(Math.random() < .45 * dt) add({x: c.x + rnd(-.7,.7) * c.w, y: c.y - c.h * rnd(.45,.6), vx: 0, vy: rnd(.4,1) * scale, g: 0, drag: 1, life: rnd(80,130), fade: 40, a: .75, size: rnd(6,13) * scale, star: Math.random() < .3, sway: .6 * scale, ph: rnd(0,99)}); }; }
+    };
+  })();
+  function r7Temp(host, cls, ms){ const el = document.createElement("i"); el.className = cls; el.setAttribute("aria-hidden", "true"); host.appendChild(el); setTimeout(() => el.remove(), ms); return el; }
+  function room7ResetCards(){
+    R7FX.stop(); const b3 = $("#room7Board3"); b3.querySelectorAll(".r7-dim,.r7-shock,.r7-flash").forEach(el => el.remove()); b3.classList.remove("r7-dark", "r7-shake");
+    room7ReflectionChosen=false; $("#room7Fan").innerHTML=""; clearInterval($("#reflectionFeedback")._typing);
+    $("#reflectionFeedback").innerHTML=""; $("#reflectionFeedback").classList.remove("on"); $("#room7Board3").classList.remove("r7-picked");
+    $("#room7ExitBtn").disabled=true;
+  }
+  function room7DealCards(){
+    if(room7ReflectionChosen) return;           // 已經抽過(從階段 2 回來再進入)→ 保留抽到的那張
+    room7ResetCards();
+    room7Deck=[1,2,3,4,5,6];
+    for(let i=room7Deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [room7Deck[i],room7Deck[j]]=[room7Deck[j],room7Deck[i]]; }
+    const fan=$("#room7Fan"), MG=window.MemoryGallery;
+    room7Deck.forEach((fortune,slot)=>{
+      const k=slot-2.5, b=document.createElement("button");
+      b.type="button"; b.className="r7-card deal"; b.dataset.slot=slot; b.setAttribute("aria-label",`記憶卡 ${slot+1}`);
+      b.style.setProperty("--fx",(k*9.2).toFixed(1)+"cqw"); b.style.setProperty("--fy",(k*k*1.2).toFixed(1)+"cqh"); b.style.setProperty("--fr",(k*7).toFixed(1)+"deg");
+      b.innerHTML=`<span class="r7-card-in"><span class="r7-face r7-back"><img alt="" src="${MG ? MG.TAROT_BACK : ""}"></span><span class="r7-face r7-front"><img alt=""></span></span>`;
+      r7Img(b.querySelector(".r7-back img"));
+      fan.appendChild(b);
+      setTimeout(()=>{ b.classList.remove("deal"); playSfx("whooshSoft"); }, reduceMotion() ? 0 : 150+slot*120);
+    });
+  }
+  $("#room7Fan").addEventListener("click", async e=>{
+    const card=e.target.closest(".r7-card"); if(!card || room7ReflectionChosen || card.classList.contains("deal")) return;
+    room7ReflectionChosen=true;
+    const n=room7Deck[Number(card.dataset.slot)], pick=room7Fortunes[n], board=$("#room7Board3"), fast=reduceMotion();
+    const wait=ms=>new Promise(r=>setTimeout(r, fast?0:ms));
+    document.querySelectorAll("#room7Fan .r7-card").forEach(c=>{ c.disabled=true; if(c!==card) c.classList.add("gone"); });
+    const front=card.querySelector(".r7-front img"); r7Img(front, R7_ROMAN[n-1]);
+    front.src = window.MemoryGallery ? MemoryGallery.tarotSrc(n) : ""; front.alt = pick.title;
+    card.setAttribute("aria-label", `你抽到的記憶卡:${pick.title}`);
+    /* 特效圖層:暗場(牌桌最底層)、牌後方的旋轉光芒(牌扇最底層)、牌形狀的光暈(牌背圖當遮罩)、牌面掃光(用牌圖本身當遮罩,只亮在牌的形狀上) */
+    const dim=document.createElement("i"); dim.className="r7-dim"; dim.setAttribute("aria-hidden","true"); board.prepend(dim);
+    const rays=document.createElement("i"); rays.className="r7-rays"; rays.setAttribute("aria-hidden","true"); $("#room7Fan").prepend(rays);
+    const aura=document.createElement("span"); aura.className="r7-aura"; aura.setAttribute("aria-hidden","true"); aura.innerHTML="<i></i>"; aura.style.setProperty("--mask", `url("${window.MemoryGallery ? MemoryGallery.TAROT_BACK : ""}")`); card.prepend(aura);
+    const shine=document.createElement("i"); shine.className="r7-shine"; shine.setAttribute("aria-hidden","true"); shine.style.setProperty("--mask", `url("${front.src}")`); front.parentNode.appendChild(shine);
+    void dim.offsetWidth;
+    // 0 ms:其他牌散落、牌桌暗下來、被選的牌飛起(拖出金色殘影)
+    board.classList.add("r7-picked","r7-dark"); card.classList.add("picked"); playSfx("whoosh");
+    if(!fast){ R7FX.start(board, card); R7FX.trail(); }
+    await wait(650);
+    // 650 ms:懸停一拍、微微顫動、邊緣滲出金光(蓄力),背後光芒緩緩出現
+    card.classList.add("charge"); rays.classList.add("charge"); playSfx("charge"); if(!fast) R7FX.charge();
+    await wait(600);
+    // 1250 ms:快速翻面(0.36 秒);快翻完、牌面剛露出時頓格 80 ms
+    card.classList.add("flip"); playSfx("whooshSoft");
+    await wait(230);
+    card.classList.add("hold");
+    await wait(80);
+    // 1560 ms:揭曉 — 閃光、衝擊波、震動、粒子噴發、光芒爆開、牌過衝放大後轉為外發光(翻面在閃光中收尾)
+    card.classList.remove("charge","hold"); card.classList.add("glow"); rays.classList.add("burst");
+    if(!fast){
+      r7Temp(board, "r7-flash", 600); r7Temp(board, "r7-shock", 900); r7Temp(board, "r7-shock r7-shock2", 1100);
+      board.classList.remove("r7-shake"); void board.offsetWidth; board.classList.add("r7-shake"); setTimeout(()=>board.classList.remove("r7-shake"), 450);
+      R7FX.burst(); setTimeout(()=>R7FX.dust(3200), 520);
+    }
+    playSfx("impact"); playSfx("sparkle"); setTimeout(()=>playSfx("fanfare"), fast ? 0 : 200);
+    try{ window.MemoryGallery && MemoryGallery.unlockTarot(n, pick); }catch(err){}
+    await wait(350);
+    // 約 1900 ms:金框掃光,之後牌浮空呼吸、金粉飄落
+    card.classList.add("shine");
+    await wait(500);
+    // 約 2400 ms:右側籤詩面板出現、逐字打字
+    const fb=$("#reflectionFeedback");
+    fb.innerHTML=`<small>記憶卡 ${R7_ROMAN[n-1]}</small><h3>${pick.title}</h3><p></p><em>這張牌已收進首頁「回憶館」的塔羅牌收藏。</em>`;
+    fb.classList.add("on");
+    await wait(350);
+    await typeHTML(fb.querySelector("p"), pick.text, 42);
+    $("#room7ExitBtn").disabled=false; $("#room7ExitBtn").focus({preventScroll:true});
+  });
+  $("#room7ExitBtn").addEventListener("click",()=>{showRoom7Stage(4);playSfx("unlock")});
+
+  // 開發測試捷徑：直接寫入主遊戲真正使用的完成狀態。
+  function activateRoom7TestMode(){
+    AchievementSystem.learning.seedTest();
+    state.completed.clear(); state.room7Test=true;
+    state.endingPlayed=true;
+    [1,2,3,4,5,6].forEach(n=>state.completed.add(n));
+    Object.assign(state.roomTimes,{1:80,2:125,3:102,4:150,5:115,6:95}); state.roomScores={};
+    renderProgress();
+    // 再直接同步配置圖的可視狀態，方便測試時立即確認 1～6 都已完成。
+    [1,2,3,4,5,6].forEach(n=>{
+      document.querySelector(`#reveal-room${n}`)?.classList.add("show");
+      document.querySelector(`#outline-room${n}`)?.classList.add("show");
+      const b=document.querySelector(`.map-hotspot[data-room="${n}"]`);
+      b?.classList.remove("locked-room"); b?.classList.add("cleared-room");
+    });
+    setMapBar(state.completed);
+    $("#finalRoomBtn")?.classList.remove("final-lock");
+    $("#finalRoomBtn")?.setAttribute("aria-disabled","false");
+    playSfx("unlock");
+    $("#finalRoomBtn").click();
+  }
+  window.jumpToRoom7Test=activateRoom7TestMode;
+  /* 2026-11-20 暫時的測試捷徑(外殼首頁「直接通關 1~6 房」送來 memoryMaze:quickClear):1~6 房標成已通關、房間 7 開啟,
+     停在地圖(不自動進房間 7,全圖恢復色彩仍在第一次進房間 7 時播放)。沿用 room7Test 旗標讓 roomTrulyDone 成立。 */
+  function quickClearRooms(){
+    AchievementSystem.learning.seedTest();
+    state.room7Test=true;
+    [1,2,3,4,5,6].forEach(n=>{ state.completed.add(n); state.celebrated.add(n); if(!state.roomTimes[n]) state.roomTimes[n]={1:80,2:125,3:102,4:150,5:115,6:95}[n]; });
+    renderProgress(); playSfx("unlock");
+  }
+  window.addEventListener("message", e => { if(e.source === window.parent && e.data && e.data.type === "memoryMaze:quickClear") quickClearRooms(); });
+
+  let endingBusy = false;
+  $("#finalRoomBtn").addEventListener("click", async () => {
+    await unlockAudio(); playSfx("click");
+    if(state.completed.size < 6){
+      openModal("🔒 房間 7 尚未開啟", `<div class="info">目前已修復 <b>${state.completed.size} / 6</b> 個房間。<br>請先完成六個主題房間。</div>`); return;
+    }
+    if(endingBusy) return;
+    let justEnded = false;
+    if(!state.endingPlayed){ endingBusy = true; try{ await playEndingRestore(); justEnded = true; } finally { endingBusy = false; } }
+    room7Reviewed.clear(); document.querySelectorAll(".memory-hotspot").forEach(b=>b.classList.remove("reviewed"));
+    room7ResetCards(); if(room7Panel){ room7Panel.destroy(); room7Panel = null; }
+    $("#room7ReviewCount").textContent="已回顧 0 / 6"; $("#room7AnalysisBtn").disabled=true;
+    room7CoreDone=false; syncRoom7Core();
+    showRoom7Stage(1); showScreen("ending"); playSfx("unlock");
+    /* 第三修改計劃 J-3:進入房間七時,三位 NPC 與玩家對話(每次遊玩第一次進入時播放),再顯示任務提示 */
+    if(!room7IntroPlayed && await ArtUI.loadStory() && window.StoryCopy && StoryCopy.room7){
+      room7IntroPlayed = true; ArtUI.store.markIntro(7); ArtUI.store.visit(7);
+      await StoryDialog.play({npc: 1, position: "bottom", mode: "both", lines: StoryCopy.room7.intro});
+      if($("#endingScreen").classList.contains("active")) npcSay([`房間 7｜${ROOM_META[7].name}：${ROOM_META[7].hint}`]);
+    } else artIntro(7);
+  });
+
+  function setRoom45Mode(room, mode){
+    const screen = document.getElementById(`room${room}ExternalScreen`);
+    const frame = document.getElementById(`room${room}Frame`);
+    if(!screen || !frame) return;
+    const activity = mode === "activity";
+    screen.classList.toggle("activity-mode", activity);
+    frame.setAttribute("scrolling", activity ? "auto" : "no");
+    /* B6:進出小遊戲後重算版面(頁首重新出現、畫框回到房間尺寸) */
+    requestAnimationFrame(() => { refitAll(); setTimeout(refitAll, 200); });
+    if(activity){ window.scrollTo(0,0); try{ window.ArtUI?.dialog?.close(true); }catch(_){} }
+  }
+
+  window.addEventListener("message", (event) => {
+    const data = event.data || {};
+    if(data.type === "memoryMaze:room45Mode" && (data.room===4 || data.room===5)){
+      setRoom45Mode(data.room, data.mode);
+      return;
+    }
+    if(data.type === "memoryMaze:room6Mode"){
+      const screen=document.getElementById("room6ExternalScreen");
+      const frame=document.getElementById("room6Frame");
+      const activity=data.mode === "activity";
+      if(screen) screen.classList.toggle("activity-mode",activity);
+      if(frame) frame.setAttribute("scrolling",activity ? "auto" : "no");
+      requestAnimationFrame(() => { refitAll(); setTimeout(refitAll, 200); });
+      if(activity) window.scrollTo(0,0);
+      return;
+    }
+    if(data.type === "memoryMaze:room6Complete"){
+      if(!roomTrulyDone(6))return;
+      stopTimer(true);state.completed.add(6);renderProgress();playSfx('success');showScreen('map');
+      roomClearScene(6, "🎉 房間 6 修復完成", `<div class="result-box"><div class="big au-fragment">${ArtUI.sprite("clue-fragment-s")}</div><p><b>房間 6 的心理陪伴探索已完成。</b></p><p>本關記憶旅程：<b>${formatMemoryTime(state.roomTimes[6] || 0)}</b></p><div class="notice">房間 6 已恢復彩色，可以繼續探索其他房間。</div></div>`);
+      return;
+    }
+    if(data.type === "memoryMaze:room6Return"){
+      $("#room6Frame")?.contentWindow?.postMessage({type:"memoryMaze:room6Pause"},"*");
+      stopTimer(false);
+      if(Number.isFinite(Number(data.elapsedSeconds))) state.roomTimes[6]=Number(data.elapsedSeconds);
+      renderProgress();
+      showScreen("map");
+      return;
+    }
+    if(data.type === "memoryMaze:room1Return"){
+      stopTimer(true);
+      if(AchievementSystem.getRoomProgress(achievementRoomIds[1]).completed) state.completed.add(1);
+      renderProgress();
+      showScreen("map");
+      return;
+    }
+    if(data.type === "memoryMaze:room1Complete"){
+      if(!roomTrulyDone(1))return;
+      stopTimer(true);
+      state.completed.add(1);
+      playSfx("success");
+      renderProgress();
+      showScreen("map");
+      roomClearScene(1, "🎉 房間 1 修復完成", `<div class="result-box"><div class="big">✅</div><p><b>房間 1 的視力照護探索已完成。</b></p><p>本關記憶旅程：<b>${formatMemoryTime(state.roomTimes[1] || 0)}</b></p><div class="notice">房間 1 已恢復彩色，可以繼續探索其他房間。</div></div>`);
+    }
+    if(data.type === "memoryMaze:room2Return"){
+      stopTimer(false);
+      if(Number.isFinite(Number(data.elapsedSeconds))) state.roomTimes[2]=Number(data.elapsedSeconds);
+      if(AchievementSystem.getRoomProgress(achievementRoomIds[2]).completed) state.completed.add(2);
+      renderProgress();
+      showScreen("map");
+      return;
+    }
+    if(data.type === "memoryMaze:room2Complete"){
+      if(!roomTrulyDone(2))return;
+      stopTimer(false);
+      if(Number.isFinite(Number(data.elapsedSeconds))) state.roomTimes[2]=Number(data.elapsedSeconds);
+      state.completed.add(2);
+      playSfx("success");
+      renderProgress();
+      showScreen("map");
+      roomClearScene(2, "🎉 房間 2 修復完成", `<div class="result-box"><div class="big">✅</div><p><b>房間 2 的行動與防跌探索已完成。</b></p><p>本關記憶旅程：<b>${formatMemoryTime(state.roomTimes[2] || 0)}</b></p><div class="notice">房間 2 已恢復彩色，可以繼續探索其他房間。</div></div>`);
+      return;
+    }
+    if(data.type === "memoryMaze:room3Return"){
+      stopTimer(false);
+      if(Number.isFinite(Number(data.elapsedSeconds))) state.roomTimes[3]=Number(data.elapsedSeconds);
+      if(AchievementSystem.getRoomProgress(achievementRoomIds[3]).completed) state.completed.add(3);
+      renderProgress();
+      showScreen("map");
+      return;
+    }
+    if(data.type === "memoryMaze:room3Complete"){
+      if(!roomTrulyDone(3))return;
+      stopTimer(false);
+      if(Number.isFinite(Number(data.elapsedSeconds))) state.roomTimes[3]=Number(data.elapsedSeconds);
+      state.completed.add(3);
+      playSfx("success");
+      renderProgress();
+      showScreen("map");
+      roomClearScene(3, "🎉 房間 3 修復完成", `<div class="result-box"><div class="big">✅</div><p><b>房間 3 的營養照護探索已完成。</b></p><p>本關記憶旅程：<b>${formatMemoryTime(state.roomTimes[3] || 0)}</b></p><div class="notice">房間 3 已恢復彩色，可以繼續探索其他房間。</div></div>`);
+      return;
+    }
+  });
+
+  $("#backMapBtn").addEventListener("click", () => {
+    stopTimer();
+    
+    closeModal();
+    renderProgress();
+    showScreen("map");
+  });
+
+  function enterRoom(id){
+    if(id === 1){
+      state.currentRoom = 1;
+      const frame = $("#room1Frame");
+      if(frame){
+        if(!frame.src || frame.src.endsWith("about:blank")){
+          frame.onload=()=>frame.contentWindow?.postMessage({type:"memoryMaze:room1Resume"},"*");
+          frame.src = "room1-v8/index.html?b=20261014-m6";
+        }else{
+          frame.contentWindow?.postMessage({type:"memoryMaze:room1Resume"},"*");
+        }
+      }
+      startTimer();
+      showScreen("room1External");
+      return;
+    }
+    if(id === 2){
+      state.currentRoom = 2;
+      const frame = $("#room2Frame");
+      if(frame){
+        if(!frame.src || frame.src.endsWith("about:blank")){
+          frame.onload=()=>frame.contentWindow?.postMessage({type:"memoryMaze:room2Resume"},"*");
+          frame.src = "room2-action/index.html?b=20261014-m6" + (/[?&]proto=stand\b/.test((()=>{try{return top.location.search}catch(e){return ""}})()) ? "&proto=stand" : "");   // 原型入口:外殼網址加 ?proto=stand
+        }else{
+          frame.contentWindow?.postMessage({type:"memoryMaze:room2Resume"},"*");
+        }
+      }
+      startTimer();
+      showScreen("room2External");
+      return;
+    }
+    if(id === 3){
+      state.currentRoom = 3;
+      const frame = $("#room3Frame");
+      if(frame){
+        if(!frame.src || frame.src.endsWith("about:blank")){
+          frame.onload=()=>frame.contentWindow?.postMessage({type:"memoryMaze:room3Resume"},"*");
+          frame.src = "room3-nutrition/index.html?b=20261014-m6";
+        }else{
+          frame.contentWindow?.postMessage({type:"memoryMaze:room3Resume"},"*");
+        }
+      }
+      startTimer();
+      showScreen("room3External");
+      return;
+    }
+    if(id === 4){
+      state.currentRoom=4;
+      const frame=$("#room4Frame");
+      if(frame && (!frame.src || frame.src.endsWith("about:blank"))) frame.src="room4-hearing/index.html?b=20261014-m6";
+      startTimer(); updateRoom45HUD(4); showScreen("room4External"); artIntro(4); return;
+    }
+    if(id === 5){
+      state.currentRoom=5;
+      const frame=$("#room5Frame");
+      if(frame){
+        const invalid=(!frame.src || frame.src.endsWith('about:blank'));
+        if(invalid) frame.src='room5-cognition/index.html?b=20261014-m6';
+        else { try { if(!frame.contentDocument?.querySelector('.room-art, [data-module]')) frame.contentWindow?.location.reload(); } catch(_){} }
+      }
+      startTimer(); updateRoom45HUD(5); showScreen("room5External"); artIntro(5); frame?.contentWindow?.postMessage({type:"memoryMaze:room5Resume"},"*"); return;
+    }
+    if(id === 6){
+      state.currentRoom=6;
+      closeModal();
+      document.querySelectorAll('[data-achievement-host]').forEach(host=>{const d=host.shadowRoot?.querySelector('dialog[open]');if(d){try{d.close();}catch(e){d.removeAttribute('open');}}});
+      const frame=$("#room6Frame");
+      if(frame){
+        frame.onload=()=>{
+          if(document.querySelector('#room6ExternalScreen')?.classList.contains('active')){
+            frame.contentWindow?.postMessage({type:'memoryMaze:room6Resume'},'*');
+          }
+        };
+        if(!frame.src || !frame.src.includes("room6-depression/index.html?v=9")) frame.src="room6-depression/index.html?v=9&b=20261014-m6";
+      }
+      startTimer(); showScreen("room6External");
+      frame?.contentWindow?.postMessage({type:'memoryMaze:room6Resume'},'*');return;
+    }
+    const room = roomData[id];
+    if(!room) return;
+    state.currentRoom = id;
+    
+    $("#roomTitleText").textContent = room.title;
+    $("#roomChipText").textContent = room.title;
+    $("#roomImage").src = room.image;
+    $("#roomImage").alt = room.title + " 場景圖";
+
+    const layer = $("#hotspotLayer");
+    layer.innerHTML = "";
+    room.hotspots.forEach((spot, index) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "hotspot";
+      btn.style.left = spot.x + "%";
+      btn.style.top = spot.y + "%";
+      btn.style.width = spot.w + "%";
+      btn.style.height = spot.h + "%";
+      btn.setAttribute("aria-label", spot.title);
+
+      const ping = document.createElement("span");
+      ping.className = "hint-ping";
+      btn.appendChild(ping);
+
+      if(state.explored[id].has(index)) btn.classList.add("explored");
+
+      btn.addEventListener("click", async () => {
+        await unlockAudio();
+        state.explored[id].add(index);
+        btn.classList.add("explored");
+        playSfx("click");
+        sayCharacter(characterLines.hotspot[spot.type] || "這個東西好像很重要，我仔細看看。");
+        setTimeout(() => showSpotClue(id, index, spot), 180);
+      });
+      layer.appendChild(btn);
+    });
+
+    renderProgress();
+    startTimer();
+    showScreen("room");
+    sayCharacter(characterLines.roomEnter[id] || "這個房間裡，好像有一些熟悉的記憶。");
+    artIntro(id);
+  }
+
+  function returnExternalRoomToMap(id){ stopTimer(true); renderProgress(); showScreen("map"); }
+
+  function updateRoom45HUD(id){
+    const max=5;
+    const found=room45Done(id).size;
+    const foundEl=$(`#room${id}Found`);
+    const timeEl=$(`#room${id}Time`);
+    if(foundEl) foundEl.textContent=`${found} / ${max}`;
+    if(timeEl) timeEl.textContent=`🕰️ ${formatMemoryTime(currentRoomElapsed())}`;
+  }
+  function bindRoom45Discovery(id){
+    const frame=$(`#room${id}Frame`);
+    if(!frame || frame.dataset.discoveryBound==="1") return;
+    frame.dataset.discoveryBound="1";
+    frame.addEventListener("load",()=>{
+      try{
+        const doc=frame.contentDocument;
+        if(!doc) return;
+        doc.addEventListener("click",e=>{
+          const hit=e.target.closest("[data-object]");
+          if(!hit) return;
+          const key=hit.getAttribute("data-object")||hit.getAttribute("aria-label")||String(room45Visited[id].size+1);
+          room45Visited[id].add(key);
+          updateRoom45HUD(id);
+        },true);
+      }catch(e){}
+    });
+  }
+  function openRoom45Password(id){
+    const title=id===4?"房間 4｜聽力照護客廳":"房間 5｜認知照護廊道";
+    openCodeDialog({
+      title: "輸入通關密碼", room: id,
+      intro: "請輸入在收集系統中發現的本房密碼。",
+      check(value){
+        const left=ALLOW_PASSWORD_BYPASS ? 0 : roomMissingCount(id);
+        if(left>0) return {correct:false, message:`這間房間還有 ${left} 個小遊戲沒有完成，全部完成後再輸入密碼。`};
+        return AchievementSystem.submitPassword(achievementRoomIds[id], value);
+      },
+      onWrong(message){ room45MissionPanel[id] && room45MissionPanel[id].error(message || "密碼不正確，再回到房間找找看。"); },
+      onCorrect(){
+        stopTimer(true); state.completed.add(id); renderProgress(); playSfx("success"); showScreen("map");
+        roomClearScene(id, `🎉 ${title}完成`, `<div class="result-box"><div class="big au-fragment">${ArtUI.sprite("clue-fragment-s")}</div><p><b>密碼正確，房間已完成，取得一枚記憶碎片。</b></p><p>本關記憶旅程：<b>${formatMemoryTime(state.roomTimes[id]||0)}</b></p></div>`);
+      }
+    });
+  }
+  $("#room4BackBtn").addEventListener("click",()=>returnExternalRoomToMap(4));
+  $("#room5BackBtn").addEventListener("click",()=>returnExternalRoomToMap(5));
+  $("#room4CodeBtn").addEventListener("click",()=>openRoom45Password(4));
+  $("#room5CodeBtn").addEventListener("click",()=>openRoom45Password(5));
+  bindRoom45Discovery(4); bindRoom45Discovery(5);
+
+
+  $("#doorLockBtn").addEventListener("click", async () => {
+    await unlockAudio();
+    playSfx("click");
+    const room = roomData[state.currentRoom];
+    if(!room) return;
+    openCodeDialog({
+      title: "輸入通關密碼",
+      intro: "這個房間內藏有兩組數字線索 <b>A</b> 與 <b>B</b>。請回想剛剛找到的提示，將它們 <b>依序連接</b> 成為密碼。",
+      tip: "例：A=60、B=2，則密碼為 602",
+      expected: room.answer,
+      onWrong(){
+        sayCharacter(randomCharacterLine(characterLines.wrong));
+        roomMissionPanel.error("密碼不正確，請再回到房間裡查看 A、B 線索。");
+      },
+      onCorrect: completeCurrentRoom
+    });
+  });
+
+  /* keypad dialog shared by rooms 4 / 5 / 6 (ArtUI keypad: mouse + keyboard, lock / error / success states) */
+  function openCodeDialog({title, intro, tip, expected, check, onCorrect, onWrong, room}){
+    if(screens.room.classList.contains("active")) pauseRoomTimer();
+    const m = ArtUI.modal("au-card9 au-codemodal", `
+      <div class="au-codebox${room ? " au-codebox-r1" : ""}">
+        ${room ? `<p class="au-code-eyebrow">房間 ${room}｜通關密碼</p>` : ""}
+        <h2 class="au-codetitle">${room ? "輸入本房密碼" : "🔐 " + title}</h2>
+        <p>${intro}</p>
+        <div class="au-kp-host"></div>
+        ${tip ? `<p class="au-codetip">${tip}</p>` : ""}
+        <button class="au-btn" data-au-close type="button">${room ? "返回房間" : "返回探索"}</button>
+      </div>`, {onClose(){ kp && kp.destroy(); if(screens.room.classList.contains("active")) resumeRoomTimer(); }});
+    let kp = null;
+    kp = ArtUI.keypad.mount($(".au-kp-host", m.box), {
+      silent: true,
+      onConfirm(value){
+        const verdict = check ? check(value.replace(/\s+/g,"")) : {correct: value.replace(/\s+/g,"") === String(expected)};
+        if(!verdict.correct){ playSfx("error"); onWrong && onWrong(verdict.message); return "wrong"; }
+        playSfx("success");
+        setTimeout(() => { m.close(); onCorrect(); }, 750);
+        return "ok";
+      }
+    });
+    setTimeout(() => kp.input.focus(), 60);
+    return {modal:m, keypad:kp};
+  }
+
+  function completeCurrentRoom(){
+    const room = roomData[state.currentRoom];
+    if(!room) return;
+    stopTimer(true);
+    state.completed.add(state.currentRoom);
+    playSfx("success");
+
+    const completedCount = state.completed.size;
+    const remainingCount = 6 - completedCount;
+    const elapsed = state.roomTimes[state.currentRoom] || 0;
+    const reviewHTML = room.review.map(item => `<div>✓ ${item}</div>`).join("");
+
+    const successMessage = completedCount < 6
+      ? `✅ 密碼正確！目前已完成 <b>${completedCount} / 6</b> 關。<br>還有 <b>${remainingCount}</b> 個房間等待修復，請繼續找回其他記憶。`
+      : `✅ 密碼正確！你已完成 <b>6 / 6</b> 個房間。<br>所有生活記憶都已被點亮，<b>房間 7 已解鎖</b>，請前往完成最後的記憶修復。`;
+
+    const characterSuccess = completedCount < 6
+      ? `太好了，這一段記憶回來了！我們已經完成 ${completedCount} 個房間，還有 ${remainingCount} 個，再陪我繼續走走吧。`
+      : `我想起來了……六個房間的記憶都回來了。謝謝你一路陪著我，最後那扇門好像也打開了。`;
+
+    sayCharacter(characterSuccess);
+    renderProgress();
+
+    openModal(completedCount < 6 ? "🎉 密碼正確｜記憶修復成功" : "✨ 六個房間全部修復完成", `
+      <div class="result-box">
+        <div class="big au-fragment">${ArtUI.sprite("clue-fragment-s")}</div>
+        <div class="success-confirm">${successMessage}</div>
+        <p><b>${room.title}</b></p>
+        <p>本關記憶旅程：<b>${formatMemoryTime(elapsed)}</b></p>
+        ${AchievementSystem.learning.html(achievementRoomIds[state.currentRoom])}
+        <div class="review-list">${reviewHTML}</div>
+        <div class="notice">
+          ${completedCount < 6
+            ? "返回配置圖後，這個房間會恢復彩色，並收進一枚記憶碎片。你可以自由選擇下一個尚未完成的房間。"
+            : "返回配置圖後，六個房間都會恢復色彩。請前往房間 7。"}
+        </div>
+      </div>
+    `, [
+      {
+        label: completedCount < 6 ? "返回房間配置圖，繼續探索" : "返回房間配置圖，前往房間 7",
+        type:"primary",
+        onClick:() => { closeModal(); showScreen("map"); renderProgress(); }
+      }
+    ]);
+  }
+
+  function formatMemoryTime(totalSeconds){
+    totalSeconds=Math.max(0,Math.floor(totalSeconds||0));
+    const hours=Math.floor(totalSeconds/3600);
+    const minutes=Math.floor((totalSeconds%3600)/60);
+    const seconds=totalSeconds%60;
+    return hours>0
+      ? `${hours}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`
+      : `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+  }
+
+  function currentRoomElapsed(){
+    if(!state.currentRoom) return 0;
+    let total=state.roomTimes[state.currentRoom]||0;
+    if(
+      state.roomSessionStartedAt &&
+      !state.roomTimerPaused &&
+      !state.completed.has(state.currentRoom)
+    ){
+      total+=Math.max(0,Math.floor((Date.now()-state.roomSessionStartedAt)/1000));
+    }
+    return total;
+  }
+
+  function updateTimer(){
+    const badge=$("#timerBadge");
+    if(!badge) return;
+    badge.textContent=`🕰️ 記憶旅程 ${formatMemoryTime(currentRoomElapsed())}`;
+    badge.classList.remove("warn");
+    if(state.currentRoom===4 || state.currentRoom===5) updateRoom45HUD(state.currentRoom);
+  }
+
+  function startTimer(){
+    // 已通關房間可重新查看，但不再增加排行榜時間
+    if(!state.currentRoom || state.completed.has(state.currentRoom) || AchievementSystem.getRoomProgress(achievementRoomIds[state.currentRoom])?.completed){
+      state.roomSessionStartedAt=null;
+      state.roomTimerPaused=true;
+      updateTimer();
+      return;
+    }
+
+    if(state.timer){
+      clearInterval(state.timer);
+      state.timer=null;
+    }
+
+    state.roomTimerPaused=false;
+    state.roomSessionStartedAt=Date.now();
+    updateTimer();
+    state.timer=setInterval(updateTimer,250);
+  }
+
+  function commitRoomTime(){
+    if(
+      state.currentRoom &&
+      state.roomSessionStartedAt &&
+      !state.roomTimerPaused &&
+      !state.completed.has(state.currentRoom)
+    ){
+      const delta=Math.max(0,Math.floor((Date.now()-state.roomSessionStartedAt)/1000));
+      state.roomTimes[state.currentRoom]=(state.roomTimes[state.currentRoom]||0)+delta;
+    }
+    state.roomSessionStartedAt=null;
+  }
+
+  function pauseRoomTimer(){
+    if(!state.currentRoom || state.completed.has(state.currentRoom)) return;
+    if(state.roomTimerPaused) return;
+    commitRoomTime();
+    state.roomTimerPaused=true;
+    updateTimer();
+  }
+
+  function resumeRoomTimer(){
+    if(!state.currentRoom || state.completed.has(state.currentRoom)) return;
+    if(!screens.room.classList.contains("active")) return;
+    if(!state.roomTimerPaused) return;
+    state.roomTimerPaused=false;
+    state.roomSessionStartedAt=Date.now();
+    if(!state.timer) state.timer=setInterval(updateTimer,250);
+    updateTimer();
+  }
+
+  function stopTimer(commit=true){
+    if(commit) commitRoomTime();
+    if(state.timer){
+      clearInterval(state.timer);
+      state.timer=null;
+    }
+    state.roomTimerPaused=true;
+    updateTimer();
+  }
+
+  function getTotalJourneyTime(){
+    return [1,2,3,4,5,6].reduce((sum,n)=>sum+(state.roomTimes[n]||0),0);
+  }
+
+
+  function openModal(title, body, actions){
+    if(screens.room.classList.contains("active")) pauseRoomTimer();
+    $("#modalTitle").innerHTML = title;
+    $("#modalBody").innerHTML = body;
+    const actionsWrap = $("#modalActions");
+    actionsWrap.innerHTML = "";
+    const btns = actions && actions.length ? actions : [{label:"關閉", type:"secondary", onClick:closeModal}];
+    btns.forEach(btnInfo => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = btnInfo.type === "primary" ? "primary" : "secondary";
+      btn.textContent = btnInfo.label;
+      btn.addEventListener("click", btnInfo.onClick);
+      actionsWrap.appendChild(btn);
+    });
+    $("#modalOverlay").classList.add("show");
+  }
+
+  /* 第三修改計劃 B3:房間完成時的結果視窗(保留本關時間)。不需要按「關閉」:約 3 秒後自動消失,點一下可提早關,
+     關閉後地圖接著播完成演出(鎖定、震動、閃光、恢復色彩)。 */
+  /* 第三修改計劃新增內容2 C1:通關改播全螢幕通關畫面(shared/room-clear.js);模組沒載入時退回原本的完成視窗 */
+  function roomClearScene(id, title, body){
+    if(window.RoomClear){
+      /* 結算只算第一次通關;再次通關(重新整理後)才會重算 */
+      if(!state.roomScores[id] && window.RoomClear.score) try{ state.roomScores[id] = window.RoomClear.score(id, state.roomTimes[id]||0); }catch(e){}
+      window.RoomClear.play({room:id, name:(ROOM_META[id]&&ROOM_META[id].name)||"", seconds:state.roomTimes[id]||0, remaining:Math.max(0, 6 - [1,2,3,4,5,6].filter(n=>state.completed.has(n)).length), settle: state.roomScores[id] || null}).catch(()=>{}); return; }
+    const results=AchievementSystem.learning.html(achievementRoomIds[id]);
+    body=body.replace(/(<p>本關記憶旅程：[\s\S]*?<\/p>)/, '$1'+results);
+    openResultToast(title, body);
+  }
+  let resultToastTimer = 0;
+  function openResultToast(title, body){
+    openModal(title, body + `<p class="au-toast-note">（點一下畫面可以直接繼續）</p>`, [{label:"", type:"secondary", onClick:closeModal}]);
+    $("#modalActions").innerHTML = "";
+    $("#modalOverlay").classList.add("au-result-toast");
+    clearTimeout(resultToastTimer);
+    resultToastTimer = setTimeout(closeModal, 3000);
+  }
+  $("#modalOverlay").addEventListener("pointerdown", () => { if($("#modalOverlay").classList.contains("au-result-toast")) closeModal(); });
+  function closeModal(){
+    clearTimeout(resultToastTimer); $("#modalOverlay").classList.remove("au-result-toast");
+    $("#modalOverlay").classList.remove("show");
+    if(screens.room.classList.contains("active")) resumeRoomTimer();
+  }
+
+  $("#modalOverlay").addEventListener("click", (e) => {
+    if(e.target === $("#modalOverlay")) closeModal();
+  });
+
+  document.addEventListener("keydown", async (e) => {
+    if(!state.audioUnlocked && ["Enter"," "].includes(e.key)) await unlockAudio();
+    if(e.key === "Escape" && $("#modalOverlay").classList.contains("show")) closeModal();
+  }); 
+  $("#endingBackBtn").addEventListener("click",()=>{ showScreen("map"); renderProgress(); });
+  $("#playAgainBtn").addEventListener("click",()=>{
+    stopTimer(); state.completed.clear(); state.celebrated.clear(); state.endingPlayed=false; state.currentRoom=null; room7IntroPlayed=false; room7CoreDone=false; state.roomScores={};
+    Object.keys(state.explored).forEach(k=>state.explored[k]=new Set()); state.room7Test=false;
+    try{ localStorage.removeItem("memoryMazePlayer"); }catch(e){}
+    if(window.parent!==window){ window.parent.postMessage({type:"memoryMaze:returnHome",reset:true},"*"); }
+    else { window.location.href="../index.html?reset=1"; }
+  });
+
+
+
+  // ===== 首頁角色資料整合 =====
+  function getIntegratedPlayer(){
+    try{
+      const raw=localStorage.getItem("memoryMazePlayer");
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+
+  function applyIntegratedPlayer(player){
+    if(!player) return;
+    const name=(player.name||"冒險家").trim()||"冒險家";
+    const charFile=player.characterAsset||`elder-${Number(player.base||0)+1}-look-1.png`;
+    const accFile=player.accessoryAsset||"acc-none.png";
+    document.querySelectorAll(".character-avatar").forEach(avatar=>{
+      avatar.classList.add("integrated-player");
+      avatar.dataset.base=String(Number(player.base||0));
+      avatar.innerHTML=player.portrait ? `<img class="integrated-character-img" src="${player.portrait}" alt="${name}的角色">` : `<img class="integrated-character-img" src="assets/characters/${charFile}" alt="${name}的角色"><img class="integrated-accessory-img" src="assets/characters/${accFile}" alt="">`;
+    });
+    document.querySelectorAll(".character-name").forEach(el=>el.textContent=name);
+    const badge=$("#playerBadge"); if(badge) badge.textContent=`👤 ${name}`;
+    const mapCursor=$("#mapPlayerCursor");
+    if(mapCursor){
+      mapCursor.innerHTML=`<img class="integrated-character-img" src="assets/characters/${charFile}" alt="${name}的角色"><img class="integrated-accessory-img" src="assets/characters/${accFile}" alt="">`;
+      mapCursor.dataset.base=String(Number(player.base||0));
+    }
+    const endingIntro=$("#endingIntroText");
+    if(endingIntro) endingIntro.innerHTML=`一路上，<b>${name}</b> 和你一起替一段段模糊的生活記憶找到位置，也重新想起那些看似平凡、其實很重要的小事。`;
+  }
+
+
+  // ===== 正式配置圖：玩家選擇的老人角色跟著滑鼠移動 =====
+  const formalMapStage=$("#mapStage");
+  const formalMapCursor=$("#mapPlayerCursor");
+  let formalMapMoveTimer=null;
+  if(formalMapStage && formalMapCursor){
+    formalMapStage.addEventListener("pointermove",(e)=>{
+      const rect=formalMapStage.getBoundingClientRect();
+      const x=e.clientX-rect.left;
+      const y=e.clientY-rect.top;
+      formalMapCursor.style.left=`${x}px`;
+      formalMapCursor.style.top=`${y}px`;
+      formalMapCursor.classList.add("visible","walking"); if(window.SoundKit) SoundKit.sfx("step");
+      clearTimeout(formalMapMoveTimer);
+      formalMapMoveTimer=setTimeout(()=>formalMapCursor.classList.remove("walking"),220);
+    });
+    formalMapStage.addEventListener("pointerleave",()=>formalMapCursor.classList.remove("visible","walking"));
+  }
+
+  const integratedPlayer=getIntegratedPlayer();
+  if(integratedPlayer){
+    applyIntegratedPlayer(integratedPlayer);
+    renderProgress();
+    showScreen("map");
+  }else{
+    // 沒有從角色建立頁帶入資料時，才顯示舊的 health 登入頁。
+    // 這樣由外層角色頁進入正式遊戲時，載入 iframe 的第一幀不會閃出登入畫面。
+    showScreen("login");
+  }
+
+  function fitAllStages(){
+    const pairs=[
+      {screen:$("#mapScreen"), stage:$("#mapStage")},
+      {screen:$("#roomScreen"), stage:$("#roomStage")},
+      {screen:$("#endingScreen"), stage:document.querySelector(".ending-stage")}
+    ];
+    pairs.forEach(({screen,stage})=>{
+      if(!screen || !stage || !screen.classList.contains("active")) return;
+      const header=screen.querySelector(".topbar");
+      const availableW=Math.max(320,window.innerWidth-4);
+      const availableH=Math.max(220,window.innerHeight-(header?header.offsetHeight:0)-4);
+      const ratio=1672/941;
+
+      let h=availableH;
+      let w=h*ratio;
+      if(w>availableW){
+        w=availableW;
+        h=w/ratio;
+      }
+
+      stage.style.width=Math.floor(w)+"px";
+      stage.style.height=Math.floor(h)+"px";
+    });
+  }
+  window.addEventListener("resize",fitAllStages);
+  if(window.ResizeObserver){
+    const fitObserver = new ResizeObserver(fitAllStages);
+    fitObserver.observe(document.documentElement);
+    document.querySelectorAll(".topbar").forEach(h => fitObserver.observe(h));   // 頁首高度改變時重算
+  }
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllStages);
+  window.addEventListener("pageshow", fitAllStages);
+  document.addEventListener("visibilitychange", fitAllStages);
+  window.addEventListener("message", e => { if(e.data && e.data.type === "memoryMaze:resume") { fitAllStages(); setTimeout(fitAllStages, 120); } });
+
+  renderProgress();
+  syncMusicUI();
+  setTimeout(fitAllStages,0);
+})();
+</script>
+<script src="../integration/bridge-game.js?v=20261118-1"></script>
+<link rel="stylesheet" href="shared/map-guide.css?v=2">
+<script src="shared/map-guide.js?v=3"></script>
+</body>
+</html>
+
+<style>.legend-card{display:none!important}</style>
+
+<style>
+.ending-panel{right:2.5%;top:3%;width:min(600px,45%);padding:18px}
+.ending-panel h2{font-size:1.5rem}
+.ending-panel p{font-size:.94rem;line-height:1.55;margin:5px 0}
+.badge-grid{gap:6px;margin-top:8px}
+.memory-badge{padding:7px 9px;font-size:.88rem}
+.reflection{margin-top:8px;padding-top:8px}
+.reflection h3{font-size:.94rem;margin-bottom:6px}
+
+.ending-actions{margin-top:8px}
+.ending-character{bottom:3%;width:min(630px,52%)}
+@media(max-height:760px){
+  .ending-panel{top:1.5%;padding:12px 14px}
+  .ending-panel p{margin:2px 0}
+  .ending-character .character-avatar{width:96px;height:132px}
+  .ending-character .character-dialog{font-size:.88rem;padding:9px 11px}
+}
+</style>
+
+<style>
+/* ===== v6 大場景、小 HUD、小角色 ===== */
+html,body{width:100%;height:100%;overflow:hidden!important}
+
+/* 上方資訊不是主要遊戲內容，盡量壓薄 */
+.topbar{
+  min-height:46px!important;
+  padding:3px 8px!important;
+  gap:6px!important;
+}
+.brand{
+  font-size:.88rem!important;
+  line-height:1.05!important;
+}
+.subbrand{display:none!important}
+.progress{
+  margin-top:0!important;
+  gap:3px!important;
+  font-size:.68rem!important;
+}
+.dot{
+  width:19px!important;
+  height:19px!important;
+  font-size:.62rem!important;
+}
+.badge{
+  padding:4px 7px!important;
+  font-size:.7rem!important;
+}
+.secondary{
+  padding:5px 8px!important;
+  font-size:.7rem!important;
+}
+.top-actions{gap:4px!important}
+.music-control{
+  padding:2px 4px!important;
+  gap:3px!important;
+}
+.music-btn{
+  min-width:32px!important;
+  padding:4px 6px!important;
+}
+.music-control input[type="range"]{width:56px!important}
+
+/* 遊戲圖片吃滿剩餘空間 */
+.stage-wrap,.ending-wrap{
+  padding:2px!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+.stage,.ending-stage{
+  border-radius:5px!important;
+  box-shadow:none!important;
+}
+
+/* 場景上的輔助文字盡量小 */
+.room-title-chip{
+  left:7px!important;
+  top:6px!important;
+  font-size:.64rem!important;
+  padding:4px 7px!important;
+  opacity:.86
+}
+.room-help-chip{display:none!important}
+.lock-button{
+  right:1%!important;
+  bottom:1.2%!important;
+  padding:7px 10px!important;
+  font-size:.7rem!important;
+  border-radius:8px!important
+}
+
+/* 角色只作為陪伴圖示，不再佔據房間主要視野 */
+.character-dock{
+  left:6px!important;
+  bottom:6px!important;
+  gap:5px!important;
+  width:auto!important;
+  max-width:34%!important;
+  align-items:flex-end!important;
+  pointer-events:none!important
+}
+.character-avatar{
+  width:48px!important;
+  height:64px!important;
+  border-width:2px!important;
+  box-shadow:0 3px 8px rgba(0,0,0,.15)!important
+}
+.character-avatar::before{
+  width:24px!important;
+  height:24px!important;
+  top:5px!important
+}
+.character-avatar::after{
+  font-size:24px!important;
+  top:0!important
+}
+.character-dialog{
+  max-width:245px!important;
+  padding:6px 8px!important;
+  font-size:.64rem!important;
+  line-height:1.35!important;
+  border-radius:9px 9px 9px 3px!important;
+  box-shadow:0 4px 10px rgba(0,0,0,.14)!important;
+  pointer-events:none!important
+}
+.character-name{
+  font-size:.58rem!important;
+  margin-bottom:0!important
+}
+.character-dialog.auto-hide{
+  opacity:0!important;
+  transform:translateY(5px)!important;
+  transition:opacity .35s ease,transform .35s ease!important
+}
+
+/* 微光不要蓋過家具本身 */
+.hotspot .hint-ping{
+  width:8px!important;
+  height:8px!important;
+  box-shadow:0 0 9px rgba(255,216,118,.40)!important
+}
+
+/* 選關標籤精簡 */
+.map-tip{
+  top:.7%!important;
+  padding:4px 7px!important;
+  font-size:clamp(8px,.62vw,11px)!important
+}
+.map-hotspot .label{
+  font-size:clamp(8px,.62vw,10px)!important;
+  padding:3px 5px!important
+}
+.map-hotspot.locked-room::before,
+.map-hotspot.cleared-room::before,
+.map-hotspot[data-start="1"]::before,
+.final-lock::before{
+  font-size:clamp(8px,.64vw,10px)!important;
+  padding:4px 6px!important
+}
+
+/* 結尾同樣保留圖片，而不是讓文字蓋滿 */
+.ending-panel{
+  right:1.2%!important;
+  top:1.2%!important;
+  width:min(440px,34%)!important;
+  padding:9px!important
+}
+.ending-panel h2{font-size:1rem!important}
+.ending-panel p{
+  font-size:.66rem!important;
+  line-height:1.3!important;
+  margin:2px 0!important
+}
+.badge-grid{
+  gap:4px!important;
+  margin-top:5px!important
+}
+.memory-badge{
+  font-size:.62rem!important;
+  padding:4px 5px!important
+}
+.reflection{
+  margin-top:5px!important;
+  padding-top:5px!important
+}
+.reflection h3{
+  font-size:.66rem!important;
+  margin-bottom:3px!important
+}
+
+.ending-actions{margin-top:5px!important}
+.ending-character{
+  left:1%!important;
+  bottom:1%!important;
+  width:min(390px,31%)!important
+}
+.ending-character .character-avatar{
+  width:54px!important;
+  height:72px!important
+}
+.ending-character .character-dialog{
+  font-size:.6rem!important;
+  max-width:220px!important
+}
+
+@media(max-height:760px){
+  .topbar{
+    min-height:38px!important;
+    padding:2px 6px!important
+  }
+  .brand{font-size:.76rem!important}
+  .progress{display:none!important}
+  .badge{
+    font-size:.62rem!important;
+    padding:3px 6px!important
+  }
+  .secondary{
+    font-size:.62rem!important;
+    padding:3px 6px!important
+  }
+  .music-control input[type="range"]{width:42px!important}
+}
+
+@media(max-width:820px){
+  .character-dock{max-width:42%!important}
+  .character-avatar{
+    width:42px!important;
+    height:56px!important
+  }
+  .character-dialog{
+    max-width:175px!important;
+    font-size:.58rem!important
+  }
+}
+</style>
+
+<style>
+.journey-summary{
+  margin-top:8px;padding-top:8px;border-top:1px solid #decfb9
+}
+.journey-summary h3{
+  margin:0 0 6px;font-size:.72rem;color:#594a3b
+}
+#journeyRoomTimes{
+  display:grid;grid-template-columns:1fr 1fr;gap:4px 7px
+}
+.journey-time-row{
+  display:flex;justify-content:space-between;gap:8px;
+  padding:4px 6px;border-radius:7px;background:#fff8e9;
+  font-size:.58rem;color:#615344
+}
+.journey-time-row strong{color:#5f704f}
+.journey-total{
+  margin-top:5px;padding:6px 8px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:#eef4e8;border:1px solid #cfddc3;border-radius:9px;
+  font-size:.66rem;font-weight:800
+}
+.journey-total strong{
+  font-size:.9rem;color:#5f704f
+}
+</style>
+
+<style>
+.success-confirm{
+  margin:10px 0 12px;
+  padding:11px 13px;
+  border-radius:12px;
+  background:#eef6e8;
+  border:1px solid #c9dcbc;
+  color:#4e6544;
+  font-weight:800;
+  line-height:1.65;
+}
+</style>
+
+
+<style>
+/* ===== v2：正式配置圖角色跟隨滑鼠 ===== */
+.map-player-cursor{
+  position:absolute;
+  z-index:30;
+  width:clamp(72px,7.2%,112px);
+  aspect-ratio:3/4;
+  pointer-events:none;
+  transform:translate(-50%,-82%);
+  display:none;
+  filter:drop-shadow(0 5px 5px rgba(0,0,0,.30));
+}
+.map-player-cursor.visible{display:block}
+.map-player-cursor.walking{animation:formalMapWalk .22s steps(2,end) infinite alternate}
+.map-player-cursor .integrated-character-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.map-player-cursor .integrated-accessory-img{position:absolute;left:50%;top:8%;width:34%;height:18%;object-fit:contain;transform:translateX(-50%);z-index:2;image-rendering:pixelated}
+@keyframes formalMapWalk{from{margin-top:0;rotate:-1deg}to{margin-top:-8px;rotate:1deg}}
+
+/* ===== v2：六間房內角色加大 ===== */
+#roomScreen .character-dock{left:10px!important;bottom:10px!important;max-width:46%!important;gap:9px!important}
+#roomScreen .character-avatar{width:92px!important;height:124px!important}
+#roomScreen .character-dialog{max-width:315px!important;padding:9px 12px!important;font-size:.78rem!important;line-height:1.45!important}
+#roomScreen .character-name{font-size:.72rem!important;margin-bottom:2px!important}
+
+/* ===== v2：房間 7 左側角色更明顯 ===== */
+#endingScreen .ending-character{
+  left:2%!important;
+  bottom:3%!important;
+  width:min(540px,43%)!important;
+  gap:12px!important;
+  align-items:flex-end!important;
+}
+#endingScreen .ending-character .character-avatar{width:124px!important;height:168px!important}
+#endingScreen .ending-character .character-dialog{max-width:330px!important;font-size:.74rem!important;padding:9px 12px!important;line-height:1.4!important}
+#endingScreen .ending-character .character-name{font-size:.72rem!important}
+
+@media(max-height:720px){
+  #roomScreen .character-avatar{width:78px!important;height:105px!important}
+  #roomScreen .character-dialog{font-size:.69rem!important;max-width:275px!important}
+  #endingScreen .ending-character .character-avatar{width:102px!important;height:138px!important}
+  #endingScreen .ending-character .character-dialog{font-size:.66rem!important;max-width:285px!important}
+}
+</style>
+
+<style>
+/* ===== v6 最終覆寫：角色、對話框、文字真正放大 2 倍 ===== */
+#roomScreen .character-dock{
+  left:12px!important;
+  bottom:12px!important;
+  width:auto!important;
+  max-width:82%!important;
+  gap:18px!important;
+  align-items:flex-end!important;
+  z-index:60!important;
+}
+#roomScreen .character-avatar{
+  width:184px!important;
+  height:248px!important;
+  min-width:184px!important;
+  min-height:248px!important;
+}
+#roomScreen .character-dialog{
+  width:auto!important;
+  max-width:630px!important;
+  padding:18px 24px!important;
+  font-size:1.56rem!important;
+  line-height:1.45!important;
+  border-radius:18px 18px 18px 6px!important;
+}
+#roomScreen .character-name{
+  font-size:1.44rem!important;
+  margin-bottom:4px!important;
+}
+
+#endingScreen .ending-character{
+  left:2%!important;
+  bottom:3%!important;
+  width:min(900px,74%)!important;
+  max-width:74%!important;
+  gap:24px!important;
+  align-items:flex-end!important;
+  z-index:60!important;
+}
+#endingScreen .ending-character .character-avatar{
+  width:248px!important;
+  height:336px!important;
+  min-width:248px!important;
+  min-height:336px!important;
+}
+#endingScreen .ending-character .character-dialog{
+  width:auto!important;
+  max-width:660px!important;
+  padding:18px 24px!important;
+  font-size:1.48rem!important;
+  line-height:1.4!important;
+  border-radius:18px 18px 18px 6px!important;
+}
+#endingScreen .ending-character .character-name{
+  font-size:1.44rem!important;
+  margin-bottom:4px!important;
+}
+
+/* 低高度螢幕仍維持 2 倍角色，不再被舊版 media query 縮回去 */
+@media(max-height:720px){
+  #roomScreen .character-avatar{width:184px!important;height:248px!important;min-width:184px!important;min-height:248px!important}
+  #roomScreen .character-dialog{max-width:630px!important;padding:18px 24px!important;font-size:1.56rem!important}
+  #roomScreen .character-name{font-size:1.44rem!important}
+  #endingScreen .ending-character .character-avatar{width:248px!important;height:336px!important;min-width:248px!important;min-height:336px!important}
+  #endingScreen .ending-character .character-dialog{max-width:660px!important;padding:18px 24px!important;font-size:1.48rem!important}
+  #endingScreen .ending-character .character-name{font-size:1.44rem!important}
+}
+</style>
+
+<!-- official art integration layer (must stay last) -->
+<link rel="stylesheet" href="art-ui/art-ui.css?v=r15">
+<link rel="stylesheet" href="shared/room7.css?v=2">

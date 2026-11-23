@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>認知房「牆上的照片」｜原版 / 原型 對照入口</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="photo.css"><link rel="stylesheet" href="photo-prototype.css">
+<style>
+html,body{margin:0;background:#233e35;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif}
+#labBar{display:flex;gap:12px;align-items:center;padding:8px 16px;background:#14241d;color:#fff;font-size:18px;position:sticky;top:0;z-index:50}
+#labBar a{color:#ffe19a;font-weight:800;border:2px solid #ffe19a;border-radius:8px;padding:6px 14px;text-decoration:none}
+#labBar .now{background:#b3472b;border-radius:999px;padding:4px 16px;font-weight:800}
+#labBar .now.orig{background:#3a6f8f}
+#labBar small{opacity:.8}
+#app{background:#f6f1e2;min-height:calc(100vh - 64px)}
+</style></head>
+<body>
+<div id="labBar"><span class="now" id="labNow"></span><a id="labSwap"></a><small>獨立測試頁：未接入房間獎勵。要玩完整遊戲請從主入口進入。</small></div>
+<main id="app"></main>
+<script src="../shared/memory-maze-character.js"></script>
+<script>window.AchievementSystem=window.AchievementSystem||{completeActivity(r,a){console.log('[lab] completeActivity(stub)',r,a);return Promise.resolve();},getRoomProgress(){return{completedActivities:[]};}};</script>
+<script src="data.js"></script><script src="photo-engine.js"></script><script src="photo.js?v=learning1"></script><script src="photo-prototype.js"></script>
+<script>
+const mode=new URLSearchParams(location.search).get('mode')==='original'?'original':'prototype';
+document.getElementById('labNow').textContent=mode==='original'?'目前：原版':'目前：原型';
+document.getElementById('labNow').classList.toggle('orig',mode==='original');
+const sw=document.getElementById('labSwap');sw.textContent=mode==='original'?'切換到原型 →':'切換到原版 →';sw.href='?mode='+(mode==='original'?'prototype':'original');
+const app=document.getElementById('app');
+const again=()=>{(mode==='original'?CognitionPhoto:CognitionPhotoPrototype).mount(app,again,()=>console.log('[lab] prototype complete'));};
+again();
+</script></body></html>

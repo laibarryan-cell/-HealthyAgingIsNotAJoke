@@ -1,0 +1,85 @@
+/* gallery.css — 2026-11-18 回憶館(深藍金框+羊皮紙,和遊戲其他面板同一套風格) */
+.mgal-open { position: relative; }
+.mgal-badge { margin-left: .45em; font-size: .78em; padding: 0 .45em; border-radius: 999px; background: #1c2340; color: #ffd86d; border: 1px solid #d9a441; }
+
+.mgal-overlay { position: fixed; inset: 0; z-index: 2147482000; display: grid; place-items: center; background: rgba(8, 12, 28, .72); }
+.mgal { position: relative; width: min(1060px, 94vw); height: min(680px, 92vh); display: flex; flex-direction: column;
+  background: #f4e4bf; color: #2b1d0e; border: 4px solid #d9a441; border-radius: 14px;
+  box-shadow: 0 0 0 4px #1c2340, 0 18px 50px rgba(0, 0, 0, .6); font-family: inherit; overflow: hidden; }
+.mgal-head { display: flex; align-items: center; gap: 16px; padding: 14px 20px; background: #1c2340; color: #fff3c4; border-bottom: 3px solid #d9a441; }
+.mgal-head h2 { margin: 0; font-size: clamp(22px, 2.2vw, 30px); letter-spacing: .2em; }
+.mgal-count { margin: 0; font-weight: 800; color: #ffd86d; }
+.mgal-x { margin-left: auto; width: 44px; height: 44px; border-radius: 10px; border: 2px solid #d9a441; background: #2a3460; color: #fff3c4; font-size: 22px; cursor: pointer; }
+.mgal-x:hover, .mgal-x:focus-visible { background: #3a4680; }
+.mgal-tabs { display: flex; gap: 8px; padding: 12px 20px 0; }
+.mgal-tab { flex: 0 0 auto; min-width: 150px; min-height: 44px; padding: 8px 18px; font: inherit; font-size: 18px; font-weight: 900; cursor: pointer;
+  border: 3px solid #b8862c; border-bottom: 0; border-radius: 10px 10px 0 0; background: #e2cc9a; color: #6b4a1a; }
+.mgal-tab.on { background: #fff8e4; color: #2b1d0e; }
+.mgal-body { flex: 1; min-height: 0; margin: 0 20px; background: #fff8e4; border: 3px solid #b8862c; border-radius: 0 10px 10px 10px; overflow: auto; }
+.mgal-pane { padding: 16px; }
+.mgal-cgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.mgal-card { display: flex; flex-direction: column; gap: 6px; padding: 8px; border: 3px solid #b8862c; border-radius: 10px; background: #f4e4bf; cursor: pointer; font: inherit; text-align: center; }
+.mgal-card:not(.locked):hover, .mgal-card:not(.locked):focus-visible { transform: translateY(-3px); box-shadow: 0 0 0 3px #ffd86d, 0 6px 14px rgba(0, 0, 0, .25); }
+.mgal-thumb { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #1c2340; }
+.mgal-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mgal-name { font-weight: 900; font-size: 16px; }
+.mgal-card.locked { cursor: not-allowed; background: #d9c9a4; }
+.mgal-card.locked .mgal-thumb { background: repeating-linear-gradient(45deg, #2a3150 0 10px, #232a46 10px 20px); }
+.mgal-card.locked .mgal-name, .mgal-track.locked .mgal-tname { color: #7a6a4c; letter-spacing: .3em; }
+.mgal-lock { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; transform: translate(-50%, -50%); opacity: .85;
+  background: no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M5 7V5a3 3 0 0 1 6 0v2' fill='none' stroke='%23d9a441' stroke-width='2'/%3E%3Crect x='3' y='7' width='10' height='8' fill='%23d9a441'/%3E%3Crect x='7' y='9' width='2' height='3' fill='%231c2340'/%3E%3C/svg%3E"); }
+.mgal-tracks ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+.mgal-now { margin: 0 0 12px; font-weight: 800; color: #6b4a1a; }
+.mgal-track { width: 100%; min-height: 54px; display: flex; align-items: center; gap: 12px; padding: 8px 14px; font: inherit; font-size: 17px; cursor: pointer; text-align: left;
+  border: 3px solid #b8862c; border-radius: 10px; background: #f4e4bf; color: #2b1d0e; }
+.mgal-track:not(.locked):hover, .mgal-track:not(.locked):focus-visible { box-shadow: 0 0 0 3px #ffd86d; }
+.mgal-track.playing { background: #1c2340; color: #fff3c4; border-color: #ffd86d; }
+.mgal-track.locked { cursor: not-allowed; background: #d9c9a4; }
+.mgal-note { width: 32px; height: 32px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #1c2340; color: #ffd86d; font-size: 15px; }
+.mgal-track.playing .mgal-note { background: #ffd86d; color: #1c2340; animation: mgalBeat .9s ease-in-out infinite; }
+@keyframes mgalBeat { 50% { transform: scale(1.15); } }
+.mgal-tname { flex: 1; font-weight: 900; }
+.mgal-where { font-size: .82em; color: #8a6a3a; }
+.mgal-track.playing .mgal-where { color: #ffd86d; }
+.mgal-foot { display: flex; align-items: center; gap: 12px; padding: 12px 20px 14px; }
+.mgal-tip { flex: 1; font-size: 15px; color: #6b4a1a; font-weight: 700; }
+.mgal-reset { min-height: 40px; padding: 6px 14px; font: inherit; font-weight: 800; cursor: pointer; border-radius: 8px; border: 2px solid #9a3b2c; background: #f7d9cf; color: #7a2418; }
+/* 2026-11-20 塔羅牌分頁 */
+.mgal-tarot-tip { margin: 0 0 12px; font-weight: 800; color: #6b4a1a; }
+.mgal-tgrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.mgal-tthumb { position: relative; display: block; aspect-ratio: 3 / 5; border-radius: 8px; overflow: hidden; }
+.mgal-tthumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.mgal-tcard.locked .mgal-tthumb img { filter: grayscale(.7) brightness(.55); }
+.mgal-tthumb i { position: absolute; inset: 0; display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 44px; color: #ffd86d; text-shadow: 0 2px 0 #1c2340; }
+.mgal-tcard .mgal-name { font-size: 14px; line-height: 1.3; min-height: 2.6em; }
+
+/* 2026-11-20 全螢幕檢視(lightbox):蓋滿整個視窗,用原圖解析度,可縮放平移 */
+.mgal-lb { position: fixed; inset: 0; z-index: 5; background: rgba(6, 9, 22, .97); opacity: 0; transition: opacity .2s ease; }
+.mgal-lb.in { opacity: 1; }
+.mgal-lb.out { opacity: 0; pointer-events: none; }
+.mgal-lb-stage { position: absolute; inset: 56px 72px 92px; display: grid; place-items: center; overflow: hidden; }
+.mgal-lb-pan { position: relative; width: min(100%, calc((100vh - 148px) * 1672 / 941)); aspect-ratio: 1672 / 941; transform-origin: center; transition: transform .12s ease-out; cursor: zoom-in; touch-action: none; }
+.mgal-lb.zoomed .mgal-lb-pan { cursor: grab; transition: none; }
+.mgal-lb.zoomed .mgal-lb-pan:active { cursor: grabbing; }
+.mgal-lb-pan img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.mgal-lb-b { opacity: 0; transition: opacity .25s; }
+.mgal-lb-b.on { opacity: 1; }
+.mgal-lb-tarot .mgal-lb-pan { width: min(100%, calc((100vh - 148px) * .6)); aspect-ratio: 3 / 5; }
+.mgal-lb-tarot .mgal-lb-pan img { image-rendering: auto; }
+.mgal-lb button { font: inherit; font-weight: 900; cursor: pointer; border-radius: 10px; border: 2px solid #d9a441; background: #2a3460; color: #fff3c4; }
+.mgal-lb button:hover, .mgal-lb button:focus-visible { background: #3a4680; outline: 2px solid #ffd86d; outline-offset: 2px; }
+.mgal-lb-x { position: absolute; right: 14px; top: 10px; width: 46px; height: 46px; font-size: 22px; }
+.mgal-lb-fs { position: absolute; right: 70px; top: 10px; height: 46px; padding: 0 14px; font-size: 16px; }
+.mgal-lb-prev, .mgal-lb-next { position: absolute; top: 50%; width: 52px; height: 88px; margin-top: -44px; font-size: 44px; line-height: 1; }
+.mgal-lb-prev { left: 10px; } .mgal-lb-next { right: 10px; }
+.mgal-lb [hidden] { display: none !important; }
+.mgal-lb-cap { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); width: min(900px, 90vw); text-align: center; color: #fff3c4; }
+.mgal-lb-name { font-size: 20px; }
+.mgal-lb-idx { margin-left: 12px; color: #ffd86d; font-weight: 800; }
+.mgal-lb-text { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: #e9dcb8; }
+.mgal-lb-cap small { display: block; margin-top: 2px; font-size: 12px; color: #9fa8c8; }
+.mgal-lb:fullscreen .mgal-lb-stage { inset: 10px 64px 70px; }
+.mgal-lb:fullscreen .mgal-lb-pan { width: min(100%, calc((100vh - 80px) * 1672 / 941)); }
+.mgal-lb-tarot:fullscreen .mgal-lb-pan { width: min(100%, calc((100vh - 80px) * .6)); }
+@media (prefers-reduced-motion: reduce) { .mgal-track.playing .mgal-note { animation: none; } .mgal-lb, .mgal-lb-pan { transition: none; } }
+.mgal-pane[hidden] { display: none !important; }

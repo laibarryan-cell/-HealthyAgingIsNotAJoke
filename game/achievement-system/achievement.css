@@ -1,0 +1,123 @@
+:host{all:initial;font-family:"Microsoft JhengHei",system-ui,sans-serif;color:#263c35;font-size:17px;line-height:1.6;color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:3px solid #e6b950;outline-offset:5px}
+.as-button{position:fixed;left:max(24px,env(safe-area-inset-left));bottom:max(24px,env(safe-area-inset-bottom));width:72px;height:72px;min-width:0;min-height:0;padding:8px;border:2px solid #efd8a4;border-radius:50%;background:linear-gradient(145deg,#375a49,#1c392e);color:#fff5db;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.1;box-shadow:0 5px 18px #10291d60, inset 0 0 0 4px #ffffff0d;z-index:2147483001;pointer-events:auto}
+.as-button:hover:not(:disabled){background:#416952}
+.as-button:disabled{cursor:default;opacity:1}
+.as-bag{font-size:28px;line-height:1}
+.as-button-label{font-size:12px;letter-spacing:2px;margin-top:5px}
+.as-panel{position:fixed;inset:0;margin:auto;width:min(640px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:0;border:1px solid #d8cbaa;border-radius:20px;background:#fbf8ee;color:#263c35;box-shadow:0 25px 90px #10291d60;overflow:auto;pointer-events:auto;font:inherit}
+.as-panel::backdrop{background:#101e1ab3;backdrop-filter:blur(3px)}
+.as-header{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 26px;background:#fbf8ee;border-bottom:1px solid #e4decb;z-index:2}
+.as-header h2{font-size:24px;margin:0;line-height:1.4}
+.as-close{flex-shrink:0;display:grid;place-items:center;width:44px;height:44px;border:1px solid #d9d8c6;border-radius:50%;background:#fffdf5;color:#3b5145;font-size:28px;line-height:1}
+.as-content{padding:26px}
+.as-empty{text-align:center;color:#728073;padding:36px 0;margin:0}
+.as-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:480px),(max-height:480px){.as-button{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));width:60px;height:60px}.as-bag{font-size:23px}.as-button-label{font-size:11px}.as-header,.as-content{padding:18px}}
+
+.as-award-stage{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at center,#193d2c44,transparent 68%);z-index:2147483002;pointer-events:none}
+.as-award{display:grid;justify-items:center;gap:24px;pointer-events:none}
+.as-orb{position:relative;width:140px;height:140px;display:grid;place-items:center}
+.as-award-picture{position:relative;display:grid;place-items:center;width:120px;height:120px;font-size:76px;line-height:1;filter:drop-shadow(0 8px 15px #172f3660);will-change:transform}
+.as-award-picture img{width:100%;height:100%;object-fit:contain}
+.as-ring{position:absolute;inset:-12px;border:2px solid #ffe6a2;border-radius:50%;box-shadow:0 0 24px #ffda7680,inset 0 0 24px #ffda7640;animation:as-ring-expand 1.3s ease-out var(--ring-delay) infinite}
+.as-award-label{display:grid;gap:3px;text-align:center;padding:12px 24px;background:#fffbef;border:1px solid #e1cea0;border-radius:14px;box-shadow:0 8px 30px #10291d40;color:#263c35;max-width:calc(100vw - 32px)}
+.as-award-label span{font-size:14px;color:#7d775f;letter-spacing:3px}
+.as-award-label strong{font-size:24px}
+@keyframes as-ring-expand{0%{transform:scale(.75);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+@media(prefers-reduced-motion:reduce){.as-ring{animation:none;opacity:.45}.as-ring:nth-child(2){transform:scale(1.15)}.as-ring:nth-child(3){transform:scale(1.3)}}
+
+.as-storage-warning{font-size:14px;color:#815132;background:#fff0d2;padding:12px;border-radius:8px;line-height:1.7}
+
+img.as-bag{width:30px;height:30px;object-fit:contain}
+.as-summary{margin:0 0 18px;color:#697862;font-size:15px;letter-spacing:1px}
+.as-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;list-style:none;padding:0;margin:0}
+.as-item{display:flex;align-items:center;flex-direction:column;gap:8px;padding:20px 8px 16px;border:1px solid #d9ddca;border-radius:14px;background:linear-gradient(#fffef8,#f0f1e5);text-align:center;min-width:0}
+.as-item-picture{display:grid;place-items:center;width:80px;height:80px;font-size:46px;line-height:1}
+.as-item-picture img{width:100%;height:100%;object-fit:contain}
+.as-item strong{font-size:17px;overflow-wrap:anywhere}
+.as-owned{font-size:12px;color:#6b805e}
+.as-locked{background:#eeeee7;border-style:dashed;color:#858b7f}
+.as-locked .as-item-picture{filter:grayscale(1);opacity:.4;font-size:32px}
+.as-sections{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.as-section{border:1px solid #b8c5ae;border-radius:20px;padding:6px 16px;background:#fffaf0;color:#35543e}
+.as-section[aria-pressed="true"]{background:#365e45;color:#fff}
+@media(max-width:480px){.as-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.as-item{padding:15px 6px}.as-item-picture{width:70px;height:70px}}
+
+/* Shared object opening and final interactions; collection flight remains unchanged. */
+.as-item{position:relative}.as-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.as-object-state{font-size:14px;color:#245946}.as-action,.as-choice,.as-inspect,.as-hazard{font:inherit;border:1px solid #aac4bb;border-radius:12px;padding:12px 16px;background:#f0f8f3;color:#173a30;cursor:pointer}.as-action{background:#235d49;color:white;margin-top:12px}.as-choice{display:block;text-align:left;width:100%;margin:10px 0}.as-choice:disabled,.as-hazard:disabled{opacity:.8;background:#d9efdf;color:#173a30;cursor:default}.as-inspect{margin-top:8px}.as-popover{position:absolute;top:55%;left:0;right:0;z-index:5;background:#fffdf3;border:2px solid #36785f;border-radius:16px;padding:28px 18px 18px;box-shadow:0 8px 25px #1234;color:#173a30;font-size:16px;text-align:left}.as-popover-close{position:absolute;right:5px;top:2px;border:0;background:none;font-size:25px;cursor:pointer}.as-grid:has(.as-popover){padding-bottom:170px}.as-opening{min-height:300px;display:grid;place-items:center;padding:35px 0}.as-object-body{position:relative;width:210px;height:150px;border:4px solid #735b45;border-radius:14px;background:#c19768;box-shadow:inset 0 -12px #0001}.as-object-lid{position:absolute;inset:0 0 55%;background:#e2b989;border:3px solid #735b45;border-radius:9px;transform-origin:top}.as-object-face{position:absolute;inset:35% 8% 10%;display:grid;place-items:center;color:#243e38;text-align:center;font-size:24px}.as-lock{position:absolute;left:45%;top:35%;font-size:32px}.as-screw{position:absolute;display:none;font-size:24px}.as-screw[data-corner="0"]{left:6px;top:6px}.as-screw[data-corner="1"]{right:6px;top:6px}.as-screw[data-corner="2"]{left:6px;bottom:6px}.as-screw[data-corner="3"]{right:6px;bottom:6px}.as-opening[data-kind="screws"] .as-screw{display:block}.as-loose{opacity:0;transform:translateY(-20px);transition:.15s}.as-opening-tool{position:fixed;width:64px;height:64px;display:grid;place-items:center;font-size:52px;z-index:2147483600;pointer-events:none}.as-opening-tool img{width:100%;height:100%}.as-opening[data-kind="battery"] .as-object-body{background:#5d7880}.as-opening[data-kind="battery"] .as-object-face{background:#263f44;color:#334b4f}.as-opening[data-kind="battery"][data-phase="opened"] .as-object-face{color:#88ffd0;animation:as-wave .65s infinite alternate}.as-opening[data-kind="battery"] .as-lock{display:none}.as-opening[data-kind="diary"] .as-object-body{background:#f6ecd5;border-color:#88627b}.as-opening[data-kind="diary"] .as-object-lid{inset:0;background:#b890a7;transform-origin:left}.as-opening[data-kind="can"] .as-object-body{border-radius:45%/15%;background:#8fb4a1}.as-opening[data-kind="can"] .as-object-lid{height:32px;bottom:auto;border-radius:50%}.as-opening[data-kind="vision"] .as-object-face{filter:blur(5px);font-size:18px}.as-opening[data-kind="vision"][data-phase="opened"] .as-object-face{filter:none}.as-opening[data-phase="opened"] .as-object-lid{opacity:.3;transform:rotateX(70deg)}.as-challenge{font-size:18px;line-height:1.65}.as-challenge blockquote{margin:16px 0;padding:20px;background:#f2eddf;border-radius:12px;white-space:pre-line}.as-event-cards{display:grid;gap:10px}.as-event-cards article{background:#f3e8cd;border-radius:10px;padding:15px}.as-bathroom{display:grid;grid-template-columns:1fr 1fr;gap:14px;border:8px solid #87a5a7;background:#e0eff1;padding:16px}.as-bath-fixture{padding:20px 5px}.as-hazard{background:#fff0dc;border:2px dashed #a36425}.as-password{display:block;font-size:72px;letter-spacing:.2em;color:#245d49;text-align:center}.as-password-heading{text-align:center;font-size:25px;font-weight:bold}.as-fineprint{filter:blur(4px);user-select:none}.as-fineprint.as-readable{filter:none;transition:filter .5s}.as-wave{font-size:36px;color:#357966;animation:as-wave .8s infinite alternate}.as-answer-feedback{color:#355b4b;min-height:1em}@keyframes as-wave{to{opacity:.55;transform:scaleY(.65)}}@media(max-width:480px){.as-challenge{font-size:16px}.as-item{padding:10px}.as-popover{left:-10px;right:-10px;font-size:14px}.as-bathroom{gap:8px;padding:8px}.as-opening-tool{font-size:44px}.as-choice{padding:10px}}@media(prefers-reduced-motion:reduce){.as-wave{animation:none}.as-opening *{animation:none!important;transition:none!important}}
+
+.as-indicator{display:none}.as-opening[data-kind="battery"] .as-indicator{display:block;position:absolute;right:15px;bottom:12px;width:12px;height:12px;border-radius:50%;background:#263f44}.as-opening[data-kind="battery"][data-phase="opened"] .as-indicator{background:#8fffc3;box-shadow:0 0 14px #b1ffdc}.as-opening[data-kind="battery"] .as-object-lid{inset:5px 8px 65%;background:#8c9b9e}.as-opening[data-kind="battery"][data-phase="opened"] .as-object-lid{opacity:1;transform:none}.as-opening[data-kind="diary"][data-phase="opened"] .as-object-lid{transform:rotateY(-145deg)}
+
+/* ===== 整合版外觀(R1-14):與遊戲提示框一致的木框/暖金/深藍像素風。只覆蓋顏色、邊框與尺寸,不動結構與互動 ===== */
+:host{color:#3a2a14}
+.as-button{width:76px;height:76px;border:3px solid #c98c1c;border-radius:10px;background:linear-gradient(#1b3358,#0e1c35);color:#f6dfae;box-shadow:0 0 0 3px #0b1426,0 6px 16px #0008,inset 0 0 0 2px #f6dfae33}
+.as-button:hover:not(:disabled){background:linear-gradient(#25447a,#12264a)}
+.as-button-label{color:#f6dfae;font-weight:700}
+.as-panel{width:min(760px,calc(100vw - 32px));max-height:calc(100dvh - 32px);border:4px solid #c98c1c;border-radius:6px;background:#f6dfae;color:#3a2a14;box-shadow:inset 0 0 0 3px #fff3cf,0 0 0 4px #0b1426,0 18px 50px #000a;overflow:auto}
+.as-panel::backdrop{background:#050a14b8;backdrop-filter:none}
+.as-header{padding:12px 20px;background:linear-gradient(#1b3358,#0e1c35);border-bottom:3px solid #c98c1c;color:#f6dfae}
+.as-header h2{font-size:22px;color:#f6dfae}
+.as-close{width:40px;height:40px;border:3px solid #c98c1c;border-radius:6px;background:#0b1426;color:#f6dfae;font-size:26px}
+.as-close:hover{background:#25447a}
+.as-content{padding:16px 20px 20px}
+.as-summary{display:inline-block;margin:0 16px 12px 0;color:#7a4f10;font-size:15px;font-weight:700;letter-spacing:1px}
+.as-empty{color:#7a4f10}
+.as-panel .as-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.as-item{gap:4px;padding:12px 6px 10px;border:3px solid #c98c1c;border-radius:4px;background:#fff3cf;box-shadow:inset 0 0 0 2px #f6dfae,0 3px 0 #0b1426}
+.as-item-picture{display:flex;align-items:center;justify-content:center;width:100%;height:92px;overflow:hidden}
+.as-item-picture img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;image-rendering:pixelated}
+.as-item strong{font-size:16px;color:#3a2a14}
+.as-owned{font-size:13px;font-weight:700;color:#2f6b3a}
+.as-locked{background:#d9c394;border:3px dashed #8a6a2a;box-shadow:none;color:#6b5428}
+.as-locked .as-item-picture{filter:none;opacity:.55;font-size:34px}
+.as-section{border:3px solid #c98c1c;border-radius:4px;background:#fff3cf;color:#5a3a0c}
+.as-section[aria-pressed="true"]{background:#1b3358;color:#f6dfae}
+.as-award-label{background:#f6dfae;border:3px solid #c98c1c;border-radius:4px;box-shadow:inset 0 0 0 2px #fff3cf,0 0 0 3px #0b1426,0 10px 28px #0008;color:#3a2a14}
+.as-award-label span{color:#7a4f10}
+.as-award-picture img{image-rendering:pixelated}
+.as-award-stage{background:radial-gradient(ellipse at center,#f6c76e33,transparent 68%)}
+@media(max-height:620px){.as-item-picture{height:70px}.as-header{padding:8px 16px}.as-content{padding:10px 16px 14px}}
+@media(max-width:480px){.as-panel .as-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.as-inspect,.as-action{border:3px solid #c98c1c;border-radius:4px;background:linear-gradient(#1b3358,#0e1c35);color:#f6dfae;font-weight:700;box-shadow:0 3px 0 #0b1426}
+.as-inspect:hover,.as-action:hover{background:linear-gradient(#25447a,#12264a)}
+.as-choice{border:3px solid #c98c1c;border-radius:4px;background:#fff3cf;color:#3a2a14}
+.as-choice:disabled{background:#e9d9a8;color:#3a2a14}
+.as-object-state,.as-answer-feedback{color:#5a3a0c}
+.as-popover{background:#fff3cf;border:3px solid #c98c1c;border-radius:4px;color:#3a2a14}
+
+/* B9 獲得寶物演出:放大、閃閃發亮、拿取按鈕、星星軌跡 */
+.as-award-stage[data-phase="grab"],.as-award-stage[data-phase="reveal"]{background:radial-gradient(ellipse at center,#f6c76e55,#0b142699 72%);pointer-events:auto}
+.as-award-stage .as-orb{width:240px;height:240px}
+.as-award-stage .as-award-picture{width:220px;height:220px;font-size:140px;filter:drop-shadow(0 0 22px #ffe27a) drop-shadow(0 8px 15px #172f3660)}
+.as-sparkle{position:absolute;left:50%;top:50%;font-size:26px;color:#ffe27a;text-shadow:0 0 8px #ffd34d,0 0 16px #fff;opacity:0;animation:as-sparkle 1.4s ease-in-out var(--sd) infinite}
+@keyframes as-sparkle{0%{opacity:0;transform:translate(calc(-50% + var(--sx)*.6),calc(-50% + var(--sy)*.6)) scale(.3)}50%{opacity:1;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(1.2) rotate(90deg)}100%{opacity:0;transform:translate(calc(-50% + var(--sx)*1.1),calc(-50% + var(--sy)*1.1)) scale(.3) rotate(180deg)}}
+.as-grab{pointer-events:auto;cursor:pointer;margin-top:6px;padding:10px 38px;font:900 22px "Noto Sans TC",system-ui,sans-serif;background:#14294a;color:#ffe9b0;border:3px solid #c98c1c;border-radius:4px;box-shadow:0 4px 0 #0b1426}
+.as-grab:hover,.as-grab:focus-visible{background:#1d3a68;outline:3px solid #ffe9b0;outline-offset:2px}
+.as-trail{position:fixed;width:16px;height:16px;font-size:16px;line-height:1;color:#ffe27a;text-shadow:0 0 8px #ffd34d;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.as-sparkle{animation:none;opacity:.8}}
+/* 第二修改計劃 C6-3(共用):寶物光點不可蓋住「拿取」;標籤與按鈕永遠在最上層,矮視窗時寶物等比縮小 */
+.as-award-stage .as-sparkle,.as-award-stage .as-ring{pointer-events:none}
+.as-award-stage .as-award{gap:clamp(28px,6vh,56px)}
+.as-award-stage .as-award-label{position:relative;z-index:3}
+.as-award-stage .as-grab{position:relative;z-index:4}
+.as-award-stage .as-orb{width:min(240px,30vh);height:min(240px,30vh)}
+.as-award-stage .as-award-picture{width:min(220px,27vh);height:min(220px,27vh)}
+
+/* 第三修改計劃 B5:按鈕不再出現任何線條(焦點外框、點擊時的系統框)。選取/按下的回饋改用亮度與按壓效果。 */
+:is(button,[role=button],a,input,select,textarea,summary,label,.hotspot,[tabindex]):is(:hover,:focus,:focus-visible,:active){outline:none!important}
+:where(button,[role=button]):where(:hover:not(:disabled)){filter:brightness(1.1)}
+:is(button,[role=button],a,input,summary,label,.hotspot,[tabindex]){-webkit-tap-highlight-color:transparent}
+button::-moz-focus-inner{border:0!important}
+:where(button,[role=button],summary):where(:focus-visible:not(:disabled)){filter:brightness(1.16)}
+:where(button,[role=button]):where(:active:not(:disabled)){filter:brightness(.94)}
+/* A11(2026-11-18 晚):新物品紅點+跳動 */
+.as-button{position:fixed}
+.as-newdot{position:absolute;top:-8px;right:-8px;min-width:26px;height:26px;padding:0 6px;box-sizing:border-box;border-radius:13px;background:#d8402c;color:#fff;border:2px solid #fff3c4;font:900 15px/22px sans-serif;text-align:center;box-shadow:0 2px 6px #0008}
+.as-newdot[hidden]{display:none}
+.as-button.as-bump{animation:asBump .6s cubic-bezier(.3,1.8,.5,1) 3}
+@keyframes asBump{40%{transform:translateY(-8px) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.as-button.as-bump{animation:none}}

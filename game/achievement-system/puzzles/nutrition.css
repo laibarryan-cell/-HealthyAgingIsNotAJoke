@@ -1,0 +1,103 @@
+/* 營養罐頭小遊戲(房間 3 物品「罐頭 B」→ 查看營養罐頭)。
+   一屏放下、不需捲動:以 JS 設定的 --np-z 把 1280×720 的設計尺寸等比縮放到視窗。
+   用遊戲 UI 套件(game/assets/art-final/ui):深藍底、暖金框、羊皮紙面板。路徑相對於本檔(game/achievement-system/puzzles/)。 */
+.as-panel.np-fullscreen{--np-z:1;--np-gold:#c98c1c;--np-gold-l:#ffe9b0;--np-navy:#14294a;--np-navy-d:#0b1426;--np-ink:#3a2a14;
+  zoom:var(--np-z);width:calc(100vw / var(--np-z));max-width:none;height:calc(100dvh / var(--np-z));max-height:none;margin:auto;border:0;border-radius:0;box-shadow:none;
+  display:flex;flex-direction:column;overflow:hidden;padding:0;color:var(--np-ink);
+  background:radial-gradient(circle at 50% 0,#1d3a66,var(--np-navy) 55%,var(--np-navy-d))}
+.np-fullscreen .as-header{flex:none;padding:8px 20px;background:linear-gradient(#1b3358,#0e1c35);border-bottom:3px solid var(--np-gold);color:var(--np-gold-l)}
+.np-fullscreen .as-header h2{font-size:22px;color:var(--np-gold-l)}
+.np-fullscreen .as-content{flex:1 1 0;min-height:0;padding:10px 20px 12px;overflow:hidden}
+.np-fullscreen [hidden]{display:none!important}
+.np-fullscreen button:focus-visible{outline:4px solid #ffd36a;outline-offset:2px}
+.np-fullscreen button:disabled{opacity:.55;cursor:default}
+
+/* ---------- 版面:導覽列 / 主區(左側欄 + 桌面) / 狀態對話 / 備註 ---------- */
+.np-scene{display:flex;flex-direction:column;gap:8px;height:100%;max-width:1240px;margin:0 auto;animation:npIn .35s ease-out}
+.np-nav{order:0;flex:none;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.np-body{order:1;flex:1 1 0;min-height:0;display:grid;grid-template-columns:292px minmax(0,1fr);gap:12px}
+.np-status{order:2;flex:none;margin:0;min-height:52px;display:flex;align-items:center;padding:6px 18px;box-sizing:border-box;font-size:19px;font-weight:800;line-height:1.35;color:var(--np-ink);
+  border:12px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/12px stretch;image-rendering:pixelated;background:none;filter:drop-shadow(0 3px 0 #0b142680)}
+.np-note{order:3;flex:none;margin:0;font-size:12px;color:#9fb6d9;text-align:center}
+.np-side{display:flex;flex-direction:column;gap:12px;min-height:0}
+
+/* 按鈕 */
+.np-button,.np-choose{font:inherit;font-weight:900;border:3px solid var(--np-gold);background:linear-gradient(#27457a,#16294d);color:var(--np-gold-l);padding:6px 16px;min-height:38px;cursor:pointer;box-shadow:0 3px 0 var(--np-navy-d),inset 0 0 0 2px var(--np-navy-d);transition:transform .12s,filter .12s}
+.np-button:hover:not(:disabled),.np-choose:hover:not(:disabled){filter:brightness(1.18);transform:translateY(-2px)}
+.np-choose{margin:8px 0 2px;min-width:170px;min-height:46px;font-size:18px}
+.np-chosen .np-choose{background:linear-gradient(#3f9168,#2a6a4b);color:#fff}
+
+/* 指引卡 */
+.np-guide{position:relative;flex:none;display:flex;flex-direction:column;justify-content:center;gap:6px;box-sizing:border-box;min-height:148px;padding:14px 16px;border:12px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/12px stretch;image-rendering:pixelated;background:none;font:inherit;color:var(--np-ink);text-align:center;cursor:pointer;overflow:hidden;filter:drop-shadow(0 3px 0 #0b142680)}
+.np-guide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;opacity:.28;pointer-events:none}
+.np-guide strong,.np-guide span{position:relative;image-rendering:auto}
+.np-guide strong{font-size:19px}.np-guide span{font-size:13px;color:#6b4a1e;font-weight:700}
+.np-guide:hover:not(:disabled){filter:drop-shadow(0 3px 0 #0b142680) brightness(1.05)}
+
+/* 桌面 */
+.np-table{position:relative;min-height:0;padding:12px 22px;border:4px solid var(--np-gold);background:#d9b887 url("assets/nutrition/table.png") center/cover;box-shadow:0 0 0 2px var(--np-navy-d),inset 0 0 40px #5a361a55;image-rendering:pixelated;display:flex;flex-direction:column;justify-content:center}
+.np-can-row{display:flex;align-items:flex-start;justify-content:center;gap:clamp(20px,6vw,90px)}
+.np-can-wrap{width:min(44%,300px);padding:6px;border:3px solid transparent;transition:transform .2s,background .2s;text-align:center}
+.np-can-wrap:hover{transform:translateY(-3px)}
+.np-chosen{border-color:#ffd36a;border-radius:14px;box-shadow:0 0 24px #ffd36a99;background:#fff4c844}
+.np-can{position:relative;width:100%;aspect-ratio:1}
+.np-can-art{width:100%;height:100%;display:block;image-rendering:pixelated;object-fit:contain;filter:drop-shadow(0 10px 8px #2a160a66)}
+.np-label{position:absolute;left:22%;right:22%;top:40%;bottom:22%;display:flex;flex-direction:column;justify-content:center;gap:1px;line-height:1.25;color:#273f36;background:#fcf7e8ee;font-size:15px;pointer-events:none}
+.np-label strong{font-size:19px}.np-serving{font-size:11px;color:#5b6859}
+
+/* 工具列(開罐器、硬幣) */
+.np-tray{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-height:0}
+.np-tool{display:flex;flex-direction:row;align-items:center;gap:10px;min-width:0;padding:8px 14px 8px 8px;box-sizing:border-box;border:12px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/10px stretch;image-rendering:pixelated;background:none;font:inherit;font-size:16px;font-weight:800;color:var(--np-ink);text-align:left;touch-action:none;user-select:none;cursor:grab;filter:drop-shadow(0 3px 0 #0b142680)}
+.np-tool:hover:not(:disabled){filter:drop-shadow(0 3px 0 #0b142680) brightness(1.06)}
+.np-tool img{flex:none;width:64px;height:54px;object-fit:contain;image-rendering:pixelated;pointer-events:none}
+.np-near,.np-selected{outline:4px solid #ffd36a!important;box-shadow:0 0 22px #ffd36a99!important}
+.np-ghost{position:fixed;width:110px;height:110px;object-fit:contain;transform:translate(-50%,-50%);z-index:20;pointer-events:none;image-rendering:pixelated;filter:drop-shadow(0 8px 10px #29362266)}
+.np-install{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;z-index:6;image-rendering:pixelated}
+
+/* ---------- 開罐:瞄準圈、進度環、火花、蒸氣 ---------- */
+.np-rim{position:absolute;left:50%;top:20%;transform:translate(-50%,-50%);width:74%;height:25%;min-height:44px;border:3px dashed #ffd36a;border-radius:50%;background:#ffffff22;color:transparent;padding:0;animation:npPulse 1.2s ease-in-out infinite}
+.np-opener-pivot{position:absolute;left:72%;top:22%;width:0;height:0;pointer-events:none;z-index:3}
+.np-attached-opener{position:absolute;width:120px;height:110px;object-fit:contain;right:-18px;top:-14px;image-rendering:pixelated;filter:drop-shadow(0 4px 3px #0006)}
+.np-open-arc{position:absolute;left:50%;top:20%;transform:translate(-50%,-50%);width:72%;height:42%;min-height:90px;border:0;border-radius:50%;background:none;color:#ffe9b0;font-size:28px;text-align:right;padding:0 10px 0 0;touch-action:none;z-index:4;cursor:grab;text-shadow:0 2px 0 #0b1426}
+.np-open-arc svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.np-open-arc ellipse{fill:none;stroke-width:3}
+.np-ring-track{stroke:#fff6;stroke-dasharray:3 3}
+.np-ring-fill{stroke:#ffd36a;stroke-linecap:round;filter:drop-shadow(0 0 4px #ffd36a);transition:stroke-dashoffset .12s}
+.np-open-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px}
+.np-open-progress{min-width:96px;padding:2px 12px;background:var(--np-navy);border:3px solid var(--np-gold);color:var(--np-gold-l);font-size:17px;font-weight:900;text-align:center}
+.np-lid-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;clip-path:ellipse(40% 12% at 50% 20%);transform-origin:50% 9%;image-rendering:pixelated;pointer-events:none;z-index:5}
+.np-working .np-can-art{animation:npShake .16s linear}
+.np-spark{position:absolute;z-index:7;width:8px;height:8px;background:#fff3b0;box-shadow:0 0 8px 2px #ffd36a;pointer-events:none;animation:npSpark .5s ease-out forwards}
+.np-steam{position:absolute;z-index:7;left:50%;top:20%;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#ffffffd0,#ffffff00 70%);pointer-events:none;animation:npSteam 1.2s ease-out forwards}
+.np-flash{position:absolute;inset:0;z-index:8;background:radial-gradient(circle at 50% 24%,#fff 0,#ffe9b0aa 22%,transparent 60%);pointer-events:none;animation:npFlash .6s ease-out forwards}
+.np-pop{animation:npPop .5s cubic-bezier(.2,1.4,.4,1)}
+
+/* ---------- 刮刮區 ---------- */
+.np-scratch-table{display:grid;grid-template-columns:minmax(200px,310px) minmax(320px,470px);gap:28px;align-items:center;justify-content:center;padding:18px 26px}
+.np-open-can{max-width:310px}
+.np-scratch-card{box-sizing:border-box;padding:6px 14px 10px;border:14px solid transparent;border-image:url("../../assets/art-final/ui/clue-card-blank.png") 16 fill/14px stretch;image-rendering:pixelated;background:none;color:var(--np-ink);filter:drop-shadow(0 4px 0 #0b142680)}
+.np-scratch-card>*{image-rendering:auto}
+.np-scratch-card h3{margin:0 0 10px;font-size:21px}
+.np-scratch-area{position:relative;display:block;width:100%;height:140px;border:4px solid #7a4f10;background:#fff6d9;overflow:hidden;touch-action:none;user-select:none;cursor:ew-resize;padding:0;color:#293d31;box-shadow:0 0 0 2px var(--np-navy-d),inset 0 0 18px #7a4f1044}
+.np-scratch-answer{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(40px,6vw,70px);letter-spacing:.12em;line-height:1;font-family:system-ui,sans-serif;pointer-events:none}
+.np-scratch-answer[aria-hidden="false"]{animation:npPop .6s cubic-bezier(.2,1.4,.4,1);text-shadow:0 0 18px #ffd36a}
+.np-coating{position:absolute;inset:0;display:grid;grid-template-columns:repeat(20,1fr);grid-template-rows:repeat(6,1fr);pointer-events:none}
+.np-silver-cell{background:linear-gradient(135deg,rgb(var(--shade),var(--shade),var(--shade)),#edf0eb 30%,#a1a8a7 55%,#c5cdcb);box-shadow:inset 0 1px #ffffff22;transition:opacity .08s;pointer-events:none}
+.np-scratch-coin{position:absolute;left:50%;top:50%;width:58px;height:58px;object-fit:contain;transform:translate(-50%,-50%) rotate(-20deg);image-rendering:pixelated;pointer-events:none;filter:drop-shadow(2px 3px 2px #3335);z-index:2}
+.np-scratch-progress{position:relative;margin:10px 0 6px;padding:2px 8px;font-size:15px;font-weight:900;text-align:center;color:#fff;text-shadow:0 1px 0 #0b1426;border:3px solid #7a4f10;background:linear-gradient(90deg,#3f9168 var(--p,0%),#e3cf9f var(--p,0%))}
+.np-result{margin:8px 0 0;font-size:25px;font-weight:900;color:#2a6a4b;text-align:center}
+.np-scratch-card>.np-button{display:block;margin:8px auto 0}
+.np-side .np-button{width:100%;font-size:18px;min-height:48px}
+
+@keyframes npIn{from{opacity:0;transform:translateY(8px)}}
+@keyframes npPulse{50%{background:#ffffff44;box-shadow:0 0 16px #ffd36a}}
+@keyframes npShake{25%{transform:translate(-1.5px,1px)}75%{transform:translate(1.5px,-1px)}}
+@keyframes npSpark{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
+@keyframes npSteam{from{opacity:.9;transform:translate(-50%,0) scale(.5)}to{opacity:0;transform:translate(calc(-50% + var(--dx)),-170px) scale(2.2)}}
+@keyframes npFlash{from{opacity:1}to{opacity:0}}
+@keyframes npPop{from{transform:scale(.6);opacity:.2}to{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.np-fullscreen *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.np-open-can .np-label{display:none}
+.np-open-can .np-can-art{filter:drop-shadow(0 14px 10px #2a160a77)}
+.np-scratch-answer[aria-hidden="true"]{font-size:34px;letter-spacing:.06em;font-weight:900}
+.np-scratch-answer[aria-hidden="false"]{font-size:78px}

@@ -1,0 +1,26 @@
+/* Phase 2 v1.3: on-screen volume and a geometrically shared assessment scale. */
+#tvExperienceMain{align-items:start;grid-template-columns:minmax(0,1fr) 300px;gap:24px}
+#tvExperienceMain .tv-stage-card{display:flex;flex-direction:column;gap:22px;min-width:0;padding:26px}
+#tvExperienceMain .tv-set.realistic{margin:10px auto 4px}
+#tvExperienceMain .tv-bezel{padding:12px;border-radius:12px}
+#tvExperienceMain .tv-music-screen{border:0;border-radius:4px;min-width:0}
+#tvExperienceMain .music-notes.realistic{inset:0 4% 32%;font-size:clamp(36px,5vw,80px)}
+#tvExperienceMain .remote-panel{padding:20px;gap:16px}
+.tv-screen-osd{position:absolute;left:7%;right:7%;bottom:7%;padding:12px 20px 9px;background:#10211ff0;border:1px solid #dedbbb80;border-radius:7px;box-shadow:0 8px 20px #0003;color:#fff9df;z-index:2}
+.osd-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:9px}
+.osd-heading>span{font-size:18px;font-weight:700;letter-spacing:.15em}
+.osd-heading strong{font-size:clamp(26px,3vw,42px);line-height:1;font-variant-numeric:tabular-nums;color:#f0d387}
+.osd-track{height:10px;background:#526159;overflow:hidden;border-radius:2px}
+.osd-track .tv-level-fill{display:block;height:100%;background:#f0d387;transition:none}
+.osd-endpoints{display:flex;justify-content:space-between;font-size:12px;color:#c4ccbf;margin-top:3px;line-height:1.4}
+.bell-lane-calibrated{padding:18px 0 0;display:grid;place-items:center}
+.calibrated-meter{display:block;width:100%;height:clamp(300px,49vh,510px);overflow:visible}
+.calibrated-meter .meter-track{fill:#101b1a;stroke:#71877b;stroke-width:2}
+.calibrated-meter .bell-fill{fill:url(#bellLevelGradient);transition:none}
+.meter-tick text{fill:#d8e0d2;font-size:15px;font-variant-numeric:tabular-nums}
+.meter-tick line{stroke:#e2e6d1;stroke-opacity:.45;stroke-width:1}
+.meter-threshold{stroke:#f38c7d;stroke-width:2;stroke-dasharray:5 4}
+.threshold-caption{fill:#ffac96;font-size:15px}
+.meter-number{fill:#f2d478;font-size:60px;font-weight:800;font-variant-numeric:tabular-nums}
+.meter-unit{fill:#d8dfd6;font-size:16px}
+@media(max-width:900px){#tvExperienceMain{grid-template-columns:1fr}#tvExperienceMain .tv-stage-card{padding:18px}.tv-screen-osd{padding:8px 12px 6px}.osd-heading>span{font-size:15px}.osd-heading{margin-bottom:6px}.calibrated-meter{height:380px}}

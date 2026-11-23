@@ -1,0 +1,47 @@
+/* 階段 1 代表性原型：認知房「牆上的照片」前半段（觀察 → 操作 → 看見結果 → 調整 → 讀理由）。
+   只作用於 .pp-* 與 [data-module="photo-proto"]；原版 photo.css 不變。 */
+.pp-root{max-width:1360px;margin:0 auto;padding:10px 2vw 12px;color:#294939}
+.pp-bar{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.pp-bar .pp-back,.pp-bar .pp-restart{min-height:48px;padding:8px 18px;font:inherit;font-size:18px;border:2px solid #7f9a78;background:#fffaf0;color:#294939;border-radius:10px;cursor:pointer}
+.pp-badge{background:#b3472b;color:#fff;border-radius:999px;padding:6px 16px;font-weight:800;font-size:18px;letter-spacing:.05em}
+.pp-title{margin:0;font-size:clamp(22px,2.2vw,30px);flex:1}
+.pp-main{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:18px;align-items:start}
+.pp-stage{min-width:0}
+.pp-stage .p-scene{max-width:none;width:100%;max-height:calc(100vh - 150px)}
+.pp-stage .p-scene .p-target{min-width:44px;min-height:44px}
+.pp-stage .p-scene .p-target span{font-size:18px;padding:4px 12px}
+.pp-stage .p-actor-motion,.pp-stage .p-reflection-motion{transition:transform 1.3s ease-in-out}
+.pp-stage .p-actor-motion{transform:translateX(var(--dx,0%))}
+.pp-stage .p-reflection-motion{transform:translateX(calc(var(--dx,0%) * -1))}
+.pp-stage .pp-wave .p-actor,.pp-stage .pp-wave .p-reflection{animation:pp-wave .5s ease-in-out 4}
+@keyframes pp-wave{0%,100%{rotate:0deg}30%{rotate:-4deg}70%{rotate:4deg}}
+@media (prefers-reduced-motion:reduce){.pp-stage .p-actor-motion,.pp-stage .p-reflection-motion{transition:none}.pp-stage .pp-wave .p-actor,.pp-stage .pp-wave .p-reflection{animation:none}}
+.pp-glow{outline:5px solid #ffcf5a;outline-offset:3px;animation:pp-pulse 1.4s ease-in-out infinite}
+@keyframes pp-pulse{50%{outline-color:#fff1b8}}
+@media (prefers-reduced-motion:reduce){.pp-glow{animation:none}}
+.pp-panel{display:flex;flex-direction:column;gap:12px;background:#fffdf5;border:2px solid #b9c7ae;border-radius:14px;padding:16px;max-height:calc(100vh - 150px);overflow:auto}
+.pp-step{margin:0;font-size:18px;font-weight:800;color:#7a4f12}
+.pp-say{background:#f1f6ea;border-radius:10px;padding:12px 14px;min-height:96px}
+.pp-say strong{display:block;font-size:18px;color:#3d6a4a;margin-bottom:4px}
+.pp-say p{margin:0;font-size:22px;line-height:1.6;font-weight:600}
+.pp-actions{display:grid;gap:10px}
+.pp-actions button,.pp-answers button,.pp-primary{min-height:52px;padding:10px 14px;font:inherit;font-size:20px;text-align:left;border:2px solid #7f9a78;background:#fffaf0;color:#294939;border-radius:10px;cursor:pointer;line-height:1.45}
+.pp-actions button:disabled{opacity:.45;cursor:default}
+.pp-actions button.done::before{content:"✓ ";color:#2d7a4a;font-weight:800}
+.pp-primary{background:#2f6b4f;color:#fff;border-color:#2f6b4f;text-align:center;font-weight:800}
+.pp-answers{display:grid;gap:10px}
+.pp-answers button.wrong{background:#f6e3de;border-color:#b3472b;color:#7b2b17}
+.pp-answers button.right{background:#e0f2e3;border-color:#2d7a4a}
+.pp-feedback{margin:0;font-size:20px;line-height:1.6;min-height:32px;font-weight:600}
+.pp-log{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.pp-log li{font-size:17px;line-height:1.5;background:#eef3e7;border-left:5px solid #7f9a78;padding:6px 10px;border-radius:6px}
+.pp-log li.pp-edu{background:#fff4d6;border-left-color:#c78a13;font-size:19px;font-weight:700}
+.pp-note{font-size:16px;color:#5d6f58;margin:0}
+.pp-hint{font-size:18px;margin:0;color:#7a4f12;font-weight:700}
+@media (max-width:1100px){.pp-main{grid-template-columns:1fr}.pp-panel{max-height:none}}
+.pp-stage .p-target[hidden]{display:none!important}
+.pp-root .pp-primary{background:#2f6b4f;color:#fff;border:2px solid #2f6b4f;text-align:center;font-weight:800;font-size:21px;min-height:56px}
+.pp-root .pp-actions button,.pp-root .pp-answers button{font-size:20px;padding:10px 14px}
+.pp-root{padding-bottom:0}
+.pp-stage .p-scene{max-height:calc(100vh - 200px)}
+.pp-panel{max-height:calc(100vh - 200px)}

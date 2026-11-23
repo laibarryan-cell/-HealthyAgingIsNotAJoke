@@ -1,0 +1,197 @@
+/* room5-story.css — 房間五「方格表模式」版面:頁首精簡、操作提示列、進度條 */
+.r5-bar { display: flex; align-items: center; gap: 18px; }
+.r5-bar .r5-title { margin: 0; font-size: 26px; font-weight: 700; flex: 1; text-align: left; }
+.r5-bar .progress-chip { margin-left: auto; }
+.r5-bar .color-progress i { width: 40px; height: 16px; }
+.r5-toolbar { margin: 8px 0; }
+.r5-toolbar .hint-btn { padding: 6px 16px; min-height: 38px; font-size: 17px; color: #243a35; background: #e8e8da; border: 1px solid #c7ccbe; border-radius: 8px; cursor: pointer; }
+.r5-toolbar .act-extra button { padding: 6px 16px; min-height: 38px; font-size: 17px; }
+.sk-drop-list.sk-hidden { pointer-events: none; }
+/* 走道標題 */
+.room-heading h1 { margin: 0; }
+.cog-medicine .act-toolbar { width: min(1180px, calc(100% - 2rem)); margin: 8px auto; }
+.cog-medicine .r5-bar { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 1.25rem 0 1rem; }
+.cog-medicine .r5-bar .r5-title { color: #fff; }
+.cog-medicine .r5-bar .back { padding: .55rem 1rem; }
+html.r5-fit #app > section:not(.room) { margin-left: auto !important; margin-right: auto !important; }
+.r5-step { margin: 6px 0 10px; font-size: 22px; text-align: left; }
+.cog-photo .r5-bar .r5-title, .cog-kitchen .r5-bar .r5-title, .phone-module .r5-bar .r5-title { text-align: left; font-size: 26px; margin: 0; }
+.p-answers { display: grid; gap: 10px; }
+.phone-module .tile .tile-label { color: #243a35 !important; }
+/* 房間門(找錢包)頁首:返回 | 標題 | 情緒條 | 進度條 */
+html.r5-fit .wallet-module .w-top.r5-wtop { grid-template-columns: auto auto 1fr auto; gap: 20px; }
+html.r5-fit .wallet-module .w-top .r5-title { color: #fff; margin: 0; font-size: 26px; text-align: left; }
+html.r5-fit .wallet-module .w-top .w-emotion { justify-self: center; }
+html.r5-fit .wallet-module .r5-toolbar { position: absolute; left: 14px; top: 104px; z-index: 40; margin: 0; }
+.k-stage.k-stage-solo { display: flex; justify-content: center; }
+.k-stage.k-stage-solo .k-scene { width: min(100%, 900px); }
+
+/* ===== 第二修改計劃 C5-1 廚房晚餐 ===== */
+/* 場景:依可用高度縮放,整頁不需捲動 */
+html.r5-fit .cog-kitchen .k-stage.k-stage-solo .k-scene { width: min(100%, 900px); }
+.cog-kitchen .k-scene { overflow: hidden; }
+/* 物件:從廚房圖裁出的同一塊畫面,不加框;按下 = 下壓 + 縮放 + 變亮(C1) */
+html.r5-fit .cog-kitchen .k-scene .k-obj.k-obj.sk-press.sk-press { position: absolute; z-index: 6; padding: 0; margin: 0; min-height: 0; border: 0; border-radius: 6px; box-shadow: none;
+  background-color: transparent; background-image: none; background-repeat: no-repeat; color: inherit; font-size: 0; transform-origin: center bottom; }
+html.r5-fit .cog-kitchen .k-scene .k-obj.k-obj.sk-press.sk-press:hover:not(:disabled),
+html.r5-fit .cog-kitchen .k-scene .k-obj.k-obj.sk-press.sk-press:focus-visible { transform: scale(1.07); filter: brightness(1.22) drop-shadow(0 0 8px rgba(255,218,120,.95)); }
+html.r5-fit .cog-kitchen .k-scene .k-obj.k-obj.sk-press.sk-press:active:not(:disabled) { transform: translateY(3px) scale(.95); filter: brightness(1.4); }
+html.r5-fit .cog-kitchen .k-scene .k-obj.k-obj.sk-press.sk-press:disabled { opacity: 1; filter: none; cursor: default; }
+.cog-kitchen .k-obj-salt img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; image-rendering: pixelated; pointer-events: none; }
+.cog-kitchen .k-obj .sk-press-name { font-size: 16px; }
+.cog-kitchen .k-obj.k-hot:not(:disabled) { animation: k-hot 2s ease-in-out infinite; }
+@keyframes k-hot { 0%, 70%, 100% { filter: none; } 82% { filter: brightness(1.35) drop-shadow(0 0 10px rgba(255,218,120,.95)); } }
+.cog-kitchen .k-obj-exit.safe-exit .sk-press-name { opacity: 1; background: #1f6b45; border-color: #a8efc2; }
+/* 鍋爐上方的鹽罐:阿公加鹽時出現、搖動 */
+.cog-kitchen .k-salt-lift { position: absolute; left: 53.5%; top: 14%; width: 7.5%; z-index: 4; pointer-events: none; image-rendering: pixelated; opacity: 0; filter: drop-shadow(0 3px 2px rgba(0,0,0,.4)); }
+.cog-kitchen .k-scene.seasoning .k-salt-lift { opacity: 1; animation: k-shake 0.55s ease-in-out infinite alternate; }
+@keyframes k-shake { from { transform: rotate(-8deg) translateY(0); } to { transform: rotate(10deg) translateY(6px); } }
+.cog-kitchen .k-salt-motion { display: none !important; }
+/* 爐火狀態標籤:高對比(C3) */
+.cog-kitchen .k-stove-state.sk-label.sk-label { left: 52%; top: 50%; font-size: 15px; background: #8a2f2a; border-color: #ffb3a8; color: #fff !important; }
+.cog-kitchen .fire-off .k-stove-state.sk-label.sk-label { background: #1f6b45; border-color: #a8efc2; color: #fff !important; }
+/* 阿公:一開始就在廚房裡(走路圖集),離開時走向客廳並淡出 */
+.cog-kitchen .k-elder { z-index: 5; }
+.cog-kitchen .k-elder.k-gone { opacity: 0; transition: opacity .4s; }
+/* 左圖右互動 */
+.cog-kitchen .k-split { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.cog-kitchen .k-split .k-stage { display: block; }
+.cog-kitchen .k-split .k-scene { width: 100%; }
+html.r5-fit .cog-kitchen .k-side { max-width: none; margin: 0; padding: 10px 16px; }
+.cog-kitchen .k-tip { font-size: 19px !important; font-weight: 800; color: #3a2a14; }
+/* 選擇題:放大、深色字(C3) */
+.cog-kitchen .k-choice .k-q-title { margin: 2px 0 10px; font-size: 22px; font-weight: 900; color: #3a2a14 !important; }
+html.r5-fit .cog-kitchen .k-choice .p-answers button.k-answer.k-answer,
+html.r5-fit .cog-kitchen .k-object-menu.k-choice button[data-kchoice] { display: block; width: 100%; text-align: left; font-size: 19px; line-height: 1.4; padding: 12px 16px; color: #3a2a14;
+  background: #fff8e4; border: 3px solid #b98a3c; border-radius: 4px; box-shadow: 0 3px 0 #7a4f1066; font-weight: 800; }
+html.r5-fit .cog-kitchen .k-choice .p-answers button.k-answer.k-answer:hover:not(:disabled) { background: #fff1c4; }
+.cog-kitchen .k-question { max-width: 900px; margin: 10px auto 0; }
+/* 物件旁的選單(最後一關):放大 */
+.cog-kitchen .k-object-menu.k-choice { width: 440px; max-width: 46%; padding: 16px 18px; background: #fffaf0; border: 4px solid #c99a3c; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.cog-kitchen .k-object-menu.k-choice h3 { font-size: 22px; color: #3a2a14; }
+html.r5-fit .cog-kitchen .k-object-menu .k-menu-back { background: none; border: 0; box-shadow: none; color: #6b4a1e; font-size: 16px; text-align: center; }
+.cog-kitchen .k-step-card.done { display: inline-block; margin-top: 12px; font-size: 18px; }
+/* 拖曳字卡 */
+.cog-kitchen .k-cards2 { display: flex; gap: 10px; flex-wrap: wrap; min-height: 54px; margin: 6px 0 12px; }
+.cog-kitchen .k-card-gap { flex: 1 1 140px; min-height: 50px; border: 2px dashed rgba(122,79,16,.35); border-radius: 4px; }
+html.r5-fit .cog-kitchen .k-sorting2 .k-card.k-card.k-card { flex: 1 1 140px; touch-action: none; cursor: grab; font-size: 18px; padding: 12px 10px; color: #3a2a14; background: linear-gradient(#fff6d8, #f6dfae);
+  border: 3px solid #b98a3c; box-shadow: 0 4px 0 #7a4f1066; user-select: none; }
+html.r5-fit .cog-kitchen .k-card.k-dragging { opacity: .35; }
+.k-ghost { position: fixed; z-index: 2147482000; pointer-events: none; margin: 0; font-size: 18px; padding: 12px 10px; color: #3a2a14; background: #fff1c4; border: 3px solid #f0a91c; border-radius: 4px; box-shadow: 0 10px 24px rgba(0,0,0,.45); font-weight: 900; }
+.cog-kitchen .k-order2 { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
+.cog-kitchen .k-slot { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 4px 8px; border: 3px dashed #a2b198; border-radius: 4px; background: #eef1e5; }
+.cog-kitchen .k-slot b { flex: none; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: #14294a; color: #ffe9b0; font-size: 17px; }
+.cog-kitchen .k-slot.k-over { border-color: #f0a91c; background: #fff1c4; }
+.cog-kitchen .k-slot.filled { border-style: solid; border-color: #b98a3c; }
+.cog-kitchen .k-slot-empty { color: #6b6f5e; font-size: 17px; font-weight: 700; }
+.cog-kitchen .k-slot .k-card { flex: 1; }
+.cog-kitchen .k-sort-actions { display: flex; gap: 12px; }
+html.r5-fit .cog-kitchen .k-sort-actions button { flex: 1; font-size: 18px; padding: 8px 12px; }
+
+/* ===== 第二修改計劃 C5-2 電話約定 ===== */
+.phone-module .call-layout.call-solo { grid-template-columns: minmax(310px, 450px); justify-content: center; }
+/* 路線圖:住家、公園、目前位置改成高對比標籤;阿公用走路圖集來回走 */
+.phone-module .route-map .ph-map-tag { position: absolute; transform: translate(-50%, -50%); z-index: 3; font-size: 20px; }
+.phone-module .route-map .ph-lost { z-index: 4; }
+.phone-module .route-map .ph-here { position: absolute; left: 50%; top: 6%; transform: translate(-50%, -100%); white-space: nowrap; font-size: 18px; z-index: 5; }
+.phone-module .lost-person { display: none !important; }
+/* 路線拼圖:起點、終點文字清楚(C3) */
+.phone-module .tile .tile-label.sk-label { left: 3%; right: 3%; bottom: 3%; padding: 3px 0; border-radius: 4px; font-size: clamp(13px, 1.3vw, 17px) !important; line-height: 1.3; text-align: center; color: #fff !important; }
+.phone-module .tile .tile-label.sk-label.is-start { background: #1f6b45; border-color: #ffe9b0; }
+.phone-module .tile .tile-label.sk-label.is-end { background: #8a2f2a; border-color: #ffe9b0; }
+.phone-module .tile.start, .phone-module .tile.end { box-shadow: inset 0 0 0 3px #f0c75e; }
+/* 版面:左側任務卡(標題、關卡、檢查路線、正下方再看一次約定),右側路線板 */
+.phone-module .ph-puzzle2 { grid-template-columns: 300px minmax(0, 1fr); gap: 22px; align-items: start; }
+.phone-module .ph-side { display: flex; flex-direction: column; gap: 10px; }
+.phone-module .ph-side .ph-side-title { margin: 0; font-size: 24px !important; line-height: 1.3; color: #3a2a14 !important; }
+.phone-module .ph-side .ph-level { margin: 0; font-size: 18px !important; font-weight: 800; color: #6b4a1e !important; }
+.phone-module .ph-actions { display: flex; flex-direction: column; gap: 10px; }
+html.r5-fit .phone-module .ph-actions button { display: block; width: 100%; margin: 0 !important; font-size: 19px !important; }
+.phone-module .ph-side .recall { margin: 0; font-size: 18px; line-height: 1.5; color: #24361f; }
+.phone-module .board-wrap { min-width: 0; }
+.phone-module #board { position: relative; }
+.phone-module #board .ph-walker { z-index: 7; }
+.phone-module .puzzle-elder { display: none; }
+/* 出發格、終點格本來就不能旋轉(disabled),不要被「停用按鈕變灰」規則壓暗;過關後的路線也保持清楚 */
+html.r5-fit .phone-module #board .tile:disabled { filter: none; opacity: 1; }
+html.r5-fit .phone-module #board .tile:disabled:not(.connected):not(.start):not(.end) { filter: saturate(.85); }
+
+/* ===== 第二修改計劃追加 B5-1 廚房:圖層順序、文字標籤在最上層、前景家具遮擋、分欄時機 ===== */
+.cog-kitchen .k-scene .k-background { z-index: 0; }
+.cog-kitchen .k-scene .k-heat { z-index: 1; }
+.cog-kitchen .k-scene .k-obj { z-index: 2; }
+.cog-kitchen .k-scene .k-salt-lift { z-index: 3; }
+.cog-kitchen .k-scene .k-elder { z-index: 5; }
+.cog-kitchen .k-scene .k-front { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; z-index: 6; pointer-events: none; border-radius: inherit; }
+.cog-kitchen .k-scene .k-tags { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+.cog-kitchen .k-scene .k-danger-banner { z-index: 9; }
+.cog-kitchen .k-scene .k-object-menu { z-index: 10; }
+/* 物件本身不再帶名稱(名稱移到最上層的標籤) */
+.cog-kitchen .k-obj .sk-press-name { display: none !important; }
+.cog-kitchen .k-tags .k-tag { position: absolute; transform: translate(-50%, -115%); white-space: nowrap; font-size: 17px; }
+.cog-kitchen .k-tags .k-tag.k-tag-in { transform: translate(-50%, 0); }
+.cog-kitchen .k-tags .k-tag.is-safe { background: #1f6b45; border-color: #a8efc2; color: #fff !important; }
+.cog-kitchen .k-tags .k-stove-state.sk-label.sk-label { position: absolute; left: 57%; top: 50%; transform: translate(-50%, 0); }
+/* 分欄:平常是完整大畫面;要作答時才平順展開右側互動區 */
+.cog-kitchen .k-split { display: flex !important; gap: 18px; align-items: flex-start; justify-content: center; }
+.cog-kitchen .k-split > .k-stage { flex: 0 0 57%; min-width: 0; transition: flex-basis .45s ease; }
+.cog-kitchen .k-split.k-split-wide > .k-stage { flex-basis: 54%; }
+.cog-kitchen .k-split > .k-side { flex: 0 0 calc(43% - 18px); min-width: 0; overflow: hidden; transition: flex-basis .45s ease, opacity .3s ease .15s; }
+.cog-kitchen .k-split.k-split-wide > .k-side { flex-basis: calc(46% - 18px); }
+.cog-kitchen .k-split.k-collapsed { gap: 0; }
+.cog-kitchen .k-split.k-collapsed > .k-stage { flex-basis: min(100%, 900px); }
+.cog-kitchen .k-split.k-collapsed > .k-side { flex-basis: 0; opacity: 0; padding: 0 !important; border-width: 0 !important; transition: flex-basis .45s ease, opacity .15s ease; }
+.cog-kitchen .k-scene .k-danger-banner { left: 6% !important; right: 30% !important; top: 4% !important; }
+/* 物件按下/聚焦時(sk-press 會把 z-index 拉到 6)仍要在阿公後面 */
+.cog-kitchen .k-scene .k-obj.k-obj { z-index: 2 !important; }
+
+/* ===== 第二修改計劃追加 B5-2 照片與倒影:比照房間一基準與廚房(只改呈現) ===== */
+html.r5-fit .cog-photo .p-scene { width: min(100%, 900px); max-width: 900px; }
+/* C1:物件不加框,底圖 = 場景圖的同一塊;滑過發亮、按下下壓 */
+html.r5-fit .cog-photo .p-scene .p-target.p-target { border: 0 !important; box-shadow: none !important; border-radius: 4px; background-color: transparent; background-repeat: no-repeat; min-width: 0; min-height: 0; color: inherit; font-size: 0; transform-origin: center bottom; transition: transform .16s cubic-bezier(.2,.9,.3,1.3), filter .16s; }
+html.r5-fit .cog-photo .p-scene .p-target.p-target:hover:not(:disabled), html.r5-fit .cog-photo .p-scene .p-target.p-target:focus-visible { transform: scale(1.05); filter: brightness(1.2) drop-shadow(0 0 8px rgba(255,218,120,.95)); outline: none; }
+html.r5-fit .cog-photo .p-scene .p-target.p-target:active:not(:disabled) { transform: translateY(3px) scale(.96); filter: brightness(1.35); }
+html.r5-fit .cog-photo .p-scene .p-target.p-target:disabled { opacity: 1; filter: none; cursor: default; }
+/* 鏡子、窗戶是大面積,不放大(避免和阿公、倒影錯位),只發亮 */
+html.r5-fit .cog-photo .p-scene .p-target-mirror.p-target-mirror, html.r5-fit .cog-photo .p-scene .p-target-window.p-target-window { background-image: none !important; z-index: 1; }
+html.r5-fit .cog-photo .p-scene .p-target-mirror:hover:not(:disabled), html.r5-fit .cog-photo .p-scene .p-target-window:hover:not(:disabled) { transform: none !important; filter: none !important; box-shadow: inset 0 0 0 3px rgba(255,218,120,.9), 0 0 16px rgba(255,218,120,.8) !important; }
+/* C3:名稱牌高對比、永遠在最上層 */
+.cog-photo .p-scene .p-target .p-tag.sk-label { position: absolute; left: 50%; bottom: calc(100% + 4px); top: auto; transform: translateX(-50%); font-size: 17px !important; z-index: 12; pointer-events: none; }
+.cog-photo .p-scene .p-target-mirror .p-tag.sk-label, .cog-photo .p-scene .p-target-window .p-tag.sk-label { bottom: auto; top: 4%; }
+.cog-photo .p-scene .p-state { font-size: 15px !important; padding: 5px 12px; background: #14294a; color: #ffe9b0; border: 2px solid #c99a3c; border-radius: 0; z-index: 11; }
+/* 選單:與廚房同款(米色紙、金框、深色字),放在不擋住所選物件的一側 */
+.cog-photo .p-scene .p-menu { position: absolute !important; top: 4% !important; bottom: auto !important; left: auto !important; right: 2% !important; width: 40% !important; max-width: 40% !important; padding: 14px 16px; background: #fffaf0; border: 4px solid #c99a3c; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,.45); z-index: 30; }
+.cog-photo .p-scene .p-menu.near-mirror, .cog-photo .p-scene .p-menu.near-window { right: auto !important; left: 2% !important; }
+.cog-photo .p-scene .p-menu h3 { color: #3a2a14 !important; font-size: 22px !important; }
+html.r5-fit .cog-photo .p-scene .p-menu button { font-size: 18px !important; }
+html.r5-fit .cog-photo .p-scene .p-menu .p-menu-close { background: none !important; border: 0 !important; box-shadow: none !important; color: #6b4a1e !important; font-size: 16px !important; text-align: center; }
+/* 窗簾:像素風逐格拉上(steps),硬邊褶痕,配色取自夜景原本窗簾 */
+.cog-photo .night .p-curtain { background:
+    linear-gradient(#5b4a3a, #5b4a3a) top / 100% 6px no-repeat,
+    repeating-linear-gradient(90deg, #7d6a58 0 2px, #bfab97 2px 10px, #e6d5c3 10px 20px, #d2c2b1 20px 28px, #c6b2a7 28px 34px) !important;
+  box-shadow: none !important; border-bottom: 6px solid #7d6a58; image-rendering: pixelated;
+  transition: transform .96s steps(8, end) !important; }
+.cog-photo .night .p-curtain::after { content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 6px;
+  background: repeating-linear-gradient(90deg, #7d6a58 0 6px, transparent 6px 12px); }
+.cog-photo .night .p-curtain-left { border-right: 3px solid #7d6a58; }
+.cog-photo .night .p-curtain-right { border-left: 3px solid #7d6a58; }
+@media (prefers-reduced-motion: reduce) { .cog-photo .night .p-curtain { transition: none !important; } }
+/* 物件在阿公(z2)後面;名稱牌圖層在最上層 */
+html.r5-fit .cog-photo .p-scene .p-target.p-target { z-index: 1 !important; }
+.cog-photo .p-scene .p-target .p-tag { display: none !important; }
+.cog-photo .p-scene .p-tags { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
+.cog-photo .p-scene .p-tags .p-tag2 { position: absolute; transform: translate(-50%, calc(-100% - 4px)); font-size: 17px; white-space: nowrap; }
+.cog-photo .p-scene .p-tags .p-tag2.is-in { transform: translate(-50%, 0); }
+.cog-photo .p-scene .p-menu { z-index: 30 !important; }
+/* 追加二 C2:收合時右欄高度歸零,自動縮放不會把收合中的窄欄算成很高的內容 */
+.cog-kitchen .k-split.k-collapsed > .k-side { max-height: 0 !important; }
+.cog-kitchen .k-tags .sk-label { transition: opacity .1s linear; }
+.cog-kitchen .k-scene .k-tags .sk-label.k-tag-dim { opacity: 0 !important; animation: none !important; }
+
+/* 2026-11-18 使用者:從房間圖裁出的物件,邊界不要切得那麼明顯 → 跟地圖一樣柔邊:裁圖四邊各約 14% 漸淡,放大發亮時融進房間圖 */
+.sk-crop { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-repeat: no-repeat; image-rendering: pixelated; border-radius: inherit; }
+.sk-crop, .wallet-module .w-hotspot .w-hot-img {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect; }
+.cog-photo .p-scene .p-target-mirror > .sk-crop, .cog-photo .p-scene .p-target-window > .sk-crop { display: none; }

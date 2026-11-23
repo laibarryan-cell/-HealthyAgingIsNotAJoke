@@ -1,0 +1,186 @@
+/* room4-pages.css — 房間 4「怎麼又要我再說一次?」各頁(線索整理、正式學習、聊天偵探、最終回饋)
+   UI 套件風格:深藍底、暖金框、羊皮紙面板、長輩對話框(au-dialog)。
+   設計基準 1280×720,room4-fit.js 以 zoom 等比縮放,所以這裡用固定 px。只改版面與樣式,不動內容與流程。 */
+html.r4-fit .r4-page {
+  --r4-gold: #f0a91c; --r4-gold-d: #9a6208; --r4-gold-l: #ffe9b0; --r4-navy: #14294a; --r4-navy-d: #0b1426; --r4-ink: #3a2a14;
+  color: var(--r4-gold-l);
+  background: linear-gradient(rgba(10,18,36,.9), rgba(8,14,28,.97)), url("../assets/art-final/rooms/room4-hearing-livingroom.png") center/cover;
+}
+html.r4-fit .r4-page .stage-heading h2 { color: var(--r4-gold-l); text-shadow: 0 2px 0 var(--r4-navy-d); font-size: 28px; }
+html.r4-fit .r4-page .stage-heading p { color: #b9c9e8; }
+html.r4-fit .r4-page .stage-heading .eyebrow { color: #9fb6d9; letter-spacing: .14em; }
+html.r4-fit .r4-page .counter {
+  padding: 3px 14px; border: 2px solid var(--r4-gold); border-radius: 0; background: var(--r4-navy); color: var(--r4-gold-l);
+  font-weight: 900; font-size: 15px; box-shadow: 0 2px 0 var(--r4-navy-d);
+}
+
+/* ---------- 共用:按鈕、羊皮紙面板 ---------- */
+html.r4-fit .r4-page .primary, html.r4-fit .r4-page .secondary {
+  width: auto; margin: 0; min-height: 0; padding: 7px 22px; border-radius: 4px; font-size: 18px; font-weight: 900; letter-spacing: .04em;
+  transition: transform .12s, box-shadow .12s, filter .12s;
+}
+html.r4-fit .r4-page .primary {
+  background: linear-gradient(#ffd466, var(--r4-gold)); color: var(--r4-ink); border: 3px solid var(--r4-gold-d);
+  box-shadow: 0 4px 0 #6b4306, 0 0 0 2px var(--r4-navy-d);
+}
+html.r4-fit .r4-page .secondary {
+  background: linear-gradient(#27487c, var(--r4-navy)); color: var(--r4-gold-l); border: 3px solid #c98c1c;
+  box-shadow: 0 4px 0 var(--r4-navy-d), 0 0 0 2px var(--r4-navy-d);
+}
+html.r4-fit .r4-page .primary:hover:not(:disabled), html.r4-fit .r4-page .secondary:hover:not(:disabled) { filter: brightness(1.1) drop-shadow(0 0 8px #ffd36a99); transform: translateY(-2px); }
+html.r4-fit .r4-page .primary:active:not(:disabled), html.r4-fit .r4-page .secondary:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #6b4306, 0 0 0 2px var(--r4-navy-d); }
+html.r4-fit .r4-page .primary:disabled, html.r4-fit .r4-page .secondary:disabled { filter: grayscale(.7) brightness(.75); opacity: .75; cursor: not-allowed; }
+html.r4-fit .r4-page .actions { margin-top: 10px; gap: 12px; }
+html.r4-fit .r4-page .card-bank, html.r4-fit .r4-page .poster-panel, html.r4-fit .r4-page .r4-notebook, html.r4-fit .r4-page .r4-points {
+  box-sizing: border-box; border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch;
+  image-rendering: pixelated; background: none; color: var(--r4-ink); filter: drop-shadow(0 3px 0 #0b142680);
+}
+
+/* ---------- 線索整理(judgment) ---------- */
+html.r4-fit .r4-judgment .sorting { grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 4px; }
+html.r4-fit .r4-judgment .card-bank { display: flex; flex-direction: column; gap: 9px; padding: 12px 14px; min-height: 0; justify-content: flex-start; }
+html.r4-fit .r4-page .card {
+  display: block; padding: 8px 14px 8px 12px; border: 2px solid #b98a3c; border-left: 6px solid var(--r4-gold); border-radius: 3px; background: #fff7e0; color: var(--r4-ink);
+  font-size: 18px; font-weight: 700; line-height: 1.35; box-shadow: 0 3px 0 #7a4f1066; cursor: grab; user-select: none;
+  transition: transform .14s, box-shadow .14s, filter .14s;
+}
+html.r4-fit .r4-page .card:before { content: '⠿'; color: #b98a3c; margin-right: 10px; }
+html.r4-fit .r4-page .card:hover:not(:disabled) { transform: translate(3px, -2px) rotate(-.5deg); box-shadow: 0 6px 0 #7a4f1055, 0 0 14px #ffd36a; }
+html.r4-fit .r4-page .card.selected { outline: 3px solid #ffd36a; box-shadow: 0 0 18px #ffd36a; transform: translateX(6px); }
+html.r4-fit .r4-page .card.shake { animation: r4Shake .35s; background: #ffe2dc; border-color: #c8362c; }
+@keyframes r4Shake { 20% { transform: translateX(-7px); } 45% { transform: translateX(6px); } 70% { transform: translateX(-4px); } }
+html.r4-fit .r4-page .dropzone {
+  position: relative; padding: 14px 18px; min-height: 0; text-align: center; color: var(--r4-gold-l);
+  border: 3px dashed var(--r4-gold); border-radius: 4px; background: radial-gradient(circle at 50% 0, #1f4378, var(--r4-navy) 68%, var(--r4-navy-d));
+  box-shadow: inset 0 0 0 2px var(--r4-navy-d), 0 5px 0 var(--r4-navy-d); transition: box-shadow .18s, background .18s;
+}
+html.r4-fit .r4-page .dropzone h3 { margin: 0 0 2px; font-size: 26px; color: var(--r4-gold-l); }
+html.r4-fit .r4-page .dropzone h3:before {
+  content: ''; display: inline-block; width: 34px; height: 34px; margin-right: 8px; vertical-align: -9px;
+  background: url("../assets/art-final/ui/clue-magnifier.png") center/contain no-repeat; image-rendering: pixelated;
+}
+html.r4-fit .r4-page .dropzone p { margin: 0 0 12px; color: #b9c9e8; font-size: 15px; }
+html.r4-fit .r4-page .dropzone.over { border-style: solid; background: radial-gradient(circle at 50% 0, #2a5aa0, #1b3a6c 70%, var(--r4-navy-d)); box-shadow: inset 0 0 0 2px var(--r4-navy-d), 0 0 0 3px #ffd36a, 0 0 28px #ffd36a99; }
+html.r4-fit .r4-page .dropzone .card { margin-top: 9px; text-align: left; animation: r4Stamp .45s cubic-bezier(.2,.9,.3,1.4); cursor: default; }
+html.r4-fit .r4-page .dropzone .card.accepted { background: #eaf5d6; border-color: #2f8f4e; border-left-color: #2f8f4e; box-shadow: 0 3px 0 #1b5a30aa, 0 0 12px #8fe6a066; }
+html.r4-fit .r4-page .dropzone .card.accepted:before { content: '✓'; color: #2f8f4e; font-weight: 900; }
+@keyframes r4Stamp { 0% { opacity: 0; transform: scale(1.5) rotate(-3deg); } 60% { opacity: 1; transform: scale(.96); } 100% { transform: none; } }
+html.r4-fit .r4-page .feedback-line {
+  display: block; width: fit-content; max-width: 920px; min-height: 0; margin: 12px auto 0; padding: 8px 22px; color: var(--r4-ink); text-align: center; font-size: 17px; font-weight: 700;
+  border: 12px solid transparent; border-image: url("../assets/art-final/ui/dialog-bubble.png") 12 12 20 56 fill / 12px 12px 20px 56px stretch; image-rendering: pixelated;
+}
+html.r4-fit .r4-judgment .actions { margin-top: 10px; }
+
+/* ---------- 正式學習(learning) ---------- */
+html.r4-fit .r4-learn { display: grid; grid-template-columns: 540px 1fr; gap: 22px; align-items: stretch; margin-top: 2px; }
+html.r4-fit .r4-learn .poster-panel { padding: 8px; display: block; }
+html.r4-fit .r4-learn .poster-space { height: 322px; display: grid; place-items: center; overflow: hidden; background: #0b1426; border: 3px solid var(--r4-gold-d); }
+html.r4-fit .r4-learn .poster-space img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+html.r4-fit .r4-points { padding: 8px 14px; }
+html.r4-fit .r4-points .eyebrow { margin: 0; font-size: 12px; color: #8a4f0c; }
+html.r4-fit .r4-points h3 { margin: 0 0 8px; font-size: 21px; color: var(--r4-ink); }
+html.r4-fit .r4-points ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+html.r4-fit .r4-points li { display: flex; gap: 10px; align-items: flex-start; min-height: 58px; padding: 6px 10px; border: 2px dashed #b98a3c88; background: #fff7e099; color: var(--r4-ink); font-size: 16px; line-height: 1.4; font-weight: 700; transition: background .25s, border-color .25s, transform .25s; }
+html.r4-fit .r4-points li b { flex: none; display: grid; place-items: center; width: 28px; height: 28px; background: #c9b38b; color: #fff; font-size: 15px; }
+html.r4-fit .r4-points li.on { border: 2px solid #b98a3c; background: #fff3d2; }
+html.r4-fit .r4-points li.on b { background: var(--r4-gold-d); }
+html.r4-fit .r4-points li.now { transform: translateX(4px); box-shadow: 0 0 14px #ffd36a; border-color: var(--r4-gold); }
+html.r4-fit .r4-talk { --au-s: 2; position: relative; left: auto; right: auto; bottom: auto; margin: 8px 0 0; padding: 0 8px; z-index: 5; pointer-events: none; }
+html.r4-fit .r4-talk .au-dlg-row { pointer-events: auto; }
+html.r4-fit .r4-edu-controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 10px; }
+html.r4-fit .r4-edu-controls .edu-progress { min-width: 64px; text-align: center; color: var(--r4-gold-l); font-weight: 900; font-size: 18px; }
+
+/* ---------- 聊天偵探(assessment) ---------- */
+html.r4-fit .r4-detective { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: stretch; margin-top: 4px; }
+html.r4-fit .r4-case {
+  box-sizing: border-box; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px 16px; border: 3px solid var(--r4-gold); border-radius: 4px;
+  background: radial-gradient(circle at 50% 0, #1d3a66, var(--r4-navy) 60%, var(--r4-navy-d)); box-shadow: inset 0 0 0 2px var(--r4-navy-d), 0 5px 0 var(--r4-navy-d);
+}
+html.r4-fit .r4-case .round-intro { display: flex; align-items: baseline; gap: 14px; margin: 0; padding: 0 0 6px; border-bottom: 2px solid #c98c1c66; }
+html.r4-fit .r4-case .round-intro h3 { margin: 0; font-size: 22px; color: var(--r4-gold-l); }
+html.r4-fit .r4-case .round-intro p { margin: 0; font-size: 15px; color: #b9c9e8; }
+html.r4-fit .r4-case .dialogue-log { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; max-height: none; overflow: hidden; padding: 4px 2px; background: none; border: 0; }
+html.r4-fit .r4-case .play-intro { margin: auto; text-align: center; color: var(--r4-gold-l); padding: 24px; }
+html.r4-fit .r4-case .play-intro h3 { margin: 6px 0; font-size: 24px; }
+html.r4-fit .r4-case .play-intro p { margin: 0; color: #b9c9e8; }
+html.r4-fit .r4-case .play-outline { display: block; width: 0; height: 0; margin: 0 auto 8px; border-style: solid; border-width: 22px 0 22px 38px; border-color: transparent transparent transparent var(--r4-gold); filter: drop-shadow(0 0 10px #ffd36a99); animation: r4Beat 1.4s ease-in-out infinite; }
+@keyframes r4Beat { 50% { transform: scale(1.15); } }
+html.r4-fit .r4-case .line {
+  position: relative; display: flex; gap: 10px; align-items: flex-start; width: 78%; margin: 0; padding: 8px 14px; text-align: left; color: var(--r4-ink);
+  border: 12px solid transparent; border-image: url("../assets/art-final/ui/dialog-bubble.png") 12 12 20 56 fill / 12px 12px 20px 56px stretch; image-rendering: pixelated;
+  background: none; opacity: .62; transform: scale(.985); transition: opacity .2s, transform .2s, filter .2s;
+}
+html.r4-fit .r4-case .line.side-me { align-self: flex-end; }
+html.r4-fit .r4-case .line.side-other { align-self: flex-start; }
+html.r4-fit .r4-case .line.side-note { align-self: center; width: 64%; font-style: italic; }
+html.r4-fit .r4-case .line:not(:disabled):hover { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px #ffd36aaa); cursor: pointer; }
+html.r4-fit .r4-case .line.current { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 12px #ffd36a); }
+html.r4-fit .r4-case .line.recorded { opacity: 1; filter: drop-shadow(0 0 8px #8fe6a0); }
+html.r4-fit .r4-case .line-time { flex: none; padding-top: 3px; font-size: 13px; font-weight: 900; color: #8a4f0c; }
+html.r4-fit .r4-case .line-body { flex: 1; font-size: 18px; line-height: 1.4; font-weight: 700; }
+html.r4-fit .r4-case .line-body small { display: block; font-size: 12px; font-weight: 900; color: #8a4f0c; letter-spacing: .08em; }
+html.r4-fit .r4-case .line.recorded .line-body small:last-child { display: inline; color: #2f8f4e; }
+html.r4-fit .r4-case .selected-label { align-self: center; padding: 1px 8px; background: var(--r4-gold); color: var(--r4-ink); font-size: 12px; font-weight: 900; }
+html.r4-fit .r4-case .selection-flash { animation: r4Flash .6s; }
+@keyframes r4Flash { 0% { filter: brightness(2.2) drop-shadow(0 0 24px #fff); } 100% { filter: drop-shadow(0 0 12px #ffd36a); } }
+html.r4-fit .r4-case .timeline { display: flex; gap: 0; margin: 4px 0 0; padding: 8px 4px 0; border-top: 2px solid #c98c1c66; position: relative; }
+html.r4-fit .r4-case .timeline button {
+  flex: 1; position: relative; padding: 14px 0 4px; border: 0; background: none; color: #9fb6d9; font-size: 14px; font-weight: 900; letter-spacing: .06em; cursor: pointer; transition: color .15s, transform .15s;
+}
+html.r4-fit .r4-case .timeline button:before {
+  content: ''; position: absolute; left: 50%; top: 0; width: 16px; height: 16px; margin-left: -8px; transform: rotate(45deg); background: #2b4a7c; border: 2px solid #c98c1c; transition: background .15s, box-shadow .15s;
+}
+html.r4-fit .r4-case .timeline button.visited:before { background: #c98c1c; }
+html.r4-fit .r4-case .timeline button.current { color: var(--r4-gold-l); }
+html.r4-fit .r4-case .timeline button.current:before { background: #ffd466; box-shadow: 0 0 14px #ffd36a; }
+html.r4-fit .r4-case .timeline button:hover:not(:disabled) { color: var(--r4-gold-l); transform: translateY(-2px); }
+html.r4-fit .r4-case .timeline button:disabled { opacity: .45; cursor: default; }
+html.r4-fit .r4-notebook { display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; }
+html.r4-fit .r4-notebook h3 { margin: 0; font-size: 22px; color: var(--r4-ink); border-bottom: 2px solid #b98a3c66; padding-bottom: 4px; }
+html.r4-fit .r4-slots { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+html.r4-fit .r4-slots li { display: flex; gap: 10px; align-items: flex-start; min-height: 54px; padding: 6px 10px; border: 2px dashed #b98a3c88; background: #fff7e099; font-size: 15px; line-height: 1.4; font-weight: 700; color: #8a7a5a; }
+html.r4-fit .r4-slots li.got { border: 2px solid #2f8f4e; background: #eaf5d6; color: var(--r4-ink); animation: r4Stamp .45s cubic-bezier(.2,.9,.3,1.4); }
+html.r4-fit .r4-slot-mark { flex: none; display: grid; place-items: center; width: 26px; height: 26px; background: #c9b38b; color: #fff; font-weight: 900; }
+html.r4-fit .r4-slots li.got .r4-slot-mark { background: #2f8f4e; }
+html.r4-fit .r4-notebook .round-hint { margin: 0; min-height: 40px; font-size: 14px; line-height: 1.4; color: #6a4a1a; font-weight: 700; }
+html.r4-fit .r4-notebook .play-controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0; }
+html.r4-fit .r4-notebook .play-controls button { font-size: 16px; padding: 6px 14px; }
+html.r4-fit .r4-notebook #record { flex: 1 1 100%; font-size: 20px; padding: 9px 14px; }
+html.r4-fit .r4-notebook #record:not(:disabled) { animation: r4Pulse2 1.6s ease-in-out infinite; }
+@keyframes r4Pulse2 { 50% { filter: brightness(1.12) drop-shadow(0 0 10px #ffd36a); } }
+html.r4-fit .r4-tip { margin: 0; padding-top: 6px; border-top: 2px solid #b98a3c44; font-size: 12.5px; line-height: 1.45; color: #6a4a1a; }
+html.r4-fit .r4-detective .detective-feedback {
+  position: absolute; z-index: 20; left: 50%; top: 50%; width: 560px; transform: translate(-50%, -50%); box-sizing: border-box; padding: 16px 22px; color: var(--r4-ink);
+  border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch; image-rendering: pixelated; background: none;
+  filter: drop-shadow(0 0 0 #000) drop-shadow(0 10px 30px #000c); animation: r4Pop .3s cubic-bezier(.2,.9,.3,1.3);
+}
+html.r4-fit .r4-detective .detective-feedback[hidden] { display: none; }
+html.r4-fit .r4-detective .detective-feedback strong { display: block; margin-bottom: 4px; font-size: 22px; color: #2f6a3c; }
+html.r4-fit .r4-detective .detective-feedback p { margin: 4px 0; font-size: 16px; line-height: 1.5; font-weight: 700; }
+html.r4-fit .r4-detective .detective-feedback .actions { margin-top: 10px; justify-content: flex-end; }
+@keyframes r4Pop { from { opacity: 0; transform: translate(-50%, -46%) scale(.92); } }
+
+/* ---------- 最終回饋(final) ---------- */
+html.r4-fit .r4-finalwrap { display: grid; grid-template-columns: 1fr 420px; gap: 24px; align-items: stretch; margin-top: 6px; }
+html.r4-fit .r4-finalwrap .final-list { max-width: none; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-content: start; }
+html.r4-fit .r4-finalwrap .final-list p {
+  position: relative; display: flex; gap: 12px; align-items: center; min-height: 150px; margin: 0; padding: 10px 14px; color: var(--r4-ink); font-size: 22px; line-height: 1.4; font-weight: 800;
+  border: 10px solid transparent; border-image: url("../assets/art-final/ui/clue-card-blank.png") 16 fill / 10px stretch; image-rendering: pixelated; background: none; border-radius: 0;
+  filter: drop-shadow(0 4px 0 #0b142680); animation: r4Deal .5s cubic-bezier(.2,.9,.3,1.2) both; transition: transform .15s, filter .15s;
+}
+html.r4-fit .r4-finalwrap .final-list p:hover { transform: translateY(-4px) rotate(-.6deg); filter: drop-shadow(0 0 12px #ffd36a) drop-shadow(0 4px 0 #0b142680); }
+html.r4-fit .r4-finalwrap .final-list p b { flex: none; display: grid; place-items: center; width: 34px; height: 34px; background: var(--r4-gold-d); color: #fff; font-size: 18px; box-shadow: 0 2px 0 #4a2c04; }
+@keyframes r4Deal { from { opacity: 0; transform: translateY(26px) rotate(3deg) scale(.9); } }
+html.r4-fit .r4-final-side { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
+html.r4-fit .r4-finalwrap .core {
+  margin: 0; padding: 22px 18px; text-align: center; font-size: 28px; line-height: 1.55; font-weight: 900; color: var(--r4-gold-l); text-shadow: 0 2px 0 var(--r4-navy-d), 0 0 18px #f0a91c88;
+  border: 3px solid var(--r4-gold); background: radial-gradient(circle at 50% 0, #1f4378, var(--r4-navy) 65%, var(--r4-navy-d)); box-shadow: inset 0 0 0 2px var(--r4-navy-d), 0 5px 0 var(--r4-navy-d);
+}
+html.r4-fit .r4-finalwrap .reminder { margin: 0; padding: 10px 14px; border: 2px solid #b98a3c; border-left: 6px solid #8a4f0c; background: #fbeccb; color: var(--r4-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
+html.r4-fit .r4-finalwrap .actions { margin: 0; justify-content: center; }
+html.r4-fit .r4-final #claim:not(:disabled) { font-size: 22px; padding: 10px 26px; animation: r4Pulse2 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { html.r4-fit .r4-page * { animation: none !important; transition: none !important; } }
+
+html.r4-fit .r4-finalwrap .final-list p:before { content: none; }
+html.r4-fit .r4-case .play-intro { height: auto; background: none; }
+html.r4-fit .r4-talk .au-dlg-text.edu-line { min-height: 0; height: 100%; display: -webkit-box; padding: calc(var(--au-s) * 1px) calc(var(--au-s) * 4px) 0 0; background: none; border: 0; border-radius: 0; line-height: 1.38; }

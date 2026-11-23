@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><script src="../art-ui/art-ui-guard.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="營養密室 V5.4：醫藥盒改為營養照護相關 ICOPE 資源查詢，保留原旋轉路徑玩法。">
+  <title>營養密室 V5.4</title>
+  <link rel="stylesheet" href="style.css?v=w10">
+  <link rel="stylesheet" href="rpg/style.css?v=2">
+  <link rel="stylesheet" href="food-learning.css?v=2">
+  <link rel="stylesheet" href="../art-ui/art-ui.css?v=r15">
+  <link rel="stylesheet" href="../shared/story-kit.css">
+  <link rel="stylesheet" href="room3-layout.css?v=7">
+  <script src="room3-layout.js?v=3"></script>
+</head>
+<body data-au-room="3">
+  <main id="app">
+    <section id="roomView" class="view room-view is-active" aria-labelledby="roomTitle">
+      <header class="hud">
+        <button id="exitRoom" class="ghost room-back" type="button">← 返回房間配置圖</button>
+        <div class="heading">
+          <h1 id="roomTitle">房間3•營養照護廚房</h1>
+        </div>
+        <div class="hud-actions">
+          <div id="roomTimer" class="chip">🕰️ 00:00</div>
+          <span id="roomCount" hidden>0</span>
+          <button id="openCode" class="primary room-code-button" type="button">🔐 輸入密碼</button>
+        </div>
+      </header>
+      <div class="room-shell">
+        <div class="room-canvas">
+          <img class="room-bg" src="../assets/art-final/rooms/room3-nutrition-kitchen.png" alt="溫暖的廚房，桌面與冰箱旁藏有五個營養學習物件。">
+
+          <button class="hotspot hotspot-scale" data-item="scale" type="button" aria-label="體重計"><span></span><b>體重計</b></button>
+          <button class="hotspot hotspot-seasoning" data-item="seasoning" type="button" aria-label="桌上調味料"><span></span><b>桌上調味料</b></button>
+          <button class="hotspot hotspot-food" data-item="food" type="button" aria-label="營養食物"><span></span><b>營養食物</b></button>
+          <button class="hotspot hotspot-supplement" data-item="supplement" type="button" aria-label="醫藥盒"><span></span><b>醫藥盒</b></button>
+          <button class="hotspot hotspot-note" data-item="note" type="button" aria-label="冰箱上的哭臉便利貼"><span></span><b>哭臉便利貼</b></button>
+        </div>
+        <p class="room-hint">✦ 留意每兩秒亮起一次的物品，點擊即可調查。</p>
+      </div>
+    </section>
+
+    <section id="missionView" class="view mission-view" hidden>
+      <header class="mission-bar">
+        <button id="returnRoom" class="ghost-button" type="button">← 返回房間</button>
+        <div class="mission-heading">
+          <p id="missionEyebrow" class="eyebrow sr-only">營養線索</p>
+          <h2 id="missionTitle">學習任務</h2>
+        </div>
+        <div id="stepChip" class="progress-chip color-progress"></div>
+      </header>
+      <div class="act-toolbar" id="actToolbar"><button id="hintBtn" class="secondary-button hint-btn" type="button">💡 操作提示</button><div id="hintExtra" class="act-extra"></div></div>
+      <div id="missionContent" class="mission-content"></div>
+    </section>
+
+    <div id="codeOverlay" class="overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="codeTitle">
+        <p class="eyebrow">房間 3｜通關密碼</p>
+        <h2 id="codeTitle">輸入本房密碼</h2>
+        <p>完成五個營養線索後，輸入本房間的數字密碼。</p>
+        <input id="codeInput" class="code-input" inputmode="numeric" autocomplete="off" placeholder="輸入數字密碼">
+        <div id="codeFeedback" class="feedback-panel" hidden></div>
+        <div id="clueSummary" class="clue-summary"></div>
+        <div class="actions">
+          <button id="closeCode" class="secondary-button" type="button">返回房間</button>
+          <button id="submitCode" class="primary-button" type="button">確認密碼</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <template id="scaleSceneTemplate">
+    <article class="panel scale-scene">
+      <div class="scene-copy">
+        <h3>半年來，體重好像慢慢變輕了……</h3>
+        <p>月初紀錄是 <strong>70 公斤</strong>。</p>
+      </div>
+      <div class="timeline" aria-label="六個月體重紀錄">
+        <div class="calendar-card">
+          <div class="calendar-top">體重紀錄</div>
+          <strong id="calendarMonth">月初</strong>
+          <span id="calendarHint">初始紀錄：70 kg</span>
+        </div>
+        <div class="scale-device" aria-label="指針式體重計">
+          <img src="assets/scale-body.png" alt="金屬外殼與橡膠踏板的機械體重計">
+          <svg id="scaleDial" viewBox="0 0 200 200" aria-label="體重刻度與指針"></svg>
+          <span id="scaleDisplay" class="sr-only">70 公斤</span>
+        </div>
+      </div>
+      <div id="weightHistory" class="weight-history">
+        <span class="is-recorded">月初<strong>70 kg</strong></span>
+        <span>第 2 月<strong>？</strong></span>
+        <span>第 4 月<strong>？</strong></span>
+        <span>第 6 月<strong>？</strong></span>
+      </div>
+      <div class="actions">
+        <button id="weighButton" class="primary-button" type="button">翻到第 2 月並測量</button>
+        
+      </div>
+      <p id="scaleLive" class="live-note sr-only" aria-live="polite"></p>
+    </article>
+  </template>
+
+  <template id="mealSceneTemplate">
+    <article class="panel meal-panel">
+      <div class="scene-copy">
+        <h3 id="mealTitle">桌上的餐點看起來很豐盛</h3>
+      </div>
+      <div id="mealStage" class="meal-stage" aria-label="放有軟硬食物、調味料與餐具的餐桌">
+<button class="meal-object soft-food" data-kind="soft" data-sprite="0" type="button" aria-label="南瓜粥"><canvas width="96" height="85"></canvas><span>南瓜粥</span><em class="portion-note"></em></button>
+<button class="meal-object soft-food" data-kind="soft" data-sprite="1" type="button" aria-label="蒸蛋"><canvas width="96" height="85"></canvas><span>蒸蛋</span><em class="portion-note"></em></button>
+<button class="meal-object soft-food" data-kind="soft" data-sprite="2" type="button" aria-label="豆腐"><canvas width="96" height="85"></canvas><span>豆腐</span><em class="portion-note"></em></button>
+<button class="meal-object soft-food" data-kind="soft" data-sprite="3" type="button" aria-label="蒸魚"><canvas width="96" height="85"></canvas><span>蒸魚</span><em class="portion-note"></em></button>
+<button class="meal-object hard-food" data-kind="hard" data-sprite="4" type="button" aria-label="烤肉片"><canvas width="96" height="85"></canvas><span>烤肉片</span><em class="portion-note"></em></button>
+<button class="meal-object hard-food" data-kind="hard" data-sprite="5" type="button" aria-label="蘋果"><canvas width="96" height="85"></canvas><span>蘋果</span><em class="portion-note"></em></button>
+<button class="meal-object hard-food" data-kind="hard" data-sprite="6" type="button" aria-label="花椰菜與紅蘿蔔"><canvas width="96" height="85"></canvas><span>花椰菜與紅蘿蔔</span><em class="portion-note"></em></button>
+<button class="meal-object soft-food" data-kind="soft" data-sprite="7" type="button" aria-label="白飯"><canvas width="96" height="85"></canvas><span>白飯</span><em class="portion-note"></em></button>
+<button class="meal-object seasoning" data-kind="seasoning" data-sprite="8" type="button" aria-label="醬油"><canvas width="96" height="85"></canvas><span>醬油</span><em class="portion-note"></em></button>
+<button class="meal-object seasoning" data-kind="seasoning" data-sprite="9" type="button" aria-label="鹽"><canvas width="96" height="85"></canvas><span>鹽</span><em class="portion-note"></em></button>
+<button class="meal-object decoy" data-kind="decoy" data-sprite="10" type="button" aria-label="紙巾"><canvas width="96" height="85"></canvas><span>紙巾</span><em class="portion-note"></em></button>
+<button class="meal-object decoy" data-kind="decoy" data-sprite="11" type="button" aria-label="餐具"><canvas width="96" height="85"></canvas><span>餐具</span><em class="portion-note"></em></button>
+        <div class="table-edge" aria-hidden="true"></div>
+      </div>
+      <div class="meal-controls"><button id="startEating" class="primary-button" type="button" hidden>開始進食</button></div>
+    </article>
+  </template>
+
+  <template id="judgmentTemplate">
+    <article class="panel task-card">
+      <div class="task-intro">
+        <h3 id="judgmentQuestion"></h3>
+      </div>
+      <fieldset id="judgmentOptions" class="choice-list"><legend class="sr-only">選擇答案</legend></fieldset>
+      <div class="actions">
+        <button id="submitJudgment" class="primary-button" type="button" disabled>確認判斷</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="educationTemplate">
+    <article class="panel education-card">
+      <div class="education-visual">
+        <img id="educationImage" alt="衛教重點圖片">
+        <div id="educationStoryCaption" class="education-story-caption" aria-live="polite" hidden></div>
+        <div id="educationFallback" class="image-fallback">
+          <span aria-hidden="true">＋</span>
+          <strong id="fallbackTitle">衛教圖片預留區</strong>
+          <small id="fallbackText"></small>
+        </div>
+      </div>
+      <div class="education-copy">
+        <p class="eyebrow">學習重點</p>
+        <h3 id="educationTitle"></h3>
+        <div id="educationBody"></div>
+        <button id="educationNext" class="primary-button" type="button"></button>
+      </div>
+    </article>
+  </template>
+
+  <template id="lineTemplate">
+    <article class="phone-shell" aria-label="LINE 對話評量">
+      <div class="phone-status"><span>9:41</span><strong>LINE</strong><span>●●●</span></div>
+      <div id="lineInbox" class="line-inbox">
+        <div class="line-title"><h3>聊天</h3></div>
+        <div id="contactList" class="contact-list"></div>
+      </div>
+      <div id="chatRoom" class="chat-room" hidden>
+        <div class="chat-header"><button id="chatBack" type="button" aria-label="返回聊天列表">‹</button><strong id="chatName"></strong><span></span></div>
+        <div id="messages" class="messages"></div>
+        <div id="calculationScaffold" class="calculation-scaffold"></div>
+        <div id="replyChoices" class="reply-choices"></div>
+        
+      </div>
+    </article>
+  </template>
+
+  <template id="resourceTemplate">
+    <div class="resource-shell">
+      <section id="resourceHome" class="panel resource-panel">
+        <div class="resource-hero"><div class="pixel-sign">ICOPE</div><div><h3>出現營養風險時，你知道可以先去哪裡評估嗎？</h3></div></div>
+        <div class="resource-modes">
+          <button id="openQuery" class="mode-card" type="button"><b>⌕</b><strong>查詢營養照護資源</strong><small>查看可執行 ICOPE 評估的院所、地址與電話</small></button>
+          <button id="openPuzzle" class="mode-card mission" type="button"><b>!</b><strong>開始營養資源任務</strong><small>依情境完成三題旋轉方塊路徑</small></button>
+        </div>
+        <p class="source-note">資料依「115 年臺南市執行內在能力檢測（ICOPE 評估）單位」清單呈現。本模組優先顯示較適合營養風險情境使用的內科、家庭醫學科、衛生所與醫院；是否提供營養師門診或營養諮詢，仍應先向院所確認。</p>
+      </section>
+      <section id="queryStep" class="panel resource-panel" hidden>
+        <div class="section-head"><div><p class="eyebrow">營養照護資源查詢</p><h3>選擇區域</h3></div><button class="small-button resource-home-button" type="button">回資源首頁</button></div>
+        <div id="districts" class="district-grid"></div>
+        <div id="unitArea" hidden><div class="section-head compact"><h3><span id="districtName"></span>的單位</h3><button id="changeDistrict" class="small-button" type="button">換一個區域</button></div><div id="unitCards" class="unit-grid"></div></div>
+      </section>
+      <section id="puzzleStep" class="panel resource-panel" hidden>
+        <div class="section-head"><div><p class="eyebrow">營養資源任務</p><h3 id="puzzleTitle" class="sr-only">營養資源任務</h3></div><button class="small-button resource-home-button" type="button">回資源首頁</button></div>
+        <div class="puzzle-layout">
+          <aside class="mission-paper"><span class="paper-tape"></span><p class="mission-kicker">營養資源任務</p><h4 id="personName"></h4><p id="missionStory"></p><strong>指定條件</strong><div id="missionConditions" class="condition-list"></div><div class="route-status"><strong>目前接通</strong><div id="conditionStatus"></div></div></aside>
+          <div class="board-wrap"><div class="board-head"><span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span><span id="puzzleProgress"></span><span class="mb-label-removed" aria-hidden="true" style="visibility:hidden"></span></div><div id="routeBoard" class="route-board" role="grid" aria-label="五乘五旋轉路徑拼圖"></div><p id="puzzleHint" class="puzzle-hint" aria-live="polite"></p></div>
+        </div>
+      </section>
+      <section id="puzzleResult" class="panel resource-panel centered" hidden><p class="eyebrow">路徑接通</p><h3>找到符合條件的單位！</h3><div id="resultCard" class="result-card"></div><button id="nextPuzzle" class="primary-button" type="button">下一個營養資源任務</button></section>
+      <section id="resourceFinal" class="panel resource-panel centered" hidden><p class="eyebrow">三個任務全部完成</p><h3>營養照護資源任務完成！</h3><p>你已完成三次「看營養風險情境 → 拼路徑 → 找到 ICOPE 評估資源」任務。</p><button id="resourceReturn" class="primary-button" type="button" hidden>完成學習</button></section>
+    </div>
+    <div id="unitDialog" class="dialog-backdrop" hidden><div class="unit-dialog" role="dialog" aria-modal="true"><button id="closeUnitDialog" type="button" aria-label="關閉">×</button><div id="unitDetail"></div></div></div>
+  </template>
+
+  <script src="../achievement-system/achievement-data.js"></script>
+  <script src="../achievement-system/puzzles/nutrition.js?v=20261115-e"></script>
+  <script src="../achievement-system/achievement-objects.js"></script>
+  <script src="../achievement-system/achievement.js?v=20261123-learning"></script>
+  <script src="../shared/story-copy.js?v=20261118-3"></script>
+  <script src="../shared/story-art-config.js"></script>
+  <script src="../shared/story-dialog.js?v=20261118-2"></script>
+  <script src="../shared/story-kit.js"></script>
+  <script src="calculator.js"></script>
+  <script src="rpg/data.js"></script>
+  <script src="rpg/engine.js"></script>
+  <script src="rpg/ui.js?v=learning1"></script>
+  <script src="food-learning.js?v=2"></script>
+  <script src="script.js?v=learning1"></script>
+  <script src="../shared/memory-maze-character.js"></script>
+  <script src="../art-ui/objects.js"></script><script src="../art-ui/art-ui.js?v=r25" data-room="3"></script>
+  <script>AchievementSystem.initRoom("nutrition", { roomSelector: "#roomView", activitySelector: "dialog[open], .dialog-overlay:not([hidden]), .overlay:not([hidden])" });</script>
+</body>
+</html>
