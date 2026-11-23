@@ -1,0 +1,178 @@
+/* ending-v3.css — 第三修改計劃新增內容3-10:春聯片尾向量動畫草稿 */
+.ending-sequence.ev3-mode .ending-stage { display: none !important; }
+.ev3 { position: absolute; inset: 0; overflow: hidden; background: #05080f; font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; }
+.ev3-frame { position: absolute; left: 50%; top: 50%; width: min(100vw, 177.7778vh); height: min(100vh, 56.25vw); transform: translate(-50%, -50%); overflow: hidden; }
+.ev3-scene { position: absolute; inset: 0; opacity: 0; transition: opacity .6s; }
+.ev3-scene.on { opacity: 1; }
+.ev3-bg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* 大門打開 */
+.ev3-leaf { transition: transform 1.8s cubic-bezier(.6,0,.3,1); }
+.ev3-leafL { transform-origin: 620px 470px; } .ev3-leafR { transform-origin: 980px 470px; }
+.ev3-open .ev3-leafL, .ev3-open .ev3-leafR { transform: scaleX(.06); }
+.ev3-light { opacity: 0; transition: opacity 1.8s; } .ev3-open .ev3-light { opacity: 1; }
+.ev3-flash { position: absolute; inset: 0; background: #fff8e6; opacity: 0; pointer-events: none; transition: opacity .5s; z-index: 7; }
+.ev3-flashing .ev3-flash { opacity: 1; }
+.ev3-lantern { animation: ev3Lantern 2.6s ease-in-out infinite; }
+@keyframes ev3Lantern { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.ev3-sun { animation: ev3Sun 6s ease-in-out infinite alternate; } @keyframes ev3Sun { to { opacity: .75; } }
+.ev3-cloud { animation: ev3Cloud 14s linear infinite alternate; } @keyframes ev3Cloud { to { translate: 60px 0; } }
+/* 角色 */
+.ev3-actors { position: absolute; inset: 0; z-index: 3; }
+.ev3-actor { position: absolute; aspect-ratio: 260 / 410; transform: translateX(-50%); transition-property: left, bottom, height; transition-timing-function: linear; filter: drop-shadow(0 6px 8px rgba(0,0,0,.3)); }
+.ev3-fig { width: 100%; height: 100%; overflow: visible; display: block; }
+.ev3-actor.ev3-jump { animation: ev3Jump .45s cubic-bezier(.3,1.6,.5,1); }
+@keyframes ev3Jump { 40% { translate: 0 -9%; } }
+.ev3-say { position: absolute; left: 50%; top: -10%; transform: translateX(-50%); white-space: nowrap; padding: 6px 14px; border-radius: 14px; background: #fffaf0; border: 3px solid #2a1a08; color: #b3141c; font-weight: 900; font-size: clamp(14px, 1.5vw, 24px); animation: ev3Pop .4s cubic-bezier(.3,1.6,.5,1); }
+@keyframes ev3Pop { from { transform: translateX(-50%) scale(.3); } }
+/* 鞭炮與紅紙花 */
+.ev3-firecracker { position: absolute; top: 33%; width: 1.6%; height: 22%; z-index: 2; opacity: 0; transition: opacity .3s;
+  background: repeating-linear-gradient(#d7262e 0 14px, #f0c25a 14px 17px); border-radius: 6px; box-shadow: 0 0 0 3px #2a1a08; }
+.ev3-fl { left: 41.4%; } .ev3-fr { left: 57%; }
+.ev3-firecracker.on { opacity: 1; animation: ev3Shake .12s linear infinite; }
+.ev3-firecracker.on::after { content: ""; position: absolute; left: 50%; bottom: -10%; width: 260%; aspect-ratio: 1; transform: translateX(-50%); background: radial-gradient(circle, #fff6c2 0 12%, #ffb347 24%, transparent 60%); animation: ev3Boom .3s steps(2) infinite; }
+@keyframes ev3Shake { 50% { translate: 2px 0; } }
+@keyframes ev3Boom { 50% { opacity: .2; transform: translateX(-50%) scale(.7); } }
+.ev3-confetti { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.ev3-confetti b { position: absolute; top: -4%; width: 10px; height: 14px; opacity: 0; }
+.ev3-confetti.on b { animation: ev3Fall 4s linear forwards; }
+@keyframes ev3Fall { 0% { opacity: 1; transform: translateY(0) rotate(0); } 100% { opacity: .9; transform: translateY(110vh) rotate(720deg); } }
+/* 春聯彩蛋:由上往下展開,一字一字出現 */
+.ev3-couplet { position: absolute; top: 5%; width: 8.6%; height: 82%; z-index: 5; clip-path: inset(-4% -20% 100% -20%); transition: clip-path 1.4s cubic-bezier(.5,0,.3,1); }
+.ev3-cl { left: 1.6%; } .ev3-cr { right: 1.6%; }
+.ev3-couplet.on { clip-path: inset(-4% -20% -4% -20%); }
+.ev3-paper { position: relative; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 8% 0;
+  background: linear-gradient(90deg, #a51a20, #d7262e 30%, #d7262e 70%, #a51a20); border: 4px solid #f0c25a; border-radius: 6px; box-shadow: 0 0 0 4px #5a0f12, 0 10px 24px rgba(0,0,0,.45); }
+.ev3-paper::before, .ev3-paper::after { content: ""; position: absolute; left: -8%; right: -8%; height: 3.2%; background: #6b4424; border: 3px solid #2a1a08; border-radius: 6px; }
+.ev3-paper::before { top: -1.5%; } .ev3-paper::after { bottom: -1.5%; }
+.ev3-paper span { font-family: "DFKai-SB", "BiauKai", "標楷體", "Kaiti TC", "KaiTi", "STKaiti", serif; font-size: clamp(22px, 3.3vw, 58px); font-weight: 900; color: #ffd877; text-shadow: 0 2px 0 #5a0f12; opacity: 0; transform: scale(1.6); transition: opacity .35s, transform .35s; transition-delay: calc(1.1s + var(--i) * .32s); }
+.ev3-couplet.on span { opacity: 1; transform: none; }
+.ev3-couplet.full span { transition-delay: 0s; }
+/* 橫批 */
+.ev3-banner { position: absolute; left: 50%; top: 3%; z-index: 6; display: flex; gap: 2.2%; justify-content: center; align-items: center; width: 40%; height: 13%; transform: translate(-50%, -160%);
+  background: linear-gradient(#d7262e, #a51a20); border: 4px solid #f0c25a; border-radius: 8px; box-shadow: 0 0 0 4px #5a0f12, 0 10px 24px rgba(0,0,0,.45); transition: transform .8s cubic-bezier(.3,1.5,.5,1); }
+.ev3-banner.on { transform: translate(-50%, 0); }
+.ev3-banner span { font-family: "DFKai-SB", "BiauKai", "標楷體", "Kaiti TC", "KaiTi", "STKaiti", serif; font-size: clamp(26px, 3.8vw, 66px); font-weight: 900; color: #ffd877; text-shadow: 0 2px 0 #5a0f12; opacity: 0; transform: scale(2.2) rotate(-12deg); transition: opacity .2s, transform .3s cubic-bezier(.3,1.8,.5,1); }
+.ev3-banner span.on { opacity: 1; transform: none; }
+/* 標題 */
+.ev3-title { position: absolute; left: 50%; top: 21%; z-index: 6; transform: translateX(-50%); text-align: center; color: #fff6de; opacity: 0; transition: opacity 1s; text-shadow: 0 3px 0 #7a1418, 0 0 18px rgba(0,0,0,.5); }
+.ev3-title strong { display: block; font-size: clamp(30px, 4.6vw, 80px); font-weight: 900; letter-spacing: .2em; color: #ffd877; }
+.ev3-title span { display: block; font-size: clamp(14px, 1.5vw, 24px); font-weight: 800; }
+.ev3-title.on { opacity: 1; }
+/* 字幕 */
+.ev3-sub { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); z-index: 8; max-width: 70%; padding: 10px 24px; border-radius: 12px; background: rgba(10,18,36,.86); border: 2px solid #f0c25a; color: #fff2cf; text-align: center; font-size: clamp(15px, 1.6vw, 26px); font-weight: 800; opacity: 0; transition: opacity .4s; }
+.ev3-sub.on { opacity: 1; }
+.ending-sequence.ev3-mode.done .ev3-sub { opacity: 0; }
+.ev3-draft { position: absolute; left: 12px; top: 10px; z-index: 9; padding: 3px 10px; border-radius: 6px; background: rgba(0,0,0,.5); color: #ffd877; font-size: 12px; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .ev3 *, .ev3-actor { animation: none !important; transition-duration: .01s !important; } }
+/* 2026-11-17 第二版:依故事劇本的對話框、回憶濾鏡、籤詩 */
+.ev3 { cursor: pointer; }
+.ev3-talk { position: absolute; left: 50%; bottom: 3%; z-index: 8; width: min(78%, 1100px); transform: translateX(-50%); box-sizing: border-box; padding: 2.2% 3% 2.6%; border-radius: 14px;
+  background: #f6e2b0; border: 5px solid #2a1a08; box-shadow: 0 0 0 4px #d9a83e inset, 0 12px 30px rgba(0,0,0,.45); color: #2a1a08; opacity: 0; transition: opacity .3s; pointer-events: none; }
+.ev3-talk.on { opacity: 1; animation: ev3Pop2 .3s ease; }
+@keyframes ev3Pop2 { from { translate: 0 12px; } }
+.ev3-who { position: absolute; left: 3%; top: -26%; padding: 4px 18px; border-radius: 8px; background: #14294a; border: 3px solid #d9a83e; color: #fff2cf; font-size: clamp(14px, 1.4vw, 22px); }
+.ev3-line { margin: 0; font-size: clamp(16px, 1.9vw, 32px); font-weight: 900; line-height: 1.45; }
+.ev3-talk i { position: absolute; right: 2.4%; bottom: 8%; font-size: clamp(11px, .95vw, 15px); font-style: normal; font-weight: 800; color: #6b4424; animation: ev3Hint 1.6s ease-in-out infinite; }
+@keyframes ev3Hint { 50% { opacity: .55; } }
+/* 2026-11-20 對話框獨立圖層,不被下面場景/人物動畫帶動重繪;換句時只有文字淡入 */
+.ev3-talk { will-change: opacity; backface-visibility: hidden; }
+.ev3-line.ev3-fade { animation: ev3LineIn .16s ease-out; }
+@keyframes ev3LineIn { from { opacity: .25; } }
+.ending-sequence.ev3-mode.done .ev3-talk { opacity: 0; }
+.ev3-scene.ev3-memory, .ev3-scene[data-s="bed1"], .ev3-scene[data-s="bed2"] { filter: sepia(.45) saturate(.85); }
+.ev3-memory-tag { position: absolute; right: 2%; top: 3%; z-index: 8; padding: 4px 16px; border-radius: 6px; background: rgba(60,40,20,.75); color: #ffe7b0; font-weight: 900; font-size: clamp(13px, 1.3vw, 20px); letter-spacing: .3em; opacity: 0; transition: opacity .4s; }
+.ev3-in-memory .ev3-memory-tag { opacity: 1; }
+.ev3-in-memory .ev3-frame::after, .ev3-in-memory::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 6; box-shadow: inset 0 0 160px 60px rgba(40,25,10,.65); }
+.ev3-rush { animation: ev3Rush 1.6s ease-in-out infinite alternate; }
+@keyframes ev3Rush { from { transform: translateX(-20px); } to { transform: translateX(30px); } }
+.ev3-shaker { animation: ev3Shaker .3s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes ev3Shaker { to { transform: translateY(-6px); } }
+.ev3-sign { position: absolute; right: 9%; top: 8%; z-index: 7; width: 15%; display: flex; flex-direction: column; align-items: center; gap: 2%; padding: 2% 1% 3%; background: #fff4d6; border: 4px solid #8a1a14; border-radius: 6px;
+  box-shadow: 0 0 0 4px #f0c25a, 0 14px 30px rgba(0,0,0,.5); color: #5a0f12; font-family: "DFKai-SB", "BiauKai", "標楷體", "Kaiti TC", "KaiTi", serif; font-weight: 900;
+  opacity: 0; transform: translateY(-30%) rotate(-4deg); transition: opacity .5s, transform .7s cubic-bezier(.3,1.5,.5,1); }
+.ev3-sign.on { opacity: 1; transform: rotate(-2deg); }
+.ev3-sign small { font-size: clamp(14px, 1.4vw, 22px); color: #c0392b; }
+.ev3-sign span { font-size: clamp(14px, 1.45vw, 24px); writing-mode: vertical-rl; display: none; }
+.ev3-sign { flex-direction: row-reverse; flex-wrap: wrap; justify-content: center; }
+.ev3-sign small { width: 100%; text-align: center; }
+.ev3-sign span { display: block; }
+.ev3-sign em { width: 100%; text-align: center; font-style: normal; font-size: 11px; color: #8a6a3a; font-family: "Noto Sans TC", sans-serif; }
+
+/* 第三版:三老對話(天亮前)→ 天亮新年 */
+.ev3-frame::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(#0a1230ee, #1a2350cc 60%, #20203acc); opacity: 0; transition: opacity 2.6s ease; }
+.ev3-night .ev3-frame::before { opacity: 1; transition-duration: .4s; }
+.ev3-tag { position: absolute; left: 50%; top: -7%; transform: translateX(-50%); white-space: nowrap; padding: 2px 12px; border-radius: 8px; background: #14294a; border: 3px solid #d9a83e; color: #fff2cf; font-size: clamp(12px, 1.2vw, 20px); font-weight: 900; }
+.ev3-tag.named { animation: ev3Flip .5s ease; background: #a51a20; }
+@keyframes ev3Flip { 0% { transform: translateX(-50%) rotateX(90deg); } 100% { transform: translateX(-50%) rotateX(0); } }
+.ev3-actor .ev3-tag { opacity: 1; }
+.ev3-say ~ .ev3-tag, .ending-sequence.ev3-mode.done .ev3-tag { opacity: 0; }
+.ev3-actor.ev3-speaking { filter: drop-shadow(0 0 10px #ffe9a8) drop-shadow(0 6px 8px rgba(0,0,0,.3)); }
+
+/* 2026-11-18 ART-N3-10~15 像素定稿接入 */
+.ev3-img { object-fit: cover; image-rendering: pixelated; }
+/* 大門打開:門扇是與大廳圖同尺寸的透明圖,繞門軸向內轉開;門洞後面透出金光 */
+.ev3-scene[data-s="gate"] { perspective: 1600px; perspective-origin: 50% 50%; }
+.ev3-leaf3 { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; transition: transform 1.7s cubic-bezier(.6,0,.3,1), filter 1.7s; }
+.ev3-leafL3 { transform-origin: 37.32% 50%; } .ev3-leafR3 { transform-origin: 62.74% 50%; }
+.ev3-open .ev3-leafL3 { transform: rotateY(-78deg); filter: brightness(.7); } .ev3-open .ev3-leafR3 { transform: rotateY(78deg); filter: brightness(.7); }
+.ev3-doorlight { position: absolute; left: 37.3%; top: 22.3%; width: 25.45%; height: 57.2%; border-radius: 50% 50% 0 0 / 26% 26% 0 0; opacity: 0; transition: opacity 1.3s .25s;
+  background: radial-gradient(ellipse at 50% 75%, #fffdf0 0 20%, #ffe7a0 45%, #f4b44e 80%); box-shadow: 0 0 90px 40px rgba(255,214,130,.55); }
+.ev3-open .ev3-doorlight { opacity: 1; }
+/* 莊園外:天亮漸變(夜景圖上疊晨光) */
+.ev3-dawn { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 4.5s ease; mix-blend-mode: screen;
+  background: linear-gradient(to bottom, rgba(70,90,190,.55) 0%, rgba(255,130,100,.55) 20%, rgba(255,196,120,.5) 32%, rgba(255,214,150,.12) 48%, rgba(255,214,150,0) 62%); }
+.ev3-scene[data-s="outside"] .ev3-img { transition: filter 4.5s ease; }
+.ev3-dawned .ev3-dawn { opacity: 1; }
+.ev3-dawned .ev3-scene[data-s="outside"] .ev3-img { filter: brightness(1.12) saturate(1.06); }
+/* 像素角色 */
+.ev3-actor.ev3-sp, .ev3-actor.ev3-px { aspect-ratio: 1 / 1; }
+.ev3-sp i { position: absolute; inset: 0; background-repeat: no-repeat; background-position: 0 0; image-rendering: pixelated; }
+.ev3-sp-run { background-size: 600% 100%; animation: ev3Sheet .6s steps(6, jump-none) infinite; }
+.ev3-sp-cheer { background-size: 400% 100%; animation: ev3Sheet .8s steps(4, jump-none) infinite; }
+.ev3-sp-talk { background-size: 400% 100%; background-position: 100% 0; }
+@keyframes ev3Sheet { from { background-position: 0 0; } to { background-position: 100% 0; } }
+.ev3-px canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+
+@keyframes ev3Nod { to { translate: 0 -1.5%; } }
+/* 橫批改用像素木牌圖(字仍由程式一字一字蓋上) */
+.ev3-banner { height: auto; aspect-ratio: 5 / 1; background: url("assets/ending/v3/ending-v3-banner.png") center / 100% 100% no-repeat; border: 0; border-radius: 0; box-shadow: none; image-rendering: pixelated; filter: drop-shadow(0 10px 18px rgba(0,0,0,.45)); }
+/* 鞭炮:圖上已畫好兩串(大門兩側),開炸時在下端冒火花 */
+.ev3-firecracker { top: 69%; width: 2%; height: 4%; background: none; box-shadow: none; }
+.ev3-fl { left: 37.7%; } .ev3-fr { left: 60.3%; }
+.ev3-firecracker.on::after { width: 520%; }
+
+/* 2026-11-18 第二輪:玩家改用首頁老人背影(走向大門)與裝扮台畫風(走出莊園);三老說話時有手勢 */
+.ev3-actor.ev3-back { aspect-ratio: 536 / 1236; }
+.ev3-actor.ev3-doll { aspect-ratio: 364 / 362; }
+.ev3-back img, .ev3-doll canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.ev3-walking > * { animation: ev3Walk .5s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes ev3Walk { 0%, 100% { transform: translateY(0) rotate(-2.5deg); } 50% { transform: translateY(-4%) rotate(2.5deg); } }
+/* 說話中的老人:揮手格與小揮手格交替(原草稿的說話手勢) */
+.ev3-actor.ev3-speaking.ev3-sp .ev3-sp-talk { animation: ev3Gesture .9s steps(1) infinite, ev3Nod .45s ease-in-out infinite alternate; }
+@keyframes ev3Gesture { 0% { background-position: 100% 0; } 50% { background-position: 33.333% 0; } }
+.ev3-sp-talk { animation: ev3Idle 2.4s ease-in-out infinite; transform-origin: 50% 91%; }
+@keyframes ev3Idle { 0%, 100% { scale: 1 1; } 50% { scale: 1 1.015; } }
+/* ART-N4 片尾劇情 A/B 動作格交替 */
+.ev3-frameb { animation: ev3FrameB 1.2s steps(1) infinite; }
+@keyframes ev3FrameB { 0% { opacity: 0; } 50% { opacity: 1; } }
+.ev3-scene.ev3-raster[data-s="bed1"], .ev3-scene.ev3-raster[data-s="bed2"] { filter: sepia(.25); }
+
+/* 2026-11-18 ART-N4 接入 */
+/* 莊園改白天圖:主角走出來時是天亮前(程式把白天圖壓暗、偏藍),三老說「天亮了」時慢慢亮成白天 */
+.ev3-scene[data-s="outside"] .ev3-img { filter: brightness(.42) saturate(.65) hue-rotate(12deg); transition: filter 5s ease; }
+.ev3-dawned .ev3-scene[data-s="outside"] .ev3-img { filter: none; }
+.ev3-dawn { mix-blend-mode: soft-light; background: radial-gradient(ellipse at 8% 0%, rgba(255,214,140,.9), rgba(255,170,90,.35) 40%, transparent 70%); }
+.ev3-dawned .ev3-dawn { opacity: 1; animation: ev3Sunrise 6s ease-out forwards; }
+@keyframes ev3Sunrise { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: .55; } }
+/* 片尾劇情 A/B:動作只在畫面出現時才開始播;交替(想事情、醫院、廟裡搖籤)或播一次就停在 B(照鏡子嚇一跳、手術燈下醒來、換裝發光) */
+.ev3-frameb { animation: none; opacity: 0; }
+.ev3-scene.on[data-s="think"] .ev3-frameb { animation: ev3FrameB 1.6s steps(1) infinite; }
+.ev3-scene.on[data-s="bed1"] .ev3-frameb { animation: ev3FrameB .5s steps(1) infinite; }
+.ev3-scene.on[data-s="temple"] .ev3-frameb { animation: ev3FrameB .4s steps(1) infinite; }
+.ev3-scene.on[data-s="mirror"] .ev3-frameb { animation: ev3Once .01s 1.6s forwards; }
+.ev3-scene.on[data-s="bed2"] .ev3-frameb { animation: ev3Once .01s 2s forwards; }
+.ev3-scene.on[data-s="dress"] .ev3-frameb { animation: ev3Once .6s 1.2s ease forwards; }
+@keyframes ev3Once { to { opacity: 1; } }
+.ev3-scene.ev3-raster[data-s="bed1"], .ev3-scene.ev3-raster[data-s="bed2"] { filter: sepia(.2) saturate(.95); }
+/* 全部畫面已換成正式美術,拿掉「向量草稿」字樣 */
+.ev3-draft { display: none; }

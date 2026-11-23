@@ -1,0 +1,31 @@
+# ===== 不要上傳到 GitHub 的東西 =====
+
+# 歷史備份與 Claude 改動前的備份(合計約 1.7 GB,只在本機留存)
+_backups/
+docs/backup-*/
+
+# 測試截圖、生圖暫存與參考圖(體積大、已接入遊戲,不需要版本控制)
+docs/qa/
+docs/art-requests/
+assets/incoming/
+tests/out/
+
+# 打包交付產出的資料夾
+整合初版_交付_*/
+
+# Python / 編輯器 / 系統暫存
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Claude Code 的個人設定(launch.json 可留)
+.claude/settings.local.json
+
+# 金鑰與環境變數(專案本來就沒有,預防誤放)
+.env
+.env.*
+*.pem
+*.key

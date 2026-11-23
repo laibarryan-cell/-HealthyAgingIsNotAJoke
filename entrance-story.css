@@ -1,0 +1,123 @@
+/* entrance-story.css — 開場劇情 v2(2026-11-20 重做):16:9 電影舞台、上下黑邊、視差鏡頭、光圈暗角、對話框、特效。
+   角色樣式在 prologue-cast.css;場景(.ps-*)樣式在本檔下半部(第 22 幕也會用到大廳)。 */
+.entrance-story { position: fixed; inset: 0; z-index: 2147482000; display: grid; place-items: center; background: #000; color: #fff1ce; overflow: hidden; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+.entrance-story * { box-sizing: border-box; }
+.es-stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); aspect-ratio: 16 / 9; overflow: hidden; container-type: size; background: #05040a; }
+.es-shake, .es-view { position: absolute; inset: 0; }
+.es-view { cursor: pointer; transform-origin: 50% 50%; }
+.es-scenes, .es-actors, .es-front { position: absolute; inset: 0; pointer-events: none; }
+.es-actors { transform-origin: 50% 50%; z-index: 1; }
+.es-front { z-index: 2; }
+.es-front .ps-layer { display: none; } .es-front .ps-layer.on { display: block; }
+.es-light { position: absolute; inset: 0; z-index: 3; pointer-events: none; --lx: 50%; --ly: 50%; --lr: 60%; --dark: 0;
+  background: radial-gradient(circle farthest-corner at var(--lx) var(--ly), rgba(6, 4, 16, 0) 0%, rgba(6, 4, 16, calc(var(--dark) * .45)) calc(var(--lr) * .55), rgba(4, 3, 12, var(--dark)) var(--lr), rgba(2, 2, 8, calc(var(--dark) * 1.1)) 100%); }
+.es-fx { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+/* 手持鏡頭的微晃、頭暈時的搖晃與模糊 */
+.es-hand { animation: esHand 3.2s ease-in-out infinite; }
+@keyframes esHand { 0%, 100% { translate: 0 0; } 25% { translate: .25cqw -.2cqh; } 50% { translate: -.2cqw .25cqh; } 75% { translate: .15cqw .15cqh; } }
+.es-woozy { animation: esWoozy 2.4s ease-in-out infinite; }
+.es-woozy .es-scenes, .es-woozy .es-front { filter: blur(.25cqw); }
+@keyframes esWoozy { 0%, 100% { translate: 0 0; } 50% { translate: .8cqw .4cqh; } }
+.es-hitstop { filter: invert(1) contrast(1.4); }
+
+/* 上下黑邊(電影感)、標題列 */
+.es-bar { position: absolute; left: 0; right: 0; height: 7%; background: #000; z-index: 6; pointer-events: none; }
+.es-bar-top { top: 0; } .es-bar-bot { bottom: 0; }
+.es-header { position: absolute; z-index: 8; top: 0; left: 0; right: 0; height: 7%; display: flex; align-items: center; justify-content: space-between; padding: 0 2.2cqw; pointer-events: none; }
+.es-header span { font-size: 1.5cqw; font-weight: 900; letter-spacing: .25em; color: rgba(255, 233, 180, .55); }
+
+/* 對話框:固定在下方,只換文字(不移除節點 → 不閃) */
+.es-dialogue { position: absolute; z-index: 7; left: 50%; bottom: 3%; transform: translateX(-50%); width: 72cqw; min-height: 17cqh; padding: 3.4cqh 2.2cqw 1.6cqh;
+  background: #f6dfae; color: #2a2230; border: 5px solid #c98c1c; border-radius: 8px; box-shadow: inset 0 0 0 4px #fff3cf, 0 0 0 5px #0b1426, 0 14px 34px rgba(0, 0, 0, .5);
+  display: flex; flex-direction: column; gap: 1cqh; cursor: pointer; transition: opacity .25s ease, transform .25s ease; }
+.es-dialogue.es-hide { opacity: 0; transform: translate(-50%, 1.5cqh); pointer-events: none; }
+/* 對話框外觀與遊戲裡的 StoryDialog 一致:米色框、深藍名字牌、「▼ 點一下繼續」 */
+.es-name { position: absolute; left: 22px; top: -26px; padding: 5px 22px; font-size: clamp(14px, 1.5cqw, 21px); font-weight: 900; background: #14294a; color: #ffe9b0; border: 4px solid #c98c1c; border-radius: 5px; }
+.es-name:empty { display: none; }
+.es-line { margin: 1.2cqh 0 0; flex: 1; font-size: clamp(17px, 2.1cqw, 32px); line-height: 1.55; font-weight: 800; color: #2a2230; min-height: 1.55em; }
+.es-thought .es-line { color: #4a4478; font-style: italic; }
+.es-dialogue[data-who="narr"] .es-line { color: #6b4a10; font-style: normal; }
+.es-dialogue[data-big="1"] .es-line { font-size: 2.8cqw; } .es-dialogue[data-big="2"] .es-line { font-size: 3.4cqw; color: #b3261e; } .es-dialogue[data-big="3"] .es-line { font-size: 3.9cqw; color: #a3150e; }
+.es-dialogue footer { display: flex; justify-content: flex-end; align-items: center; gap: 14px; min-height: 22px; }
+.es-hint { font-size: clamp(11px, 1.2cqw, 16px); color: #7a4f10; font-weight: 800; animation: esBlink 1s steps(2) infinite; }
+@keyframes esBlink { 50% { opacity: .25; } }
+.es-hint[hidden] { display: none; }
+.entrance-story button { font: inherit; font-weight: 900; cursor: pointer; }
+.entrance-story .es-next { font: 900 clamp(14px, 1.6cqw, 22px)/1 "Noto Sans TC", system-ui, sans-serif; padding: 9px 22px; background: #14294a; color: #ffe9b0; border: 4px solid #c98c1c; border-radius: 5px; box-shadow: 0 5px 0 #0b1426; }
+.entrance-story .es-next:hover, .entrance-story .es-next:focus-visible { background: #1d3a68; outline: 3px solid #ffe9b0; outline-offset: 2px; }
+.entrance-story .es-next:active { transform: translateY(3px); box-shadow: 0 2px 0 #0b1426; }
+.es-next[hidden] { display: none; }
+.es-next.es-final { animation: esPulse 1.2s ease-in-out infinite; }
+@keyframes esPulse { 50% { box-shadow: 0 5px 0 #0b1426, 0 0 0 .5cqw rgba(255, 216, 109, .45); } }
+/* 「跳過」:與片尾的跳過鈕(ending.css .ending-skip)同外觀、同位置(視窗右上),含 icon-skip.png */
+.entrance-story .es-skip { position: absolute; right: 24px; top: 18px; z-index: 9; display: flex; align-items: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 6px 14px 6px 10px; background: #0d1b31cc; border: 2px solid #c89443; border-radius: 0;
+  color: #fff0c0; font: 700 16px/1 "Noto Sans TC", "Microsoft JhengHei", sans-serif; cursor: pointer; }
+.entrance-story .es-skip img { width: 32px; height: 32px; image-rendering: pixelated; }
+.entrance-story .es-skip:hover, .entrance-story .es-skip:focus-visible { background: #1b3358; outline: 2px solid #fff0c0; outline-offset: 2px; }
+@keyframes esPulse { 50% { box-shadow: 0 0 0 .5cqw rgba(255, 216, 109, .35); } }
+
+/* 特效 */
+.es-flash { position: absolute; inset: 0; background: #fff; animation: esFlash .45s ease-out forwards; }
+.es-flash-warm { background: #ffe2a6; animation-duration: .9s; }
+.es-flash-soft { background: #fff6dc; animation-duration: .6s; }
+@keyframes esFlash { from { opacity: .9; } to { opacity: 0; } }
+.es-bang { position: absolute; left: 60%; top: 30%; transform: translate(-50%, -50%) rotate(-8deg); font-style: normal; font-weight: 900; font-size: 9cqw; color: #ffd84d; -webkit-text-stroke: .5cqw #1a1020; paint-order: stroke; font-family: "Arial Black", "Noto Sans TC", sans-serif; animation: esBang 1.4s cubic-bezier(.3, 1.8, .5, 1) forwards; }
+@keyframes esBang { 0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); } 20% { transform: translate(-50%, -50%) scale(1.2) rotate(-8deg); } 80% { opacity: 1; } 100% { transform: translate(-50%, -60%) scale(1) rotate(-8deg); opacity: 0; } }
+.es-p { position: absolute; font-style: normal; font-size: 2cqw; transform: translate(-50%, -50%); animation: esP 1.5s ease-out forwards; text-shadow: 0 0 .6cqw currentColor; }
+@keyframes esP { to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(400deg) scale(.4); opacity: 0; } }
+.es-shake-l { animation: esShakeL .5s linear; } .es-shake-s { animation: esShakeS .12s linear 3; }
+@keyframes esShakeL { 0%, 100% { transform: none; } 15% { transform: translate(-1.6cqw, .8cqh); } 35% { transform: translate(1.2cqw, -.6cqh); } 55% { transform: translate(-.7cqw, .4cqh); } 75% { transform: translate(.4cqw, 0); } }
+@keyframes esShakeS { 25% { transform: translate(-.4cqw, .2cqh); } 75% { transform: translate(.4cqw, -.2cqh); } }
+.es-red .es-view::after { content: ""; position: absolute; inset: 0; z-index: 5; background: radial-gradient(circle at 46% 50%, rgba(255, 60, 40, .15), rgba(160, 0, 0, .55)); mix-blend-mode: multiply; animation: esRed .5s ease-in-out infinite alternate; pointer-events: none; }
+@keyframes esRed { from { opacity: .55; } to { opacity: 1; } }
+.es-flicker .es-light { animation: esFlick .12s steps(2) infinite; }
+@keyframes esFlick { 50% { opacity: .55; } }
+.es-gather { position: absolute; left: 76%; top: 56%; width: 70cqw; aspect-ratio: 1; transform: translate(-50%, -50%) scale(1.4); border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 238, 190, .0) 30%, rgba(255, 230, 160, .35) 45%, rgba(255, 230, 160, 0) 60%); animation: esGather 1.4s ease-in forwards; }
+@keyframes esGather { from { transform: translate(-50%, -50%) scale(1.4); opacity: 0; } 30% { opacity: 1; } to { transform: translate(-50%, -50%) scale(.05); opacity: 1; } }
+.es-wave { position: absolute; width: 10cqw; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 1cqw solid rgba(255, 236, 170, .9); box-shadow: 0 0 4cqw rgba(255, 210, 120, .8), inset 0 0 3cqw rgba(255, 210, 120, .6); animation: esWave 1.7s ease-out forwards; }
+@keyframes esWave { to { width: 220cqw; opacity: 0; border-width: .2cqw; } }
+
+/* 淡出到黑(結尾)*/
+.es-fade { position: absolute; inset: 0; z-index: 9; background: #000; opacity: 0; pointer-events: none; transition: opacity .6s ease; }
+.es-fade.es-black { opacity: 1; } .es-fade.es-slow { transition-duration: 1.2s; }
+
+/* 減少動態 */
+.es-reduced .es-view, .es-reduced .es-shake { animation: none !important; }
+.es-reduced .es-flicker .es-light, .es-reduced .ps-layer * { animation: none !important; }
+
+/* ======================= 場景(prologue-scenes.js)======================= */
+.ps-scene { position: absolute; inset: 0; display: none; }
+.ps-scene.on { display: block; }
+.ps-layer { position: absolute; inset: -8%; transform-origin: 50% 50%; will-change: transform; }
+.ps-layer svg { width: 100%; height: 100%; display: block; }
+.ps-art-img { position: absolute; inset: 0; background: center / cover no-repeat; image-rendering: pixelated; opacity: 0; transition: opacity 1.2s ease; }
+.ps-art-img.on { opacity: 1; }
+.ps-star { fill: #fff8d8; animation: psTwinkle 3.4s ease-in-out infinite; }
+@keyframes psTwinkle { 50% { opacity: .25; } }
+.ps-cloud { animation: psCloud 60s linear infinite; }
+@keyframes psCloud { to { transform: translateX(260px); } }
+.ps-win rect { fill: #1c2238; transition: fill .5s; }
+.ps-win.on rect { fill: #ffcf73; filter: drop-shadow(0 0 10px #ffb24a); }
+.ps-door { fill: #0a0d18; }
+.ps-leaf { transition: transform 2.6s cubic-bezier(.45, 0, .3, 1); transform: scaleX(calc(1 - var(--open, 0) * .86)); }
+.ps-gateglow { opacity: var(--glow, 0); transition: opacity 2s ease; }
+.ps-lampfire { fill: #2a2c38; transition: fill .3s; }
+.ps-lampglow { opacity: 0; transition: opacity .6s; }
+.ps-lamps-on .ps-lampfire { fill: #ffd47a; animation: psFlame 1.3s ease-in-out infinite; }
+.ps-lamps-on .ps-lampglow { opacity: .9; animation: psGlow 2.1s ease-in-out infinite; }
+@keyframes psFlame { 50% { fill: #ffbf52; } }
+@keyframes psGlow { 50% { opacity: .65; } }
+.ps-fog { animation: psFog 14s ease-in-out infinite alternate; }
+@keyframes psFog { to { transform: translateX(120px); } }
+.ps-flame { fill: #2a2224; opacity: .0; transition: opacity .3s; }
+.ps-glow { opacity: 0; transition: opacity .7s; }
+.ps-sconce.on .ps-flame, .ps-chand-on .ps-chand .ps-flame { fill: #ffcf5a; opacity: 1; animation: psFlame 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.ps-sconce.on .ps-glow, .ps-chand-on .ps-chand .ps-glow { opacity: 1; animation: psGlow 1.7s ease-in-out infinite; }
+.ps-pend { animation: psPend 2s ease-in-out infinite alternate; }
+@keyframes psPend { from { rotate: -9deg; } to { rotate: 9deg; } }
+.ps-dust { fill: #ffe9c0; opacity: .35; animation: psDust 12s linear infinite; }
+@keyframes psDust { from { transform: translate(0, 0); } 50% { transform: translate(40px, -60px); opacity: .6; } to { transform: translate(80px, -120px); opacity: 0; } }
+.ps-pupil { transition: transform .8s ease; }
+.ps-scene[data-eyes="look"] .ps-pupil { transform: translate(-3px, 2px); }
+.ps-scene[data-eyes="glow"] .ps-peye circle:not(.ps-pupil) { fill: #ff6a5a; }

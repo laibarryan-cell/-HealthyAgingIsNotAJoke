@@ -1,0 +1,67 @@
+/* char-v3.css — 第三修改計劃 C:建立冒險角色畫面
+   C1 全螢幕不擠壓(全螢幕鈕移到上方標題列,不再蓋住左欄文字)
+   C2 按鈕統一(分頁選中狀態改成同一套深藍金框,不再白字配淺底)
+   C3 換造型的變身特效
+   C4 確認角色對話框 */
+
+/* ---------- C1:全螢幕鈕在角色畫面時改放到「返回首頁」旁邊(位置由 char-v3.js 計算) ---------- */
+body.cv-top-fs .shell-fullscreen{left:var(--cv-fs-x)!important;top:var(--cv-fs-y)!important;bottom:auto!important}
+
+/* 道具名稱不要被拆成兩行(最長 5 個字) */
+#screen-character .item-card strong{white-space:nowrap;word-break:keep-all}
+
+/* ---------- C2:分頁按鈕統一 ---------- */
+/* 選中的分頁:與其他按鈕同一塊深藍金框,改用金色字 + 金色光暈 + 下方小三角,清楚表示「目前在這一頁」 */
+#screen-character .tabs .tab.active{
+  border-width:calc(8px*var(--cu)) calc(26px*var(--cu))!important;
+  border-image:url("game/assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--cu)) calc(26px*var(--cu)) stretch!important;
+  color:#ffd76a!important;text-shadow:0 2px 0 #000,0 0 8px rgba(255,200,90,.7);
+  filter:drop-shadow(0 0 6px rgba(255,205,100,.85));position:relative
+}
+#screen-character .tabs .tab.active::after{
+  content:"";position:absolute;left:50%;bottom:calc(var(--cu,1)*-10px - 4px);transform:translateX(-50%);
+  border:calc(var(--cu,1)*4px + 6px) solid transparent;border-top-color:#ffd76a;border-bottom:0;pointer-events:none
+}
+#screen-character .tabs .tab:not(.active){color:#f3e3bf!important}
+/* 所有按鈕共同的按下回饋(與遊戲內一致:微縮、下壓、變亮) */
+#screen-character :is(.tab,.round-button,.soft-button,.primary-button,.icon-button,.swatch,.base-character){transition:transform .12s ease,filter .12s ease}
+#screen-character :is(.swatch,.base-character):active{transform:scale(.95) translateY(1px)!important;filter:brightness(1.12)}
+
+/* ---------- C3:變身特效 ---------- */
+#screen-character .preview-stage{position:relative}
+#character-preview.cv-morph,#walk-preview.cv-morph{animation:cvMorph .62s cubic-bezier(.3,.9,.3,1.25)}
+@keyframes cvMorph{
+  0%{transform:scale(1) rotate(0);filter:none}
+  22%{transform:scale(.8,.86) rotate(-5deg);filter:brightness(2.4) saturate(.4)}
+  48%{transform:scale(1.1,1.06) rotate(4deg);filter:brightness(1.6)}
+  72%{transform:scale(.97,1.02) rotate(-1deg);filter:brightness(1.1)}
+  100%{transform:scale(1) rotate(0);filter:none}
+}
+.cv-fx{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.cv-ring{position:absolute;left:50%;top:52%;width:20%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.2);
+  background:radial-gradient(circle,rgba(255,255,255,.95) 0 18%,rgba(255,230,150,.75) 34%,rgba(255,210,110,0) 70%);animation:cvRing .55s ease-out forwards}
+@keyframes cvRing{to{transform:translate(-50%,-50%) scale(4.2);opacity:0}}
+.cv-star{position:absolute;left:50%;top:52%;width:calc(var(--cu,1)*8px + 14px);aspect-ratio:1;margin:calc(var(--cu,1)*-4px - 7px);
+  background:#ffe08a;clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%);
+  filter:drop-shadow(0 0 4px #fff6c8);animation:cvStar .75s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes cvStar{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}70%{opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(1) rotate(180deg);opacity:0}}
+.cv-tag{position:absolute;left:50%;top:12%;transform:translateX(-50%);padding:4px 16px;background:#14294a;color:#ffd76a;border:3px solid #f0a91c;
+  font:900 calc(var(--cu,1)*4px + 16px)/1.2 "Noto Sans TC","Microsoft JhengHei",sans-serif;white-space:nowrap;box-shadow:0 0 0 2px #0b1426,0 6px 14px rgba(0,0,0,.4);
+  animation:cvTag 1.1s ease forwards}
+@keyframes cvTag{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}18%{opacity:1;transform:translate(-50%,0) scale(1.06)}30%{transform:translate(-50%,0) scale(1)}78%{opacity:1}100%{opacity:0;transform:translate(-50%,-8px)}}
+@media (prefers-reduced-motion:reduce){#character-preview.cv-morph,#walk-preview.cv-morph{animation:none}.cv-star{display:none}.cv-ring{animation-duration:.3s}}
+
+/* ---------- C4:確認角色對話框 ---------- */
+#app-dialog.cv-confirm-open{padding:0;border:0;background:transparent;box-shadow:none;max-width:none;overflow:visible}
+#app-dialog.cv-confirm-open .dialog-close{display:none}
+#app-dialog.cv-confirm-open::backdrop{background:rgba(8,14,28,.66)}
+.cv-confirm{box-sizing:border-box;width:min(92vw,calc(var(--cu,1)*160px + 520px));padding:calc(var(--cu,1)*10px + 22px) calc(var(--cu,1)*12px + 26px);
+  background:#fbf0d6;color:#2a2230;border:4px solid #f0a91c;box-shadow:0 0 0 4px #14294a,0 0 0 6px #0b1426,0 24px 60px rgba(0,0,0,.55);
+  display:grid;grid-template-columns:auto 1fr;gap:calc(var(--cu,1)*8px + 14px);align-items:center;animation:cvPop .32s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes cvPop{from{transform:scale(.85);opacity:0}}
+.cv-confirm img{width:calc(var(--cu,1)*50px + 120px);height:auto;image-rendering:pixelated;background:radial-gradient(circle at 50% 40%,#fff7e0,#ead6a8);border:3px solid #c99a3c;padding:6px}
+.cv-confirm h2{margin:0 0 6px;font:900 calc(var(--cu,1)*6px + 24px)/1.25 "Noto Sans TC","Microsoft JhengHei",sans-serif;color:#14294a}
+.cv-confirm p{margin:0 0 4px;font-size:calc(var(--cu,1)*3px + 18px);line-height:1.5}
+.cv-confirm .cv-name{font-weight:900;color:#8a4b12}
+.cv-confirm .cv-actions{grid-column:1/-1;display:flex;justify-content:center;gap:calc(var(--cu,1)*8px + 14px);flex-wrap:wrap;margin-top:6px}
+.cv-confirm .cv-actions button{min-width:calc(var(--cu,1)*40px + 170px);font-size:calc(var(--cu,1)*3px + 19px)!important}

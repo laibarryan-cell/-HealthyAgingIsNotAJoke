@@ -1,0 +1,76 @@
+/* awakening-story.css — 第 22 幕(2026-11-20 多鏡頭版,分鏡見 38 號文件):16:9 舞台、眼皮、鏡頭層、主角狀態、底部對話框 */
+.awakening-story { position: fixed; inset: 0; z-index: 2147482100; display: grid; place-items: center; background: #000; color: #fff1ce; overflow: hidden; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; outline: none; }
+.awakening-story * { box-sizing: border-box; }
+.aw-stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); aspect-ratio: 16 / 9; overflow: hidden; container-type: size; background: #000; }
+/* 世界(背景+角色)= 舞台的 108%;鏡頭移動 .aw-cam(PrologueScenes.camera),手持晃動 .aw-hand。2026-11-20 多鏡頭版 */
+.aw-world { position: absolute; inset: -4%; cursor: pointer; filter: blur(14px) brightness(1.7) saturate(.4) hue-rotate(160deg) sepia(.2); transition: filter 2s ease; }
+.aw-half .aw-world { filter: blur(6px) brightness(1.25) saturate(.55) sepia(.15); }
+.aw-focus .aw-world { filter: brightness(.8) saturate(.75) hue-rotate(-8deg); animation: awSway 2.2s ease-out .2s; }
+@keyframes awSway { 20% { translate: -.5cqw 0; } 45% { translate: .4cqw 0; } 70% { translate: -.2cqw 0; } 100% { translate: 0 0; } }
+.aw-bright .aw-world { filter: brightness(1.05) saturate(1.1); }
+.aw-hand, .aw-cam { position: absolute; inset: 0; }
+.aw-cam { transform-origin: 50% 50%; will-change: transform; }
+.aw-handheld .aw-hand { animation: awHand 2.8s ease-in-out infinite; }
+@keyframes awHand { 0%, 100% { translate: 0 0; rotate: 0deg; } 25% { translate: -.35% .2%; rotate: -.4deg; } 50% { translate: .25% -.15%; rotate: .3deg; } 75% { translate: -.15% -.25%; rotate: -.2deg; } }
+.aw-bg { position: absolute; inset: 0; background: #1a1626; overflow: hidden; }
+.aw-warm { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.4s ease;
+  background: radial-gradient(ellipse 60% 70% at 50% 70%, rgba(255, 200, 110, .45), transparent 70%), linear-gradient(rgba(255, 170, 80, .12), rgba(255, 170, 80, .12)); mix-blend-mode: screen; }
+.aw-bright .aw-warm { opacity: 1; }
+
+/* 主角(玩家的角色):lying 倒地 / twitch 手指抽動 / sit 撐起 / stand 站 / wobble 搖晃 / proud 挺胸 */
+.aw-hero { position: absolute; left: 50%; top: 87%; height: 19%; aspect-ratio: 1; transform: translate(-50%, -100%); }
+.aw-body { position: absolute; inset: 0; transform-origin: 50% 94%; transition: transform 1s cubic-bezier(.3, 1.3, .5, 1); }
+.aw-hero[data-state="lying"] .aw-body, .aw-hero[data-state="twitch"] .aw-body { transform: translateY(4%) rotate(-84deg); transition-duration: 0s; }
+.aw-hero[data-state="twitch"] .aw-cv, .aw-hero[data-state="twitch"] .aw-fallback { animation: awTwitch 1.4s steps(1) infinite; }
+@keyframes awTwitch { 0%, 30%, 50%, 100% { translate: 0 0; } 32%, 46% { translate: 0 -1.2%; } 70%, 76% { translate: .6% 0; } }
+.aw-hero[data-state="sit"] .aw-body { transform: translateY(2%) rotate(-12deg) scaleY(.72); }
+.aw-hero[data-state="stand"] .aw-body { transform: none; animation: awWobble 1.4s ease-in-out .5s 1; }
+.aw-hero[data-state="wobble"] .aw-body { transform: none; animation: awWobble 2.2s ease-in-out infinite; }
+@keyframes awWobble { 25% { rotate: -3deg; } 55% { rotate: 2deg; } 80% { rotate: -1deg; } }
+.aw-hero[data-state="proud"] .aw-body { transform: translateY(-1%) scale(1.05); }
+.aw-cv, .aw-fallback { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; filter: drop-shadow(0 .6cqh .6cqh rgba(0, 0, 0, .6)); }
+.aw-cv { display: none; }
+.aw-has-player .aw-cv { display: block; }
+.aw-has-player .aw-fallback { display: none; }
+.aw-fallback .pc { left: 50%; top: 100%; height: 100%; --pc-h: 25cqh; }
+.aw-emote { position: absolute; left: 50%; top: 2%; transform: translateX(-50%); font-style: normal; font-weight: 900; font-size: 2.6cqw; line-height: 1; color: #ffd84d; text-shadow: 0 .2cqw 0 #0b1426; white-space: nowrap; font-family: "Arial Black", "Noto Sans TC", sans-serif; }
+.aw-emote:empty { display: none; }
+.aw-emote.em-dizzy { animation: awSpin 1.2s linear infinite; font-size: 1.8cqw; }
+.aw-emote.em-dizzy b:nth-child(2) { color: #8fd6ff; margin: 0 .4cqw; }
+@keyframes awSpin { to { transform: translateX(-50%) rotateY(360deg); } }
+.aw-emote.em-bang { animation: awPop .4s cubic-bezier(.3, 1.8, .5, 1); }
+@keyframes awPop { from { transform: translateX(-50%) scale(0); } }
+
+/* 眼皮:上下兩片黑色橢圓,張開 30% → 閉 → 70% → 閉 → 全開 */
+.aw-lid { position: absolute; left: -20%; right: -20%; height: 75%; background: #000; z-index: 5; transition: transform .45s cubic-bezier(.4, 0, .2, 1); pointer-events: none; }
+.aw-lid-top { top: 0; border-radius: 0 0 50% 50% / 0 0 60% 60%; transform: translateY(0); }
+.aw-lid-bot { bottom: 0; border-radius: 50% 50% 0 0 / 60% 60% 0 0; transform: translateY(0); }
+.aw-blink1 .aw-lid-top { transform: translateY(-32%); } .aw-blink1 .aw-lid-bot { transform: translateY(32%); }
+.aw-blink2 .aw-lid-top { transform: translateY(-47%); } .aw-blink2 .aw-lid-bot { transform: translateY(47%); }
+.aw-open .aw-lid-top { transform: translateY(-105%); transition-duration: .9s; } .aw-open .aw-lid-bot { transform: translateY(105%); transition-duration: .9s; }
+
+/* 介面 */
+.awakening-story button { font: inherit; font-weight: 900; cursor: pointer; border: 2px solid #c5a261; border-radius: 9px; background: #fff2cf; color: #46331e; padding: .5em 1.1em; min-height: 38px; }
+.awakening-story button:hover { background: #ffe3a0; }
+.awakening-story button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+/* 「跳過」:與片尾的跳過鈕(ending.css .ending-skip)同外觀、同位置(視窗右上),含 icon-skip.png */
+.awakening-story .aw-skip { position: absolute; right: 24px; top: 18px; z-index: 9; display: flex; align-items: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 6px 14px 6px 10px; background: #0d1b31cc; border: 2px solid #c89443; border-radius: 0;
+  color: #fff0c0; font: 700 16px/1 "Noto Sans TC", "Microsoft JhengHei", sans-serif; cursor: pointer; }
+.awakening-story .aw-skip img { width: 32px; height: 32px; image-rendering: pixelated; }
+.awakening-story .aw-skip:hover, .awakening-story .aw-skip:focus-visible { background: #1b3358; outline: 2px solid #fff0c0; outline-offset: 2px; }
+.aw-dialogue { position: absolute; left: 50%; bottom: 4%; z-index: 6; width: min(74cqw, 1060px); min-height: 17cqh; transform: translateX(-50%); padding: 3cqh 2.4cqw 1.6cqh;
+  background: #f6dfae; color: #2a2230; border: 5px solid #c98c1c; border-radius: 8px; box-shadow: inset 0 0 0 4px #fff3cf, 0 0 0 5px #0b1426, 0 14px 34px rgba(0, 0, 0, .5);
+  display: flex; flex-direction: column; gap: 1cqh; cursor: pointer; transition: opacity .35s ease, transform .35s ease; }
+.aw-dialogue.aw-hide { opacity: 0; transform: translate(-50%, 2cqh); pointer-events: none; }
+.aw-name { position: absolute; left: 1.6cqw; top: -2.6cqh; transform: translateY(-50%); padding: .3em 1.2em; font-weight: 900; font-size: clamp(13px, 1.4cqw, 22px); background: #14294a; color: #ffe9b0; border: 4px solid #c98c1c; border-radius: 5px; }
+.aw-text { margin: 0; flex: 1; font-size: clamp(16px, 2.1cqw, 34px); line-height: 1.55; font-weight: 800; }
+.aw-text.aw-weak { animation: awWeak .12s steps(2) infinite; color: #4a4050; }
+@keyframes awWeak { 50% { transform: translate(.08cqw, .06cqh); } }
+.aw-dialogue footer { display: flex; align-items: center; justify-content: flex-end; }
+.aw-hint { font-size: clamp(11px, 1.2cqw, 16px); color: #7a4f10; font-weight: 800; animation: awBlink 1s steps(2) infinite; }
+@keyframes awBlink { 50% { opacity: .25; } }
+.aw-white { position: absolute; inset: 0; z-index: 9; background: #fff; opacity: 0; pointer-events: none; transition: opacity .6s ease; }
+.aw-out .aw-white { opacity: 1; }
+
+/* 減少動態:不晃、不轉,眼皮直接打開 */
+.aw-reduced *, .aw-reduced *::before, .aw-reduced *::after { animation: none !important; transition-duration: .01s !important; }

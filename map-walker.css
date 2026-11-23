@@ -1,0 +1,26 @@
+/* The map actor remains click-through; room buttons retain their existing behavior. */
+#cursor-character{width:192px;height:192px;transform:translate(-50%,-93.75%);margin:0;animation:none!important;transition:none;pointer-events:none}
+#map-walker{display:block;width:100%;height:100%;image-rendering:pixelated}
+#cursor-character.visible{display:block!important;opacity:1!important;visibility:visible!important}
+
+/* ===== livelier map actor (animation only: movement speed and frame stepping are unchanged) ===== */
+#cursor-character::before{content:"";position:absolute;left:50%;bottom:5.5%;width:46%;height:8%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(0,0,0,.45),rgba(0,0,0,0) 70%);transition:width .2s,opacity .2s;z-index:0}
+#cursor-character[data-walking="true"]::before{width:54%;opacity:.85;animation:cShadow .36s ease-in-out infinite}
+#cursor-character #map-walker{position:relative;z-index:1;transform-origin:50% 94%;animation:cBreath 2.6s ease-in-out infinite}
+#cursor-character[data-walking="true"] #map-walker{animation:cWalk .36s ease-in-out infinite}
+#cursor-character[data-walking="true"][data-direction="left"] #map-walker{animation-name:cWalkL}
+#cursor-character[data-walking="true"][data-direction="right"] #map-walker{animation-name:cWalkR}
+#cursor-character.settle #map-walker{animation:cSettle .38s cubic-bezier(.2,.9,.3,1.4) 1}
+#cursor-character.turn #map-walker{animation:cTurn .22s ease-out 1}
+#cursor-character.hop #map-walker{animation:cHop .4s cubic-bezier(.2,.9,.3,1.1) 1}
+@keyframes cBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.015,.985)}}
+@keyframes cWalk{0%,100%{transform:translateY(0) scale(1.03,.97)}50%{transform:translateY(-6px) scale(.98,1.03)}}
+@keyframes cWalkL{0%,100%{transform:translateY(0) rotate(-1.5deg) scale(1.03,.97)}50%{transform:translateY(-6px) rotate(1.5deg) scale(.98,1.03)}}
+@keyframes cWalkR{0%,100%{transform:translateY(0) rotate(1.5deg) scale(1.03,.97)}50%{transform:translateY(-6px) rotate(-1.5deg) scale(.98,1.03)}}
+@keyframes cSettle{0%{transform:scale(1.07,.92)}45%{transform:scale(.97,1.05)}100%{transform:scale(1,1)}}
+@keyframes cTurn{0%{transform:scale(.9,1.03)}100%{transform:scale(1,1)}}
+@keyframes cHop{0%{transform:translateY(0) scale(1.06,.94)}40%{transform:translateY(-16px) scale(.96,1.06)}100%{transform:translateY(0) scale(1,1)}}
+@media (prefers-reduced-motion:reduce){#cursor-character #map-walker,#cursor-character::before{animation:none!important}}
+/* F8 走路塵土 */
+.mw-dust{position:absolute;width:14px;height:8px;margin:-4px 0 0 -7px;border-radius:50%;background:radial-gradient(#d8c8a8cc,#d8c8a800 70%);pointer-events:none;z-index:1;animation:mwDust .65s ease-out forwards}
+@keyframes mwDust{from{opacity:.9;transform:scale(.6)}to{opacity:0;transform:translateY(-6px) scale(2.2)}}

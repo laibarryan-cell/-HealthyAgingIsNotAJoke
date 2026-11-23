@@ -1,0 +1,121 @@
+/* prologue-cast.css — 向量角色(prologue-cast.js)的樣式:關節補間、視角、待機/走路/說話等循環動畫、頭上符號。2026-11-20 開場重做 v2 */
+.pc { position: absolute; aspect-ratio: 2 / 3; transform: translate(-50%, -100%); pointer-events: none; --pc-ms: 480ms;
+  transition: --ko 1.6s, --kskin 1.6s, --khair 1.6s, --ktop 1.6s, --ktop2 1.6s, --kacc 1.6s, --kpants 1.6s, --kshoe 1.6s, --khat 1.6s, --khat2 1.6s, --klens 1.6s, --kline 1.6s, --kmouth 1.6s, --keyew 1.6s, --kblush 1.6s; }
+.pc-flip { position: absolute; inset: 0; transition: transform .35s ease; }
+.pc-flipped .pc-flip { transform: scaleX(-1); }
+.pc-svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.pc-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom; image-rendering: pixelated; }
+.pc-has-art .pc-svg { visibility: hidden; }
+/* 正式圖的黑白/暗處用濾鏡(向量版用調色盤) */
+.pc-art { transition: filter 1.6s ease; }
+.pc-clip { position: absolute; inset: 0; display: none; background-repeat: no-repeat; image-rendering: pixelated; transform-origin: 50% 98.7%; transition: filter 1.6s ease; }
+.pc-anim .pc-clip { display: block; } .pc-anim .pc-art, .pc-anim .pc-svg { visibility: hidden; }
+.pc[data-pal="mono"] :is(.pc-art, .pc-clip) { filter: grayscale(1); } .pc[data-pal="shadow"] :is(.pc-art, .pc-clip) { filter: grayscale(1) brightness(.38); } .pc[data-pal="dark"] :is(.pc-art, .pc-clip) { filter: grayscale(1) brightness(.07); }
+/* 正式圖的「活著」感:靜態圖輕微呼吸、說話時點頭、換姿勢時一下擠壓回彈;特定姿勢的抖/跳/晃(2026-11-20 逐格動畫) */
+.pc-art, .pc-clip { transform-origin: 50% 98.7%; }
+.pc-has-art:not(.pc-anim) .pc-art { animation: pcBreath 2.6s ease-in-out infinite; }
+@keyframes pcBreath { 50% { scale: 1 1.012; } }
+.pc-has-art.pc-talking:not(.pc-anim) .pc-art { animation: pcTalkBob .42s ease-in-out infinite alternate; }
+@keyframes pcTalkBob { from { translate: 0 0; rotate: -.6deg; } to { translate: 0 -.6%; rotate: .6deg; } }
+.pc-pop :is(.pc-art, .pc-clip) { animation: pcPop .32s cubic-bezier(.3, 1.6, .5, 1) !important; }
+@keyframes pcPop { 0% { scale: 1.05 .94; } 60% { scale: .98 1.03; } 100% { scale: 1 1; } }
+.pc-has-art[data-anim="shake"] :is(.pc-art, .pc-clip) { animation: pcShakeA .09s linear infinite; }
+@keyframes pcShakeA { 0% { translate: -1% 0; } 50% { translate: 1% -.4%; } 100% { translate: -.5% .3%; } }
+.pc-has-art[data-anim="bounce"] :is(.pc-art, .pc-clip) { animation: pcBounceA .32s ease-in-out infinite alternate; }
+@keyframes pcBounceA { to { translate: 0 -2%; scale: 1.01 .99; } }
+.pc-has-art[data-anim="woozy"] :is(.pc-art, .pc-clip) { animation: pcWoozyA 1.6s ease-in-out infinite; }
+@keyframes pcWoozyA { 0%, 100% { rotate: -4deg; } 50% { rotate: 5deg; } }
+.pc-svg g { transform-box: view-box; }
+.pc-shadow { fill: #000; opacity: .32; }
+.pc-root, .pc-torso, .pc-head, .pc-aL, .pc-aR, .pc-fL, .pc-fR, .pc-lL, .pc-lR, .pc-sL, .pc-sR, .pc-tb, .pc-face {
+  transition: transform var(--pc-ms) cubic-bezier(.3, 1.3, .5, 1), translate var(--pc-ms) cubic-bezier(.3, 1.2, .5, 1), opacity .25s; }
+
+/* 視角:f 正面 / t 四分之三 / s 側面 / b 背面(側面時肩膀與髖往中間收、身體變窄、臉往前移) */
+.v-t .pc-tb { transform: scaleX(.92); } .v-t .pc-face { transform: translateX(7px); } .v-t .pc-hfr { translate: 2px 0; }
+.v-s .pc-tb { transform: scaleX(.72); } .v-s .pc-face { transform: translateX(14px) scaleX(.72); }
+.v-s .pc-aL { translate: 24px 0; } .v-s .pc-aR { translate: -22px 0; } .v-s .pc-lL { translate: 9px 0; } .v-s .pc-lR { translate: -9px 0; }
+.pc-e3.v-s .pc-aL { translate: 30px 0; } .pc-e3.v-s .pc-aR { translate: -28px 0; }
+.pc .fts { display: none; } .v-s .fts { display: inline; } .v-s .ftf { display: none; }
+.pc-hb, .pc-tk { opacity: 0; } .v-b .pc-hb, .v-b .pc-tk { opacity: 1; } .v-b .pc-face, .v-b .pc-fx2, .v-b .pc-tf, .v-b .pc-hfr { opacity: 0; }
+.pc-e3.v-b .pc-hfr { opacity: 1; }
+/* 手型 */
+.pc .hd-pt, .pc .hd-th, .pc .hd-fist { display: none; }
+.pc[data-hl="pt"] .pc-hL .hd-pt, .pc[data-hr="pt"] .pc-hR .hd-pt, .pc[data-hl="th"] .pc-hL .hd-th, .pc[data-hr="th"] .pc-hR .hd-th,
+.pc[data-hl="fist"] .pc-hL .hd-fist, .pc[data-hr="fist"] .pc-hR .hd-fist { display: inline; }
+
+/* 反光(暗處只剩眼鏡/眼睛的光點) */
+.pc .pc-gl { opacity: .55; transition: opacity .4s; } .pc .pc-gl-eye { opacity: 0; }
+.pc-glints .pc-gl, .pc-glints .pc-gl-eye { opacity: 1; animation: pcGlint 3.2s ease-in-out infinite; }
+.pc-e2.pc-glints .pc-gl { animation-delay: -1.1s; } .pc-e3.pc-glints .pc-gl { animation-delay: -2.2s; }
+@keyframes pcGlint { 0%, 70%, 100% { opacity: 1; } 76% { opacity: .1; } 82% { opacity: 1; } }
+
+/* 待機:呼吸(每人速度不同)、眨眼 */
+.pc-br { animation: pcBreath 2.8s ease-in-out infinite; }
+.pc-e1 .pc-br { animation-duration: 3.4s; } .pc-e2 .pc-br { animation-duration: 4.2s; } .pc-e3 .pc-br { animation-duration: 2.2s; }
+@keyframes pcBreath { 50% { transform: scale(1.012, .988); } }
+.pc-face { animation: pcBlink 4.6s infinite; }
+.pc-e2 .pc-face { animation-duration: 6.4s; } .pc-e1 .pc-face { animation-duration: 5.2s; }
+@keyframes pcBlink { 0%, 96%, 100% { scale: 1 1; } 98% { scale: 1 .15; } }
+.pc-e3 .pc-face, .pc[data-face="dizzy"] .pc-face, .pc[data-face="blank"] .pc-face { animation: none; }
+/* 說話:嘴巴開合 */
+.pc-mth { transform-box: fill-box; transform-origin: center; }
+.pc-talking .pc-mth { animation: pcTalk .17s ease-in-out infinite alternate; }
+@keyframes pcTalk { from { transform: scaleY(.25); } to { transform: scaleY(1.15); } }
+.pc-talking .pc-hd2 { animation: pcNod .5s ease-in-out infinite alternate; }
+@keyframes pcNod { from { rotate: -1.5deg; } to { rotate: 1.5deg; } }
+
+/* 循環動作 */
+.pc[data-anim="walk"] .pc-wlL { animation: pcLeg .52s ease-in-out infinite alternate; }
+.pc[data-anim="walk"] .pc-wlR { animation: pcLeg .52s ease-in-out infinite alternate-reverse; }
+.pc[data-anim="walk"] .pc-waL { animation: pcArm .52s ease-in-out infinite alternate-reverse; }
+.pc[data-anim="walk"] .pc-waR { animation: pcArm .52s ease-in-out infinite alternate; }
+.pc[data-anim="walk"] .pc-br { animation: pcBob .26s ease-in-out infinite alternate; }
+.pc[data-anim="walk_back"] .pc-wlL, .v-b[data-anim="walk"] .pc-wlL { animation: pcLegB .5s ease-in-out infinite alternate; }
+.v-b[data-anim="walk"] .pc-wlR { animation: pcLegB .5s ease-in-out infinite alternate-reverse; }
+@keyframes pcLeg { from { rotate: -26deg; } to { rotate: 26deg; } }
+@keyframes pcLegB { from { scale: 1 .9; } to { scale: 1 1; } }
+@keyframes pcArm { from { rotate: -22deg; } to { rotate: 22deg; } }
+@keyframes pcBob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+.pc[data-anim="tiptoe"] .pc-wlL { animation: pcLeg 1s ease-in-out infinite alternate; }
+.pc[data-anim="tiptoe"] .pc-wlR { animation: pcLeg 1s ease-in-out infinite alternate-reverse; }
+.pc[data-anim="tiptoe"] .pc-br { animation: pcBob .5s ease-in-out infinite alternate; }
+.pc[data-anim="look"] .pc-hd2 { animation: pcLook 2.4s ease-in-out infinite; }
+@keyframes pcLook { 0%, 100% { rotate: 0deg; translate: 0 0; } 25% { rotate: -12deg; translate: -4px 0; } 60% { rotate: 12deg; translate: 4px 0; } }
+.pc[data-anim="shake"] .pc-br { animation: pcShake .09s linear infinite; }
+@keyframes pcShake { 0% { transform: translate(-2px, 0); } 50% { transform: translate(2px, -1px); } 100% { transform: translate(-1px, 1px); } }
+.pc[data-anim="bounce"] .pc-br { animation: pcBounce .32s ease-in-out infinite alternate; }
+@keyframes pcBounce { to { transform: translateY(-6px) scale(1.01, .99); } }
+.pc[data-anim="woozy"] .pc-br { animation: pcWoozy 1.6s ease-in-out infinite; }
+@keyframes pcWoozy { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg); } }
+.pc[data-anim="wave"] .pc-fR { animation: pcWave .5s ease-in-out infinite alternate; transform-box: view-box; }
+@keyframes pcWave { from { rotate: -14deg; } to { rotate: 14deg; } }
+.pc[data-fx="spin"] .pc-flip { animation: pcSpin .7s linear infinite; }
+@keyframes pcSpin { 50% { transform: scaleX(-1); } }
+
+/* 頭上符號 */
+.pc-emote { position: absolute; left: 50%; top: 9%; transform: translate(-50%, -100%); font-size: calc(var(--pc-h, 40cqh) * .14); line-height: 1; white-space: nowrap; pointer-events: none; z-index: 2; }
+.pc-emote b { display: inline-block; font-family: "Arial Black", "Noto Sans TC", sans-serif; font-weight: 900; color: #ffd84d; -webkit-text-stroke: .06em #1a1020; paint-order: stroke; animation: pceIn .35s cubic-bezier(.3, 1.8, .5, 1); }
+@keyframes pceIn { from { transform: scale(0) translateY(.4em); opacity: 0; } }
+.pce-q { color: #8fd6ff !important; animation: pceIn .35s cubic-bezier(.3, 1.8, .5, 1), pceTilt 1.4s ease-in-out .35s infinite !important; }
+@keyframes pceTilt { 50% { transform: rotate(14deg); } }
+.pce-dots { -webkit-text-stroke: 0 !important; } .pce-dots i { font-size: 0; display: inline-block; width: .24em; height: .24em; margin: 0 .07em; border-radius: 50%; background: #ffd84d; box-shadow: 0 0 0 .05em #1a1020; animation: pceDot 1.2s infinite; } .pce-dots i:nth-child(2) { animation-delay: .2s; } .pce-dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes pceDot { 0%, 60%, 100% { opacity: .2; } 30% { opacity: 1; } }
+.pce-stars { font-size: .7em; animation: pceIn .35s, pceOrbit 1s linear infinite !important; }
+.pce-stars i { font-style: normal; margin: 0 .1em; }
+@keyframes pceOrbit { to { transform: rotate(360deg); } }
+.pce-anger { animation: pceIn .3s, pcePulse .5s ease-in-out infinite alternate !important; transform-origin: center; }
+@keyframes pcePulse { to { scale: 1.25; } }
+.pce-sweat { margin-left: 1.4em; animation: pceIn .3s, pceDrip 1.2s ease-in infinite !important; }
+@keyframes pceDrip { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(.5em); opacity: .2; } }
+.pce-org { font-size: .62em; } .pce-org i { font-style: normal; display: inline-block; margin: 0 .05em; animation: pceHop .5s ease-out both; color: #fff3c0; }
+.pce-org i:nth-child(2) { animation-delay: .25s; } .pce-org i:nth-child(3) { animation-delay: .5s; } .pce-org i:nth-child(4) { animation-delay: .75s; } .pce-org i:nth-child(5) { animation-delay: 1s; } .pce-org i:nth-child(6) { animation-delay: 1.3s; }
+@keyframes pceHop { from { transform: translateY(1em) scale(0); opacity: 0; } }
+.pce-spiral { color: #c9b6ff !important; animation: pceIn .3s, pceOrbit .9s linear infinite !important; }
+.pce-note { color: #9fe3b0 !important; animation: pceIn .3s, pceTilt .8s ease-in-out infinite !important; }
+.pce-steam i { display: inline-block; width: .3em; height: .5em; margin: 0 .08em; border-radius: 50%; background: rgba(255, 255, 255, .7); animation: pceSteam .8s ease-out infinite; }
+.pce-steam i:nth-child(2) { animation-delay: .25s; } .pce-steam i:nth-child(3) { animation-delay: .5s; }
+@keyframes pceSteam { from { transform: translateY(.4em) scale(.6); opacity: .9; } to { transform: translateY(-.8em) scale(1.4); opacity: 0; } }
+
+/* 減少動態:關掉循環動畫,保留姿勢 */
+.pc-reduced .pc *, .pc.pc-reduced *, html.mm-reduce .pc * { animation: none !important; }
+@media (prefers-reduced-motion: reduce) { .pc * { animation: none !important; } }

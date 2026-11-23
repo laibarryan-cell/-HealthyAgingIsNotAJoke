@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1b665f">
+  <title>老人密室逃脫｜遊戲外殼原型</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="v2.css?v=20260911-final">
+  <link rel="stylesheet" href="home-v3.css">
+  <link rel="stylesheet" href="atelier.css?v=20260912-atelier1">
+  <link rel="stylesheet" href="map-walker.css?v=20261118-1">
+  <link rel="stylesheet" href="ending.css?v=20261014-skip1">
+  <link rel="stylesheet" href="integration/integration.css?v=20261014-m8">
+<link rel="stylesheet" href="char-preview.css">
+<link rel="stylesheet" href="char-ui.css?v=20261011-r2">
+<link rel="stylesheet" href="char-v3.css?v=20261115-c1">
+<link rel="stylesheet" href="atelier-v4.css?v=20261117-3">
+<link rel="stylesheet" href="home-v4.css?v=20261118-12">
+<link rel="stylesheet" href="ending-v3.css?v=20261118-4">
+<link rel="stylesheet" href="prologue-cast.css?v=4">
+<link rel="stylesheet" href="entrance-story.css?v=7">
+<link rel="stylesheet" href="awakening-story.css?v=7">
+</head>
+<body>
+  <main id="app" class="app-shell" aria-live="polite">
+    <section id="screen-home" class="screen home-screen active" aria-labelledby="game-title">
+      <div class="home-shade"></div>
+      <div class="home-open-layer" aria-hidden="true"></div>
+      <header class="home-header home-logo-header">
+        <h1 id="game-title"><img class="home-logo" src="assets/ui-shell/home-logo.png" alt="有夠安心的 老人健康衛教之旅" draggable="false"></h1>
+      </header>
+
+      <button id="door" class="door-hotspot" aria-label="進入大門開始遊戲">
+        <span class="door-glow" aria-hidden="true"></span>
+      </button>
+
+      <nav class="home-nav" aria-label="首頁選單">
+        <button class="soft-button" data-modal="instructions">操作說明</button>
+        <button class="soft-button" data-modal="credits">製作團隊</button>
+      </nav>
+    </section>
+
+    <section id="screen-character" class="screen character-screen" aria-labelledby="character-title">
+      <header class="topbar">
+        <button class="icon-button" data-action="home" aria-label="返回首頁">← 返回首頁</button>
+        <div>
+          <p class="step-label">出發前的準備</p>
+          <h2 id="character-title">建立你的冒險角色</h2>
+        </div>
+        <button class="icon-button" data-modal="instructions">？ 操作說明</button>
+      </header>
+
+      <div class="character-layout">
+        <aside class="character-choice panel">
+          <h3>選擇基本角色</h3>
+          <div id="base-characters" class="base-list"></div>
+          <label class="name-field">角色名字
+            <input id="player-name" maxlength="10" placeholder="最多輸入 10 個字" autocomplete="off">
+          </label>
+          <p id="name-count" class="helper">0／10</p><div class="character-note"><strong>冒險，從你開始</strong><span id="body-description">高瘦的身形，沉穩的笑容。選好喜歡的造型，為這趟旅程取個名字。</span></div>
+        </aside>
+
+        <section class="preview-panel panel" aria-label="角色即時預覽">
+          <h3 class="atelier-heading">◆ 長者的裝扮台 ◆</h3><div class="preview-stage" data-mode="doll">
+            <div id="walk-preview" class="walk-preview" aria-label="行走預覽"><canvas id="preview-walker" width="256" height="256" aria-label="角色行走預覽（四個方向，每方向六格）"></canvas><p id="walk-label" class="walk-label" aria-hidden="true"></p></div>
+            <div id="character-preview" class="paper-doll">
+              <canvas id="preview-character" class="complete-character" width="364" height="362" aria-label="目前角色預覽"></canvas>
+              
+            </div>
+          </div>
+          <p id="preview-name" class="preview-name">未命名的冒險家</p>
+          <div class="preview-actions">
+            <button id="preview-mode" class="soft-button" aria-pressed="false">▶ 行走預覽</button>
+            <button id="randomize" class="soft-button">◇ 隨機造型</button>
+            <button id="reset-look" class="soft-button">↺ 恢復預設</button>
+          </div>
+        </section>
+
+        <aside class="customizer panel">
+          <div class="tabs" role="tablist" aria-label="裝扮分類">
+            <button class="tab active" data-tab="hair" role="tab">髮型</button>
+            <button class="tab" data-tab="outfit" role="tab">服裝</button>
+            <button class="tab" data-tab="accessory" role="tab">配件</button>
+          </div>
+          <div class="item-picker">
+            <button id="item-prev" class="round-button" aria-label="上一個選項">‹</button>
+            <div class="item-card">
+              <span id="item-index" class="item-index">1／3</span>
+              <strong id="item-name">俐落短髮</strong>
+            </div>
+            <button id="item-next" class="round-button" aria-label="下一個選項">›</button>
+          </div>
+          <div id="color-section" class="color-section">
+            <h3 id="color-label">選擇頭髮顏色</h3>
+            <div id="color-swatches" class="swatches"></div>
+          </div>
+          <p id="no-color-hint" class="color-hint hidden">這個配件沒有顏色可選，用左右箭頭換換看不同的配件吧。</p><section class="outfit-record" aria-label="目前造型"><h3>目前造型</h3><dl><dt>髮型</dt><dd id="summary-hair"></dd><dt>服裝</dt><dd id="summary-outfit"></dd><dt>配件</dt><dd id="summary-accessory"></dd></dl></section><div class="confirm-area">
+            <button id="confirm-character" class="primary-button">確認角色</button>
+            <button id="go-adventure" class="primary-button adventure-button hidden">前往冒險</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="screen-map" class="screen map-screen integrated" aria-labelledby="map-title">
+      <iframe id="integrated-game-frame" title="爺爺的記憶迷宮正式遊戲" allow="fullscreen"></iframe>
+      <header class="topbar map-topbar">
+        <button class="icon-button" data-action="home-confirm">← 返回首頁</button>
+        <div>
+          <p class="step-label">記憶之家</p>
+          <h2 id="map-title">房間配置圖</h2>
+        </div>
+        <div class="progress-box"><span id="progress-text">已完成 0／8</span><div class="progress-track"><i id="progress-fill"></i></div></div>
+      </header>
+      <div class="map-toolbar">
+        <div><strong id="map-player-name">冒險家</strong><span>，請從起點開始！</span></div>
+        <div class="zoom-controls" aria-label="畫面縮放">
+          <button id="zoom-out" class="round-button" aria-label="縮小">−</button>
+          <span id="zoom-value">100%</span>
+          <button id="zoom-in" class="round-button" aria-label="放大">＋</button>
+          <button id="fullscreen" class="soft-button">全螢幕</button>
+        </div>
+      </div>
+      <div class="map-viewport">
+        <div id="room-map" class="room-map"></div>
+        <div id="cursor-character" class="cursor-character" aria-hidden="true"><canvas id="map-walker" width="256" height="256"></canvas></div>
+      </div>
+      <button id="hint-button" class="hint-button" aria-label="查看提示">💡<span>提示</span></button>
+    </section>
+
+    <section id="screen-level" class="screen level-screen" aria-labelledby="level-title">
+      <div class="level-card panel">
+        <p class="eyebrow">測試關卡</p>
+        <div id="level-icon" class="level-icon">🏠</div>
+        <h2 id="level-title">房間名稱</h2>
+        <p id="level-intro">這裡將串接組員製作的正式關卡內容。</p>
+        <div class="guide-box">
+          <strong>操作提示</strong>
+          <p>正式關卡會在此顯示滑鼠或鍵盤操作方式。目前可使用下方按鈕測試外殼流程。</p>
+        </div>
+        <div class="level-actions">
+          <button id="simulate-complete" class="primary-button">模擬完成本關</button>
+          <button id="simulate-incomplete" class="soft-button">尚未完成並返回</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-finish" class="screen finish-screen" aria-labelledby="finish-name">
+      <div id="ending-sequence" class="ending-sequence" aria-live="polite">
+        <div id="ending-stage" class="ending-stage">
+          <!-- 01～02：莊園室內，大門由關到開 -->
+          <div class="ending-scene ending-scene-interior" aria-hidden="true">
+            <div class="ending-doorway"><div class="ending-hinge ending-hinge-left"></div><div class="ending-hinge ending-hinge-right"></div>
+              <div class="ending-leaf ending-leaf-left"><div class="ending-leaf-side"></div><div class="ending-leaf-face"></div></div>
+              <div class="ending-leaf ending-leaf-right"><div class="ending-leaf-side"></div><div class="ending-leaf-face"></div></div>
+            </div>
+            <div class="ending-interior-dark"></div>
+            <img class="ending-elder-back" src="assets/ending/ending-elder-back-clean.png" alt="">
+            <div class="ending-interior-light"></div>
+          </div>
+          <!-- 03～08：莊園外景（同一張固定背景） -->
+          <div class="ending-scene ending-scene-mansion">
+            <div class="ending-mansion-glow" aria-hidden="true"></div>
+            <div class="ending-walker" aria-hidden="true"><div class="ending-walker-sprite"></div></div>
+            <div class="ending-mansion-dim" aria-hidden="true"></div>
+            <div class="ending-elder ending-elder-left"><img src="assets/ending/ending-elder-left-clean.png" alt="左側長者"></div>
+            <div class="ending-elder ending-elder-center"><img src="assets/ending/ending-elder-center-clean.png" alt="中間長者"></div>
+            <div class="ending-elder ending-elder-right"><img src="assets/ending/ending-elder-right-clean.png" alt="右側長者"></div>
+            <div class="ending-couplet ending-couplet-left" aria-label="左聯"><span>柏</span><span>茂</span><span>安</span><span>康</span><span>迎</span><span>暖</span><span>歲</span></div>
+            <div class="ending-couplet ending-couplet-right" aria-label="右聯"><span>萱</span><span>繁</span><span>芝</span><span>馥</span><span>啟</span><span>長</span><span>旅</span></div>
+            <div class="ending-rays" aria-hidden="true"></div>
+            <div id="ending-banner" class="ending-banner" aria-label="橫批"></div>
+            <div class="ending-beam ending-beam-1" aria-hidden="true"></div>
+            <div class="ending-beam ending-beam-2" aria-hidden="true"></div>
+            <div class="ending-beam ending-beam-3" aria-hidden="true"></div>
+            <div class="ending-beam ending-beam-4" aria-hidden="true"></div>
+          </div>
+          <div class="ending-flash" aria-hidden="true"></div>
+        </div>
+        <button id="ending-skip" class="ending-skip" type="button" aria-label="跳過片尾動畫"><img src="assets/ui-shell/icon-skip.png" alt="" draggable="false"><span>跳過</span></button>
+        <div id="ending-finish-actions" class="ending-finish-actions">
+          <p><strong id="finish-name">冒險家</strong>，你完成了這次居家解謎冒險。</p>
+          <button id="restart-game" class="primary-button">重新開始</button>
+          <button class="soft-button" data-action="home">返回首頁</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="app-dialog" class="app-dialog">
+    <button id="dialog-close" class="dialog-close" aria-label="關閉">×</button>
+    <div id="dialog-content"></div>
+  </dialog>
+
+  <script src="character-renderer.js?v=20261118-1"></script><script src="walk-slim.js?v=1"></script><script src="walk-round.js?v=1"></script><script src="walk-strong.js?v=1"></script><script src="assets/walk/slim-dress/slim-wardrobe.js?v=20261118-2"></script><script src="assets/walk/round-dress/round-wardrobe.js?v=20260926-round1"></script><script src="assets/walk/strong-dress/strong-wardrobe.js?v=20261001-accessory3"></script><script src="map-walker.js?v=20261118-2"></script><script src="game.js?v=20261120-name1"></script><script src="integration/bridge-parent.js?v=20261123-release"></script><script src="integration/shell-ui.js?v=20261014-shell1"></script>
+<script src="game/shared/gallery.js?v=4"></script>
+<script src="game/shared/sound-kit.js?v=20261123-mp3"></script>
+<script src="game/shared/pixel-frame.js"></script>
+<script src="char-v3.js?v=20261115-c2"></script>
+<script src="atelier-v4.js?v=20261117-3"></script>
+<script src="game/shared/story-dialog.js?v=entrance2"></script>
+<script src="prologue-cast.js?v=4"></script>
+<script src="prologue-scenes.js?v=4"></script>
+<script src="entrance-story.js?v=20261123-mp3"></script>
+<script src="home-v4.js?v=20261123-fullscreen"></script>
+<script src="game/shared/vector-cast.js?v=3"></script>
+<script src="ending-v3.js?v=20261123-mp3"></script>
+<script src="game/shared/pixel-cursor.js?v=2"></script>
+<script src="sound-hooks.js?v=20261123-mp3"></script>
+<script src="integration/shell-extras.js?v=5"></script>
+<script src="awakening-story.js?v=7"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

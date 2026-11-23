@@ -1,0 +1,165 @@
+/* char-ui.css — character-creation screen + shell buttons rebuilt from the official art (game/assets/art-final/ui).
+   Loaded last on index.html.  Sprites are used at an integer multiple (--cu = 1 or 2) with image-rendering: pixelated;
+   wide frames are border-image 9-slice.  No old brown wood UI is left on this screen. */
+:root{--cu:1;--cu-gold:#f0a91c;--cu-navy:#14294a;--cu-navy-d:#0b1426;--cu-ink:#2a2230;--cu-ui:url("game/assets/art-final/ui/")}
+@media (min-width:1800px) and (min-height:1000px){:root{--cu:2}}
+#screen-character,#screen-character *{image-rendering:auto}
+#screen-character canvas,#screen-character .plate,#screen-character .plate *{image-rendering:pixelated}
+
+/* ---------- frame: night room, same language as map / rooms ---------- */
+#screen-character{background:radial-gradient(circle at 22% 6%,#1d3a66 0,transparent 38rem),linear-gradient(160deg,#0d1b34,#070d1a 70%)!important;color:#ffe9b0;display:none;flex-direction:column}
+#screen-character.active{display:flex}
+#screen-character .topbar{
+  all:unset;box-sizing:border-box;display:grid!important;grid-template-columns:1fr minmax(0,auto) 1fr;align-items:center;gap:12px;
+  padding:calc(var(--cu)*6px) clamp(14px,2vw,34px);background:linear-gradient(#14294a,#0e1c35);border-bottom:calc(var(--cu)*3px) solid var(--cu-gold);box-shadow:0 calc(var(--cu)*3px) 0 var(--cu-navy-d);height:auto!important;min-height:0!important;
+}
+#screen-character .topbar>div{
+  box-sizing:border-box;text-align:center;min-width:min(52vw,calc(var(--cu)*250px));min-height:calc(65px*var(--cu));display:flex;flex-direction:column;justify-content:center;
+  border-style:solid;border-color:transparent;border-width:calc(14px*var(--cu)) calc(30px*var(--cu)) calc(14px*var(--cu)) calc(60px*var(--cu));
+  border-image:url("game/assets/art-final/ui/task-title-bar.png") 14 30 14 60 fill/calc(14px*var(--cu)) calc(30px*var(--cu)) calc(14px*var(--cu)) calc(60px*var(--cu)) stretch;image-rendering:pixelated;
+}
+#screen-character .step-label{margin:0!important;color:#6b4a1e!important;font:800 calc(var(--cu)*3px + 13px)/1.1 "Noto Sans TC","Microsoft JhengHei",sans-serif!important;letter-spacing:.06em}
+#screen-character .topbar h2{margin:0!important;color:#3a2a14!important;font:900 calc(var(--cu)*4px + 20px)/1.15 "Noto Sans TC","Microsoft JhengHei",sans-serif!important;letter-spacing:.08em;text-shadow:none!important}
+#screen-character .topbar>.icon-button:first-child{justify-self:start}
+#screen-character .topbar>.icon-button:last-child{justify-self:end}
+
+/* ---------- buttons: navy plate (secondary) / parchment plate (primary) ---------- */
+body :is(.icon-button,.soft-button,.round-button,.primary-button,.tab):not(.base-character){
+  all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.4em;text-align:center;white-space:nowrap;line-height:1.1;
+  min-height:calc(33px*var(--cu));padding:0 calc(var(--cu)*2px);color:#ffe9b0;font:900 calc(var(--cu)*2px + 16px)/1.1 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--cu)) calc(26px*var(--cu));
+  border-image:url("game/assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--cu)) calc(26px*var(--cu)) stretch;image-rendering:pixelated;
+  background:none!important;box-shadow:none!important;border-radius:0!important;transition:transform .12s cubic-bezier(.2,.9,.3,1.3),filter .12s;
+}
+body :is(.primary-button){
+  min-height:calc(44px*var(--cu));color:var(--cu-ink);border-width:calc(14px*var(--cu)) calc(24px*var(--cu));font-size:calc(var(--cu)*3px + 18px);
+  border-image:url("game/assets/art-final/ui/pin-display.png") 16 24 fill/calc(14px*var(--cu)) calc(24px*var(--cu)) stretch;
+}
+body .primary-button.adventure-button{filter:drop-shadow(0 0 6px rgba(120,230,150,.7))}
+body :is(.icon-button,.soft-button,.round-button,.primary-button,.tab):not(.base-character):hover:not(:disabled){transform:scale(1.045);filter:brightness(1.14)}
+body :is(.icon-button,.soft-button,.round-button,.primary-button,.tab):not(.base-character):active:not(:disabled){transform:scale(.96) translateY(1px)}
+body :is(.icon-button,.soft-button,.round-button,.primary-button,.tab):focus-visible{outline:3px solid #ffd76a;outline-offset:2px}
+body .tab.active{border-image-source:url("game/assets/art-final/ui/pin-display.png");border-image-slice:16 24;border-width:calc(14px*var(--cu)) calc(24px*var(--cu));border-image-width:calc(14px*var(--cu)) calc(24px*var(--cu));color:var(--cu-ink)}
+body .round-button{min-width:calc(var(--cu)*30px + 30px);font-size:calc(var(--cu)*6px + 22px);padding:0}
+
+/* ---------- three panels ---------- */
+#screen-character .character-layout{
+  all:unset;box-sizing:border-box;flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr) minmax(0,1fr);gap:clamp(12px,1.4vw,26px);
+  padding:clamp(10px,1.6vh,22px) clamp(14px,2vw,34px) clamp(12px,2vh,26px);align-items:stretch;
+}
+#screen-character .panel{
+  all:unset;box-sizing:border-box;min-width:0;min-height:0;display:flex;flex-direction:column;gap:clamp(8px,1.3vh,16px);overflow:hidden;color:var(--cu-ink);
+  border-style:solid;border-color:transparent;border-width:calc(16px*var(--cu));padding:clamp(2px,.6vh,8px) clamp(2px,.4vw,8px);
+  border-image:url("game/assets/art-final/ui/clue-card-blank.png") 16 fill/calc(16px*var(--cu)) stretch;image-rendering:pixelated;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55));
+}
+#screen-character .panel h3{margin:0;color:#5a3a0c;font:900 calc(var(--cu)*2px + 17px)/1.2 "Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.06em}
+#screen-character .panel h3::before{content:"◆ ";color:#c98b1f}
+#screen-character .atelier-heading{text-align:center}
+
+/* left: choose a body */
+#screen-character .base-list{display:flex!important;flex-direction:column;gap:clamp(6px,1.2vh,12px);flex:1;min-height:0}
+#screen-character .base-character{
+  all:unset;box-sizing:border-box;cursor:pointer;flex:1;min-height:0;display:grid!important;grid-template-columns:clamp(60px,6.5vw,104px) 1fr;align-items:center;gap:12px;padding:6px 14px 6px 8px;
+  background:linear-gradient(#fff7df,#f1dca4)!important;border:3px solid #c99a3c!important;border-radius:0!important;box-shadow:0 3px 0 rgba(10,18,36,.5)!important;color:var(--cu-ink);position:relative;
+  transition:transform .12s cubic-bezier(.2,.9,.3,1.3),filter .12s;
+}
+#screen-character .base-character:hover{transform:scale(1.025);filter:brightness(1.06)}
+#screen-character .base-character:active{transform:scale(.98)}
+#screen-character .base-character:focus-visible{outline:3px solid #ffd76a;outline-offset:2px}
+#screen-character .base-character.active{background:linear-gradient(#fff3b8,#f6c85a)!important;border-color:#14294a!important;box-shadow:0 0 0 3px var(--cu-gold),0 3px 0 rgba(10,18,36,.6)!important}
+#screen-character .base-character.active::after{content:"✔";position:absolute;right:10px;top:8px;width:26px;height:26px;display:grid;place-items:center;background:#1c6a5e;color:#fff;border:2px solid #0b1426;font:900 16px/1 system-ui}
+#screen-character .base-avatar{width:100%!important;height:100%!important;max-height:clamp(60px,12vh,118px);object-fit:contain;image-rendering:pixelated}
+#screen-character .base-character span{font:900 calc(var(--cu)*3px + 18px)/1.2 "Noto Sans TC","Microsoft JhengHei",sans-serif;color:#3a2a14}
+#screen-character .base-character small{display:block;margin-top:4px;color:#7a5a20!important;font:700 calc(var(--cu)*2px + 13px)/1.2 "Noto Sans TC",sans-serif!important}
+#screen-character .name-field{display:block;margin:0;color:#5a3a0c;font:900 calc(var(--cu)*2px + 15px)/1.2 "Noto Sans TC","Microsoft JhengHei",sans-serif}
+#screen-character .name-field input{
+  all:unset;box-sizing:border-box;display:block;width:100%;margin-top:6px;min-height:calc(53px*var(--cu));padding:0 calc(26px*var(--cu));color:var(--cu-ink);font:900 calc(var(--cu)*3px + 19px)/1 "Noto Sans TC","Microsoft JhengHei",sans-serif;
+  border-style:solid;border-color:transparent;border-width:calc(16px*var(--cu)) calc(24px*var(--cu));border-image:url("game/assets/art-final/ui/pin-display.png") 16 24 fill/calc(16px*var(--cu)) calc(24px*var(--cu)) stretch;image-rendering:pixelated;
+}
+#screen-character .name-field input::placeholder{color:#8b7448;font-weight:700}
+#screen-character .name-field input:focus{filter:drop-shadow(0 0 5px #ffd76a)}
+#screen-character .helper{margin:-6px 4px 0 0!important;text-align:right;color:#7a5a20!important;font:700 14px/1 system-ui}
+#screen-character .character-note{margin:0;padding:8px 10px;background:rgba(255,247,223,.7);border:2px dashed #c99a3c;color:#5a3a0c;font:700 calc(var(--cu)*1px + 14px)/1.45 "Noto Sans TC",sans-serif}
+#screen-character .character-note strong{display:block;color:#8a5a0f;margin-bottom:2px;font-size:1.05em}
+#screen-character .character-note span{font-size:inherit!important}
+
+/* center: dressing stage */
+#screen-character .preview-stage{
+  flex:1!important;min-height:0!important;height:auto!important;position:relative;border:calc(var(--cu)*4px) solid #14294a!important;border-radius:0!important;outline:calc(var(--cu)*3px) solid var(--cu-gold);outline-offset:calc(var(--cu)*-7px);
+  background:radial-gradient(ellipse at 50% 34%,#fff0b86e,transparent 62%),repeating-linear-gradient(90deg,transparent 0 46px,#0000000d 47px 49px),linear-gradient(#e9d6a4,#cbb07a)!important;overflow:hidden;box-shadow:inset 0 0 40px rgba(60,30,0,.28)!important;
+}
+#screen-character .preview-stage::after{content:"";position:absolute;left:14%;right:14%;bottom:5%;height:11%;border:3px solid #5a3a14;background:repeating-linear-gradient(90deg,#3a28141f 0 3px,transparent 3px 9px),#6a4a28;box-shadow:0 4px 0 #2e1c0a;z-index:0}
+#screen-character .paper-doll{position:absolute!important;inset:3% 6% 8%;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;z-index:1;display:flex!important;align-items:flex-end;justify-content:center}
+#screen-character .paper-doll .complete-character{position:static!important;width:auto!important;height:100%!important;max-width:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 6px 0 rgba(0,0,0,.18))}
+#screen-character .preview-stage[data-mode="walk"] .paper-doll{display:none!important}
+#screen-character .preview-stage[data-mode="doll"] .walk-preview{display:none!important}
+#screen-character .walk-preview canvas{width:min(100%,calc(var(--cu)*256px));height:auto;aspect-ratio:1;max-height:92%}
+#screen-character .preview-name{
+  all:unset;box-sizing:border-box;align-self:center;display:flex;align-items:center;justify-content:center;min-width:60%;min-height:calc(33px*var(--cu));padding:0 calc(26px*var(--cu));color:#ffe9b0;font:900 calc(var(--cu)*3px + 19px)/1.1 "Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.1em;
+  border-style:solid;border-color:transparent;border-width:calc(8px*var(--cu)) calc(30px*var(--cu));border-image:url("game/assets/art-final/ui/dialog-name-bar.png") 8 30 fill/calc(8px*var(--cu)) calc(30px*var(--cu)) stretch;image-rendering:pixelated;
+}
+#screen-character .preview-actions{all:unset;box-sizing:border-box;display:grid!important;grid-template-columns:repeat(3,1fr);gap:calc(var(--cu)*6px)}
+#screen-character .preview-actions #preview-mode{grid-column:auto}
+#screen-character .preview-actions button{font-size:calc(var(--cu)*1px + 15px)!important;padding:0!important;min-width:0;border-width:calc(8px*var(--cu)) calc(14px*var(--cu));border-image-width:calc(8px*var(--cu)) calc(14px*var(--cu))}
+
+/* right: customizer */
+#screen-character .customizer{gap:clamp(8px,1.4vh,16px)}
+#screen-character .tabs{all:unset;display:grid!important;grid-template-columns:repeat(3,1fr);gap:calc(var(--cu)*4px)}
+#screen-character .tabs .tab{min-width:0}
+#screen-character .item-picker{all:unset;box-sizing:border-box;display:grid!important;grid-template-columns:auto 1fr auto;gap:calc(var(--cu)*6px);align-items:center}
+#screen-character .item-card{
+  box-sizing:border-box;min-height:calc(53px*var(--cu));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 calc(20px*var(--cu));
+  border-style:solid;border-color:transparent;border-width:calc(16px*var(--cu)) calc(24px*var(--cu));border-image:url("game/assets/art-final/ui/pin-display.png") 16 24 fill/calc(16px*var(--cu)) calc(24px*var(--cu)) stretch;image-rendering:pixelated;background:none!important;box-shadow:none!important;border-radius:0!important;
+}
+#screen-character .item-index{color:#8a5a0f!important;font:800 calc(var(--cu)*1px + 14px)/1 system-ui}
+#screen-character .item-card strong{color:var(--cu-ink)!important;font:900 calc(var(--cu)*3px + 19px)/1.1 "Noto Sans TC","Microsoft JhengHei",sans-serif}
+#screen-character .color-section{
+  box-sizing:border-box;margin:0;padding:calc(var(--cu)*8px) calc(var(--cu)*12px) calc(var(--cu)*12px);background:linear-gradient(#fff7df,#f1dca4)!important;border:3px solid #c99a3c;box-shadow:0 3px 0 rgba(10,18,36,.45)
+}
+#screen-character .color-section.hidden{display:none!important}
+#screen-character .color-section h3{font-size:calc(var(--cu)*1px + 16px)!important;margin:0 0 8px!important}
+#screen-character .swatches{display:flex!important;gap:calc(var(--cu)*8px);flex-wrap:wrap}
+#screen-character .swatch{
+  all:unset;box-sizing:border-box;cursor:pointer;width:calc(var(--cu)*14px + 26px);height:calc(var(--cu)*14px + 26px);border:3px solid #3a2a14!important;border-radius:0!important;box-shadow:0 3px 0 rgba(10,18,36,.45)!important;transition:transform .12s cubic-bezier(.2,.9,.3,1.3);
+}
+#screen-character .swatch:hover{transform:scale(1.1)}
+#screen-character .swatch.active{outline:4px solid var(--cu-gold);outline-offset:2px;transform:scale(1.08)}
+#screen-character .swatch:focus-visible{outline:4px solid #ffd76a}
+#screen-character .outfit-record{
+  box-sizing:border-box;flex:1;min-height:0;margin:0;padding:calc(var(--cu)*8px) calc(var(--cu)*14px);display:flex;flex-direction:column;justify-content:center;background:linear-gradient(#fff7df,#f1dca4);border:3px solid #c99a3c;box-shadow:0 3px 0 rgba(10,18,36,.45)
+}
+#screen-character .outfit-record h3{font-size:calc(var(--cu)*1px + 16px)!important}
+#screen-character .outfit-record dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font:800 calc(var(--cu)*2px + 15px)/1.3 "Noto Sans TC","Microsoft JhengHei",sans-serif}
+#screen-character .outfit-record dt{color:#8a5a0f}
+#screen-character .outfit-record dd{margin:0;text-align:right;color:var(--cu-ink)}
+#screen-character .confirm-area{all:unset;display:flex!important;flex-direction:column;gap:8px}
+#screen-character .confirm-area .primary-button{width:100%}
+#screen-character .hidden{display:none!important}
+
+/* ---------- home screen buttons ---------- */
+#screen-home .home-nav .soft-button{min-width:calc(var(--cu)*74px + 40px)}
+
+/* ---------- smaller screens: stack neatly ---------- */
+@media (max-width:1000px){
+  #screen-character{overflow:auto}
+  #screen-character .character-layout{grid-template-columns:1fr;grid-auto-rows:auto}
+  #screen-character .preview-panel{order:-1}
+  #screen-character .preview-stage{min-height:360px}
+  #screen-character .base-list{flex-direction:row;flex-wrap:wrap}
+  #screen-character .base-character{flex:1 1 200px;min-height:84px}
+  #screen-character .topbar{grid-template-columns:1fr 1fr}
+  #screen-character .topbar>div{grid-column:1/-1;grid-row:1}
+}
+@media (max-height:700px) and (min-width:1001px){#screen-character .character-note{display:none}}
+
+#screen-character .color-hint{margin:0;padding:calc(var(--cu)*8px) calc(var(--cu)*12px);background:rgba(255,247,223,.75);border:3px dashed #c99a3c;color:#5a3a0c;font:800 calc(var(--cu)*2px + 15px)/1.5 "Noto Sans TC",sans-serif}
+#screen-character .outfit-record{flex:0 0 auto}
+#screen-character .confirm-area{margin-top:auto}
+
+/* 第三修改計劃 B5:按鈕不再出現任何線條(焦點外框、點擊時的系統框)。選取/按下的回饋改用亮度與按壓效果。 */
+:is(button,[role=button],a,input,select,textarea,summary,label,.hotspot,[tabindex]):is(:hover,:focus,:focus-visible,:active){outline:none!important}
+:where(button,[role=button]):where(:hover:not(:disabled)){filter:brightness(1.1)}
+:is(button,[role=button],a,input,summary,label,.hotspot,[tabindex]){-webkit-tap-highlight-color:transparent}
+button::-moz-focus-inner{border:0!important}
+:where(button,[role=button],summary):where(:focus-visible:not(:disabled)){filter:brightness(1.16)}
+:where(button,[role=button]):where(:active:not(:disabled)){filter:brightness(.94)}

@@ -1,0 +1,9 @@
+/* character-creation preview: full walk cycle (4 directions x 6 frames) at an integer 1x canvas scale */
+.preview-stage .walk-preview{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:1}
+.preview-stage[data-mode="walk"] .walk-preview{display:flex}
+.preview-stage[data-mode="walk"] .paper-doll{display:none}
+.walk-preview canvas{width:256px;height:256px;image-rendering:pixelated;image-rendering:-moz-crisp-edges;display:block}
+.walk-label{position:absolute;left:8px;top:8px;margin:0;padding:3px 8px;font-size:13px;font-weight:900;letter-spacing:.05em;background:#3a2a14cc;color:#ffe9b0;border:2px solid #c99a3c}
+.preview-actions{grid-template-columns:1fr 1fr}
+.preview-actions #preview-mode{grid-column:1/-1}
+@media(max-width:1000px){.walk-preview canvas{width:256px;height:256px}}

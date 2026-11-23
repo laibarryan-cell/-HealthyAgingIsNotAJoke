@@ -1,0 +1,152 @@
+/* home-v4.css — 第三修改計劃新增內容2 A2/A3:首頁星空與夜燈閃爍、點大門被吸進去的動畫 */
+.hv4-fx { position: absolute; z-index: 3; pointer-events: none; }      /* 大小與位置由 home-v4.js 對齊背景圖(cover) */
+.hv4-star { position: absolute; width: var(--sz, 6px); height: var(--sz, 6px); transform: translate(-50%, -50%); opacity: .15;
+  background: radial-gradient(circle, #fff 0 22%, rgba(255,247,214,.85) 30%, transparent 70%);
+  animation: hv4Twinkle var(--d, 3s) ease-in-out var(--delay, 0s) infinite; }
+.hv4-star.hv4-cross::before, .hv4-star.hv4-cross::after { content: ""; position: absolute; left: 50%; top: 50%; background: rgba(255,250,225,.9); transform: translate(-50%, -50%); }
+.hv4-star.hv4-cross::before { width: 260%; height: 2px; }
+.hv4-star.hv4-cross::after { width: 2px; height: 260%; }
+@keyframes hv4Twinkle { 0%, 100% { opacity: .1; transform: translate(-50%, -50%) scale(.6); } 45% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); } 60% { opacity: .75; } }
+.hv4-shoot { position: absolute; width: 120px; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); opacity: 0; transform: rotate(-24deg); animation: hv4Shoot 9s ease-in 4s infinite; }
+@keyframes hv4Shoot { 0%, 88% { opacity: 0; translate: 0 0; } 90% { opacity: 1; } 96% { opacity: 0; translate: -260px 120px; } 100% { opacity: 0; } }
+.hv4-lamp { position: absolute; width: var(--w, 120px); height: var(--w, 120px); transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,214,120,.55) 0, rgba(255,180,70,.22) 38%, transparent 68%); mix-blend-mode: screen;
+  animation: hv4Flicker var(--d, 4s) steps(1, end) var(--delay, 0s) infinite, hv4Breath 3.2s ease-in-out var(--delay, 0s) infinite; }
+@keyframes hv4Breath { 0%, 100% { scale: .92; } 50% { scale: 1.08; } }
+@keyframes hv4Flicker { 0%, 100% { opacity: .85; } 8% { opacity: .55; } 10% { opacity: .95; } 37% { opacity: .7; } 39% { opacity: 1; } 71% { opacity: .62; } 73% { opacity: .9; } }
+
+/* A3 被吸進去:畫面變暗、門口出現漩渦,主角背影被拉進門裡,最後一道光 */
+.hv4-portal { position: fixed; inset: 0; z-index: 50; pointer-events: auto; cursor: pointer; overflow: hidden; }
+.hv4-portal .hv4-dim { position: absolute; inset: 0; background: radial-gradient(circle at var(--px) var(--py), rgba(10,8,30,0) 0, rgba(5,6,20,.55) 30%, rgba(3,4,12,.9) 70%); opacity: 0; animation: hv4Dim .6s ease-out forwards; }
+@keyframes hv4Dim { to { opacity: 1; } }
+.hv4-portal .hv4-vortex { position: absolute; left: var(--px); top: var(--py); width: var(--vs); height: var(--vs); margin: calc(var(--vs) / -2) 0 0 calc(var(--vs) / -2); border-radius: 50%;
+  background: radial-gradient(circle, #fff9e0 0 6%, #ffd877 10%, rgba(176,120,255,.85) 22%, rgba(70,60,200,.55) 40%, transparent 68%),
+    repeating-conic-gradient(from 0deg, rgba(255,230,160,.65) 0 8deg, rgba(120,90,255,.15) 8deg 22deg);
+  -webkit-mask: radial-gradient(circle, #000 35%, transparent 70%); mask: radial-gradient(circle, #000 35%, transparent 70%);
+  transform: scale(0) rotate(0); animation: hv4Spin 2.6s cubic-bezier(.5,0,.6,1) forwards; filter: drop-shadow(0 0 30px rgba(190,150,255,.8)); }
+@keyframes hv4Spin { 0% { transform: scale(0) rotate(0); } 25% { transform: scale(.7) rotate(-240deg); } 75% { transform: scale(1.05) rotate(-900deg); } 100% { transform: scale(9) rotate(-1300deg); } }
+.hv4-portal .hv4-elder { position: absolute; left: var(--ex); top: var(--ey); height: var(--eh); transform-origin: 50% 70%; translate: -50% 0;
+  image-rendering: pixelated; filter: drop-shadow(0 0 12px rgba(255,220,140,.8)); animation: hv4Pull 2.1s .35s cubic-bezier(.6,0,.8,.6) forwards; }
+@keyframes hv4Pull { 0% { transform: none; } 20% { transform: translate(0, -2%) rotate(-3deg) scaleY(1.04); } 55% { transform: translate(var(--dx2), var(--dy2)) rotate(-160deg) scale(.55); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(-540deg) scale(0); opacity: 0; } }
+.hv4-portal .hv4-dust { position: absolute; left: var(--sx); top: var(--sy); width: 6px; height: 6px; background: #ffe9a8; box-shadow: 0 0 8px #ffd36a; opacity: 0;
+  animation: hv4Dust 1.3s ease-in var(--delay) forwards; }
+@keyframes hv4Dust { 0% { opacity: 0; transform: none; } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(.2); } }
+.hv4-portal .hv4-flash { position: absolute; inset: 0; background: #fff8e6; opacity: 0; animation: hv4Flash .5s 2.25s ease-out forwards; }
+@keyframes hv4Flash { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 1; } }
+.hv4-portal .hv4-skip { position: absolute; right: 18px; bottom: 16px; color: #fff2cf; font: 700 14px/1 "Noto Sans TC", system-ui; opacity: .75; }
+.hv4-shake { animation: hv4Shake .5s linear 2; }
+@keyframes hv4Shake { 0%, 100% { translate: 0 0; } 25% { translate: 2px -1px; } 50% { translate: -2px 1px; } 75% { translate: 1px 2px; } }
+@media (prefers-reduced-motion: reduce) { .hv4-star, .hv4-lamp, .hv4-shoot { animation: none; opacity: .6; } }
+
+/* 2026-11-17 使用者:只要夜燈有特效、不要太強烈;不要風的特效。星星回到原本強度,夜燈比原本稍明顯但柔和 */
+.hv4-lamp { background: radial-gradient(circle, rgba(255,220,130,.7) 0, rgba(255,186,76,.3) 36%, transparent 68%) !important; }
+@keyframes hv4Flicker { 0%, 100% { opacity: .9; } 8% { opacity: .62; } 10% { opacity: 1; } 40% { opacity: .75; } 42% { opacity: .95; } 72% { opacity: .68; } 74% { opacity: .92; } }
+@keyframes hv4Breath { 0%, 100% { scale: .9; } 50% { scale: 1.1; } }
+/* 樹隨風搖(保留) */
+.hv4-fx { overflow: hidden; }
+.hv4-tree { position: absolute; background: center / 100% 100% no-repeat; image-rendering: pixelated; transform-origin: 50% 100%;
+  animation: hv4Sway 5.5s ease-in-out var(--delay, 0s) infinite; }
+@keyframes hv4Sway { 0%, 100% { transform: skewX(0deg); } 18% { transform: skewX(calc(var(--amp) * -1)); } 32% { transform: skewX(calc(var(--amp) * .4)); } 45% { transform: skewX(calc(var(--amp) * -.6)); } 70% { transform: skewX(calc(var(--amp) * .3)); } }
+@media (prefers-reduced-motion: reduce) { .hv4-tree { animation: none !important; } }
+/* 落葉(保留) */
+.hv4-leaf { position: absolute; width: var(--sz, 8px); height: calc(var(--sz, 8px) * .6); clip-path: polygon(0 50%, 30% 0, 100% 20%, 70% 100%, 20% 90%);
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,.3); opacity: 0; animation: hv4Leaf var(--d, 9s) linear var(--delay, 0s) infinite; }
+@keyframes hv4Leaf { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 6% { opacity: 1; }
+  25% { transform: translate(calc(var(--dx) * .3), calc(var(--dy) * .2)) rotate(160deg); } 50% { transform: translate(calc(var(--dx) * .55), calc(var(--dy) * .5)) rotate(330deg); }
+  75% { transform: translate(calc(var(--dx) * .8), calc(var(--dy) * .75)) rotate(520deg); } 92% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(700deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hv4-leaf { display: none; } }
+
+/* 2026-11-18 ART-N2-02 正式漩渦圖接入:改用 portal-swirl.png(程式照舊旋轉、放大),中心補一點亮光 */
+.hv4-portal .hv4-vortex { background: radial-gradient(circle, rgba(255,249,224,.9) 0 4%, rgba(255,216,119,.5) 9%, transparent 16%), url("assets/ui-shell/portal-swirl.png") center / contain no-repeat; -webkit-mask: none; mask: none; image-rendering: pixelated; }
+
+/* 2026-11-18 今日任務 1:大門提示(位置以背景圖百分比表示,跟著 .hv4-fx 一起縮放) */
+.hv4-doorseam { position: absolute; left: 50%; top: 48%; width: .45%; height: 29.5%; transform: translateX(-50%); border-radius: 40% 40% 0 0;
+  background: linear-gradient(90deg, rgba(255,214,120,0), rgba(255,236,170,.95) 50%, rgba(255,214,120,0)); opacity: .55;
+  box-shadow: 0 0 18px 6px rgba(255,196,90,.35); transition: width .45s ease, opacity .45s ease, box-shadow .45s ease; pointer-events: none; }
+.hv4-door-hover .hv4-doorseam { width: 2.2%; opacity: .9; box-shadow: 0 0 26px 8px rgba(255,200,95,.38); }
+.hv4-door-hint { position: absolute; left: 50%; top: 41.2%; transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none;
+  font-weight: 900; letter-spacing: .12em; color: #fff3c4; font-size: clamp(15px, 1.7vw, 26px); padding: .28em .9em; border-radius: 999px;
+  background: rgba(20,30,58,.72); border: 2px solid #d9a441; box-shadow: 0 0 0 2px rgba(0,0,0,.35), 0 0 22px rgba(255,200,90,.45);
+  text-shadow: 0 2px 0 #3a2a10; animation: hv4Hint 1.6s ease-in-out infinite; }
+.hv4-door-hover .hv4-door-hint { animation: none; opacity: 1; transform: translate(-50%, -58%) scale(1.06); }
+@keyframes hv4Hint { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+.home-screen.opening .hv4-door-hint { display: none; }
+@media (prefers-reduced-motion: reduce) { .hv4-door-hint { animation: none; opacity: 1; } }
+
+/* 2026-11-18 今日任務 8:通關後首頁的三位片尾老人(待機呼吸、點一下說話) */
+.hv4-crew { position: absolute; inset: 0; pointer-events: none; }
+.hv4-crew[hidden] { display: none; }
+.hv4-crewman { position: absolute; bottom: 3.2%; transform: translateX(-50%); aspect-ratio: 700 / 1400; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto; z-index: 4; }
+.hv4-crewman img { width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block; transform-origin: 50% 100%;
+  animation: hv4Breathe 2.4s ease-in-out infinite; animation-delay: var(--delay, 0s); filter: drop-shadow(0 6px 4px rgba(0,0,0,.55)) brightness(.92); }
+.hv4-crewman:hover img, .hv4-crewman:focus-visible img { filter: drop-shadow(0 0 10px rgba(255,214,110,.85)) brightness(1.05); }
+.hv4-crewman.talk img { animation: hv4Hop .5s ease-out 2, hv4Breathe 2.4s ease-in-out 1s infinite; }
+@keyframes hv4Breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.025); } }
+@keyframes hv4Hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-9%); } }
+.hv4-say { position: absolute; left: 50%; bottom: 104%; transform: translateX(-50%) scale(.9); width: max-content; max-width: 15em; padding: .45em .8em;
+  background: #fff4d6; color: #2b1d0e; border: 2px solid #b8862c; border-radius: 10px; box-shadow: 0 0 0 2px #1c2340; font-weight: 800; font-size: clamp(13px, 1.15vw, 18px);
+  line-height: 1.35; opacity: 0; visibility: hidden; transition: opacity .25s, transform .25s; pointer-events: none; }
+.hv4-crewman.talk .hv4-say { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+.home-screen.opening .hv4-crew { display: none; }
+@media (prefers-reduced-motion: reduce) { .hv4-crewman img { animation: none !important; } }
+
+/* 2026-11-18 晚 彩蛋:通關後的新年首頁(圖放進 assets/art-production/home/ 就會自動啟用) */
+.home-screen.hv4-ny { background-image: url("assets/art-production/home/home-night-newyear.png"); }
+.home-screen.hv4-ny .home-open-layer { background-image: url("assets/art-production/home/home-night-newyear-open.png"); }
+.hv4-nyb { display: none; position: absolute; inset: 0; pointer-events: none; background: url("assets/art-production/home/home-night-newyear-b.png") center / cover no-repeat; image-rendering: pixelated; }
+.hv4-ny .hv4-nyb { display: block; animation: hv4NyB 1.6s steps(1) infinite; }
+@keyframes hv4NyB { 0%, 49.9% { opacity: 0; } 50%, 100% { opacity: 1; } }
+.hv4-nyspot { display: none; position: absolute; background: none; border: 0; padding: 0; cursor: pointer; pointer-events: auto; }
+.hv4-ny .hv4-nyspot { display: block; }
+.hv4-nyspot .hv4-say { position: absolute; left: 50%; bottom: 100%; }
+.mm-reduce .hv4-ny .hv4-nyb, html.mm-reduce .hv4-nyb { animation: none; opacity: 0; }
+
+/* G7(2026-11-18 晚):手機/平板直拿時蓋一層「請轉成橫向」(遊戲是 16:9 橫向畫面) */
+@media (orientation: portrait) and (pointer: coarse) {
+  body::after { content: "📱↻\A請把裝置轉成橫向\A再繼續遊戲"; white-space: pre; position: fixed; inset: 0; z-index: 2147483600;
+    display: grid; place-items: center; text-align: center; padding: 24px; font-size: 26px; font-weight: 900; line-height: 1.8;
+    background: #0e1730; color: #fff3c4; }
+}
+
+/* A10:名字輸入框字大、對比高;提示灰字加深 */
+#player-name { font-size: 20px; color: #1c1408; }
+#player-name::placeholder { color: #6b5a3c; opacity: 1; }
+.hv4-randname { margin-top: 8px; min-height: 44px; padding: 6px 16px; font: inherit; font-size: 17px; font-weight: 900; cursor: pointer;
+  border: 3px solid #d9a441; border-radius: 10px; background: #1c2340; color: #fff3c4; }
+.hv4-randname:hover, .hv4-randname:focus-visible { background: #2e3a6c; }
+
+/* ART-N5 新年首頁:老人點擊範圍(滑過時淡淡發光)與說話泡泡 */
+.hv4-nyspot { border-radius: 40%; }
+.hv4-nyspot:hover, .hv4-nyspot:focus-visible { background: radial-gradient(ellipse at 50% 60%, #ffd86d40, transparent 70%); outline: none; }
+.hv4-nyspot .hv4-say { opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s; }
+.hv4-nyspot.talk .hv4-say { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+.hv4-nyhero { display: none; position: absolute; left: 49.75%; top: 78.3%; height: 17%; transform: translateX(-50%); image-rendering: pixelated; filter: drop-shadow(0 6px 4px #0009); pointer-events: none; }
+.hv4-ny .hv4-nyhero { display: block; }
+
+/* 2026-11-18 首頁標題換成 logo(assets/ui-shell/home-logo.png):不要底板,直接放在左上角 */
+.home-header.home-logo-header{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;width:auto!important;max-width:none!important}
+.home-logo-header h1{margin:0;line-height:0}
+.home-logo{display:block;width:clamp(230px,27vw,460px);height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.55));user-select:none}
+
+/* 2026-11-18 晚 通關後首頁:新年裝飾亮亮特效、三位老人提亮 */
+.hv4-nysp { display: none; position: absolute; width: .55vw; height: .55vw; min-width: 5px; min-height: 5px; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
+  background: #fff3c0; box-shadow: 0 0 8px 3px #ffd36a, 0 0 18px 6px #ff9f3a66; opacity: 0; animation: hv4Twinkle var(--d, 3s) ease-in-out var(--delay, 0s) infinite; }
+.hv4-nysp.hv4-cross::before, .hv4-nysp.hv4-cross::after { content: ""; position: absolute; left: 50%; top: 50%; background: #fff6d0cc; transform: translate(-50%, -50%); }
+.hv4-nysp.hv4-cross::before { width: 320%; height: 2px; }
+.hv4-nysp.hv4-cross::after { width: 2px; height: 320%; }
+.hv4-ny .hv4-nysp { display: block; }
+.mm-reduce .hv4-nysp, html.mm-reduce .hv4-nysp { animation: none; opacity: .7; }
+@media (prefers-reduced-motion: reduce) { .hv4-nysp { animation: none; opacity: .7; } }
+/* 2026-11-20 三位老人:圖本身已提高飽和度/對比(home-night-newyear*.png 老人區域)。
+   之前把 soft-light 混色加在按鈕本身,連裡面的說話泡泡也被混色,泡泡跟著 A/B 動作格一閃一閃 → 改成只有 ::before 光暈混色,泡泡獨立一層、不混色 */
+.hv4-ny .hv4-nyspot { background: none; isolation: isolate; }
+.hv4-ny .hv4-nyspot::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: soft-light; transition: opacity .3s;
+  background: radial-gradient(ellipse at 50% 55%, rgba(255,236,190,.75), rgba(255,210,130,.3) 60%, transparent 78%); opacity: 0; }
+.hv4-ny .hv4-nyspot:hover::before, .hv4-ny .hv4-nyspot:focus-visible::before { opacity: 1; }
+.hv4-ny .hv4-nyspot:hover, .hv4-ny .hv4-nyspot:focus-visible { background: none; }
+.hv4-ny .hv4-nyspot .hv4-say { z-index: 2; mix-blend-mode: normal; will-change: opacity, transform; transform: translateX(-50%) translateZ(0) scale(.96); }
+.hv4-ny .hv4-nyspot.talk .hv4-say { transform: translateX(-50%) translateZ(0) scale(1); }
+.hv4-ny .hv4-nyhero { filter: brightness(1.12) saturate(1.2) contrast(1.05) drop-shadow(0 6px 4px #0009); }
+/* 新年圖還沒載入時的立繪版本:不要用 brightness(1.4)(會洗白、看起來霧霧的),改提高飽和與對比 */
+.hv4-crewman img { filter: saturate(1.35) contrast(1.08) brightness(1.1) drop-shadow(0 6px 4px rgba(0,0,0,.55)); }

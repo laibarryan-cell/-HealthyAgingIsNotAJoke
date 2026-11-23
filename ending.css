@@ -1,0 +1,128 @@
+/* ===== 片尾動畫 01～08 =====
+   所有元素都放在固定 1672×941 的舞台 (.ending-stage) 內，由 game.js 整體等比縮放。
+   背景圖永遠不做 transform／縮放；只有門扇、人物、對聯、橫批、光效會動。 */
+.finish-screen{display:none!important;place-items:initial;background:#050b18;color:#fff7da;overflow:hidden}
+.finish-screen.active{display:block!important}
+.ending-sequence{position:absolute;inset:0;overflow:hidden;background:#050b18}
+.ending-stage{position:absolute;left:50%;top:50%;width:1672px;height:941px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:#050b18}
+.ending-stage img{image-rendering:pixelated;user-select:none;-webkit-user-drag:none}
+.ending-instant,.ending-instant *{transition:none!important;animation:none!important}
+
+/* ---------- 場景容器（背景固定） ---------- */
+.ending-scene{position:absolute;inset:0;overflow:hidden;opacity:0;visibility:hidden}
+.ending-scene-interior{background:#0b1220 url('assets/ending/ending-interior-base.png') 0 0/1672px 941px no-repeat}
+.ending-scene-mansion{background:#07142d url('assets/ending/ending-mansion-scene05-08.png') 0 0/1672px 941px no-repeat}
+.shot-interior .ending-scene-interior,.shot-mansion .ending-scene-mansion{opacity:1;visibility:visible}
+
+/* ---------- 01～02 室內大門 ---------- */
+.ending-doorway{position:absolute;left:650px;top:118px;width:376px;height:468px;perspective:1100px;perspective-origin:50% 332px}
+/* 門扇是真正的 3D 方塊：正面 (.ending-leaf-face) + 門扇內緣的厚度面 (.ending-leaf-side)。
+   方向與首頁一致：門是往屋內開的。片尾鏡頭在屋內，所以門扇朝鏡頭（朝角色）這一側翻開。
+   左門以最左側鉸鏈、右門以最右側鉸鏈為軸；鉸鏈 (.ending-hinge) 釘在門框上不動；門框與牆面在背景圖裡，完全不動。 */
+.ending-leaf{position:absolute;top:0;width:188px;height:468px;transform-style:preserve-3d;transition:transform 3.4s cubic-bezier(.45,.05,.3,1)}
+.ending-leaf-left{left:0;transform-origin:0 50%}
+.ending-leaf-right{right:0;transform-origin:100% 50%}
+.door-open .ending-leaf-left{transform:rotateY(-80deg)}
+.door-open .ending-leaf-right{transform:rotateY(80deg)}
+.ending-leaf-face,.ending-leaf-side,.ending-hinge{position:absolute;background-repeat:no-repeat;image-rendering:pixelated;filter:brightness(.8);transition:filter 3.4s ease}
+.ending-leaf-face{inset:0;background-size:100% 100%}
+.ending-leaf-left .ending-leaf-face{background-image:url('assets/ending/ending-door-leaf-left-v3.png')}
+.ending-leaf-right .ending-leaf-face{background-image:url('assets/ending/ending-door-leaf-right-v3.png')}
+/* 厚度面：貼在門扇內緣（有門把的那一邊），往門板後方延伸 32px；只取素材中的木頭部分 */
+.ending-leaf-side{top:0;width:32px;height:468px;background-size:48px 100%}
+.ending-leaf-left .ending-leaf-side{left:188px;transform-origin:0 50%;transform:rotateY(90deg);background-position:0 0;background-image:url('assets/ending/ending-door-side-left-v2.png')}
+.ending-leaf-right .ending-leaf-side{right:188px;transform-origin:100% 50%;transform:rotateY(-90deg);background-position:100% 0;background-image:url('assets/ending/ending-door-side-right-v2.png')}
+.ending-hinge{top:63px;width:16px;height:405px;background-size:48px 100%}
+.ending-hinge-left{left:-9px;background-position:100% 0;background-image:url('assets/ending/ending-door-side-left-v2.png')}
+.ending-hinge-right{right:-9px;background-position:0 0;background-image:url('assets/ending/ending-door-side-right-v2.png')}
+.door-open .ending-leaf-face{filter:brightness(1.12) saturate(1.1)}
+.door-open .ending-leaf-side{filter:brightness(1.5) saturate(1.15)}
+.door-open .ending-hinge{filter:brightness(1.1)}
+/* 門關著時壓暗室內、蓋掉地上的金光；開門時逐漸退去 = 金色光線逐漸增強 */
+.ending-interior-dark{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:1;transition:opacity 3.2s ease-in;
+  background:radial-gradient(ellipse 520px 330px at 836px 800px,#3a3f5e 0,#565d80 70%,transparent 100%),linear-gradient(#7a82a6,#6a7296)}
+.door-open .ending-interior-dark{opacity:0}
+.ending-interior-light{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity 3.4s ease-in .5s;
+  background:radial-gradient(ellipse 300px 380px at 836px 360px,#ffe9a8cc 0,#ffc85a55 45%,transparent 75%)}
+.door-open .ending-interior-light{opacity:1}
+.ending-elder-back{position:absolute;left:836px;top:722px;height:300px;width:auto;transform:translate(-50%,-100%);filter:brightness(.62) saturate(.85);transition:filter 3.2s ease}
+.door-open .ending-elder-back{filter:brightness(1.02) saturate(1) drop-shadow(0 0 0 transparent)}
+
+/* ---------- 03～04 正面老人（8 格走路，邊走邊放大；縮放與位移由 game.js 的透視動畫控制） ---------- */
+.ending-mansion-glow{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity 1s ease;
+  background:radial-gradient(ellipse 150px 190px at 836px 455px,#fff3c4 0,#ffd874cc 40%,#ffb84055 70%,transparent 100%),radial-gradient(ellipse 620px 520px at 836px 520px,#ffc85a66 0,transparent 70%)}
+.walker-on .ending-mansion-glow{opacity:.75}
+.walker-zoom .ending-mansion-glow{opacity:1;transition:opacity 5.4s ease-in}
+.elders-1 .ending-mansion-glow{opacity:.28;transition:opacity 1.2s ease}
+.ending-walker{position:absolute;left:836px;top:500px;width:0;height:0;opacity:0}
+.walker-on .ending-walker{opacity:1;transition:opacity .5s ease}
+.ending-walker-sprite{position:absolute;left:-91px;top:-84px;width:154px;height:280px;transform-origin:91px 84px;transform:scale(.5);
+  background:url('assets/ending/ending-elder03-front-walk-8f.png') 0 0/1232px 280px no-repeat;image-rendering:pixelated;will-change:transform}
+.walker-on .ending-walker-sprite{animation:ending-walk .96s steps(8) infinite}
+@keyframes ending-walk{from{background-position:0 0}to{background-position:-1232px 0}}
+
+/* ---------- 轉場金光 ---------- */
+.ending-flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 48%,#fffbe6 0,#ffe08a 55%,#f2b84a 100%);transition:opacity .7s ease}
+.flash .ending-flash{opacity:1;transition-duration:.55s}
+
+/* ---------- 05～06 三位長者 ---------- */
+.ending-elder{position:absolute;top:868px;width:0;height:0;opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.8,.2,1)}
+.ending-elder img{position:absolute;bottom:0;left:0;width:auto;transform:translateX(-50%)}
+.ending-elder::before{content:"";position:absolute;left:-190px;top:-34px;width:380px;height:64px;border-radius:50%;background:radial-gradient(ellipse at center,#ffe9a0cc 0,#ffc85a66 45%,transparent 72%);mix-blend-mode:screen;opacity:0;transition:opacity 1.4s ease}
+.ending-elder-left{left:500px}.ending-elder-left img{height:626px;margin-left:14px}
+.ending-elder-center{left:836px}.ending-elder-center img{height:604px;margin-left:-6px}
+.ending-elder-right{left:1172px}.ending-elder-right img{height:676px;margin-left:10px}
+.elders-1 .ending-elder-left,.elders-2 .ending-elder-center,.elders-3 .ending-elder-right{opacity:1;transform:translateY(0)}
+.elders-1 .ending-elder-left::before,.elders-2 .ending-elder-center::before,.elders-3 .ending-elder-right::before{opacity:1}
+/* 07：長者降低透明度，背景保留 */
+.ending-mansion-dim{position:absolute;inset:0;pointer-events:none;background:#07142d;opacity:0;transition:opacity .9s ease}
+.couplet-on .ending-mansion-dim{opacity:.38}
+.couplet-on .ending-elder{opacity:.5!important}
+.couplet-on .ending-elder::before{opacity:.3!important}
+
+/* ---------- 07 對聯 ---------- */
+.ending-couplet{position:absolute;top:92px;width:288px;height:700px;box-sizing:border-box;padding:112px 0 96px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;
+  background-size:100% 100%;background-repeat:no-repeat;image-rendering:pixelated;filter:drop-shadow(0 0 16px #ffd66c99) drop-shadow(8px 10px 0 #05091377);
+  clip-path:inset(0 -60px 100% -60px);opacity:0;transition:clip-path 1.2s cubic-bezier(.3,.7,.3,1),opacity .35s ease}
+.ending-couplet-left{left:34px;background-image:url('assets/ending/ending-couplet-scroll-left.png')}
+.ending-couplet-right{right:34px;background-image:url('assets/ending/ending-couplet-scroll-right.png')}
+.ending-couplet span{display:block;font-family:"DFKai-SB","BiauKai","標楷體","Kaiti TC","KaiTi","STKaiti",serif;font-size:64px;line-height:1;font-weight:700;color:#1d130d;text-shadow:1px 1px 0 #1d130d,2px 2px 0 #6b554055}
+.couplet-l .ending-couplet-left,.couplet-r .ending-couplet-right{clip-path:inset(-60px -60px -60px -60px);opacity:1}
+
+/* ---------- 08 橫批與方向光 ---------- */
+.ending-rays{position:absolute;left:836px;top:742px;width:0;height:0;pointer-events:none;opacity:0;transition:opacity .6s ease}
+.ending-rays::before{content:"";position:absolute;left:-760px;top:-420px;width:1520px;height:840px;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,#ffe38a00 0deg,#ffe38a99 4deg,#ffe38a00 9deg,#ffe38a00 18deg);
+  -webkit-mask:radial-gradient(ellipse at center,#000 0,#000 38%,transparent 70%);mask:radial-gradient(ellipse at center,#000 0,#000 38%,transparent 70%)}
+.beat-4 .ending-rays{opacity:1}
+.ending-banner{position:absolute;left:246px;top:644px;width:1180px;height:184px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:86px;
+  background:linear-gradient(#fffaf0,#f8ecc8 55%,#ead7a2);border:10px solid #b3261c;border-radius:6px;
+  box-shadow:inset 0 0 0 4px #f3d27a,inset 0 0 0 8px #8f1c14,inset 0 0 0 11px #f7e6b0,inset 0 10px 14px #fff8,inset 0 -12px 16px #b98a3a55,
+    0 0 0 4px #e9bd55,0 0 0 7px #5a130e,0 5px 0 7px #7d1811,0 10px 0 7px #5a130e,0 16px 0 7px #2c0906,0 0 44px 8px #ffd66c88,10px 28px 0 2px #05091377;
+  opacity:0;transform:scaleX(.08);transition:opacity .3s ease,transform .7s cubic-bezier(.2,.9,.25,1)}
+.ending-banner::before,.ending-banner::after{content:"";position:absolute;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,#e2a93a 55%,#8a5a12);box-shadow:0 0 0 3px #5a130e}
+.ending-banner::before{left:22px}.ending-banner::after{right:22px}
+.banner-on .ending-banner{opacity:1;transform:scaleX(1)}
+.ending-banner span{font-family:"DFKai-SB","BiauKai","標楷體","Kaiti TC","KaiTi","STKaiti",serif;font-size:128px;line-height:1;font-weight:700;color:#1d130d;text-shadow:1px 1px 0 #1d130d,3px 3px 0 #6b55406e;opacity:0;transform:scale(1.9);transition:opacity .16s ease-out,transform .32s cubic-bezier(.2,1.5,.4,1)}
+.beat-1 .ending-banner span:nth-child(1),.beat-2 .ending-banner span:nth-child(2),.beat-3 .ending-banner span:nth-child(3),.beat-4 .ending-banner span:nth-child(4){opacity:1;transform:scale(1)}
+.ending-beam{position:absolute;left:836px;top:744px;width:1500px;height:110px;margin:-55px 0 0 -750px;pointer-events:none;mix-blend-mode:screen;opacity:0;
+  background:linear-gradient(90deg,transparent 0,#ffcf5a55 25%,#ffe9a0 44%,#fffdf0 50%,#ffe9a0 56%,#ffcf5a55 75%,transparent 100%);
+  -webkit-mask:linear-gradient(transparent,#000 35%,#000 65%,transparent);mask:linear-gradient(transparent,#000 35%,#000 65%,transparent)}
+.ending-beam-1,.ending-beam-2{--a:-32deg}.ending-beam-3{--a:0deg}.ending-beam-4{--a:32deg}
+.beat-1 .ending-beam-1,.beat-2 .ending-beam-2,.beat-3 .ending-beam-3,.beat-4 .ending-beam-4{animation:ending-beam .56s cubic-bezier(.3,.1,.3,1) both}
+@keyframes ending-beam{0%{opacity:0;transform:rotate(var(--a)) translateX(-1150px)}25%{opacity:1}75%{opacity:1}100%{opacity:0;transform:rotate(var(--a)) translateX(1150px)}}
+
+/* ---------- 結束按鈕 ---------- */
+.ending-finish-actions{position:absolute;right:24px;bottom:18px;display:flex;align-items:center;gap:12px;padding:10px 14px;background:#0d1b31e8;border:2px solid #c89443;opacity:0;visibility:hidden;transform:translateY(15px);transition:opacity .7s ease,transform .7s ease,visibility 0s linear .7s}
+.done .ending-finish-actions{opacity:1;visibility:visible;transform:translateY(0);transition-delay:0s}
+.ending-finish-actions p{margin:0 10px 0 0;color:#fff0c0}.ending-finish-actions .primary-button,.ending-finish-actions .soft-button{min-height:44px;font-size:16px;padding:7px 15px}
+@media(max-width:800px){.ending-finish-actions{left:10px;right:10px;justify-content:center;flex-wrap:wrap}.ending-finish-actions p{width:100%;text-align:center}}
+/* 04：整體金光隨放大增強（只疊光，不動背景） */
+.ending-mansion-glow::after{content:"";position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 836px 470px,#ffeeb0cc 0,#ffcf6a88 38%,#ffb84033 78%,transparent 100%)}
+.walker-zoom .ending-mansion-glow::after{opacity:1;transition:opacity 5.4s cubic-bezier(.7,0,1,.6)}
+
+/* ===== 跳過鈕（BUG-001 / ART-002）：片尾播放中顯示，done 後由「重新開始／返回首頁」取代 ===== */
+.ending-skip{position:absolute;right:24px;top:18px;z-index:5;display:flex;align-items:center;gap:8px;min-width:44px;min-height:44px;padding:6px 14px 6px 10px;background:#0d1b31cc;border:2px solid #c89443;color:#fff0c0;font:700 16px/1 "Noto Sans TC","Microsoft JhengHei",sans-serif;cursor:pointer}
+.ending-skip img{width:32px;height:32px;image-rendering:pixelated}
+.ending-skip:hover,.ending-skip:focus-visible{background:#1b3358;outline:2px solid #fff0c0;outline-offset:2px}
+.done .ending-skip{display:none}

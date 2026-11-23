@@ -1,0 +1,62 @@
+/* Shared painted game controls; room art and room-state cards are excluded. */
+.character-screen{--paper:#f2e6c9;--ink:#34291e;--wood:#53351f;--gold:#ce9b47}
+button:is(.primary-button,.soft-button,.icon-button,.round-button,.tab,.dialog-close,.hint-button){border:2px solid #302418;border-radius:3px;color:#fff7de;background:linear-gradient(90deg,#ffffff0c,transparent 30%,#00000014),repeating-linear-gradient(0deg,transparent 0 4px,#ffffff06 4px 5px),linear-gradient(#718755,#3e582b);box-shadow:inset 0 2px #d6dda782,inset 2px 0 #ffffff20,inset 0 -3px #203516,0 3px 0 #2b241a,0 4px 8px #0004;text-shadow:0 1px 1px #18240d;font-weight:800;letter-spacing:.06em;transition:filter .15s}
+button:is(.soft-button,.icon-button){background:repeating-linear-gradient(0deg,transparent 0 4px,#fff1 4px 5px),linear-gradient(#98846a,#62513e);box-shadow:inset 0 2px #e2cfac88,inset 0 -3px #453723,0 3px #2b241a,0 4px 8px #0003}
+button:is(.round-button,.dialog-close){background:linear-gradient(#b77838,#805021);min-width:44px;min-height:44px}
+button:is(.primary-button,.soft-button,.icon-button,.round-button,.tab):hover{filter:brightness(1.15)}
+button:focus-visible,input:focus-visible{outline:3px solid #f9cf71;outline-offset:4px}
+.home-nav .soft-button{padding:12px 22px}
+.character-screen{color:var(--ink);background:radial-gradient(ellipse at 50% 15%,#66523a55,transparent 70%),repeating-linear-gradient(0deg,#0000 0 49px,#0003 50px 52px),linear-gradient(115deg,#27322e,#17241f)}
+.character-screen .topbar{height:92px;padding:12px 26px;background:repeating-linear-gradient(0deg,#fff0 0 5px,#fff1 5px 6px),linear-gradient(#503d2c,#30271f);border-bottom:4px ridge #ad8750;color:#f8e8bc;box-shadow:0 4px 10px #0005}
+.character-screen .topbar h2{font-family:Georgia,'Microsoft JhengHei',serif;font-size:28px;letter-spacing:.15em;margin:2px 0;text-shadow:2px 2px #1f1a14}
+.character-screen .step-label{color:#e2bd79;font-size:13px;letter-spacing:.2em;margin:0 0 5px}
+.character-layout{height:calc(100% - 92px);grid-template-columns:minmax(240px,.85fr) minmax(330px,1.15fr) minmax(300px,1fr);gap:20px;padding:22px;overflow:auto;align-items:stretch}
+.character-layout>.panel{border:5px ridge #9e7746;border-radius:3px;padding:18px;background:repeating-linear-gradient(0deg,#865e2804 0 2px,transparent 2px 5px),radial-gradient(ellipse at 40% 20%,#fff8df,#e4d1a6);box-shadow:0 0 0 2px #2d2318,inset 0 0 20px #6b4b2226,4px 7px 0 #0004;min-height:0}
+.character-choice{display:flex;flex-direction:column;gap:12px}
+.character-choice h3,.atelier-heading{font-size:18px;letter-spacing:.12em;margin:0!important;padding:0 0 10px;border-bottom:2px solid #aa8754}
+.base-list{gap:10px}
+.base-character{position:relative;grid-template-columns:70px 1fr;min-height:82px;padding:4px 12px;border:2px solid #80613d;border-radius:2px;background:linear-gradient(100deg,#ded0aa,#f6ecd1);box-shadow:inset 0 1px #fff8;gap:6px;color:#433020;font-size:18px}
+.base-character.active{background:linear-gradient(100deg,#c8a15d,#f4dfa4);border-color:#594323;box-shadow:inset 0 0 0 2px #fff0b1,0 0 0 2px #c69744}
+.base-character.active::after{content:'◆';position:absolute;right:9px;top:9px;color:#73501a;font-size:12px}
+.base-avatar{width:65px;height:72px}
+.base-character small{margin-top:4px;color:#705535;font-size:13px}
+.name-field{margin-top:4px;font-size:16px}
+.name-field input{background:#fff8e5;border:2px solid #907148;border-radius:2px;box-shadow:inset 2px 3px 3px #4d381922;color:#3e2d1d;margin-top:7px;padding:11px}
+.helper{margin:0;color:#806843;font-size:12px}
+.character-note{margin-top:auto;border-top:1px solid #ad9062;padding-top:12px;line-height:1.65;font-size:14px;color:#72593b}
+.character-note strong{display:block;color:#4b3620;letter-spacing:.12em;margin-bottom:3px}
+.preview-panel{justify-content:flex-start;gap:12px}
+.atelier-heading{width:100%;text-align:center;color:#70522c;font-size:15px;flex:none}
+.preview-stage{flex:1;min-height:290px;height:auto;border:4px ridge #9d7a47;border-radius:1px;position:relative;background:radial-gradient(ellipse at 50% 38%,#f4d99a77,transparent 65%),repeating-linear-gradient(90deg,transparent 0 42px,#3c23151c 43px 45px),linear-gradient(#b8a77d 0 77%,#806540 77% 78%,#a18152 78%);box-shadow:inset 0 0 28px #38291966}
+.preview-stage::after{content:'';position:absolute;left:12%;right:12%;bottom:6%;height:13%;border:2px solid #92764b;background:repeating-linear-gradient(90deg,#674c3033 0 3px,transparent 3px 9px),#5e4d35;box-shadow:0 3px #423623;z-index:0;pointer-events:none}
+.paper-doll{z-index:1;width:100%;height:100%;max-height:480px;max-width:480px}
+.preview-name{font-family:Georgia,'Microsoft JhengHei',serif;font-size:23px;letter-spacing:.08em;margin:0;width:100%;text-align:center;padding:6px;background:linear-gradient(90deg,transparent,#d7bd85,transparent)}
+.preview-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.preview-actions button{font-size:14px;padding:10px 4px;min-height:43px}
+.customizer{gap:16px}
+.tabs{gap:7px;margin:0}
+.tabs .tab{border-radius:2px;background:linear-gradient(#998469,#6b573d);padding:11px 3px;box-shadow:inset 0 2px #dccc9b88,0 3px #3b2c1c;font-size:16px}
+.tabs .tab.active{background:linear-gradient(#799154,#455e30);color:#fff9d5;box-shadow:inset 0 2px #d4d99688,0 3px #29381d}
+.item-picker{margin:0;gap:12px;grid-template-columns:44px 1fr 44px}
+.item-card{border:1px solid #9c7b49;border-radius:2px;background:#fff4d7;box-shadow:inset 0 0 12px #ad854322;padding:16px 4px;min-height:85px}
+.item-card strong{font-size:20px}.item-index{color:#8e7046}
+.color-section{padding:14px;background:#d7c9a2;border:1px solid #b39968;border-radius:2px;margin:0}
+.color-section h3{font-size:16px;margin:0 0 12px}
+.swatches{gap:12px;justify-content:center}.swatch{width:35px;height:35px;border-radius:3px;border:2px solid #645030;box-shadow:inset 0 2px #fff7,inset 0 -3px #0003,0 2px #4b3724}
+.swatch.active{outline:3px solid #986823;outline-offset:3px}
+.outfit-record{border-top:2px solid #b2915c;border-bottom:1px solid #b2915c;padding:13px 0;margin-top:auto}
+.outfit-record h3{font-size:14px;letter-spacing:.15em;margin:0 0 10px;color:#7c6038}
+.outfit-record dl{margin:0;display:grid;grid-template-columns:45px 1fr;gap:8px;font-size:14px}.outfit-record dt{color:#846c4b}.outfit-record dd{margin:0;text-align:right;color:#493621}
+.confirm-area{margin-top:0;gap:0}.confirm-area button{width:100%;min-height:52px;font-size:19px}
+.hidden{display:none!important}
+@media(max-height:760px) and (min-width:1001px){.character-layout{padding:16px;gap:16px}.character-layout>.panel{padding:14px}.character-choice{gap:8px}.base-character{min-height:72px}.base-avatar{height:64px}.character-note{font-size:12px}.customizer{gap:12px}.preview-stage{min-height:240px}.outfit-record{padding:10px 0}.outfit-record dl{gap:5px}.color-section{padding:11px}}
+@media(max-width:1000px){.character-screen .topbar{height:auto;min-height:90px}.character-screen .topbar h2{font-size:22px}.character-layout{height:auto;display:flex;padding:16px}.preview-panel{order:-1}.preview-stage{flex:none;height:390px;min-height:0}.character-note{margin-top:10px}.outfit-record{margin-top:8px}.paper-doll{max-height:390px}.character-screen .topbar .icon-button{min-width:0;font-size:13px;padding:9px}}
+/* Let useful content absorb the remaining height instead of leaving blank blocks. */
+.character-choice .base-list{flex:1;grid-template-rows:repeat(3,minmax(72px,1fr))}
+.character-note{margin-top:0}
+.customizer .item-picker .round-button{width:44px;height:50px;flex:0 0 44px;padding:0}
+.customizer .item-card{min-width:0;flex:1}
+.outfit-record{flex:1;display:flex;flex-direction:column;justify-content:center;margin-top:0}
+.outfit-record dl{gap:12px;font-size:16px}.outfit-record h3{margin-bottom:16px}
+@media(max-width:1000px){.character-choice .base-list{flex:none}.outfit-record{flex:none;padding:18px 0}}
+@media(max-width:1000px){.character-screen .topbar{display:grid;grid-template-columns:1fr 1fr}.character-screen .topbar>div:nth-child(2){grid-column:1/-1;grid-row:1}.character-screen .topbar>*{min-width:0}.character-screen .topbar h2{overflow-wrap:anywhere}.character-layout>.panel{flex-shrink:0}.preview-actions button{min-width:0}}
